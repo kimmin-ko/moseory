@@ -220,7 +220,7 @@
         	<%@ include file="../includes/use_agreement_1.jsp" %>
         </div>
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-         	이용약관에 동의하십니까? <input type="checkbox" name="agreement">동의함
+         	이용약관에 동의하십니까? <input type="checkbox" name="agreement" id="agree1">동의함
         </div>
     </div>
 
@@ -232,7 +232,7 @@
 			<%@ include file="../includes/use_agreement_2.jsp" %>
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="padding: 0; margin-bottom: 30px;">
-			개인정보 수집 및 이용에 동의하십니까?  <input type="checkbox" name="agreement">동의함
+			개인정보 수집 및 이용에 동의하십니까?  <input type="checkbox" name="agreement" id="agree2">동의함
         </div>
         <div class="col-md-10 col-md-offset-1" style="text-align: center;">
 			<button type="submit" class="btn btn-default" id="submitBtn"
@@ -331,6 +331,10 @@
             } else if(checkPassword(password)) { // 비밀번호 유효성 검사에 문제가 있을 경우
             	alert("공백/특수문자가 포함되어 있는 비밀번호는 사용할 수 없습니다.");
             	$("#password").focus();
+            } else if(!$("#agree1").is(":checked")) { // 이용 약관 동의 언체크
+                alert("이용약관에 동의하세요.");
+            } else if(!$("#agree2").is(":checked")) { // 개인정보 동의 언체크
+            	alert("개인 정보 수집 및 이용에 동의하세요.")
             }
 
         });
