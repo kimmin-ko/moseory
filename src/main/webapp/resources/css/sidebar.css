@@ -1,0 +1,42 @@
+a{
+	color: black;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none;
+    color: #bbbbbb;
+}
+
+.brand-row { /* 브랜드 네임 마진 */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.font-12 { /* 사이드바 font size 12px */
+    font-size: 12px;
+}
+
+.ma-bo-50 {
+    margin-bottom: 50px;
+}
+
+.ma-bo-5 {
+    margin-bottom: 5px;
+}
+
+.ma-bo-20 {
+    margin-bottom: 20px;
+}
+
+.ma-bo-10 {
+    margin-bottom: 10px;
+}
+
+.ma-to-30 {
+    margin-top: 30px;
+}
+
+.cate-sm {
+    color: #bbbbbb;
+}

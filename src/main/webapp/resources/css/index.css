@@ -1,0 +1,83 @@
+a{
+	color: black;
+}
+
+.weekly-img {
+    width: 290px;
+    height: 290px;
+}
+
+.prod-list {
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+.prod-list li {
+    position: relative;
+    float: left;
+    padding: 0;
+    margin: 10px;
+    overflow: hidden;
+}
+
+.prod-list .caption {
+    position: absolute;
+    top: 200px;
+    width: 300px;
+    height: 300px;
+    padding-top: 20px;
+    background: rgba(255,255,255,0.6);
+    opacity: 0;
+    -moz-transition: all ease-in-out;
+    -ms-transition: all ease-in-out;
+    -o-transition: all ease-in-out;
+    -webkit-transition: all ease-in-out;
+    transition: all ease-in-out;
+    z-index: 10;
+}
+
+.prod-list .caption :first-child {
+    margin-top: 30%;
+}
+
+.prod-list .caption p {
+    font-size: small;
+}
+
+.prod-list .caption :last-child {
+    font-weight: bold;
+}
+
+.prod-list li:hover .caption {
+    opacity: 1;
+    cursor: pointer;
+    -moz-transform: translateY(-200px);
+    -ms-transform: translateY(-200px);
+    -o-transform: translateY(-200px);
+    -webkit-transform: translateY(-200px);
+    transform: translateY(-200px);
+}
+
+.prod-list .caption p {
+    color: black;
+    text-align: center;
+}
+
+#newArrivalList img {
+    width: 290px;
+    height: 290px;
+}
+
+#newArrivalList img:hover {
+    cursor: pointer;
+}
+
+#newArrivalList p {
+    font-size: small;
+    margin: 0;
+}
+
+#newArrivalList .prod-desc :not(:last-child) {
+    font-weight: bold;
+}

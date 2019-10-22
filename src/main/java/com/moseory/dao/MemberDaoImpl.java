@@ -1,0 +1,39 @@
+package com.moseory.dao;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.moseory.domain.MemberVO;
+
+import lombok.Setter;
+
+@Repository
+public class MemberDaoImpl implements MemberDao {
+    
+    private String namespace = "com.moseory.mapper.MemberMapper";
+
+    @Setter(onMethod_ = @Autowired)
+    private SqlSession sqlSession;
+    
+    @Override
+    public void insertMember(MemberVO vo) {
+	sqlSession.insert(namespace+".insertMember", vo);
+    }
+
+    @Override
+    public void deleteAll() {
+	sqlSession.delete(namespace+".deleteAll");
+    }
+
+    @Override
+    public int getCount() {
+	return sqlSession.selectOne(namespace+".getCount");
+    }
+
+    @Override
+    public MemberVO getMember(String id) {
+	return null;
+    }
+        
+}

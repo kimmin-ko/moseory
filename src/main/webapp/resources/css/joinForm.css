@@ -1,0 +1,45 @@
+.joinLabel-row {
+    text-align: center;
+}
+
+.eSite-login-form .high-row {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.eSite-login-form .low-row {
+    margin-bottom: 20px;
+}
+
+.eSite-login-form div {
+    text-align: center;
+}
+
+.line-div {
+    border: 0.5px solid #CED0D1;
+}
+
+.joinForm-container {
+    font-size: small;
+}
+
+table {
+    font-size: 12px;
+}
+
+table th {
+    margin-left: 15px;
+    width: 15%;
+}
+
+.use-agreement {
+    height: 150px; 
+    overflow: auto;
+    border: 1px solid #CED0D1;
+}
+
+.use-agreement p {
+    margin: 10px 10px 10px 10px;
+    font-size: 12px;
+    color: gray;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moseory.mapper.MemberMapper">
+	
+	<insert id="insertMember">
+	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, email)
+	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, #{email})
+	</insert>
+	
+	<delete id="deleteAll">
+	delete from tbl_member
+	</delete>
+	
+	<select id="getCount" resultType="int">
+	select count(*) from tbl_member
+	</select>
+	
+</mapper>

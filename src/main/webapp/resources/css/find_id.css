@@ -1,0 +1,9 @@
+.findIdLabel-row {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.findIdLabel-row :not(:first-child) {
+    font-size: 12px;
+    color: gray;
+}

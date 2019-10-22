@@ -1,0 +1,87 @@
+.orderLabel-row {
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+
+.order-img {
+    width: 80px;
+    height: 80px;
+}
+
+.benefit-info-table tr td {
+    font-size: 12px;
+}
+
+.benefit-info-table tr .benefit-info {
+    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.prod-order-list-table > tbody > tr > .prod-info {
+    text-align: left;
+}
+
+.prod-order-list-table > tbody > tr > td > .prod-name,
+.prod-order-list-table > tbody > tr > td > .prod-price,
+.prod-order-list-table > tbody > tr > td > .final-prod-price {
+    font-weight: bold;
+}
+
+.prod-order-list-table > tbody > tr > td > .prod-option {
+    font-size: 11px;
+    color: gray;
+}
+
+.prod-order-list-table thead tr td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.prod-order-list-table tbody tr td {
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.prod-order-list-table tfoot tr td {
+    font-size: 12px;
+}
+
+.total-prod-price {
+    font-weight: bold;
+}
+
+.total-order-price {
+    font-weight: bold;
+    color: #CE1F14;
+}
+
+.order-info-table {
+    font-size: 12px;
+}
+
+.order-info-table th {
+    margin-left: 15px;
+    width: 15%;
+}
+
+.payment-schedule-table thead tr th {
+    text-align: center;
+    font-size: 12px;
+}
+
+.payment-schedule-table tbody tr td {
+    text-align: center;
+    font-size: 21px;
+}
+
+.payment-schedule-table-2 tr td {
+    font-size: 12px;
+}
+
+.payment-schedule-table-2 ul {
+    list-style: none;
+}

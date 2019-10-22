@@ -1,0 +1,16 @@
+.loginLabel-row div {
+    text-align: center;
+}
+
+.loginForm-row div {
+    margin-bottom: 5px;
+}
+
+.login-btn {
+    background-color: black;
+    color: white;
+}
+
+form span {
+    font-size: 13px;
+}

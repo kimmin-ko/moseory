@@ -1,0 +1,17 @@
+.noticeView-table {
+    font-size: 12px;
+}
+
+.view_title {
+    background-color: #F3F3F3;
+    height: 40px;
+    width: 120px;
+}
+
+.noticeOtherView-table tr td {
+    font-size: 12px;
+}
+
+.otherView_title {
+    width: 100px;
+}

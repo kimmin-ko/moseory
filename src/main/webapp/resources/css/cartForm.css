@@ -1,0 +1,80 @@
+.cartLabel-row {
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 60px;
+}
+
+.nav-tabs {
+    margin-bottom: 50px;
+}
+
+.cart-list {
+    font-size: 12px;
+}
+
+.cart-img {
+    width: 100px;
+    height: 100px;
+}
+
+.cart-table th,
+.cart-table td  {
+    text-align: center;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.total-prod-price {
+    font-weight: bold;
+}
+
+.total-order-price {
+    font-weight: bold;
+    color: #CE1F14;
+}
+
+.table > tbody > tr > .prod-info {
+    text-align: left;
+}
+
+.table > tbody > tr > td > .prod-name,
+.table > tbody > tr > td > .prod-price,
+.table > tbody > tr > td > .final-prod-price {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.table > tbody > tr > td > .prod-option {
+    font-size: 11px;
+    color: gray;
+}
+
+.btn-delete,
+.btn-delete-cart {
+    background-color: black;
+    color: white;
+}
+
+.order-info-table th {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.order-info-table td {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.cart-use-guide {
+    list-style: none;
+    font-size: 10px;
+    color: gray;
+}
+
+.cart-use-guide li:before {
+    content: '!  ';
+}
