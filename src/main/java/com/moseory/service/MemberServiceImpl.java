@@ -16,7 +16,7 @@ public class MemberServiceImpl implements MemberService {
     
     // 회원 등록
     @Override
-    public void joinMember(MemberVO vo) {
+    public void registerMember(MemberVO vo) {
 	memberDao.insertMember(vo);
     }
 
