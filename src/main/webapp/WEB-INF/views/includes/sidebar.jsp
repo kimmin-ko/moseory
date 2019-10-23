@@ -38,6 +38,12 @@
 		</div>
 	</div>
 
+	<div class="row ma-bo-50">
+		<div class="col-md-3 col-md-offset-2 font-12">
+			<a href="/admin/productregist">상품등록</a>
+		</div>
+	</div>
+	
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
 			<a href="#">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
