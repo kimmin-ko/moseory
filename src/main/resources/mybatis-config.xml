@@ -4,6 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	
-	
+	<typeAliases>
+		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
+	</typeAliases>
 	
 </configuration>

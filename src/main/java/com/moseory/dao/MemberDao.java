@@ -6,6 +6,8 @@ public interface MemberDao {
     
     public void insertMember(MemberVO vo);
     
+    public void deleteMember(String id);
+    
     public void deleteAll();
     
     public int getCount();
