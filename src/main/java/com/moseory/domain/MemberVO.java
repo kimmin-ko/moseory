@@ -35,6 +35,16 @@ public class MemberVO {
 	this.email = email;
     }
     
+    public MemberVO(String id, String password, String pwd_confirm_q, String pwd_confirm_a, String name, String email, Date birth) {
+	this.id = id;
+	this.password = password;
+	this.pwd_confirm_q = pwd_confirm_q;
+	this.pwd_confirm_a = pwd_confirm_a;
+	this.name = name;
+	this.email = email;
+	this.birth = birth;
+    }
+    
 }
 
 
