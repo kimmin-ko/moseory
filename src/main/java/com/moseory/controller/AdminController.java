@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,14 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-//import com.moseory.service.AdminServiceImpl;
+import com.moseory.service.AdminService;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
-//	@Autowired
-//	private AdminServiceImpl adminService;
+	@Autowired
+	private AdminService adminService;
 	
 	@GetMapping("/productregist")
 	public String productRegist() {
@@ -42,7 +43,7 @@ public class AdminController {
 			) {
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
-//		adminService.regist(productVO, productdetailVO);
+		adminService.regist(productVO, productdetailVO);
 		
 		return "redirect:/home";
 	}
