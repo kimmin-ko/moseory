@@ -4,8 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	
-<<<<<<< .merge_file_a05112
-=======
 	<!-- insert, update 시 NULL허용 컬럼에 NULL값 데이터 들어갈 수 있도록 설정 -->
  	<settings>
 		<setting name="cacheEnabled" value="true" />
@@ -14,8 +12,7 @@
 	
 	<typeAliases>
 		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
+		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO"/>
+		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO"/>
 	</typeAliases>
-	
-	
->>>>>>> .merge_file_a08608
 </configuration>
