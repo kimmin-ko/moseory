@@ -10,6 +10,12 @@
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
+<style>
+	.joinOk-row {
+		margin-top: 250px;
+		margin-bottom: 400px;
+	}
+</style>
 </head>
 <body>
 
@@ -17,7 +23,19 @@
 	
 	<div class="container joinForm-container" style="margin-left:22%">
 		
-		<h1>회원가입 완료</h1>
+		<div class="row joinOk-row">
+
+			<div class="col-md-10 col-md-offset-1 text-center">
+				<p class="text-center">
+					축하합니다!<br>
+					회원가입이 완료 되었습니다.
+				</p>
+
+				<button class="btn btn-default btn-sm" onclick="location.href='/index'">메인화면</button>
+				<button class="btn btn-default btn-sm" onclick="location.href='/member/login'">로그인</button>
+			</div>
+
+		</div> <!-- row end -->
 		
 		<%@ include file="../includes/footer.jsp" %>
 		

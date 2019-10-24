@@ -139,17 +139,17 @@
 	                <tr>
 	                <th>주소</th>
 	                    <td>
-	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;">
+	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;" readonly="readonly">
 	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-	                        <input type="text" name="address1" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;"><br>
+	                        <input type="text" name="address1" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;" readonly="readonly"><br>
 	                        <input type="text" name="address2" id="address2" placeholder="상세주소">
-	                        <input type="text" id="extraAddress" placeholder="참고항목">
+	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly">
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>일반전화</th>
 	                    <td>
-	                        <select name="tell1" id="tell1" style="width: 70px; height: 23px;">
+	                        <select name="tel1" id="tel1" style="width: 70px; height: 23px;">
 	                            <option>02</option>
 	                            <option>031</option>
 	                            <option>032</option>
@@ -159,8 +159,8 @@
 	                            <option>043</option>
 	                            <option>044</option>
 	                        </select> - 
-	                        <input type="text" name="tell2" id="tell2" maxlength="4" style="width: 100px;" /> - 
-	                        <input type="text" name="tell3" id="tell3" maxlength="4" style="width: 100px;" />
+	                        <input type="text" name="tel2" id="tel2" maxlength="4" style="width: 100px;" /> - 
+	                        <input type="text" name="tel3" id="tel3" maxlength="4" style="width: 100px;" />
 	                    </td>
 	                </tr>
 	                <tr>
@@ -206,7 +206,7 @@
 	        </div>
 	    </div> 
 	    <!-- 일반전화, 휴대전화, 이메일을 하나의 데이터로 만들어 request 전달 -->
-	    <input type="hidden" name="tell" id="tell" />
+	    <input type="hidden" name="tel" id="tel" />
 	    <input type="hidden" name="phone" id="phone" />
         <input type="hidden" name="email" id="email" />
         <input type="hidden" name="birth" id="birth" />
@@ -287,14 +287,24 @@
 	        var pwd_confirm_a = $("#pwd_confirm_a").val();
 	        var name = $("#name").val();
 	        
-            var tell = $("#tell1").val() + '-' + $("#tell2").val() + '-' + $("#tell3").val();
+            var tel = $("#tel1").val() + '-' + $("#tel2").val() + '-' + $("#tel3").val();
             var phone = $("#phone1").val() + '-' + $("#phone2").val() + '-' + $("#phone3").val();
 	        var email = $("#email1").val() + '@' + $("#email2").val();
-            var birth = $("#birth1").val() + '-' + $("#birth2").val() + '-' + $("#birth3").val();
 
+            var birth1 = $("#birth1").val();
+            var birth2 = $("#birth2").val();
+            var birth3 = $("#birth3").val();
+	
+            var birth = null;
+            
+            // 사용자가 생년월일을 모두 입력 했을 경우
+            if(birth1 && birth2 && birth3) {
+                birth = birth1 + '-' + birth2 + '-' + birth3;
+                console.log(birth);
+            }
 
             // 각각의 텍스트 값을 하나의 데이터로 만들어 전달
-            $("#tell").val(tell);
+            $("#tel").val(tel);
             $("#phone").val(phone);
             $("#email").val(email);
             $("#birth").val(birth);
@@ -335,6 +345,11 @@
                 alert("이용약관에 동의하세요.");
             } else if(!$("#agree2").is(":checked")) { // 개인정보 동의 언체크
             	alert("개인 정보 수집 및 이용에 동의하세요.")
+            } else if((birth1 || birth2 || birth3) && !(birth1 && birth2 && birth3)) { 
+            	// 생년월일이 한 칸이라도 채워져 있을 경우, 모두 채워져 있지 않을 경우
+           		alert("생년월일을 확인해주세요.");
+            } else { // 입력값에 문제 없을 경우 서브밋
+            	$("#joinform").submit();	
             }
 
         });
