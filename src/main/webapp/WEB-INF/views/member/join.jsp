@@ -300,7 +300,7 @@
             // 사용자가 생년월일을 모두 입력 했을 경우
             if(birth1 && birth2 && birth3) {
                 birth = birth1 + '-' + birth2 + '-' + birth3;
-                console.log(birth);
+                alert(birth);
             }
 
             // 각각의 텍스트 값을 하나의 데이터로 만들어 전달
