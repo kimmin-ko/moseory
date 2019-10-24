@@ -4,8 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	
+	<!-- insert, update 시 NULL허용 컬럼에 NULL값 데이터 들어갈 수 있도록 설정 -->
+ 	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
 	<typeAliases>
 		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
 	</typeAliases>
+	
 	
 </configuration>
