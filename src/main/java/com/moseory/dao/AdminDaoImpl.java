@@ -18,10 +18,9 @@ public class AdminDaoImpl implements AdminDao{
 	
 	@Override
 	public void regist(ProductVO productVO, ProductDetailVO productdetailVO) {
-		Map<String, Object> param = new HashMap<>();
-		param.put("productVo", productVO);
-		param.put("productdetailVo", productdetailVO);
-		sqlSession.insert("product.regist", param);
+		sqlSession.insert("product.regist", productVO);
+		sqlSession.insert("product.regist2", productdetailVO);
+		
 	}
 	
 	

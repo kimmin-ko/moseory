@@ -41,11 +41,10 @@ public class AdminController {
 			@ModelAttribute ProductVO productVO,
 			@ModelAttribute ProductDetailVO productdetailVO
 			) {
+		
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
-		adminService.regist(productVO, productdetailVO);
-		
-		return "redirect:/home";
+		return "redirect:/index";
 	}
 		
 	@RequestMapping(value="/imageUpload", method=RequestMethod.POST)
