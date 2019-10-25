@@ -340,7 +340,7 @@
             } else if(!name) { // text name empty
                 alert("이름 항목은 필수 입력값 입니다.");
                 $("#name").focus();
-            } else if(!$("#email1").val() || !$("#email2").val()) { // text email empty
+            } else if(!email1 || !email2) { // text email empty
                 alert("이메일 항목은 필수 입력값 입니다.");
                 $("#email1").focus();
             } else if(!pwd_confirm_a) { // text pwd_confirm_a empty
@@ -352,7 +352,7 @@
             } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
                 alert("공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.");
                 $("#id").focus();
-            } else if($("#password").val() != $("#password_check").val()) { // 비밀번호 값과 비밀번호 확인 값이 일치하지 않을 때
+            } else if(password != password_check) { // 비밀번호 값과 비밀번호 확인 값이 일치하지 않을 때
                 alert("비밀번호가 일치하지 않습니다.");
                 $("#password").focus();
             } else if(password.length < 4) { // 비밀번호가 4글자 보다 짧은 경우
@@ -364,6 +364,8 @@
                         !(birth1 && birth2 && birth3)) { 
            		alert("생년월일을 다시 확인해주세요.");
                 $("#birth1").focus();
+            } else if(checkBirth(birth1, birth2, birth3)) {
+            	alert("생년월일에는 숫자만 입력할 수 있습니다.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");
                 $("#tel2").focus();
@@ -384,8 +386,8 @@
     // 아이디 유효성 검사
     function checkId(id) {
         var pattern1 = /\s/; // 공백 여부
-        var pattern2 = /[A-Z]/g; // 대문자 여부
-        var pattern3 = /[[~!@#$%^&*()_+|<>?:{}]/g; // 특수문자 여부
+        var pattern2 = /[A-Z]/; // 대문자 여부
+        var pattern3 = /[[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 여부
 
         // 3가지 중 한 가지라도 포함 되어 있으면 true
         if(pattern1.test(id) || pattern2.test(id) || pattern3.test(id)) {
@@ -398,7 +400,7 @@
     // 패스워드 유효성 검사
     function checkPassword(password) {
     	var pattern1 = /\s/; // 공백 여부
-    	var pattern2 = /[[~!@#$%^&*()_+|<>?:{}]/g; // 특수문자 여부
+    	var pattern2 = /[[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 여부
     	
     	// 2가지 중 한 가지라도 포함 되어 있으면 true
     	if(pattern1.test(password) || pattern2.test(password)) {
@@ -406,6 +408,17 @@
     	} else {
     		return false;
     	}
+    }
+
+    // 생년월일 유효성 검사
+    function checkBirth(birth1, birth2, birth3) {
+        var pattern1 = /[^0-9]/;
+
+        if(pattern1.test(birth1) || pattern1.test(birth2) || pattern1.test(birth3)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // 셀렉트 박스에서 이메일 선택 시 email2에 자동 기입
