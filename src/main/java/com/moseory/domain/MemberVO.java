@@ -2,6 +2,8 @@ package com.moseory.domain;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,18 +14,22 @@ import lombok.NoArgsConstructor;
 public class MemberVO {
     
     private Integer no; // 회원 번호
+    
     private String id; // 회원 아이디
     private String password; // 회원 비밀번호
     private String pwd_confirm_q; // 비밀번호 확인 질문
     private String pwd_confirm_a; // 비밀번호 확인 답변
     private String name; // 회원 이름
-    private Integer zipcode; // 우편번호
+    private String zipcode; // 우편번호
     private String address1; // 기본주소
     private String address2; // 상세주소
     private String tel; // 일반 전화 번호
     private String phone; // 휴대폰 번호
     private String email; // 이메일
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth; // 생년월일
+    
     private Integer lev; // 회원 등급
     private Integer point; // 적립금
     private Integer total; // 총 결제 금액
@@ -38,7 +44,7 @@ public class MemberVO {
 	this.email = email;
     }
     
-    public MemberVO(String id, String password, String pwd_confirm_q, String pwd_confirm_a, String name, Integer zipcode, 
+    public MemberVO(String id, String password, String pwd_confirm_q, String pwd_confirm_a, String name, String zipcode, 
 	    String address1, String address2, String tel, String phone, String email, LocalDate birth) {
 	this.id = id;
 	this.password = password;

@@ -52,15 +52,4 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<!-- conversionService에 custom converter 등록 -->
-	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-		<property name="converters">
-			<set>
-				<bean class="com.moseory.converter.StringToLocalDateConverter" />
-			</set>
-		</property>
-	</bean>
-	
-	<mvc:annotation-driven conversion-service="conversionService" />
-	
 </beans>

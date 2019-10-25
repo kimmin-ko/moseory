@@ -37,9 +37,9 @@ public class MemberDaoTest {
     public void setUp() {
 	members = Arrays.asList(
 		new MemberVO("min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", 
-			11554, "address1", "address2", "032-674-2030", "010-3725-9670", "kimmin@naver.com", LocalDate.of(1992, 02, 16)),
+			"11554", "address1", "address2", "032-674-2030", "010-3725-9670", "kimmin@naver.com", LocalDate.of(1992, 02, 16)),
 		new MemberVO("min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", 
-			11554, "address1", "address2", "032-674-2030", "010-3725-9670", "kimmin@naver.com", null));
+			"11554", "address1", "address2", "032-674-2030", "010-3725-9670", "kimmin@naver.com", null));
     }
     
     @Test

@@ -286,21 +286,40 @@
 	        var password_check = $("#password_check").val();
 	        var pwd_confirm_a = $("#pwd_confirm_a").val();
 	        var name = $("#name").val();
-	        
-            var tel = $("#tel1").val() + '-' + $("#tel2").val() + '-' + $("#tel3").val();
-            var phone = $("#phone1").val() + '-' + $("#phone2").val() + '-' + $("#phone3").val();
-	        var email = $("#email1").val() + '@' + $("#email2").val();
+
+            var tel1 = $("#tel1").val();
+            var tel2 = $("#tel2").val();
+            var tel3 = $("#tel3").val();
+
+            var phone1 = $("#phone1").val();
+            var phone2 = $("#phone2").val();
+            var phone3 = $("#phone3").val();
+
+            var email1 = $("#email1").val();
+            var email2 = $("#email2").val();
 
             var birth1 = $("#birth1").val();
             var birth2 = $("#birth2").val();
             var birth3 = $("#birth3").val();
-	
+	        
+            var tel =  tel1 + '-' + tel2 + '-' + tel3;
+            var phone = phone1 + '-' + phone2 + '-' + phone3;
+	        var email = email1 + '@' + email2;
             var birth = null;
             
             // 사용자가 생년월일을 모두 입력 했을 경우
             if(birth1 && birth2 && birth3) {
                 birth = birth1 + '-' + birth2 + '-' + birth3;
-                alert(birth);
+            }
+
+            // 일반전화가 비어있을 경우 tel = ""
+            if(!tel2 && !tel3) {
+                tel = "";
+            }
+
+            // 일반전화가 비어있을 경우 phone = ""
+            if(!phone2 && !phone3) {
+                phone = "";
             }
 
             // 각각의 텍스트 값을 하나의 데이터로 만들어 전달
@@ -341,13 +360,20 @@
             } else if(checkPassword(password)) { // 비밀번호 유효성 검사에 문제가 있을 경우
             	alert("공백/특수문자가 포함되어 있는 비밀번호는 사용할 수 없습니다.");
             	$("#password").focus();
+            } else if((birth1 || birth2 || birth3) && // 생년월일이 한 칸이라도 채워져 있을 경우, 모두 채워져 있지 않을 경우
+                        !(birth1 && birth2 && birth3)) { 
+           		alert("생년월일을 다시 확인해주세요.");
+                $("#birth1").focus();
+            } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
+                alert("일반전화를 다시 확인해주세요.");
+                $("#tel2").focus();
+            } else if((phone2 || phone3) && !(phone2 && phone3)) { // 휴대전화 체크
+                alert("휴대전화를 다시 확인해주세요.");
+                $("#phone2").focus();
             } else if(!$("#agree1").is(":checked")) { // 이용 약관 동의 언체크
                 alert("이용약관에 동의하세요.");
             } else if(!$("#agree2").is(":checked")) { // 개인정보 동의 언체크
             	alert("개인 정보 수집 및 이용에 동의하세요.")
-            } else if((birth1 || birth2 || birth3) && !(birth1 && birth2 && birth3)) { 
-            	// 생년월일이 한 칸이라도 채워져 있을 경우, 모두 채워져 있지 않을 경우
-           		alert("생년월일을 확인해주세요.");
             } else { // 입력값에 문제 없을 경우 서브밋
             	$("#joinform").submit();	
             }
