@@ -6,6 +6,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,6 +61,19 @@ public class MemberController {
 	// 회원 가입 응답 페이지에서 새로고침 시 데이터 등록이 중복되지 않도록 redirect를 이용
 	// 시스템(session, DB)에 변화가 생기지 않는 단순조회(리스트, 검색)의 경우 forward 이용
 	return "redirect:joinOk";
+    }
+    
+    @GetMapping("/checkDuplId/{id}")
+    @ResponseBody
+    public String checkDuplId(@PathVariable("id") String id) {
+	
+	int result = memberService.isMember(id);
+	
+	if(result > 0) { // 중복인 경우
+	    return "duplicaiton";
+	} else { // 중복이 아닌 경우
+	    return "";
+	}
     }
     
     @GetMapping("/joinOk")

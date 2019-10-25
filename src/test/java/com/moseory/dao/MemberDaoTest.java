@@ -60,6 +60,14 @@ public class MemberDaoTest {
 	dao.getMember("min00");
     }
     
+    @Test
+    public void testIsMember() {
+	
+	dao.insertMember(members.get(0));
+	
+	assertThat(dao.getCountMember(members.get(0).getId()), is(1));
+    }
+    
 }
 
 

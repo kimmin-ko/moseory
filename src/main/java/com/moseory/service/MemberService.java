@@ -10,4 +10,7 @@ public interface MemberService {
     // 회원 모두 삭제
     public void deleteAll();
     
+    // 회원 아이디 여부
+    public int isMember(String id);
+    
 }

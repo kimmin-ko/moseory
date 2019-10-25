@@ -247,18 +247,53 @@
 </div> <!-- container end -->
 
 <script type="text/javascript">
+
+	// 아이디 중복 확인
+	var checkDuplService = (function(){
+		
+		function check(id, callback) {
+			
+            $.get(
+                "/member/checkDuplId/" + id,
+                function(result) {
+                    if(callback) {
+                        callback(result);
+                    }
+                }
+            ); // $.get
+
+		} // check
+
+        return {check : check};
+    })();
+
 	$(document).ready(function() {
+
+        // submit 시에도 사용하기 위해 전역 변수로 선언
+        var checkDupl = "";
 
         // 아이디 포커스 아웃될 때
         $("#id").blur(function() {
             var id = $("#id").val();
             
+            
+            // 아이디 중복 확인
+            checkDuplService.check(id, function(data){
+                checkDupl = data;
+                console.log("checkDupl : " + checkDupl);
+
+                if(checkDupl != "") { // 아이디가 중복일 경우
+                    $("#id_check_text").text(id + '는 이미 사용중인 아이디입니다.');
+                } else if(checkDupl == "") { // 중복이 아닌 경우
+                    $("#id_check_text").text(id + "는 사용 가능한 아이디입니다.");
+                }
+
+            });
+            
             if(id.length < 4) { // 아이디가 4글자 보다 짧을 경우
                 $("#id_check_text").text('아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.');
             } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
                 $("#id_check_text").text('공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.');
-            } else {
-                $("#id_check_text").text('');
             }
 
         });
@@ -351,6 +386,9 @@
                 $("#id").focus();
             } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
                 alert("공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.");
+                $("#id").focus();
+            } else if(checkDupl != "") {
+                alert("이미 사용중인 아이디입니다.");
                 $("#id").focus();
             } else if(password != password_check) { // 비밀번호 값과 비밀번호 확인 값이 일치하지 않을 때
                 alert("비밀번호가 일치하지 않습니다.");

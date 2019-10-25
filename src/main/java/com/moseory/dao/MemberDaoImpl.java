@@ -40,5 +40,10 @@ public class MemberDaoImpl implements MemberDao {
     public void deleteMember(String id) {
 	sqlSession.delete(namespace+".deleteMember", id);
     }
+
+    @Override
+    public int getCountMember(String id) {
+	return sqlSession.selectOne(namespace+".getCountMember", id);
+    }
         
 }
