@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -9,8 +9,8 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/footer.css">
+
+
 <link rel="stylesheet" href="/css/memberModify.css">
 </head>
 <body>
@@ -97,7 +97,7 @@
 	            <table class="table table-bordered">
 	                <tr>
 	                    <th>아이디</th>
-	                    <td><input type="text" name="id" id="id" maxlength="16" disabled /></td>
+	                    <td><input type="text" name="id" id="id" maxlength="16" value='<c:out value="${member.id }" />' disabled /></td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 <img src="/images/ico_required.gif"></th>
@@ -111,56 +111,65 @@
 	                    <th>비밀번호 확인 질문 <img src="/images/ico_required.gif"></th>
 	                    <td>
 	                        <select name="pwd_confirm_q">
-	                            <option value="q1">기억에 남는 추억의 장소는?</option>
-	                            <option value="q2">자신의 인생 좌우명은?</option>
-	                            <option value="q3">자신의 보물 제1호는?</option>
-	                            <option value="q4">가장 기억에 남는 선생님은?</option>
-	                            <option value="q5">타인이 모르는 자신만의 신체 비밀이 있다면?</option>
-	                            <option value="q6">추억하고 싶은 날짜가 있다면?</option>
-	                            <option value="q7">받았던 선물 중 기억에 남는 독특한 선물은?</option>
-	                            <option value="q8">유년시절 가장 생각나는 친구 이름은?</option>
+	                            <option value="q1" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q1' ? 'selected' : '' }" />>기억에 남는 추억의 장소는?</option>
+	                            <option value="q2" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q2' ? 'selected' : '' }" />>자신의 인생 좌우명은?</option>
+	                            <option value="q3" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q3' ? 'selected' : '' }" />>자신의 보물 제1호는?</option>
+	                            <option value="q4" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q4' ? 'selected' : '' }" />>가장 기억에 남는 선생님은?</option>
+	                            <option value="q5" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q5' ? 'selected' : '' }" />>타인이 모르는 자신만의 신체 비밀이 있다면?</option>
+	                            <option value="q6" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q6' ? 'selected' : '' }" />>추억하고 싶은 날짜가 있다면?</option>
+	                            <option value="q7" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q7' ? 'selected' : '' }" />>받았던 선물 중 기억에 남는 독특한 선물은?</option>
+	                            <option value="q8" 
+	                            	<c:out value="${member.pwd_confirm_q eq 'q8' ? 'selected' : '' }" />>유년시절 가장 생각나는 친구 이름은?</option>
 	                        </select>
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 확인 답변 <img src="/images/ico_required.gif"></th>
-	                    <td><input type="text" name="pwd_confirm_a" id="pwd_confirm_a" /></td>
+	                    <td><input type="text" name="pwd_confirm_a" id="pwd_confirm_a" value='<c:out value="${member.pwd_confirm_a }" />' /></td>
 	                </tr>
 	                <tr>
 	                    <th>이름 <img src="/images/ico_required.gif"></th>
-	                    <td><input type="text" name="name" id="name" /> </td>
+	                    <td><input type="text" name="name" id="name" value='<c:out value="${member.name }" />' /></td>
 	                </tr>
 	                <tr>
 	                <th>주소</th>
 	                    <td>
-	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;" readonly="readonly">
-	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-	                        <input type="text" name="address1" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;" readonly="readonly"><br>
-	                        <input type="text" name="address2" id="address2" placeholder="상세주소">
-	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly">
+	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" value='<c:out value="${member.zipcode }" />' readonly="readonly" />
+	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기" /><br>
+	                        <input type="text" name="address1" id="address1" placeholder="주소" value='${member.address1 }' readonly="readonly" /><br>
+	                        <input type="text" name="address2" id="address2" placeholder="상세주소" value='${member.address2 }' />
+	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly" />
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>일반전화</th>
 	                    <td>
-	                        <select name="tel1" id="tel1" style="width: 70px; height: 23px;">
-	                            <option>02</option>
-	                            <option>031</option>
-	                            <option>032</option>
-	                            <option>033</option>
-	                            <option>041</option>
-	                            <option>042</option>
-	                            <option>043</option>
-	                            <option>044</option>
+	                    	<c:set var="tel" value="${fn:split(member.tel, '-') }" />
+	                        <select name="tel1" id="tel1">
+	                            <option <c:out value="${tel[0] eq '02' ? 'selected' : '' }" />>02</option>
+	                            <option <c:out value="${tel[0] eq '031' ? 'selected' : '' }" />>031</option>
+	                            <option <c:out value="${tel[0] eq '032' ? 'selected' : '' }" />>032</option>
+	                            <option <c:out value="${tel[0] eq '033' ? 'selected' : '' }" />>033</option>
+	                            <option <c:out value="${tel[0] eq '041' ? 'selected' : '' }" />>041</option>
+	                            <option <c:out value="${tel[0] eq '042' ? 'selected' : '' }" />>042</option>
+	                            <option <c:out value="${tel[0] eq '043' ? 'selected' : '' }" />>043</option>
+	                            <option <c:out value="${tel[0] eq '044' ? 'selected' : '' }" />>044</option>
 	                        </select> - 
-	                        <input type="text" name="tel2" id="tel2" maxlength="4" style="width: 100px;" /> - 
-	                        <input type="text" name="tel3" id="tel3" maxlength="4" style="width: 100px;" />
+	                        <input type="text" name="tel2" id="tel2" maxlength="4" value='<c:out value="${tel[1] }" />' /> - 
+	                        <input type="text" name="tel3" id="tel3" maxlength="4" value='<c:out value="${tel[2] }" />' />
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>휴대전화</th>
 	                    <td>
-	                        <select name="phone1" id="phone1" style="width: 70px; height: 23px;">
+	                        <select name="phone1" id="phone1">
 	                            <option>010</option>
 	                            <option>011</option>
 	                            <option>016</option>
@@ -168,8 +177,8 @@
 	                            <option>018</option>
 	                            <option>019</option>
 	                        </select> - 
-	                        <input type="text" name="phone2" id="phone2" maxlength="4" style="width: 100px;" /> - 
-	                        <input type="text" name="phone3" id="phone3" maxlength="4" style="width: 100px;" />
+	                        <input type="text" name="phone2" id="phone2" maxlength="4" /> - 
+	                        <input type="text" name="phone3" id="phone3" maxlength="4" />
 	                    </td>
 	                </tr>
 	                <tr>

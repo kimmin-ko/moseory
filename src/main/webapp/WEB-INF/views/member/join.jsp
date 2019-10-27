@@ -8,8 +8,6 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/joinForm.css">
 </head>
 <body>
@@ -143,7 +141,7 @@
 	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
 	                        <input type="text" name="address1" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;" readonly="readonly"><br>
 	                        <input type="text" name="address2" id="address2" placeholder="상세주소">
-	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly">
+	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly" />
 	                    </td>
 	                </tr>
 	                <tr>

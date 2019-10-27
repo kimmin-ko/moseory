@@ -8,21 +8,10 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/sidebar.css">
-    <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body>
     
-<!-- jquery js -->
-<script
-src="https://code.jquery.com/jquery-3.4.1.min.js"
-integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-crossorigin="anonymous"></script>
-
-<!-- bootstrap js -->
-<script src="js/bootstrap.js"></script>
-
 <%@ include file="../includes/sidebar.jsp" %>
 
 <div class="container" style="margin-left:22%">
