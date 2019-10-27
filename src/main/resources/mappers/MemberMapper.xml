@@ -6,8 +6,10 @@
 <mapper namespace="com.moseory.mapper.MemberMapper">
 	
 	<insert id="insertMember">
-	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, tel, phone, email, birth)
-	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, #{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
+	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, 
+	zipcode, address1, address2, tel, phone, email, birth)
+	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
+	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
 	</insert>
 	
 	<delete id="deleteAll">

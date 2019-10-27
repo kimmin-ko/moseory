@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
-<link rel="stylesheet" href="/css/joinForm.css">
+<link rel="stylesheet" href="/css/memberModify.css">
 </head>
 <body>
 
@@ -73,16 +74,9 @@
     <!-- Join Form Start -->
     <div class="row joinLabel-row" style="margin-top: 80px;">
         <div class="col-md-10 col-md-offset-1">
-            <p>MEMBER JOIN</p>
-        </div>
-    </div>
-
-    <div class="row" style="margin-bottom: 50px; margin-top: 30px;">
-        <div class="col-md-10 col-md-offset-1 eSite-login-form line-div">
-            <div class="col-md-3 col-md-offset-3 high-row"><img src="/images/btn_facebook_login.gif"></div>
-            <div class="col-md-3 high-row"><img src="/images/btn_google_login.gif"></div>
-            <div class="col-md-3 col-md-offset-3 low-row"><img src="/images/btn_kakao_login.gif"></div>
-            <div class="col-md-3 low-row"><img src="/images/btn_naver_login.gif"></div>
+            <p>MEMBER EDIT</p>
+            
+			<%@ include file="tierExplain.jsp" %>
         </div>
     </div>
 
@@ -98,12 +92,12 @@
     </div>
 	
 	<form action="/member/join" method="post" id="joinform">
-	    <div class="row" style="margin-bottom: 50px;">
+	    <div class="row" style="margin-bottom: 30px;">
 	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
 	            <table class="table table-bordered">
 	                <tr>
-	                    <th>아이디 <img src="/images/ico_required.gif"></th>
-	                    <td><input type="text" name="id" id="id" maxlength="16" /><span id="id_check_text"></span> (영문소문자/숫자, 4~16자)</td>
+	                    <th>아이디</th>
+	                    <td><input type="text" name="id" id="id" maxlength="16" disabled /></td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 <img src="/images/ico_required.gif"></th>
@@ -212,32 +206,15 @@
         <input type="hidden" name="birth" id="birth" />
     </form>
 
-    <div class="row" style="margin-bottom: 50px;">
-        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-            <span style="font-weight: bold;">이용약관 동의</span>
-        </div>
-        <div class="col-md-10 col-md-offset-1 use-agreement">
-        	<%@ include file="../includes/use_agreement_1.jsp" %>
-        </div>
-        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-         	이용약관에 동의하십니까? <input type="checkbox" name="agreement" id="agree1">동의함
-        </div>
-    </div>
-
 	<div class="row" style="margin-bottom: 200px;">
-		<div class="col-md-10 col-md-offset-1" style="padding: 0;">
-			<span style="font-weight: bold;">개인정보 수집 및 이용 동의</span>
-		</div>
-		<div class="col-md-10 col-md-offset-1 use-agreement">
-			<%@ include file="../includes/use_agreement_2.jsp" %>
-		</div>
-		<div class="col-md-10 col-md-offset-1" style="padding: 0; margin-bottom: 30px;">
-			개인정보 수집 및 이용에 동의하십니까?  <input type="checkbox" name="agreement" id="agree2">동의함
-        </div>
         <div class="col-md-10 col-md-offset-1" style="text-align: center;">
-			<button type="submit" class="btn btn-default" id="submitBtn"
-				style="background-color: #404549; color: white;">회원가입</button>
-			<button type="button" class="btn btn-default" onclick="location.href='/index'">회원가입 취소</button>
+			<button type="submit" class="btn btn-default btn-sm" id="submitBtn"
+				style="background-color: #404549; color: white;">회원정보수정</button>
+			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/member.myPage'">취소</button>
+		</div>
+		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
+			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
+				onclick="location.href='/member/withdrawal'">회원탈퇴</button>
 	    </div>
 	</div>
     <!-- Join Form End -->
@@ -247,56 +224,7 @@
 </div> <!-- container end -->
 
 <script type="text/javascript">
-
-	// 아이디 중복 확인
-	var checkDuplService = (function(){
-		
-		function check(id, callback) {
-			
-            $.get(
-                "/member/checkDuplId/" + id,
-                function(result) {
-                    if(callback) {
-                        callback(result);
-                    }
-                }
-            ); // $.get
-
-		} // check
-
-        return {check : check};
-    })();
-
 	$(document).ready(function() {
-
-        // submit 시에도 사용하기 위해 전역 변수로 선언
-        var checkDupl = "";
-
-        // 아이디 포커스 아웃될 때
-        $("#id").blur(function() {
-            var id = $("#id").val();
-            
-            
-            // 아이디 중복 확인
-            checkDuplService.check(id, function(data){
-                checkDupl = data;
-                console.log("checkDupl : " + checkDupl);
-
-                if(checkDupl != "") { // 아이디가 중복일 경우
-                    $("#id_check_text").text(id + '는 이미 사용중인 아이디입니다.');
-                } else if(checkDupl == "") { // 중복이 아닌 경우
-                    $("#id_check_text").text(id + "는 사용 가능한 아이디입니다.");
-                }
-
-            });
-            
-            if(id.length < 4) { // 아이디가 4글자 보다 짧을 경우
-                $("#id_check_text").text('아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.');
-            } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
-                $("#id_check_text").text('공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.');
-            }
-
-        });
 
         // 비밀번호, 비밀번호 확인 포커스 아웃될 때
         $("#password, #password_check").blur(function() {
@@ -363,10 +291,7 @@
             $("#email").val(email);
             $("#birth").val(birth);
 
-            if(!id) { // text id empty
-                alert("아이디 항목은 필수 입력값 입니다.");
-                $("#id").focus();
-            } else if(!password) { // text password empty
+            if(!password) { // text password empty
                 alert("비밀번호 항목은 필수 입력값 입니다.");
                 $("#password").focus();
             } else if(!password_check) { // text password_check empty
@@ -386,9 +311,6 @@
                 $("#id").focus();
             } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
                 alert("공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.");
-                $("#id").focus();
-            } else if(checkDupl != "") {
-                alert("이미 사용중인 아이디입니다.");
                 $("#id").focus();
             } else if(password != password_check) { // 비밀번호 값과 비밀번호 확인 값이 일치하지 않을 때
                 alert("비밀번호가 일치하지 않습니다.");
@@ -410,10 +332,6 @@
             } else if((phone2 || phone3) && !(phone2 && phone3)) { // 휴대전화 체크
                 alert("휴대전화를 다시 확인해주세요.");
                 $("#phone2").focus();
-            } else if(!$("#agree1").is(":checked")) { // 이용 약관 동의 언체크
-                alert("이용약관에 동의하세요.");
-            } else if(!$("#agree2").is(":checked")) { // 개인정보 동의 언체크
-            	alert("개인 정보 수집 및 이용에 동의하세요.")
             } else { // 입력값에 문제 없을 경우 서브밋
             	$("#joinform").submit();
             }
@@ -421,20 +339,6 @@
         });
 	});
 
-    // 아이디 유효성 검사
-    function checkId(id) {
-        var pattern1 = /\s/; // 공백 여부
-        var pattern2 = /[A-Z]/; // 대문자 여부
-        var pattern3 = /[[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 여부
-
-        // 3가지 중 한 가지라도 포함 되어 있으면 true
-        if(pattern1.test(id) || pattern2.test(id) || pattern3.test(id)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
     // 패스워드 유효성 검사
     function checkPassword(password) {
     	var pattern1 = /\s/; // 공백 여부
@@ -464,7 +368,6 @@
         var select_email = $("#select_email").val();
         $("#email2").val(select_email);
     }
-    
 </script>
 
 </body>

@@ -34,7 +34,7 @@
 			<a href="/cart/cartList">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
-			<a href="#">MYPAGE</a>
+			<a href="/member/myPage">MY PAGE</a>
 		</div>
 	</div>
 
