@@ -16,10 +16,10 @@
 
 <div class="container" style="margin-left:22%">
 
-    <!-- Mypage Start -->
+    <!-- My Page Start -->
     <div class="row mypage">
 
-		 <!-- Mypage-header Start -->
+		 <!-- My Page-header Start -->
         <div class="col-md-10 col-md-offset-1 mypage-header text-center">
             <p>MY PAGE</p>
 

@@ -98,7 +98,7 @@
 	<form action="/member/join" method="post" id="joinform">
 	    <div class="row" style="margin-bottom: 50px;">
 	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-	            <table class="table table-bordered">
+	            <table class="table table-bordered join-table">
 	                <tr>
 	                    <th>아이디 <img src="/images/ico_required.gif"></th>
 	                    <td><input type="text" name="id" id="id" maxlength="16" /><span id="id_check_text"></span> (영문소문자/숫자, 4~16자)</td>
@@ -135,11 +135,11 @@
 	                    <td><input type="text" name="name" id="name" /> </td>
 	                </tr>
 	                <tr>
-	                <th>주소</th>
+	                	<th>주소</th>
 	                    <td>
 	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;" readonly="readonly">
 	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-	                        <input type="text" name="address1" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;" readonly="readonly"><br>
+	                        <input type="text" name="address1" id="address1" style="width: 196px; margin-bottom: 5px;" placeholder="주소" readonly="readonly"><br>
 	                        <input type="text" name="address2" id="address2" placeholder="상세주소">
 	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly" />
 	                    </td>

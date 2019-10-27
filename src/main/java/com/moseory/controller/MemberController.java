@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
 
@@ -96,7 +97,12 @@ public class MemberController {
     @GetMapping("/modify")
     public void modify(@RequestParam String id, Model model) {
 	MemberVO member = memberService.readMember(id);
+	
+	String memberJson = new Gson().toJson(member);
+	
 	model.addAttribute("member", member);
+	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
+	model.addAttribute("memberJson", memberJson);
     }
     
     // 회원 탈퇴

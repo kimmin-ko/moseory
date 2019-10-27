@@ -30,7 +30,7 @@
     width: 65px;
 }
 
-#tier, #name, #saving, #discount {
+#tier, #memName, #saving, #discount {
     font-weight: bold;
     color: #4387C2;
 }

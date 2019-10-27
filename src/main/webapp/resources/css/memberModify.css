@@ -46,22 +46,3 @@ table th {
     margin-left: 15px;
     width: 15%;
 }
-
-#zipcode {
-    width: 100px;
-    margin-bottom: 5px;
-}
-
-#address1 {
-    width: 196px;
-    margin-bottom: 5px;
-}
-
-#tel1, #phone1 {
-    width: 170px;
-    height: 23px;
-}
-
-#tel2, #tel3, #phone2, #phone3 {
-    width: 100px;
-}

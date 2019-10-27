@@ -9,8 +9,6 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-
-
 <link rel="stylesheet" href="/css/memberModify.css">
 </head>
 <body>
@@ -141,9 +139,11 @@
 	                <tr>
 	                <th>주소</th>
 	                    <td>
-	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" value='<c:out value="${member.zipcode }" />' readonly="readonly" />
+	                        <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" value='<c:out value="${member.zipcode }" />' 
+	                        	 style="width: 100px; margin-bottom: 5px;" readonly="readonly" />
 	                        <input type="button" onclick="openZipSearch()" value="우편번호 찾기" /><br>
-	                        <input type="text" name="address1" id="address1" placeholder="주소" value='${member.address1 }' readonly="readonly" /><br>
+	                        <input type="text" name="address1" id="address1" value='${member.address1 }' readonly="readonly"
+	                        	 style="width: 196px; margin-bottom: 5px;" placeholder="주소"  /><br>
 	                        <input type="text" name="address2" id="address2" placeholder="상세주소" value='${member.address2 }' />
 	                        <input type="text" id="extraAddress" placeholder="참고항목" readonly="readonly" />
 	                    </td>
@@ -152,7 +152,7 @@
 	                    <th>일반전화</th>
 	                    <td>
 	                    	<c:set var="tel" value="${fn:split(member.tel, '-') }" />
-	                        <select name="tel1" id="tel1">
+	                        <select name="tel1" id="tel1" style="width: 70px; height: 23px;">
 	                            <option <c:out value="${tel[0] eq '02' ? 'selected' : '' }" />>02</option>
 	                            <option <c:out value="${tel[0] eq '031' ? 'selected' : '' }" />>031</option>
 	                            <option <c:out value="${tel[0] eq '032' ? 'selected' : '' }" />>032</option>
@@ -162,30 +162,32 @@
 	                            <option <c:out value="${tel[0] eq '043' ? 'selected' : '' }" />>043</option>
 	                            <option <c:out value="${tel[0] eq '044' ? 'selected' : '' }" />>044</option>
 	                        </select> - 
-	                        <input type="text" name="tel2" id="tel2" maxlength="4" value='<c:out value="${tel[1] }" />' /> - 
-	                        <input type="text" name="tel3" id="tel3" maxlength="4" value='<c:out value="${tel[2] }" />' />
+	                        <input type="text" name="tel2" id="tel2" maxlength="4" value='<c:out value="${tel[1] }" />' style="width: 100px;" /> - 
+	                        <input type="text" name="tel3" id="tel3" maxlength="4" value='<c:out value="${tel[2] }" />' style="width: 100px;" />
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>휴대전화</th>
 	                    <td>
-	                        <select name="phone1" id="phone1">
-	                            <option>010</option>
-	                            <option>011</option>
-	                            <option>016</option>
-	                            <option>017</option>
-	                            <option>018</option>
-	                            <option>019</option>
+	                    	<c:set var="phone" value="${fn:split(member.phone, '-') }" />
+	                        <select name="phone1" id="phone1" style="width: 70px; height: 23px;" >
+	                            <option <c:out value="${phone[0] eq '010' ? 'selected' : '' }" />>010</option>
+	                            <option <c:out value="${phone[0] eq '011' ? 'selected' : '' }" />>011</option>
+	                            <option <c:out value="${phone[0] eq '016' ? 'selected' : '' }" />>016</option>
+	                            <option <c:out value="${phone[0] eq '017' ? 'selected' : '' }" />>017</option>
+	                            <option <c:out value="${phone[0] eq '018' ? 'selected' : '' }" />>018</option>
+	                            <option <c:out value="${phone[0] eq '019' ? 'selected' : '' }" />>019</option>
 	                        </select> - 
-	                        <input type="text" name="phone2" id="phone2" maxlength="4" /> - 
-	                        <input type="text" name="phone3" id="phone3" maxlength="4" />
+	                        <input type="text" name="phone2" id="phone2" maxlength="4" value='<c:out value="${phone[1] }" />' style="width: 100px;" /> - 
+	                        <input type="text" name="phone3" id="phone3" maxlength="4" value='<c:out value="${phone[2] }" />' style="width: 100px;" />
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <th>이메일 <img src="/images/ico_required.gif"></th>
 	                    <td>
-	                        <input type="text" name="email1" id="email1" /> @ 
-	                        <input type="text" name="email2" id="email2" />
+	                   	 <c:set var="email" value="${fn:split(member.email, '@') }" />
+	                        <input type="text" name="email1" id="email1" value='<c:out value="${email[0] }" />' /> @ 
+	                        <input type="text" name="email2" id="email2" value='<c:out value="${email[1] }" />' />
 	                        <select id="select_email" style="height: 23px;" onchange="changeEmail()">
 	                            <option value="">-- 직접 입력 --</option>
 	                            <option>naver.com</option>
@@ -200,9 +202,10 @@
 	                <tr>
 	                    <th>생년월일</th>
 	                    <td>
-                            <input type="text" name="birth1" id="birth1" maxlength="4" style="width: 80px;" />년
-	                        <input type="text" name="birth2" id="birth2" maxlength="2" style="width: 50px;" />월
-	                        <input type="text" name="birth3" id="birth3" maxlength="2" style="width: 50px;" />일
+	                    	<c:set var="birth" value="${fn:split(member.birth, '-') }" />
+                            <input type="text" name="birth1" id="birth1" maxlength="4" value='<c:out value="${birth[0] }" />' style="width: 80px;" />년
+	                        <input type="text" name="birth2" id="birth2" maxlength="2" value='<c:out value="${birth[1] }" />' style="width: 50px;" />월
+	                        <input type="text" name="birth3" id="birth3" maxlength="2" value='<c:out value="${birth[2] }" />' style="width: 50px;" />일
 	                    </td>
 	                </tr>
 	            </table>
@@ -219,7 +222,7 @@
         <div class="col-md-10 col-md-offset-1" style="text-align: center;">
 			<button type="submit" class="btn btn-default btn-sm" id="submitBtn"
 				style="background-color: #404549; color: white;">회원정보수정</button>
-			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/member.myPage'">취소</button>
+			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/member/myPage'">취소</button>
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
 			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
