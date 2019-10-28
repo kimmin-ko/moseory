@@ -97,7 +97,22 @@
 	    document.getElementById("field").appendChild(div);
 	}
 	
+	function size_check(){
+		
+	}
+	
 </script>
+<script>
+	/* $(document).ready(function(){
+/* 		console.log($('#size:checked'));*/	
+ 
+		$("#size:checked").each(function() {
+			
+			 this.checked = true;
+		});
+	 
+</script>
+
 <!-- <script>
 	$(document).ready(function(){
 		var time = new Date();

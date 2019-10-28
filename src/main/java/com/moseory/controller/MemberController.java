@@ -104,7 +104,7 @@ public class MemberController {
 	MemberVO member = memberService.readMember(id);
 	
 	String memberJson = new Gson().toJson(member);
-	Arrays.stream(Level.values()).map(LevelEnumMapperValue::new)
+//	Arrays.stream(Level.values()).map(LevelEnumMapperValue::new)
 	model.addAttribute("member", member);
 	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
 	model.addAttribute("memberJson", memberJson);
