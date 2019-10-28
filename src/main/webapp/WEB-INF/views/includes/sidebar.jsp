@@ -47,37 +47,37 @@
 	
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=1">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">TOP</a>&nbsp;<small class="cate-sm">상의</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=2">TOP</a>&nbsp;<small class="cate-sm">상의</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=3">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=4">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">BAG</a>&nbsp;<small class="cate-sm">가방</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=5">BAG</a>&nbsp;<small class="cate-sm">가방</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">SHOES</a>&nbsp;<small class="cate-sm">신발</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=6">SHOES</a>&nbsp;<small class="cate-sm">신발</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">ACC</a>&nbsp;<small class="cate-sm">액세서리</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=7">ACC</a>&nbsp;<small class="cate-sm">액세서리</small>
 		</div>
 	</div>
 	<div class="row ma-bo-50">
