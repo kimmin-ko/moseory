@@ -19,7 +19,7 @@
 		<result column="phone" property="phone" />
 		<result column="email" property="email" />
 		<result column="birth" property="birth" />
-		<result column="lev" property="lev" typeHandler="LevelEnumTypeHandler" />
+		<result column="lev" property="level" typeHandler="LevelEnumTypeHandler" />
 		<result column="point" property="point" />
 		<result column="total" property="total" />
 		<result column="join_date" property="join_date" />
@@ -27,9 +27,9 @@
 	
 	<insert id="insertMember">
 	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, 
-	zipcode, address1, address2, tel, phone, email, birth, lev, point, total, join_date)
+	zipcode, address1, address2, tel, phone, email, birth, lev)
 	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
-	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth}, #{lev}, #{point}, #{total}, #{join_date})
+	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth}, #{level})
 	</insert>
 	
 	<delete id="deleteAll">

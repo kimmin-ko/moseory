@@ -9,11 +9,13 @@
 					
 					$("#memName").text(memberJson.name);
 					
-					$("#tier").text(memberJson.grade);
+					$("#tier").text(memberJson.level.grade);
 					
-					$("#saving").text(memberJson.saving + '%');
+					$("#saving").text(memberJson.level.saving + '%');
 					
-					$("#discount").text(memberJson.discount + '%');
+					$("#discount").text(memberJson.level.discount + '%');
+					
+					console.log(memberJson);
 				});
 			</script>
 		  

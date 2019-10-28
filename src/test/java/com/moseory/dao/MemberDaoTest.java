@@ -76,7 +76,7 @@ public class MemberDaoTest {
 	assertEquals(member1.getPhone(), vo.getPhone());
 	assertEquals(member1.getEmail(), vo.getEmail());
 	assertEquals(member1.getBirth(), vo.getBirth());
-	assertEquals(member1.getLev(), vo.getLev());
+	assertEquals(member1.getLevel(), vo.getLevel());
 	assertEquals(member1.getPoint(), vo.getPoint());
 	assertEquals(member1.getTotal(), vo.getTotal());
 	assertEquals(member1.getJoin_date(), vo.getJoin_date());

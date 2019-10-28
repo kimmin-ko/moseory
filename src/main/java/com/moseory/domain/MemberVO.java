@@ -30,7 +30,7 @@ public class MemberVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth; // 생년월일
     
-    private Level lev; // 회원 등급
+    private Level level; // 회원 등급
     private Integer point; // 적립금
     private Integer total; // 총 결제 금액
     private LocalDate join_date; // 가입일

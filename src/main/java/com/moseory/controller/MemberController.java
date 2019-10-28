@@ -1,5 +1,9 @@
 package com.moseory.controller;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
 
@@ -99,7 +104,7 @@ public class MemberController {
 	MemberVO member = memberService.readMember(id);
 	
 	String memberJson = new Gson().toJson(member);
-	
+	Arrays.stream(Level.values()).map(LevelEnumMapperValue::new)
 	model.addAttribute("member", member);
 	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
 	model.addAttribute("memberJson", memberJson);
