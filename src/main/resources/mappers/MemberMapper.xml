@@ -6,13 +6,19 @@
 <mapper namespace="com.moseory.mapper.MemberMapper">
 	
 	<insert id="insertMember">
-	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, tel, phone, email, birth)
-	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, #{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
+	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, 
+	zipcode, address1, address2, tel, phone, email, birth)
+	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
+	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
 	</insert>
 	
 	<delete id="deleteAll">
 	delete from tbl_member
 	</delete>
+	
+	<select id="getCountMember" resultType="int">
+	select count(*) from tbl_member where id = #{id}
+	</select>
 	
 	<select id="getCount" resultType="int">
 	select count(*) from tbl_member

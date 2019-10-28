@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
+
+<link rel="stylesheet" href="/css/sidebar.css">
+
 <!-- jquery js -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -9,8 +11,7 @@
 <script src="/js/bootstrap.js"></script>
 
 <!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block container"
-	style="width: 22%">
+<div class="w3-sidebar w3-light-grey w3-bar-block container" style="width: 22%">
 
 	<div class="row brand-row">
 		<div class="col-md-10 col-md-offset-2">
@@ -34,7 +35,7 @@
 			<a href="/cart/cartList">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
-			<a href="#">MYPAGE</a>
+			<a href="/member/myPage">MY PAGE</a>
 		</div>
 	</div>
 

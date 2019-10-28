@@ -14,4 +14,6 @@ public interface MemberDao {
     
     public MemberVO getMember(String id);
     
+    public int getCountMember(String id);
+    
 }

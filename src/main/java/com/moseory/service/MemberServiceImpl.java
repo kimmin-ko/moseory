@@ -26,6 +26,17 @@ public class MemberServiceImpl implements MemberService {
 	memberDao.deleteAll();
     }
 
+    // 회원 아이디 여부
+    @Override
+    public int isMember(String id) {
+	return memberDao.getCountMember(id);
+    }
+
+    @Override
+    public MemberVO readMember(String id) {
+	return memberDao.getMember(id);
+    }
+
 }
 
 
