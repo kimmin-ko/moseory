@@ -30,26 +30,10 @@ public class MemberVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth; // 생년월일
     
-    private Integer lev; // 회원 등급
+    private Level lev; // 회원 등급
     private Integer point; // 적립금
     private Integer total; // 총 결제 금액
     private LocalDate join_date; // 가입일
-    
-    public MemberVO(String id, String password, String pwd_confirm_q, String pwd_confirm_a, String name, String zipcode, 
-	    String address1, String address2, String tel, String phone, String email, LocalDate birth) {
-	this.id = id;
-	this.password = password;
-	this.pwd_confirm_q = pwd_confirm_q;
-	this.pwd_confirm_a = pwd_confirm_a;
-	this.name = name;
-	this.zipcode = zipcode;
-	this.address1 = address1;
-	this.address2 = address2;
-	this.tel = tel;
-	this.phone = phone;
-	this.email = email;
-	this.birth = birth;
-    }
     
 }
 

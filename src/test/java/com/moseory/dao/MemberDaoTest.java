@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
 
 import lombok.Setter;
@@ -35,15 +36,14 @@ public class MemberDaoTest {
     @Before
     public void setUp() {
 	member1 = new MemberVO(null, "min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
-		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), 1, 0, 0, LocalDate.now());
+		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.SILVER, 0, 0, LocalDate.now());
 	member2 = new MemberVO(null, "min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
-		null, "010-3725-9670", "kimmin@daum.net", null, 1, 0, 0, LocalDate.now());
+		null, "010-3725-9670", "kimmin@daum.net", null, Level.GOLD, 0, 0, LocalDate.now());
     }
     
     @Test
     @Rollback(false)
     public void testInsertMember() {
-
 	dao.deleteMember(member1.getId());
 	dao.deleteMember(member2.getId());
 	

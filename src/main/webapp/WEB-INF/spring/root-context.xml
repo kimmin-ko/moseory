@@ -25,11 +25,16 @@
 	<!-- HikariCP를 사용하기 위한 설정 -->
  	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+<<<<<<< HEAD
 
 <!-- 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@52.79.242.16:1521:xe" />-->		
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />	
 <!-- 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
  -->		<property name="username" value="moseory" />
+=======
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="username" value="moseory" />
+>>>>>>> 998759581b72baf6bc4adf0c850f6ec3219e7414
 		<property name="password" value="moseory" />
 	</bean>
 	
