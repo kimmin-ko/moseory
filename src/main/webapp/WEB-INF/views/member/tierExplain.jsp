@@ -6,16 +6,17 @@
 			<script type="text/javascript">
 				$(document).ready(function() {
 					var memberJson = ${memberJson};
+					var levelJson = ${levelJson};
 					
 					$("#memName").text(memberJson.name);
 					
-					$("#tier").text(memberJson.level.grade);
+					$("#tier").text(levelJson.grade);
 					
-					$("#saving").text(memberJson.level.saving + '%');
+					$("#saving").text(levelJson.saving + '%');
 					
-					$("#discount").text(memberJson.level.discount + '%');
+					$("#discount").text(levelJson.discount + '%');
 					
-					console.log(memberJson);
+					console.log(levelJson);
 				});
 			</script>
 		  

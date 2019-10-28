@@ -282,17 +282,14 @@
 
                 if(checkDupl != "") { // 아이디가 중복일 경우
                     $("#id_check_text").text(id + '는 이미 사용중인 아이디입니다.');
+                } else if(id.length < 4) { // 아이디가 4글자 보다 짧을 경우
+                    $("#id_check_text").text('아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.');
+                } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
+                    $("#id_check_text").text('공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.');
                 } else if(checkDupl == "") { // 중복이 아닌 경우
                     $("#id_check_text").text(id + "는 사용 가능한 아이디입니다.");
                 }
-
             });
-            
-            if(id.length < 4) { // 아이디가 4글자 보다 짧을 경우
-                $("#id_check_text").text('아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.');
-            } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
-                $("#id_check_text").text('공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.');
-            }
 
         });
 

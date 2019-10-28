@@ -9,7 +9,7 @@ public class LevelEnumMapperValue {
     private int saving;
     private int discount;
     
-    LevelEnumMapperValue(LevelEnumMapperType levelEnumMapperType) {
+    public LevelEnumMapperValue(LevelEnumMapperType levelEnumMapperType) {
 	this.grade = levelEnumMapperType.getGrade();
 	this.saving = levelEnumMapperType.getSaving();
 	this.discount = levelEnumMapperType.getDiscount();

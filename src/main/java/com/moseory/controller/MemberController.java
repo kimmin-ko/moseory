@@ -94,20 +94,31 @@ public class MemberController {
     
     // 마이페이지
     @GetMapping("/myPage")
-    public void myPage() {
+    public void myPage(@RequestParam String id, Model model) {
+	MemberVO member = memberService.readMember(id);
+	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
 	
+	String memberJson = new Gson().toJson(member);
+	String levelJson = new Gson().toJson(levelMapper);
+	
+	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
+	model.addAttribute("memberJson", memberJson);
+	model.addAttribute("levelJson", levelJson);
     }
     
     // 회원 정보 수정
     @GetMapping("/modify")
     public void modify(@RequestParam String id, Model model) {
 	MemberVO member = memberService.readMember(id);
+	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
 	
 	String memberJson = new Gson().toJson(member);
-//	Arrays.stream(Level.values()).map(LevelEnumMapperValue::new)
+	String levelJson = new Gson().toJson(levelMapper);
+	
 	model.addAttribute("member", member);
 	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
 	model.addAttribute("memberJson", memberJson);
+	model.addAttribute("levelJson", levelJson);
     }
     
     // 회원 탈퇴

@@ -27,12 +27,12 @@
 
 			<div class="col-md-12 header-p-o">
 				<div class="col-md-6">
-					<span class="p-o-name">가용 적립금 :</span>
-					<span id="point">1000원 </span>
+					<span class="p-o-name">가용 적립금 : </span>
+					<span id="point"></span>
 				</div>
 				<div class="col-md-6">
-					<span class="p-o-name">총 구매금액 :</span>
-					<span id="order">0원 </span>
+					<span class="p-o-name">총 구매금액 : </span>
+					<span id="order"></span>
 				</div>
 			</div>
 			
@@ -119,6 +119,16 @@
 	<%@ include file="../includes/footer.jsp" %>
 	
 </div>
-    
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var memberJson = ${memberJson};
+	
+		$("#point").text(memberJson.point + '원');
+		$("#order").text(memberJson.total + '원');
+	});
+
+</script>
+
 </body>
 </html>

@@ -5,7 +5,7 @@ import com.moseory.typeHandler.BaseLevelEnum;
 import lombok.Getter;
 
 @Getter // @Data는 class만 지원
-public enum Level implements BaseLevelEnum, LevelEnumMapperType{
+public enum Level implements BaseLevelEnum, LevelEnumMapperType {
     
     VVIP(5, "VVIP", 3, 3, null),
     VIP(4, "VIP", 3, 2, VVIP),
@@ -37,7 +37,7 @@ public enum Level implements BaseLevelEnum, LevelEnumMapperType{
 	return this.level;
     }
     
-    /* LevelEnumMapperTyle */
+    /* LevelEnumMapperType */
     @Override
     public String getGrade() {
 	return this.grade;
