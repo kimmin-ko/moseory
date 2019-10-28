@@ -1,5 +1,7 @@
 package com.moseory.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,21 @@ public class AdminServiceImpl implements AdminService{
 	private AdminDao adminDao;
 	
 	@Override
-	public void regist(ProductVO productVO, ProductDetailVO productdetailVO) {
-		adminDao.regist(productVO, productdetailVO);
+	public void product_regist(ProductVO productVO) {
+		System.out.println("서비스까지 옴");
+		adminDao.product_regist(productVO);
 	}
+
+	@Override
+	public int setCode(String name) {
+		return adminDao.setCode(name);
+	}
+
+	@Override
+	public void product_detail_regist(ProductDetailVO productdetailVO) {
+		adminDao.product_detail_regist(productdetailVO);
+	}
+	
 
 	
 }

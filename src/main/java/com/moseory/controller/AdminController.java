@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,9 +45,32 @@ public class AdminController {
 		
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
+		//1. product테이블에 제품정보 넣음
+		adminService.product_regist(productVO);
+		//2. sequence로 넣은 product테이블의 code가 필요함
+		int code = adminService.setCode(productVO.getName());
+		//3. 가져온 코드로 detail 등록
+		productdetailVO.setProduct_code(code);
+		//4. detail테이블에 등록
+		adminService.product_detail_regist(productdetailVO);
+		
 		return "redirect:/index";
 	}
 		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value="/imageUpload", method=RequestMethod.POST)
 	public void imageUpload(HttpServletRequest request, HttpServletResponse response,
 								@RequestParam(value="upload") MultipartFile upload) {
@@ -87,6 +111,17 @@ public class AdminController {
         }
 	}
 	
+//	int code = adminService.getIntCode(productVO);
+//	System.out.println("int로 받은 코드 = " + code);
+////	productVO = adminService.getCode(productVO);
+////	System.out.println("코드 = " + productVO.getCode());
+//	List<ProductVO> list = adminService.getListCode(productVO);
+//	for(ProductVO pVO : list) {
+//		System.out.println("list로 받은 코드 = " + pVO);
+//	}
+//	productdetailVO.setProduct_code(productVO.getCode());
+//	adminService.pdetail_regist(productdetailVO);
+
 	
 	
 	

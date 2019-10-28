@@ -18,8 +18,14 @@
 			#{product_comment}
 		)
 	</insert>
-	<insert id="regist2" parameterType="productdetailVO">
-		insert into tbl_productdetail values(
+	
+	<select id="setCode" parameterType="String" resultType="int">
+		select code from tbl_product
+			where name = #{name}
+	</select>
+	
+	<insert id="product_detail_regist" parameterType="productdetailVO">
+		insert into tbl_product_detail values(
 			seq_product_detail_no.nextval,
 			#{product_code},
 			#{product_color},
@@ -27,4 +33,19 @@
 			#{product_stock}
 		)
 	</insert>
+	
+	<!-- <select id = "getCode" parameterType="productVO" resultType="productVO">
+		select * from tbl_product
+			where code = #{code}
+	</select> -->
+	<!-- 
+	<select id="getIntCode" parameterType="productVO" resultType="int">
+		select code from tbl_product
+			where code = #{code}
+	</select>
+	
+	<select id="getListCode" parameterType="productVO" resultType="productVO">
+		select * from tbl_product
+			where code = #{code}
+	</select> -->
 </mapper>
