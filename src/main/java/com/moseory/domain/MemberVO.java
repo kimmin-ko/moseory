@@ -27,14 +27,19 @@ public class MemberVO {
     private Date join_date; // 가입일
     
     public MemberVO(String id, String password, String pwd_confirm_q, String pwd_confirm_a, String name, String email) {
-	this.id = id;
-	this.password = password;
-	this.pwd_confirm_q = pwd_confirm_q;
-	this.pwd_confirm_a = pwd_confirm_a;
-	this.name = name;
-	this.email = email;
+		this.id = id;
+		this.password = password;
+		this.pwd_confirm_q = pwd_confirm_q;
+		this.pwd_confirm_a = pwd_confirm_a;
+		this.name = name;
+		this.email = email;
     }
-    
+    public MemberVO(String id, String name, String email, String phone) {
+    	this.id = id;
+    	this.name = name;
+    	this.email = email;
+    	this.phone = phone;
+    }
 }
 
 

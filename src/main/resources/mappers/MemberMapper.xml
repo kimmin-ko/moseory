@@ -18,4 +18,29 @@
 	select count(*) from tbl_member
 	</select>
 	
+	<select id="loginProc" parameterType="map" resultType="com.moseory.domain.MemberVO">
+		SELECT 
+		  id, name, email, phone
+		FROM 
+		  tbl_member
+		WHERE 1 = 1 
+		  AND id = #{inputId}
+		  AND password = #{inputPassword} 
+	</select>
+	
+	<select id="findIdProc" parameterType="map" resultType="map">
+		SELECT 
+		  id,join_date
+		FROM 
+		  tbl_member
+		WHERE 
+		<if test='findType == "email"'>
+		 email = #{email}
+		</if>
+		<if test='findType == "phone"'>
+		 phone = #{phone}
+		</if>
+		 AND name =#{name}
+	</select>
+	
 </mapper>
