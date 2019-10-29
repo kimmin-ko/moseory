@@ -6,7 +6,6 @@
 <mapper namespace="com.moseory.mapper.MemberMapper">
 
 	<resultMap type="MemberVO" id="memberResultMap">
-		<result column="no" property="no" />
 		<result column="id" property="id" />
 		<result column="password" property="password" />
 		<result column="pwd_confirm_q" property="pwd_confirm_q" />
@@ -26,9 +25,9 @@
 	</resultMap>
 	
 	<insert id="insertMember">
-	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, 
+	insert into tbl_member (id, password, pwd_confirm_q, pwd_confirm_a , name, 
 	zipcode, address1, address2, tel, phone, email, birth)
-	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
+	values (#{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
 	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
 	</insert>
 	
@@ -70,7 +69,7 @@
 	</select>
 
 	<select id="getMember" resultMap="memberResultMap">
-	select no, id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
+	select id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
 	tel, phone, email, birth, lev, point, total, join_date
 	from tbl_member
 	where id = #{id}

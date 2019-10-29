@@ -35,9 +35,9 @@ public class MemberDaoTest {
     
     @Before
     public void setUp() {
-	member1 = new MemberVO(null, "min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
-		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.SILVER, 0, 0, LocalDate.now());
-	member2 = new MemberVO(null, "min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
+	member1 = new MemberVO("min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
+		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.BRONZE, 0, 0, LocalDate.now());
+	member2 = new MemberVO("min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
 		null, "010-3725-9670", "kimmin@daum.net", null, null, 0, 0, LocalDate.now());
     }
     
@@ -64,7 +64,6 @@ public class MemberDaoTest {
     }
     
     public void checkGetMember(MemberVO vo) {
-	assertEquals(member1.getId(), vo.getId());
 	assertEquals(member1.getPassword(), vo.getPassword());
 	assertEquals(member1.getPwd_confirm_q(), vo.getPwd_confirm_q());
 	assertEquals(member1.getPwd_confirm_a(), vo.getPwd_confirm_a());

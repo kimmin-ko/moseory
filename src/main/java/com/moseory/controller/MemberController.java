@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.moseory.domain.LevelEnumMapperValue;
@@ -105,6 +106,8 @@ public class MemberController {
 	// 시스템(session, DB)에 변화가 생기지 않는 단순조회(리스트, 검색)의 경우 forward 이용
 	return "redirect:joinOk";
     }
+    
+    
     
     // 회원가입 시 아이디 중복  체크
     @GetMapping("/checkDuplId/{id}")

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberVO {
     
-    private Integer no; // 회원 번호
-    
     private String id; // 회원 아이디
     private String password; // 회원 비밀번호
     private String pwd_confirm_q; // 비밀번호 확인 질문
@@ -41,6 +39,7 @@ public class MemberVO {
 		this.name = name;
 		this.email = email;
     }
+    
     public MemberVO(String id, String name, String email, String phone) {
     	this.id = id;
     	this.name = name;
