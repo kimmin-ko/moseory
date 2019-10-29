@@ -1,0 +1,90 @@
+.mypage {
+    margin-bottom: 50px;
+}
+
+.mypage-header {
+    margin-top: 80px;
+    margin-bottom: 30px;
+}
+
+.header-tier {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+.header-tier div {
+    height: 70px;
+    border: 0.5px solid #D5D5D5;
+    padding: 0;
+}
+
+.header-tier div p {
+    margin-top: 15px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#tier-logo {
+    height: 65px;
+    width: 65px;
+}
+
+#tier, #memName, #saving, #discount {
+    font-weight: bold;
+    color: #4387C2;
+}
+
+.header-p-o div {
+    height: 50px;
+    border: 0.5px solid #D5D5D5;
+    padding-top: 15px;
+}
+
+.p-o-name {
+    font-size: 12px;
+} 
+
+#point, #order {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.body-table tr .i-td {
+    width: 10%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.body-table tr .con-td {
+    vertical-align: middle;
+    width: 40%;
+}
+
+.body-table tr .con-td h6 {
+    font-weight: bold;
+}
+
+.body-table tr .con-td p {
+    font-size: 11px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -9,6 +9,8 @@ public interface MemberDao {
     
     public void insertMember(MemberVO vo);
     
+    public void deleteMember(String id);
+    
     public void deleteAll();
     
     public int getCount();
@@ -18,5 +20,8 @@ public interface MemberDao {
     public MemberVO loginProc(Map<String, Object>param);
     
     public List<Map<String, Object>> findIdProc(Map<String, Object>param);
+
+    public int getCountMember(String id);
+
     
 }

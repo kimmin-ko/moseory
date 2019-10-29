@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<link rel="stylesheet" href="/css/footer.css">
+
 <footer>
 	<div class="row" style="margin-bottom: 20px;">
 		<div class="col-md-10 col-md-offset-1">

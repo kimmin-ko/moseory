@@ -8,8 +8,6 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/joinForm.css">
 <!-- 
 1. 색상을 하나 선택하면
@@ -99,16 +97,31 @@
 	    document.getElementById("field").appendChild(div);
 	}
 	
+	function size_check(){
+		
+	}
+	
 </script>
 <script>
+	/* $(document).ready(function(){
+/* 		console.log($('#size:checked'));*/	
+ 
+		$("#size:checked").each(function() {
+			
+			 this.checked = true;
+		});
+	 
+</script>
+
+<!-- <script>
 	$(document).ready(function(){
 		var time = new Date();
 		var code = time.getTime();
 		$("input[name=code]").val(code);
 	});
-</script>
+</script> -->
 
-<script>
+<!-- <script>
 $(document).ready(function(){
 	// ckeditor setting
        var ckeditor_config = {
@@ -132,7 +145,7 @@ $(document).ready(function(){
 
           };
        });
-</script>
+</script> -->
 <div class="container joinForm-container" style="margin-left:22%">
 
     <!-- Join Form Start -->
@@ -158,7 +171,6 @@ $(document).ready(function(){
        		<form action = "productregist" method = "post">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
-	        <input type = "hidden" name = "code">
 	            <table class="table table-bordered">
 	                <tr>
 	                    <th>상품명 <img src="/images/ico_required.gif"></th>
@@ -233,9 +245,9 @@ $(document).ready(function(){
 	                <tr>
 	                	<th>이미지</th>
 	                	<td>
-							<textarea class = "form-control" name = "content" id = "content" cols="20" rows="15"></textarea>	                	
+							<textarea class = "form-control" name = "product_comment" id = "product_comment" cols="20" rows="15"></textarea>	                	
 							<script> 
-								CKEDITOR.replace('content');
+								CKEDITOR.replace('product_comment');
 							</script>
 	                	</td>
 	                </tr>

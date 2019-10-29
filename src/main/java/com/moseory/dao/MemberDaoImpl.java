@@ -36,7 +36,17 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public MemberVO getMember(String id) {
-	return null;
+	return sqlSession.selectOne(namespace+".getMember", id);
+    }
+
+    @Override
+    public void deleteMember(String id) {
+	sqlSession.delete(namespace+".deleteMember", id);
+    }
+
+    @Override
+    public int getCountMember(String id) {
+	return sqlSession.selectOne(namespace+".getCountMember", id);
     }
     
     @Override

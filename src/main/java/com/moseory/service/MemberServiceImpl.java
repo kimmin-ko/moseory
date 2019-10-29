@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     
     // 회원 등록
     @Override
-    public void joinMember(MemberVO vo) {
+    public void registerMember(MemberVO vo) {
 	memberDao.insertMember(vo);
     }
 
@@ -50,6 +50,17 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return memberDao.findIdProc(param);
 	}
+	
+    // 회원 아이디 여부
+    @Override
+    public int isMember(String id) {
+	return memberDao.getCountMember(id);
+    }
+
+    @Override
+    public MemberVO readMember(String id) {
+	return memberDao.getMember(id);
+    }
 
 }
 

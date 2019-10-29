@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+
+<link rel="stylesheet" href="/css/sidebar.css">
+
 <!-- jquery js -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -9,8 +12,7 @@
 <script src="/js/bootstrap.js"></script>
 
 <!-- Sidebar -->
-<div class="w3-sidebar w3-light-grey w3-bar-block container"
-	style="width: 22%">
+<div class="w3-sidebar w3-light-grey w3-bar-block container" style="width: 22%">
 
 	<div class="row brand-row">
 		<div class="col-md-10 col-md-offset-2">
@@ -41,43 +43,49 @@
 			<a href="/cart/cartList">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
-			<a href="#">MYPAGE</a>
+			<a href="/member/myPage?id=admin00">MY PAGE</a>
 		</div>
 	</div>
 
+	<div class="row ma-bo-50">
+		<div class="col-md-3 col-md-offset-2 font-12">
+			<a href="/admin/productregist">상품등록</a>
+		</div>
+	</div>
+	
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=1">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">TOP</a>&nbsp;<small class="cate-sm">상의</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=2">TOP</a>&nbsp;<small class="cate-sm">상의</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=3">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=4">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">BAG</a>&nbsp;<small class="cate-sm">가방</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=5">BAG</a>&nbsp;<small class="cate-sm">가방</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">SHOES</a>&nbsp;<small class="cate-sm">신발</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=6">SHOES</a>&nbsp;<small class="cate-sm">신발</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="#">ACC</a>&nbsp;<small class="cate-sm">액세서리</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=7">ACC</a>&nbsp;<small class="cate-sm">액세서리</small>
 		</div>
 	</div>
 	<div class="row ma-bo-50">

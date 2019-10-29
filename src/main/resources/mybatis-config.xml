@@ -4,6 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	
+	<!-- insert, update 시 NULL허용 컬럼에 NULL값 데이터 들어갈 수 있도록 설정 -->
+ 	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
 	
+	<typeAliases>
+		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
+		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO"/>
+		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO"/>
+		
+		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler javaType="com.moseory.domain.Level" jdbcType="NUMERIC" handler="com.moseory.typeHandler.LevelEnumTypeHandler"/>
+	</typeHandlers>
 	
 </configuration>
