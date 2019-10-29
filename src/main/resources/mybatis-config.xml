@@ -14,5 +14,12 @@
 		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
 		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO"/>
 		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO"/>
+		
+		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler"/>
 	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler javaType="com.moseory.domain.Level" jdbcType="NUMERIC" handler="com.moseory.typeHandler.LevelEnumTypeHandler"/>
+	</typeHandlers>
+	
 </configuration>

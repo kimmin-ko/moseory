@@ -1,0 +1,48 @@
+.joinLabel-row {
+    text-align: center;
+}
+
+.header-tier {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+.header-tier div {
+    height: 70px;
+    border: 0.5px solid #D5D5D5;
+    padding: 0;
+}
+
+.header-tier div p {
+    margin-top: 15px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#tier-logo {
+    height: 65px;
+    width: 65px;
+}
+
+#tier, #memName, #saving, #discount {
+    font-weight: bold;
+    color: #4387C2;
+}
+
+.line-div {
+    border: 0.5px solid #CED0D1;
+}
+
+.joinForm-container {
+    font-size: small;
+}
+
+table {
+    font-size: 12px;
+}
+
+table th {
+    margin-left: 15px;
+    width: 15%;
+}

@@ -3,6 +3,8 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
+
+	<!-- 상품정보 등록 -->
 	<insert id="regist" parameterType="productVO">
 		insert into tbl_product values(
 			seq_product_code.nextval,
@@ -18,8 +20,16 @@
 			#{product_comment}
 		)
 	</insert>
-	<insert id="regist2" parameterType="productdetailVO">
-		insert into tbl_productdetail values(
+	
+	<!-- 상품코드 조회 -->
+	<select id="setCode" parameterType="String" resultType="int">
+		select code from tbl_product
+			where name = #{name}
+	</select>
+	
+	<!-- 상품디테일 등록 -->
+	<insert id="product_detail_regist" parameterType="productdetailVO">
+		insert into tbl_product_detail values(
 			seq_product_detail_no.nextval,
 			#{product_code},
 			#{product_color},
@@ -27,4 +37,12 @@
 			#{product_stock}
 		)
 	</insert>
+	
+	
+	<!-- 상위카테고리 상품리스트 -->
+	<select id="highCateList" parameterType="int" resultType = "productVO">
+		select * from tbl_product
+			where high_code = #{high_code}
+	</select>
+	
 </mapper>

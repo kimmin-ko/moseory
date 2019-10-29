@@ -8,8 +8,6 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/joinForm.css">
 <!-- 
 1. 색상을 하나 선택하면
@@ -99,7 +97,22 @@
 	    document.getElementById("field").appendChild(div);
 	}
 	
+	function size_check(){
+		
+	}
+	
 </script>
+<script>
+	/* $(document).ready(function(){
+/* 		console.log($('#size:checked'));*/	
+ 
+		$("#size:checked").each(function() {
+			
+			 this.checked = true;
+		});
+	 
+</script>
+
 <!-- <script>
 	$(document).ready(function(){
 		var time = new Date();

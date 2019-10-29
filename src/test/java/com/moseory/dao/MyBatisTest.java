@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j;
 public class MyBatisTest {
 
 	
-	@Setter(onMethod_ = @Autowired)
+    @Setter(onMethod_ = @Autowired)
     private SqlSessionFactory sqlSessionFactory;
     
     @Setter(onMethod_ = @Autowired)

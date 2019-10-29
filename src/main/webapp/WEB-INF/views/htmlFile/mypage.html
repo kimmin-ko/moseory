@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모서리</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../../resources/css/bootstrap.css">
+    <link rel="stylesheet" href="../../resources/css/sidebar.css">
+    <link rel="stylesheet" href="../../resources/css/footer.css">
+    <link rel="stylesheet" href="../../resources/css/mypage.css">
+</head>
+<body>
+    
+<!-- jquery js -->
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+
+<!-- bootstrap js -->
+<script src="js/bootstrap.js"></script>
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block container" style="width:22%">
+
+    <div class="row brand-row"><div class="col-md-10 col-md-offset-2"><h3><b><a href="index.html">MOSEORY</a></b></h3></div></div>
+
+    <div class="row">
+        <div class="col-md-3 col-md-offset-2 font-12"><a href="loginForm.html">LOG-IN</a></div>
+        <div class="col-md-5 font-12 joinus"><a href="joinForm.html">JOIN US</a></div>
+    </div>
+
+    <div class="row ma-bo-50">
+        <div class="col-md-3 col-md-offset-2 font-12"><a href="cartForm.html">CART(0)</a></div>
+        <div class="col-md-5 font-12"><a href="mypage.html">MYPAGE</a></div>
+    </div>
+
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">OUTER</a>&nbsp;<small class="cate-sm">아우터</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">TOP</a>&nbsp;<small class="cate-sm">상의</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">BAG</a>&nbsp;<small class="cate-sm">가방</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">SHOES</a>&nbsp;<small class="cate-sm">신발</small></div></div>
+    <div class="row ma-bo-5"><div class="col-md-10 col-md-offset-2"><a href="#">ACC</a>&nbsp;<small class="cate-sm">액세서리</small></div></div>
+    <div class="row ma-bo-50"><div class="col-md-10 col-md-offset-2"><a href="#">SALE</a>&nbsp;<small class="cate-sm">세일</small></div></div>
+
+    <div class="row ma-bo-50">
+        <div class="col-md-10 col-md-offset-2 form-inline">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="검색어" style="width: 120px;" />
+            <button class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </div>  
+        </div>
+    </div> <!-- search div -->
+
+    <div class="row ma-bo-50">
+        <div class="col-md-10 col-md-offset-2 font-12">
+        <a href="notice.html">NOTICE</a>&nbsp;
+        <a href="#">Q&A</a>&nbsp;
+        <a href="#">REVIEW</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-2"><span class="glyphicon glyphicon-phone-alt"></span>&nbsp;010-3725-9670</div>
+        <div class="col-md-10 col-md-offset-2 font-12">MON - FRI AM 11:00 ~ PM 6:00</div>
+        <div class="col-md-10 col-md-offset-2 font-12">LUNCH , PM 12:00 ~ PM 1:00</div>
+        <div class="col-md-10 col-md-offset-2 font-12">SAT.SUN.HOLIDAY OFF</div>
+    </div>
+
+</div> <!-- Sidebar End -->   
+
+<div class="container" style="margin-left:22%">
+
+    <!-- Mypage Start -->
+    <div class="row mypage">
+
+		 <!-- Mypage-header Start -->
+        <div class="col-md-10 col-md-offset-1 mypage-header text-center">
+            <p>MY PAGE</p>
+
+            <div class="col-md-12 header-tier">
+				<div class="col-md-1">
+					<img id="tier-logo" src="../../resources/images/tier_1.jpg">
+				</div>
+				<div class="col-md-11 text-left">
+					<p>
+						저희 쇼핑몰을 이용해 주셔서 감사합니다. 
+						<span id="name">김민</span> 님은 [<span id="tier">브론즈</span>] 회원이십니다.
+						<br>
+						상품 구매시 <span id="saving">1%</span>의 추가적립과 
+						<span id="discount">1%</span>의 추가 할인을 받으실 수 있습니다.
+					</p>
+				</div>
+			</div>
+
+			<div class="col-md-12 header-p-o">
+				<div class="col-md-6">
+					<span class="p-o-name">가용 적립금 :</span>
+					<span id="point">1000원 </span>
+				</div>
+				<div class="col-md-6">
+					<span class="p-o-name">총 구매금액 :</span>
+					<span id="order">0원 </span>
+				</div>
+			</div>
+			
+		</div>
+		<!-- Mypage-header End -->
+
+		<!-- Mypage-body Start -->
+		<div class="col-md-10 col-md-offset-1 mypage-body">
+			<table class="table body-table">
+				<tr>
+					<td class="i-td text-cent">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">주문조회</a></h6>
+						<p>
+							고객님의 주문내역을 확인하실 수 있습니다. <br>
+							비회원의 경우, 주문번호와 비밀번호로 주문조회 가능
+						</p>
+					</td>
+					<td class="i-td">
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">개인정보 관리</a></h6>
+						<p>
+							회원이신 고객님의 개인정보를<br>
+							관리하는 공간입니다.
+						</p>
+					</td>
+				</tr> <!-- 1 tr -->
+				<tr>
+					<td class="i-td text-cent">
+						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">위시 리스트</a></h6>
+						<p>
+							관심상품으로 등록하신 상품의<br>
+							목록을 보여드립니다.
+						</p>
+					</td>
+					<td class="i-td">
+						<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">게시물</a></h6>
+						<p>
+							고객님께서 작성하신 게시물을<br>
+							관리하는 공간입니다.
+						</p>
+					</td>
+				</tr> <!-- 2 tr -->
+				<tr>
+					<td class="i-td text-cent">
+						<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">배송주소 관리</a></h6>
+						<p>
+							자주 사용하는 배송지를<br>
+							등록하고 관리하실 수 있습니다.
+						</p>
+					</td>
+					<td class="i-td">
+						<span class="glyphicon glyphicon-pencil
+						" aria-hidden="true"></span>
+					</td>
+					<td class="con-td">
+						<h6><a href="#">상품 리뷰 관리</a></h6>
+						<p>
+							고객님께서 작성하신 상품 리뷰글을 관리하는 공간입니다.<br>
+							고객님께서 작성하신 리뷰를 한눈에 확인하실 수 있습니다.
+						</p>
+					</td>
+				</tr> <!-- 3 tr -->
+			</table>
+		</div>
+		<!-- Mypage-body End -->
+		
+    </div>  
+    <!-- Mypage End -->
+
+    <!-- Footer Start -->
+    <footer>
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-md-10 col-md-offset-1">
+                <ul class="footer-list">
+                    <li><a href="#">COMPANY</a></li>
+                    <li><a href="#">AGREEMENT</a></li>
+                    <li><a href="#">PRIVACY POLICY</a></li>
+                    <li><a href="#">GUIDE</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 30px;">
+            <div class="col-md-10 col-md-offset-1 com-info">
+                <p>COMPANY: 모서리 CEO: 김민 BUSINESS REGISTRATION NO: 010-3725-9670
+                    E-COMMERCE PERMIT NO : 2019-경기부천-1254호 [사업자정보확인]</p>
+            </div>
+            <div class="col-md-10 col-md-offset-1 com-info">
+                <p>TEL: 010-3725-9670 EMAIL: kimmin2300@naver.com PERSONAL
+                    INFORMATION MANAGER : 김민 ADDRESS: 14637 경기도 부천시 심곡동 383-7 프리죤빌딩 2층
+                    모서리</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 com-info">
+                <p>
+                    Copyright &copy; <b>모서리</b> All rights reserved. <span>DESIGNED
+                        BY. MOSEORY</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+</div>
+    
+</body>
+</html>

@@ -29,6 +29,9 @@
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
 		<property name="username" value="hong" />
 		<property name="password" value="h8159" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />	
+		<property name="username" value="moseory" />
+		<property name="password" value="moseory" />
 	</bean>
 	
 	
@@ -52,16 +55,5 @@
  	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<!-- conversionService에 custom converter 등록 -->
-	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
-		<property name="converters">
-			<set>
-				<bean class="com.moseory.converter.StringToLocalDateConverter" />
-			</set>
-		</property>
-	</bean>
-	
-	<mvc:annotation-driven conversion-service="conversionService" />
 	
 </beans>
