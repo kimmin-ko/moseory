@@ -7,7 +7,9 @@ import com.moseory.dao.MemberDao;
 import com.moseory.domain.MemberVO;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Service
 public class MemberServiceImpl implements MemberService {
     
@@ -17,6 +19,7 @@ public class MemberServiceImpl implements MemberService {
     // 회원 등록
     @Override
     public void registerMember(MemberVO vo) {
+	log.info("service vo : " + vo);
 	memberDao.insertMember(vo);
     }
 
