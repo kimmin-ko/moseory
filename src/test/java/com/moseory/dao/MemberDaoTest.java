@@ -24,7 +24,6 @@ import lombok.Setter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
-@Transactional
 public class MemberDaoTest {
  
     @Setter(onMethod_ = @Autowired)
@@ -42,7 +41,6 @@ public class MemberDaoTest {
     }
     
     @Test
-    @Rollback(false)
     public void testInsertMember() {
 	dao.deleteMember(member1.getId());
 	dao.deleteMember(member2.getId());
@@ -53,6 +51,21 @@ public class MemberDaoTest {
 	assertThat(dao.getCountMember(member1.getId()), is(1));
 	assertThat(dao.getCountMember(member2.getId()), is(1));
     }	
+    
+    @Test
+    public void testUpdateMember() {
+	MemberVO vo = dao.getMember(member1.getId());
+	
+	checkGetMember(vo);
+	
+	vo.setPassword("modifypwd");
+	vo.setBirth(LocalDate.of(1984, 12, 16));
+	
+	dao.updateMember(vo);
+	
+	assertThat(dao.getMember(vo.getId()).getPassword(), is("modifypwd"));
+	assertThat(dao.getMember(vo.getId()).getBirth(), is(LocalDate.of(1984, 12, 16)));
+    }
     
     @Test
     public void testGetMember() {
@@ -78,7 +91,6 @@ public class MemberDaoTest {
 	assertEquals(member1.getLevel(), vo.getLevel());
 	assertEquals(member1.getPoint(), vo.getPoint());
 	assertEquals(member1.getTotal(), vo.getTotal());
-	assertEquals(member1.getJoin_date(), vo.getJoin_date());
     }
     
     @Test

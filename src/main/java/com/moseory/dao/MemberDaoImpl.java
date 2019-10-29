@@ -60,6 +60,11 @@ public class MemberDaoImpl implements MemberDao {
     	return sqlSession.selectList(namespace+".findIdProc", param);
     }
 
+    @Override
+    public int updateMember(MemberVO vo) {
+	return sqlSession.update(namespace+".updateMember", vo);
+    }
+
 	
         
 }
