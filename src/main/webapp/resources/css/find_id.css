@@ -7,3 +7,62 @@
     font-size: 12px;
     color: gray;
 }
+
+
+
+.findId {
+    width: 500px;
+    margin: 0 auto;
+   	font: 12px/1.5 'Lato','malgun gothic','NanumSquare','Open Sans','malgun gothic','arial','dotum','sans-serif';
+    color: #000;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.findId p {
+    text-align: center;
+}
+.findId ul{
+	text-align: left;
+	list-style:none;
+}
+.findId .memberInfo {
+    overflow: hidden;
+    border: 1px solid #d6d4d4;
+    text-align: center;
+}
+.findId .memberInfo .info {
+    padding: 10px;
+    border-bottom: 1px solid #e8e7e7;
+}
+.findId .bu_board1:hover{
+	background: #222;
+    border: 1px solid #222;
+    color: #fff;
+}
+.findId a:hover{
+	ext-decoration: none;
+    color: #ddd;
+}
+
+.buboard1, .buboard, .buboarddall {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 12px;
+}
+.bu_board1 {
+    display: inline-block;
+    border: 1px solid #222;
+    border-radius: 2px;
+    margin: 0 2px;
+    background: #fff;
+    font-size: 11px;
+    color: #444;
+}
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
