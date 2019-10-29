@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 
 <link rel="stylesheet" href="/css/sidebar.css">
 
@@ -22,9 +23,16 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/member/login">LOG-IN</a>
-		</div>
+		<c:if test="${empty user}">
+			<div class="col-md-3 col-md-offset-2 font-12">
+				<a href="/member/login">LOG-IN</a>
+			</div>
+		</c:if>
+		<c:if test="${!empty user}">
+			<div class="col-md-3 col-md-offset-2 font-12">
+				<a href="/member/logout">LOG-OUT</a>
+			</div>
+		</c:if>
 		<div class="col-md-5 font-12 joinus">
 			<a href="/member/join">JOIN US</a>
 		</div>

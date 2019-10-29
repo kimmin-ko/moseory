@@ -21,13 +21,20 @@
 	<!-- java class를 spring bean으로 등록 -->
 	<context:component-scan base-package="com.moseory.service" />
 	<context:component-scan base-package="com.moseory.dao" />
+
 	
 	<!-- HikariCP를 사용하기 위한 설정 -->
  	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="username" value="hong" />
+		<property name="password" value="h8159" />
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />	
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="hr" />
+		<property name="password" value="hr" />
 	</bean>
 	
 	<!--   HikariCP를 이용하는 DataSource -->

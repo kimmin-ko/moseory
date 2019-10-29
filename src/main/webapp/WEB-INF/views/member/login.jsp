@@ -9,6 +9,12 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/loginForm.css">
+<script type="text/javascript">
+var message = "${msg}";
+if(message != ""){
+	alert(message);
+}
+</script>
 </head>
 <body>
 
@@ -25,13 +31,13 @@
         </div>
     </div>
 
-    <form>
+    <form action="/member/loginProc" method="post">
         <div class="row loginForm-row" style="margin-top: 60px;">
             <div class="col-md-4 col-md-offset-4">
-                <input type="text" class="form-control" id="inputId" placeholder="아이디">
+                <input type="text" class="form-control" name="inputId" placeholder="아이디">
             </div>
             <div class="col-md-4 col-md-offset-4">
-                <input type="password" class="form-control" id="inputPassword" placeholder="비밀번호">
+                <input type="password" class="form-control" name="inputPassword" placeholder="비밀번호">
             </div>
             <div class="col-md-4 col-md-offset-4">
                 <button type="submit" class="btn btn-default btn-block login-btn">로그인</button>

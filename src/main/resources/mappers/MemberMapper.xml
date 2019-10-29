@@ -44,6 +44,31 @@
 	select count(*) from tbl_member
 	</select>
 	
+	<select id="loginProc" parameterType="map" resultType="com.moseory.domain.MemberVO">
+		SELECT 
+		  id, name, email, phone
+		FROM 
+		  tbl_member
+		WHERE 1 = 1 
+		  AND id = #{inputId}
+		  AND password = #{inputPassword} 
+	</select>
+	
+	<select id="findIdProc" parameterType="map" resultType="map">
+		SELECT 
+		  id,join_date
+		FROM 
+		  tbl_member
+		WHERE 
+		<if test='findType == "email"'>
+		 email = #{email}
+		</if>
+		<if test='findType == "phone"'>
+		 phone = #{phone}
+		</if>
+		 AND name =#{name}
+	</select>
+
 	<select id="getMember" resultMap="memberResultMap">
 	select no, id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
 	tel, phone, email, birth, lev, point, total, join_date
@@ -54,5 +79,6 @@
 	<delete id="deleteMember">
 	delete from tbl_member where id = #{id}
 	</delete>
+
 	
 </mapper>

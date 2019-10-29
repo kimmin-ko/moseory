@@ -1,5 +1,8 @@
 package com.moseory.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,5 +48,18 @@ public class MemberDaoImpl implements MemberDao {
     public int getCountMember(String id) {
 	return sqlSession.selectOne(namespace+".getCountMember", id);
     }
+    
+    @Override
+	public MemberVO loginProc(Map<String, Object> param) {
+    	return sqlSession.selectOne(namespace+".loginProc", param);
+	}
+    
+    @Override
+    public List<Map<String, Object>> findIdProc(Map<String, Object> param) {
+    	
+    	return sqlSession.selectList(namespace+".findIdProc", param);
+    }
+
+	
         
 }
