@@ -30,7 +30,6 @@
 		<property name="password" value="moseory" />
 	</bean>
 	
-	
 	<!--   HikariCP를 이용하는 DataSource -->
  	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
