@@ -8,33 +8,44 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/cartForm.css">
+    <link rel="stylesheet" href="/css/cart.css">
 </head>
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    
-    $(".check-all").click(function() {
-        $(".checkCart").prop("checked", this.checked);
-    });
-
-});
-</script>
-
-
-          
 <!-- CartForm Start -->
 <div class="container" style="margin-left:22%;">
 
     <div class="row cartLabel-row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-10 col-md-offset-1" style="margin-bottom: 40px;">
             <p>CART</p>
         </div>
+        
+        <div class="col-md-10 col-md-offset-1 div-benefit-info">
+        	<table class="table table-bordered tbl-benefit-info">
+        		<tr>
+        			<td class="head-td" rowspan="2">혜택정보</td>
+        			<td class="body-td">
+        				<span id="memName"></span> 님은 
+						[<span id="tier"></span>] 회원입니다.
+						<br>
+						상품 구매시 <span id="saving"></span>의 추가적립과 
+						<span id="discount"></span>의 추가 할인을 받으실 수 있습니다.
+        			</td>
+        		</tr>
+        		<tr>
+        			<td class="body-td">
+						<span class="p-o-name">가용 적립금 : </span>
+						<span id="point"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span class="p-o-name">총 구매금액 : </span>
+						<span id="order"></span>
+					</td>
+        		</tr>
+        	</table>
+        </div>
     </div>
-
+    
     <ul class="nav nav-tabs col-md-10 col-md-offset-1">
         <li role="presentation" class="active"><a href="#"><small><strong>국내 배송 상품(1)</strong></small></a></li>
         <li role="presentation"><a href="#"><small><strong>해외 배송 상품(0)</strong></small></a></li>
@@ -216,6 +227,32 @@ $(document).ready(function() {
 	<%@ include file="../includes/footer.jsp" %>
 	
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    var memberJson = ${memberJson};
+	var levelJson = ${levelJson};
+	
+	$("#memName").text(memberJson.name);
+	
+	$("#tier").text(levelJson.grade);
+	
+	$("#saving").text(levelJson.saving + '%');
+	
+	$("#discount").text(levelJson.discount + '%');
+	
+	$("#point").text(memberJson.point + '원');
+	
+	$("#order").text(memberJson.total + '원');
+	
+	// 최상위 체크박스 선택 시 전체 선택
+    $(".check-all").click(function() {
+        $(".checkCart").prop("checked", this.checked);
+    });
+
+});
+</script>
 
 </body>
 </html>

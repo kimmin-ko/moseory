@@ -8,4 +8,5 @@ public interface UserDao {
     
     public void updateMember(MemberVO vo);
     
+    public void deleteMember(String id);
 }

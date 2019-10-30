@@ -47,7 +47,7 @@
 
 	<div class="row ma-bo-50">
 		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/cart/cartList">CART(0)</a>
+			<a href="/user/cart">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
 			<a href="/user/myPage">MY PAGE</a>

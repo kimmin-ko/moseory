@@ -21,6 +21,9 @@ import lombok.Setter;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class MemberDaoTest {
+    
+    @Setter(onMethod_ = @Autowired)
+    private UserDao userDao;
  
     @Setter(onMethod_ = @Autowired)
     private MemberDao dao;
@@ -38,8 +41,8 @@ public class MemberDaoTest {
     
     @Test
     public void testInsertMember() {
-	dao.deleteMember(member1.getId());
-	dao.deleteMember(member2.getId());
+	userDao.deleteMember(member1.getId());
+	userDao.deleteMember(member2.getId());
 	
 	dao.insertMember(member1);
 	dao.insertMember(member2);
@@ -67,7 +70,7 @@ public class MemberDaoTest {
     
     @Test
     public void testIsMember() {
-	dao.deleteMember(member1.getId());
+	userDao.deleteMember(member1.getId());
 	
 	dao.insertMember(member1);
 	

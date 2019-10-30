@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.MemberVO;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Repository
 public class UserDaoImpl implements UserDao {
     
@@ -23,7 +25,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateMember(MemberVO vo) {
+	log.info("dao member : " + vo.getPwd_confirm_a());
 	sqlSession.update(namespace+".updateMember", vo);
+    }
+
+    @Override
+    public void deleteMember(String id) {
+	sqlSession.delete(namespace+".deleteMember", id);
     }
 
 }

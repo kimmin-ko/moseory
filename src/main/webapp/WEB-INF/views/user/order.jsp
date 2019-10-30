@@ -8,7 +8,7 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/orderForm.css">
+    <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

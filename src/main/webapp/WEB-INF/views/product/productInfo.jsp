@@ -69,7 +69,7 @@
                 <button type="button" class="btn btn-default btn-lg btn-buy">BUY NOW</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg">ADD TO CART</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="location.href='/user/addCart'">ADD TO CART</button>
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-default btn-lg">WISH LIST</button>

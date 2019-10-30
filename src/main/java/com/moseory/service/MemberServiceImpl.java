@@ -22,7 +22,6 @@ public class MemberServiceImpl implements MemberService {
     // 회원 등록
     @Override
     public void registerMember(MemberVO vo) {
-	log.info("service vo : " + vo);
 	memberDao.insertMember(vo);
     }
 

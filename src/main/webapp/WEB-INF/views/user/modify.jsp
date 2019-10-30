@@ -95,7 +95,7 @@
 	            <table class="table table-bordered">
 	                <tr>
 	                    <th>아이디</th>
-	                    <td><input type="text" name="id" id="id" maxlength="16" value='<c:out value="${member.id }" />' disabled /></td>
+	                    <td><input type="text" name="id" id="id" maxlength="16" value='<c:out value="${member.id }" />' readonly="readonly" /></td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 <img src="/images/ico_required.gif"></th>
@@ -226,7 +226,7 @@
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
 			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
-				onclick="location.href='/member/withdrawal'">회원탈퇴</button>
+				onclick="location.href='/user/withdrawal'">회원탈퇴</button>
 	    </div>
 	</div>
     <!-- Modify Form End -->
