@@ -55,6 +55,9 @@ public class AdminController {
 		//3. 중복되지 않는 name으로 code를 조회해옴
 		productdetailVO.setProduct_code(code);
 		//4. detail에 데이터 등록
+		adminService.product_regist(productVO);
+		int code = adminService.setCode(productVO.getName());
+		productdetailVO.setProduct_code(code);
 		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";
