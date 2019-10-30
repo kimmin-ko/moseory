@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.ProductService;
 
@@ -32,8 +33,12 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
-	public String productInfo() {
-		
+	public String productInfo(@RequestParam int code,
+													Model model) {
+		ProductVO productVO = productService.getView(code);
+		System.out.println(productVO);
+		ProductDetailVO productdetailVO = productService.getDetailView(code);
+		System.out.println(productdetailVO);
 		return "product/productInfo";
 	}
 	

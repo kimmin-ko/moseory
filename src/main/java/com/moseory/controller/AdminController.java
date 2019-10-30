@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.moseory.domain.HighCate;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -45,13 +46,15 @@ public class AdminController {
 		
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
-		//1. productÅ×ÀÌºí¿¡ Á¦Ç°Á¤º¸ ³ÖÀ½
+//		productVO.setHigh_cate(HighCate.OUTER);
+//		System.out.println(productVO.getHigh_cate().getCode());
+		//1. productì— ë°ì´í„° ë“±ë¡
 		adminService.product_regist(productVO);
-		//2. sequence·Î ³ÖÀº productÅ×ÀÌºíÀÇ code°¡ ÇÊ¿äÇÔ
+		//2. sequenceë¡œ codeê°€ ë“¤ì–´ê°€ê¸° ë•Œë¬¸ì— ë°›ì•„ì˜¤ëŠ” productVOë¡œëŠ” codeë¥¼ ëª¨ë¦„
 		int code = adminService.setCode(productVO.getName());
-		//3. °¡Á®¿Â ÄÚµå·Î detail µî·Ï
+		//3. ì¤‘ë³µë˜ì§€ ì•ŠëŠ” nameìœ¼ë¡œ codeë¥¼ ì¡°íšŒí•´ì˜´
 		productdetailVO.setProduct_code(code);
-		//4. detailÅ×ÀÌºí¿¡ µî·Ï
+		//4. detailì— ë°ì´í„° ë“±ë¡
 		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";
@@ -95,7 +98,7 @@ public class AdminController {
                     + callback
                     + ",'"
                     + fileUrl
-                    + "','ÀÌ¹ÌÁö¸¦ ¾÷·Îµå ÇÏ¿´½À´Ï´Ù.'"
+                    + "','ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.'"
                     + ")</script>");
         	
         	printWriter.flush();
@@ -112,12 +115,12 @@ public class AdminController {
 	}
 	
 //	int code = adminService.getIntCode(productVO);
-//	System.out.println("int·Î ¹ŞÀº ÄÚµå = " + code);
+//	System.out.println("intï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ = " + code);
 ////	productVO = adminService.getCode(productVO);
-////	System.out.println("ÄÚµå = " + productVO.getCode());
+////	System.out.println("ï¿½Úµï¿½ = " + productVO.getCode());
 //	List<ProductVO> list = adminService.getListCode(productVO);
 //	for(ProductVO pVO : list) {
-//		System.out.println("list·Î ¹ŞÀº ÄÚµå = " + pVO);
+//		System.out.println("listï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ = " + pVO);
 //	}
 //	productdetailVO.setProduct_code(productVO.getCode());
 //	adminService.pdetail_regist(productdetailVO);
