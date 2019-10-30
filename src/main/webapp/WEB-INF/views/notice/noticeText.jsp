@@ -45,6 +45,7 @@
 								<td>공지 사항 관련된 게시판 입니다</td>
 								<td>&nbsp;</td>
 							</tr>
+					
 
 							<tr>
 								<td>&nbsp;</td>
