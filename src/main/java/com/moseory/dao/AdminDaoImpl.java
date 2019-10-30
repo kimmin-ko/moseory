@@ -15,12 +15,14 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Override
+	public void product_regist(ProductVO productVO) {
+		sqlSession.insert("product.regist", productVO);
+		
 	
 	@Override
 	public void product_regist(ProductVO productVO) {
-		System.out.println("dao���� ��");
 		sqlSession.insert("product.regist", productVO);
-		System.out.println("dao insert ������");
 	}
 	@Override
 	public int setCode(String name) {

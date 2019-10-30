@@ -210,7 +210,7 @@ $(document).ready(function(){
 	                <tr>
 	                	<th>상품정보 <img src="/images/ico_required.gif"></th>
 	                	<td>
-  	              			<button onclick="addInfo()">추가</button>
+  	              			<button type = "button" onclick="addInfo()">추가</button>
   	              			<div id = "Info">
 	  	              			<div id = "addColor">
 	  	              				<select name = "product_color">
@@ -224,9 +224,9 @@ $(document).ready(function(){
 	 	              				<input type="checkbox" id="size" name="product_size" value="xs">XS
 	                				<input type = "text"><br>
 	 	              				<input type="checkbox" id="size" name="product_size" value="s">S
-	                				<input type = "text" ><br>
+	                				<input type = "text"  ><br>
 	                				<input type="checkbox" id="size" name="product_size" value="m" >M
-	           				      	<input type = "text" name = "product_stock"><br>
+	           				      	<input type = "text"  name = "product_stock"><br>
 	                				<input type="checkbox" id="size" name="product_size" value="l">L
 	                				<input type = "text" ><br>
 	                				<input type="checkbox" id="size" name="product_size" value="xl">XL

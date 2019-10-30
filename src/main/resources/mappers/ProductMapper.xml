@@ -31,7 +31,7 @@
 	<insert id="product_detail_regist" parameterType="productdetailVO">
 		insert into tbl_product_detail values(
 			seq_product_detail_no.nextval,
-			#{product_code},
+			seq_product_code.currval,
 			#{product_color},
 			#{product_size},
 			#{product_stock}
@@ -44,5 +44,18 @@
 		select * from tbl_product
 			where high_code = #{high_code}
 	</select>
+	
+	<!--상품 코드로 정보 조회 -->
+	<select id="getView" parameterType="int" resultType = "productVO">
+		select * from tbl_product
+			where code = #{code}
+	</select>
+	
+	<!-- 상품 코드로 디테일 정보 조회 -->
+	<select id="getDetailView" parameterType="int" resultType = "productdetailVO">
+		select * from tbl_product_detail
+			where product_code = #{product_code}
+	</select>
+	
 	
 </mapper>

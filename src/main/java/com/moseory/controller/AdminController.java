@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.moseory.domain.HighCate;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -45,6 +46,15 @@ public class AdminController {
 		
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
+//		productVO.setHigh_cate(HighCate.OUTER);
+//		System.out.println(productVO.getHigh_cate().getCode());
+		//1. product에 데이터 등록
+		adminService.product_regist(productVO);
+		//2. sequence로 code가 들어가기 때문에 받아오는 productVO로는 code를 모름
+		int code = adminService.setCode(productVO.getName());
+		//3. 중복되지 않는 name으로 code를 조회해옴
+		productdetailVO.setProduct_code(code);
+		//4. detail에 데이터 등록
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
 		productdetailVO.setProduct_code(code);
