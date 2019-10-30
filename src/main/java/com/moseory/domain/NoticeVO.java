@@ -1,7 +1,6 @@
 package com.moseory.domain;
 
 import java.sql.Date;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,5 +18,5 @@ public class NoticeVO {
 	private int HIT;
 	private String FILE_PATH;
 	private String FILE_NAME;
-
+	
 }

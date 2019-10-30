@@ -29,12 +29,13 @@
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
 		<property name="username" value="hong" />
 		<property name="password" value="h8159" />
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />	
+		
+		<!-- <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />	
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe" />
 		<property name="username" value="hr" />
-		<property name="password" value="hr" />
+		<property name="password" value="hr" /> -->
 	</bean>
 	
 	

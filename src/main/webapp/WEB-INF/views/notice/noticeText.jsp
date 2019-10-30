@@ -15,7 +15,7 @@
 </head>
 
 <body>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		$(document).ready(function() {
 
 			$(".check-all").click(function() {
@@ -27,13 +27,15 @@
 			var select_email = $("#select_email").val();
 			$("#email").val(select_email);
 		}
-	</script>
+	</script> -->
 	<%@ include file="../includes/sidebar.jsp"%>
 
 	<div class="container" style="margin-left: 22%;"width:100%>
 
 		<table width="100%">
-			<form name=writeform method=post>
+			<form name="writeform" method="post">
+			<input type = "text"  name = "member_id" value = "${user.id}">
+			<input type = "hidden"  name = "member_id" value = "${user.id}">
 				<tr>
 					<td>
 						<table class="table table-striped" margin-top:"50px"-->

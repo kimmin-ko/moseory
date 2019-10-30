@@ -27,6 +27,7 @@ public class NoticeController {
 	public void getnoticeText() {
 		
 	}
+
 	
 	//게시글 작성하기
 	@PostMapping("/noticeText")
