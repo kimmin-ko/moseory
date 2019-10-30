@@ -2,15 +2,11 @@ package com.moseory.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import java.util.Map;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,10 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
 
@@ -34,7 +27,7 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/member/*")
+@RequestMapping("/member/*") // 로그인 정보가 필요하지 않음
 public class MemberController {
     
     @Setter(onMethod_ = @Autowired)
@@ -129,52 +122,6 @@ public class MemberController {
     // 회원 가입 성공 페이지
     @GetMapping("/joinOk")
     public void joinOk() {
-	
-    }
-    
-    // 마이페이지
-    @GetMapping("/myPage")
-    public String myPage(@RequestParam @Nullable String id, Model model) {
-	// 로그인하지 않았을 때
-	if(id == null || id.equals("") || id.length() == 0) return "redirect:/member/login";
-	
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-	
-	return "/member/myPage";
-    }
-    
-    // 회원 정보 수정
-    @GetMapping("/modify")
-    public String modify(@RequestParam @Nullable String id, Model model) {
-	
-	// 로그인하지 않았을 때
-	if(id == null || id.equals("") || id.length() == 0) return "redirect:/member/login";
-		
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	model.addAttribute("member", member);
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-	
-	return "/member/modify";
-    }
-    
-    // 회원 탈퇴
-    @GetMapping("/withdrawal")
-    public void withdrawal() {
 	
     }
     

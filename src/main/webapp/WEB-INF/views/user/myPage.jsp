@@ -57,7 +57,7 @@
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="/member/modify?id=${user.id }">개인정보 관리</a></h6>
+						<h6><a href="/user/modify">개인정보 관리</a></h6>
 						<p>
 							회원이신 고객님의 개인정보를<br>
 							관리하는 공간입니다.

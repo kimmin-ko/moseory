@@ -67,10 +67,10 @@
 
 <%@ include file="../includes/sidebar.jsp" %>
 
-<div class="container joinForm-container" style="margin-left:22%">
+<div class="container modifyForm-container" style="margin-left:22%">
 
-    <!-- Join Form Start -->
-    <div class="row joinLabel-row" style="margin-top: 80px;">
+    <!-- Modify Form Start -->
+    <div class="row modifyLabel-row" style="margin-top: 80px;">
         <div class="col-md-10 col-md-offset-1">
             <p>MEMBER EDIT</p>
             
@@ -89,7 +89,7 @@
         </div>
     </div>
 	
-	<form action="/member/join" method="post" id="joinform">
+	<form action="/user/modify" method="post" id="modifyForm">
 	    <div class="row" style="margin-bottom: 30px;">
 	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
 	            <table class="table table-bordered">
@@ -222,14 +222,14 @@
         <div class="col-md-10 col-md-offset-1" style="text-align: center;">
 			<button type="submit" class="btn btn-default btn-sm" id="submitBtn"
 				style="background-color: #404549; color: white;">회원정보수정</button>
-			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/member/myPage'">취소</button>
+			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/myPage'">취소</button>
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
 			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
 				onclick="location.href='/member/withdrawal'">회원탈퇴</button>
 	    </div>
 	</div>
-    <!-- Join Form End -->
+    <!-- Modify Form End -->
 
     <%@ include file="../includes/footer.jsp" %>
 
@@ -292,7 +292,7 @@
                 tel = "";
             }
 
-            // 일반전화가 비어있을 경우 phone = ""
+            // 휴대전화가 비어있을 경우 phone = ""
             if(!phone2 && !phone3) {
                 phone = "";
             }
@@ -318,12 +318,6 @@
             } else if(!pwd_confirm_a) { // text pwd_confirm_a empty
                 alert("비밀번호 확인 답변 항목은 필수 입력값 입니다.");
                 $("#pwd_confirm_a").focus();
-            } else if(id.length < 4) { // 아이디가 4글자 보다 짧을 경우
-                alert("아이디는 영문소문자 또는 숫자 4~16자로 입력해 주세요.");
-                $("#id").focus();
-            } else if(checkId(id)) { // 아이디 유효성 검사에 문제가 있을 경우
-                alert("공백/특수문자/대문자가 포함되어 있는 아이디는 사용할 수 없습니다.");
-                $("#id").focus();
             } else if(password != password_check) { // 비밀번호 값과 비밀번호 확인 값이 일치하지 않을 때
                 alert("비밀번호가 일치하지 않습니다.");
                 $("#password").focus();
@@ -345,7 +339,7 @@
                 alert("휴대전화를 다시 확인해주세요.");
                 $("#phone2").focus();
             } else { // 입력값에 문제 없을 경우 서브밋
-            	$("#joinform").submit();
+            	$("#modifyForm").submit();
             }
 
         });

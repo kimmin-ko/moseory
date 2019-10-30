@@ -55,9 +55,9 @@
 	    id = #{id}
 	</update>
 	
-	<select id="loginProc" parameterType="map" resultType="com.moseory.domain.MemberVO">
+	<select id="loginProc" parameterType="map" resultMap="memberResultMap">
 		SELECT 
-		  id, name, email, phone
+		  id, pwd_confirm_q, pwd_confirm_a, name, zipcode, address1, address2, tel, phone, email, birth, lev, point, total
 		FROM 
 		  tbl_member
 		WHERE 1 = 1 

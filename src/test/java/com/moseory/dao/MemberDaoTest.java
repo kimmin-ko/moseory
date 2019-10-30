@@ -2,9 +2,7 @@ package com.moseory.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 
@@ -12,10 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
@@ -51,30 +47,6 @@ public class MemberDaoTest {
 	assertThat(dao.getCountMember(member1.getId()), is(1));
 	assertThat(dao.getCountMember(member2.getId()), is(1));
     }	
-    
-    @Test
-    public void testUpdateMember() {
-	MemberVO vo = dao.getMember(member1.getId());
-	
-	checkGetMember(vo);
-	
-	vo.setPassword("modifypwd");
-	vo.setBirth(LocalDate.of(1984, 12, 16));
-	
-	dao.updateMember(vo);
-	
-	assertThat(dao.getMember(vo.getId()).getPassword(), is("modifypwd"));
-	assertThat(dao.getMember(vo.getId()).getBirth(), is(LocalDate.of(1984, 12, 16)));
-    }
-    
-    @Test
-    public void testGetMember() {
-	dao.deleteMember(member1.getId());
-	
-	dao.insertMember(member1);
-	
-	checkGetMember(dao.getMember(member1.getId()));
-    }
     
     public void checkGetMember(MemberVO vo) {
 	assertEquals(member1.getPassword(), vo.getPassword());

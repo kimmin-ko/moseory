@@ -1,4 +1,4 @@
-.joinLabel-row {
+.modifyLabel-row {
     text-align: center;
 }
 
@@ -34,7 +34,7 @@
     border: 0.5px solid #CED0D1;
 }
 
-.joinForm-container {
+.modifyForm-container {
     font-size: small;
 }
 

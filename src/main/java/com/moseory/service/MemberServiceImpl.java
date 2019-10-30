@@ -58,11 +58,6 @@ public class MemberServiceImpl implements MemberService {
 	return memberDao.getCountMember(id);
     }
 
-    @Override
-    public MemberVO readMember(String id) {
-	return memberDao.getMember(id);
-    }
-
 }
 
 

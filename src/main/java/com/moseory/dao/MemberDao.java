@@ -15,14 +15,10 @@ public interface MemberDao {
     
     public int getCount();
     
-    public MemberVO getMember(String id);
-    
     public MemberVO loginProc(Map<String, Object>param);
     
     public List<Map<String, Object>> findIdProc(Map<String, Object>param);
 
     public int getCountMember(String id);
 
-    public int updateMember(MemberVO vo);
-    
 }

@@ -26,7 +26,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();
 		ModelMap modelMap = modelAndView.getModelMap();
 		Object memberVO = modelMap.get("user");
-		log.info("LoginInterceptor VO Check "+memberVO.toString());
+//		log.info("LoginInterceptor VO Check "+memberVO.toString());
 		if(memberVO != null) {
 			session.setAttribute("user", memberVO);
 			Object destination = session.getAttribute("destination");
