@@ -45,13 +45,9 @@ public class AdminController {
 		
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
-		//1. productÅ×ÀÌºí¿¡ Á¦Ç°Á¤º¸ ³ÖÀ½
 		adminService.product_regist(productVO);
-		//2. sequence·Î ³ÖÀº productÅ×ÀÌºíÀÇ code°¡ ÇÊ¿äÇÔ
 		int code = adminService.setCode(productVO.getName());
-		//3. °¡Á®¿Â ÄÚµå·Î detail µî·Ï
 		productdetailVO.setProduct_code(code);
-		//4. detailÅ×ÀÌºí¿¡ µî·Ï
 		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";
@@ -95,7 +91,7 @@ public class AdminController {
                     + callback
                     + ",'"
                     + fileUrl
-                    + "','ÀÌ¹ÌÁö¸¦ ¾÷·Îµå ÇÏ¿´½À´Ï´Ù.'"
+                    + "','ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.'"
                     + ")</script>");
         	
         	printWriter.flush();
@@ -112,12 +108,12 @@ public class AdminController {
 	}
 	
 //	int code = adminService.getIntCode(productVO);
-//	System.out.println("int·Î ¹ÞÀº ÄÚµå = " + code);
+//	System.out.println("intï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ = " + code);
 ////	productVO = adminService.getCode(productVO);
-////	System.out.println("ÄÚµå = " + productVO.getCode());
+////	System.out.println("ï¿½Úµï¿½ = " + productVO.getCode());
 //	List<ProductVO> list = adminService.getListCode(productVO);
 //	for(ProductVO pVO : list) {
-//		System.out.println("list·Î ¹ÞÀº ÄÚµå = " + pVO);
+//		System.out.println("listï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ = " + pVO);
 //	}
 //	productdetailVO.setProduct_code(productVO.getCode());
 //	adminService.pdetail_regist(productdetailVO);

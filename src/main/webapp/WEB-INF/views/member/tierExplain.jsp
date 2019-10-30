@@ -15,8 +15,6 @@
 					$("#saving").text(levelJson.saving + '%');
 					
 					$("#discount").text(levelJson.discount + '%');
-					
-					console.log(levelJson);
 				});
 			</script>
 		  

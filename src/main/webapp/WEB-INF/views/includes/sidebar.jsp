@@ -43,7 +43,7 @@
 			<a href="/cart/cartList">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
-			<a href="/member/myPage?id=admin00">MY PAGE</a>
+			<a href="/member/myPage?id=${user.id }">MY PAGE</a>
 		</div>
 	</div>
 

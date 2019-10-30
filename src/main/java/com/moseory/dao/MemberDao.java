@@ -23,5 +23,6 @@ public interface MemberDao {
 
     public int getCountMember(String id);
 
+    public int updateMember(MemberVO vo);
     
 }
