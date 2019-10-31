@@ -23,8 +23,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyMember(MemberVO vo) {
-	log.info("service member : " + vo.getPwd_confirm_a());
-	System.out.println("service member : " + vo.getPwd_confirm_a());
 	userDao.updateMember(vo);
     }
 

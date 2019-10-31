@@ -70,6 +70,8 @@ public class UserController {
     public String modify(Model model, HttpServletRequest req) {
 	Map<String, Object> memberMap = getUserJson(req);
 	
+	log.info("수정된 회원 정보 : " + ((MemberVO)memberMap.get("member")).getPwd_confirm_a());
+	
 	model.addAttribute("member", memberMap.get("member"));
 	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
@@ -79,11 +81,15 @@ public class UserController {
     }
     
     // 회원 정보 수정
-    @PostMapping("/modify")
-    public String modify(@ModelAttribute MemberVO member) {
-	log.info("controller member id : " + member.getId());
+    @PostMapping("/modifyProc")
+    public String modify(@ModelAttribute MemberVO member, HttpSession session) {
 	
 	userService.modifyMember(member);
+	
+	member = userService.readMember(member.getId());
+	
+	// 수정한 회원 정보를 세션에 업데이트
+	session.setAttribute("user", member);
 	
 	return "redirect:/user/modifyOk";
     }
@@ -102,8 +108,12 @@ public class UserController {
     
     // 주문 페이지
     @GetMapping("/order")
-    public void order() {
+    public void order(Model model, HttpServletRequest req) {
+	Map<String, Object> memberMap = getUserJson(req);
 	
+	model.addAttribute("member", memberMap.get("member"));
+	model.addAttribute("memberJson", memberMap.get("memberJson"));
+	model.addAttribute("levelJson", memberMap.get("levelJson"));
     }
     
     // 장바구니 페이지
@@ -114,6 +124,12 @@ public class UserController {
 	model.addAttribute("member", memberMap.get("member"));
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
 	model.addAttribute("levelJson", memberMap.get("levelJson"));
+    }
+    
+    //장바구니 상품 추가
+    @PostMapping("/addCart")
+    public void addCart() {
+	
     }
     
 }

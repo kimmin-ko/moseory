@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j;
 @Repository
 public class UserDaoImpl implements UserDao {
     
-    private String namespace = "com.moseory.mapper.MemberMapper";
+    private String namespace = "com.moseory.mapper.UserMapper";
     
     @Setter(onMethod_ = @Autowired)
     private SqlSession sqlSession;

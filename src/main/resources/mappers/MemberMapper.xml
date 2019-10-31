@@ -34,26 +34,25 @@
 	</insert>
 	
 	<delete id="deleteAll">
-	delete from tbl_member
+	DELETE FROM
+		tbl_member
 	</delete>
 	
 	<select id="getCountMember" resultType="int">
-	select count(*) from tbl_member where id = #{id}
+	SELECT
+		count(*)
+	FROM 
+		tbl_member
+	WHERE
+		id = #{id}
 	</select>
 	
 	<select id="getCount" resultType="int">
-	select count(*) from tbl_member
+	SELECT
+		count(*)
+	FROM
+		tbl_member
 	</select>
-	
-	<update id="updateMember">
-	UPDATE
-    	tbl_member 
-	SET
-	    password = #{password}, pwd_confirm_q = #{pwd_confirm_q}, pwd_confirm_a = #{pwd_confirm_a}, name = #{name}, 
-	    zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, tel = #{tel}, phone = #{phone}, email = #{email}, birth = #{birth}
-	WHERE
-	    id = #{id}
-	</update>
 	
 	<select id="loginProc" parameterType="map" resultMap="memberResultMap">
 		SELECT 
@@ -80,16 +79,25 @@
 		 AND name =#{name}
 	</select>
 
-	<select id="getMember" resultMap="memberResultMap">
-	select id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
-	tel, phone, email, birth, lev, point, total, join_date
-	from tbl_member
-	where id = #{id}
-	</select>
-	
-	<delete id="deleteMember">
-	delete from tbl_member where id = #{id}
-	</delete>
-
-	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

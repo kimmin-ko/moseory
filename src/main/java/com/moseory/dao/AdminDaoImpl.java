@@ -15,10 +15,6 @@ public class AdminDaoImpl implements AdminDao{
 
 	@Autowired
 	private SqlSession sqlSession;
-	@Override
-	public void product_regist(ProductVO productVO) {
-		sqlSession.insert("product.regist", productVO);
-		
 	
 	@Override
 	public void product_regist(ProductVO productVO) {

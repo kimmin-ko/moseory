@@ -21,8 +21,7 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/productList")
-	public String productList(@RequestParam int high_code,
-													Model model) {
+	public String productList(@RequestParam int high_code, Model model) {
 		System.out.println(high_code);
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
@@ -33,8 +32,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
-	public String productInfo(@RequestParam int code,
-													Model model) {
+	public String productInfo(@RequestParam int code, Model model) {
 		ProductVO productVO = productService.getView(code);
 		System.out.println(productVO);
 		ProductDetailVO productdetailVO = productService.getDetailView(code);

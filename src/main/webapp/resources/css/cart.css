@@ -1,24 +1,3 @@
-/* benefit-info css start */
-.tbl-benefit-info td {
-    font-size: 12px;
-}
-
-.head-td,
-#point,
-#order {
-    font-weight: bold;
-}
-
-.body-td {
-    text-align: left;
-}
-
-#tier, #memName, #saving, #discount {
-    font-weight: bold;
-    color: #4387C2;
-}
-/* benefit-info css end */
-
 /* cart css start */
 .cartLabel-row {
     text-align: center;

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.moseory.domain.HighCate;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -56,8 +55,6 @@ public class AdminController {
 		productdetailVO.setProduct_code(code);
 		//4. detail에 데이터 등록
 		adminService.product_regist(productVO);
-		int code = adminService.setCode(productVO.getName());
-		productdetailVO.setProduct_code(code);
 		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";

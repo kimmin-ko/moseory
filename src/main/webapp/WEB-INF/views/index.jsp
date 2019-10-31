@@ -25,19 +25,19 @@
 			<div class="col-lg-10 col-lg-offset-1">
 				<ul class="prod-list">
 					<li>
-						<a href="/product/productInfo">
-							<img src="/images/1.jpg" class="weekly-img">
-							<div class="caption">
-								<p>포니 헨리 넥 셔츠</p>
-								<p>37,000원</p>
-							</div>
-						</a>
+						<img src="//www.bydern.com/web/product/big/201906/7ae3b37ffe6827bee74eccb5d9ad6f55.jpg" class="weekly-img">
+						<div class="caption">
+							<p>웨지 린넨 체크자켓</p>
+							<p>87,000원</p>
+						</div>
 					</li>
-					<li><img src="/images/2.jpg" class="weekly-img">
+					<li>
+						<img src="/images/2.jpg" class="weekly-img">
 						<div class="caption">
 							<p>스프라이트 보트넥 티셔츠</p>
 							<p>29,000원</p>
-						</div></li>
+						</div>
+					</li>
 					<li><img src="/images/3.jpg" class="weekly-img">
 						<div class="caption">
 							<p>쿼츠 컷팅 데님 팬츠</p>
@@ -55,8 +55,7 @@
 		</div>
 
 		<div class="row ma-to-30 ma-bo-20">
-			<div class="col-md-10 col-md-offset-1" style="font-weight: bold;">NEW
-				ARRIVAL</div>
+			<div class="col-md-10 col-md-offset-1" style="font-weight: bold;">NEW ARRIVAL</div>
 		</div>
 
 		<div class="row ma-bo-50" id="newArrivalList">

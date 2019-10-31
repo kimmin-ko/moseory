@@ -1,0 +1,29 @@
+@charset "UTF-8";
+/* benefit-info css start */
+.tbl-benefit-info td {
+}
+
+.div-benefit-info .tbl-benefit-info tr td {
+    font-size: 12px;
+	vertical-align: middle;
+}
+
+.head-td {
+	font-weight: bold;
+	text-align: center;
+}
+
+#point,
+#order {
+    font-weight: bold;
+}
+
+.body-td {
+    text-align: left;
+}
+
+#tier, #memName, #saving, #discount {
+    font-weight: bold;
+    color: #4387C2;
+}
+/* benefit-info css end */

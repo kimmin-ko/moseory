@@ -22,28 +22,8 @@
             <p>CART</p>
         </div>
         
-        <div class="col-md-10 col-md-offset-1 div-benefit-info">
-        	<table class="table table-bordered tbl-benefit-info">
-        		<tr>
-        			<td class="head-td" rowspan="2">혜택정보</td>
-        			<td class="body-td">
-        				<span id="memName"></span> 님은 
-						[<span id="tier"></span>] 회원입니다.
-						<br>
-						상품 구매시 <span id="saving"></span>의 추가적립과 
-						<span id="discount"></span>의 추가 할인을 받으실 수 있습니다.
-        			</td>
-        		</tr>
-        		<tr>
-        			<td class="body-td">
-						<span class="p-o-name">가용 적립금 : </span>
-						<span id="point"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<span class="p-o-name">총 구매금액 : </span>
-						<span id="order"></span>
-					</td>
-        		</tr>
-        	</table>
-        </div>
+		<%@ include file="benefitExplain.jsp" %>
+		
     </div>
     
     <ul class="nav nav-tabs col-md-10 col-md-offset-1">
@@ -111,7 +91,7 @@
                         <td><span class="final-prod-price">37,000원</span></td>
                         <!-- 선택 -->
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">주문하기</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
                             <button type="button" class="btn btn-default btn-sm">관심상품</button>
                             <button type="button" class="btn btn-default btn-sm">삭제하기</button>
                         </td>
@@ -135,7 +115,7 @@
                         <td>3,000원</td>
                         <td><span class="final-prod-price">152,000원</span></td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">주문하기</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
                             <button type="button" class="btn btn-default btn-sm">관심상품</button>
                             <button type="button" class="btn btn-default btn-sm">삭제하기</button>
                         </td>
@@ -190,8 +170,8 @@
 
         <div class="col-md-10 col-md-offset-1" style="text-align : center; margin-bottom: 80px;">
             <button type="button" class="btn btn-default btn-sm" 
-            	style="background-color: black; color: white;" onclick="location.href='/product/order'">전체상품주문</button>
-            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">선택상품주문</button>
+            	style="background-color: black; color: white;" onclick="location.href='/user/order'">전체상품주문</button>
+            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">선택상품주문</button>
             <button type="button" class="btn btn-default btn-sm" onclick="location.href='/index'">쇼핑계속</button>
         </div>
 
@@ -231,21 +211,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
     
-    var memberJson = ${memberJson};
-	var levelJson = ${levelJson};
-	
-	$("#memName").text(memberJson.name);
-	
-	$("#tier").text(levelJson.grade);
-	
-	$("#saving").text(levelJson.saving + '%');
-	
-	$("#discount").text(levelJson.discount + '%');
-	
-	$("#point").text(memberJson.point + '원');
-	
-	$("#order").text(memberJson.total + '원');
-	
 	// 최상위 체크박스 선택 시 전체 선택
     $(".check-all").click(function() {
         $(".checkCart").prop("checked", this.checked);

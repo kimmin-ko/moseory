@@ -89,7 +89,7 @@
         </div>
     </div>
 	
-	<form action="/user/modify" method="post" id="modifyForm">
+	<form action="/user/modifyProc" method="post" id="modifyForm">
 	    <div class="row" style="margin-bottom: 30px;">
 	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
 	            <table class="table table-bordered">
