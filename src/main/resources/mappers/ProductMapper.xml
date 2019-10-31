@@ -47,15 +47,54 @@
 	
 	<!--상품 코드로 정보 조회 -->
 	<select id="getView" parameterType="int" resultType = "productVO">
-		select * from tbl_product
-			where code = #{code}
+	SELECT
+		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
+	FROM
+		tbl_product
+	WHERE
+		code = #{code}
 	</select>
 	
 	<!-- 상품 코드로 디테일 정보 조회 -->
 	<select id="getDetailView" parameterType="int" resultType = "productdetailVO">
-		select * from tbl_product_detail
-			where product_code = #{product_code}
+	SELECT
+		no, product_code, product_color, product_size, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
 	</select>
 	
+	<!-- 해당 상품의 색상을 중복 없이 조회 -->
+	<select id="getProductColor" resultType="String">
+		SELECT
+			distinct product_color 
+		FROM
+			tbl_product_detail 
+		WHERE
+			product_code = #{product_code}
+	</select>
 	
+	<!-- 해당 상품 색상의 사이즈를 조회 -->
+	<select id="getProductSize" resultType="String">
+		SELECT
+			product_size
+		FROM
+			tbl_product_detail
+		WHERE
+			product_code = #{product_code} 
+			<if test="product_color != null">
+				AND product_color = #{product_color}
+			</if>
+			<if test="product_color == null">
+				AND product_color is null
+			</if>
+	</select>
 </mapper>
+
+
+
+
+
+
+

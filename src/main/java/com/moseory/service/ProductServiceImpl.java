@@ -26,8 +26,19 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ProductDetailVO getDetailView(int product_code) {
+	public List<ProductDetailVO> getDetailView(int product_code) {
 		return productDao.getDetailView(product_code);
 	}
+
+	@Override
+	public List<String> getProductColor(int product_code) {
+	    return productDao.getProductColor(product_code);
+	}
+
+	@Override
+	public List<String> getProductSize(int product_code, String product_color) {
+	    return productDao.getProductSize(product_code, product_color);
+	}
+	
 	
 }

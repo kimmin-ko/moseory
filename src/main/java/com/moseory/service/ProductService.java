@@ -14,6 +14,9 @@ public interface ProductService {
 
 	ProductVO getView(int code);
 
-	ProductDetailVO getDetailView(int code);
+	List<ProductDetailVO> getDetailView(int code);
+	
+	List<String> getProductColor(int product_code);
 
+	List<String> getProductSize(int product_code, String product_color);
 }

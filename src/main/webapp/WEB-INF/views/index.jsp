@@ -28,7 +28,7 @@
 					<c:forEach var="product" items="${productSaleCount }" begin="0" end="2">
 					<li>
 						<img src='<c:out value="${product.file_path }" />' class="weekly-img">
-						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out valye='${product.code }' />"'>
+						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out value='${product.code }' />"'>
 							<p><c:out value="${product.name }" /></p>
 							<p><c:out value="${product.price }" />원</p>
 						</div>
@@ -54,7 +54,8 @@
 			<div class="col-md-10 col-md-offset-1">
 				<c:forEach var="product" items="${productNew }">
 				<div class="col-md-4 prod-desc ma-bo-50">
-					<a href="/product/productInfo?code=<c:out valye='${product.code }' />"><img src='<c:out value="${product.file_path }" />'></a>
+					<a href="/product/productInfo?code=<c:out value='${product.code }' />">
+						<img src='<c:out value="${product.file_path }" />'></a>
 					<p>
 						<a href="#"><c:out value="${product.name }" /></a>
 					</p>
