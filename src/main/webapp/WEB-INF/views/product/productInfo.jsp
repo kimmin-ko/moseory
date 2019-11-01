@@ -14,12 +14,6 @@
 
 <%@ include file="../includes/sidebar.jsp" %>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		
-	});
-</script>
-
 <div class="container" style="margin-left:22%;">
 
     <!-- Product Info Form Start -->
@@ -55,20 +49,43 @@
 
             <hr style="border: 0.5px solid #DFDFDF">
             
-            <c:if test="${!empty productColorList }">
-	            <span class="ft-size-12">컬러</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	            <select class="ft-size-12 prod-option">
-	                <option>- [필수] 옵션을 선택해 주세요 -</option>
+            <script type="text/javascript">
+            	function getSize() {
+            		// 현재 select-size의 option 삭제
+            		$("#select-size option").remove();
+            		$("#select-size").append('<option>옵션 선택</option>');
+            		
+            		// 해당 상품 코드
+            		var code = ${product.code};
+            		// 선택된 색상
+            		var color = $("#select-color option:selected").val();
+            		
+            		// code와 color를 이용해서 size를 가져옴
+            		$.ajax({
+            			type : 'get',
+            			url : '/product/getSize/' + code + '/' + color,
+            			success : function(result) {
+            				for(var i = 0; i < result.length; i++) {
+            					// 가져온 사이즈를 select-size의 option으로 추가
+            					$("#select-size").append('<option>'+result[i]+'</option>');
+            				}
+            			}
+            		});
+            	} // getSize
+            </script>
+            <!-- 컬러 -->
+            <c:if test="${color != null }">
+	            <select id="select-color" class="ft-size-12 prod-option form-control" onchange="getSize()">
+	                <option>옵션 선택</option>
 	                <c:forEach var="productColor" items="${productColorList }">
 	                	<option><c:out value="${productColor }" /></option>
 	                </c:forEach>
 	            </select>
             </c:if>
-			<br>
+            <!-- 사이즈 -->
             <c:if test="${size != null }">
-	            <span class="ft-size-12">사이즈</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	            <select class="ft-size-12 prod-option">
-	                <option>- [필수] 옵션을 선택해 주세요 -</option>
+	            <select id="select-size" class="ft-size-12 prod-option form-control">
+	                <option>옵션 선택</option>
 	                <c:forEach var="productSize" items="${productSizeList }">
 	                	<option><c:out value="${productSize }" /></option>
 	                </c:forEach>
@@ -93,17 +110,6 @@
                 <button type="button" class="btn btn-default btn-lg">WISH LIST</button>
             </div>
             
-            <script type="text/javascript">
-            	$(document).ready(function() {
-            		console.log("${productDetailList}");
-            	})
-            	
-            	// 해당 상품 장바구니에 추가
-            	function addProductToCart() {
-            		
-            	}
-            </script>
-
         </div>
 
     </div> <!-- row -->

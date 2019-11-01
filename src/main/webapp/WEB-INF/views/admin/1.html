@@ -1,0 +1,62 @@
+<input type="button" onclick="test()" value="버튼">
+<script>
+var testProduct = (function() {
+
+function sendPro(productDetail) {
+
+$.ajax({
+type : "post",
+url : "/admin/testProduct",
+data : JSON.stringify(productDetail),
+contentType : "application/json; charset=utf-8"
+});
+
+} // sendPro
+
+return {sendPro : sendPro};
+})();
+
+function test() {
+var productDetail = null;
+
+var colorArray = [];
+var sizeArray = [];
+var stockArray = [];
+
+var numberOfChecked = $('input:checkbox:checked').length;
+
+$('input[name="product_size"]:checked').each(function(i){
+sizeArray.push($(this).val());
+});
+
+for(var i = 0; i < numberOfChecked; i++) {
+$('select[name="product_color"]').each(function(i){
+colorArray.push($(this).val());
+});
+
+}
+
+$('input[name="product_stock"]').each(function(i) {
+stockArray.push($(this).val());
+});
+
+console.log(colorArray);
+console.log(sizeArray);
+console.log(stockArray);
+
+for(var i = 0; i < numberOfChecked; i++) {
+productDetail = {
+product_color : colorArray[i],
+product_size : sizeArray[i],
+product_stock : stockArray[i]
+}
+
+//console.log(JSON.stringify(productDetail));
+
+testProduct.sendPro(productDetail);
+
+}
+
+console.log(productDetailList);
+}
+</script>

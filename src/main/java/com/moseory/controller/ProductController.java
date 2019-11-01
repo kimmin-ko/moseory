@@ -3,9 +3,12 @@ package com.moseory.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,15 +52,24 @@ public class ProductController {
 		    // 상품 색상 중복 없이 조회
 		    productColor = productService.getProductColor(code);
 		}
+		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		model.addAttribute("productColorList", productColor);
 		
-		log.info("is product color : " + productColor);
+		log.info("is product color : " + color);
+		log.info("is product productColor : " + productColor);
 		
 		/* 사이즈 조회 */
 		String size = productDetailVO.get(0).getProduct_size();
-		model.addAttribute("size", size);
+		List<String> productSize = null;
+		// 사이즈가 있고, 색상이 없을 경우에는 상품 정보 페이지에 사이즈 뿌려줌
+		if(size != null && color == null) {
+		    productSize = productService.getProductSize(code, color);
+		}
+		model.addAttribute("size", size); // 해당 상품의 사이즈 option 표시 여부 수단
+		model.addAttribute("productSizeList", productSize);
 		
 		log.info("is product size : " + size);
+		log.info("is product productSize : " + productSize);
 		
 		model.addAttribute("productDetailList", productDetailVO);
 		model.addAttribute("product", productVO);
@@ -65,5 +77,27 @@ public class ProductController {
 		return "product/productInfo";
 	}
 	
+	@GetMapping("/getSize/{code}/{color}")
+	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code,
+			     @PathVariable("color") String color) {
+	    
+	    List<String> productSize = productService.getProductSize(code, color);
+	    
+	    return productSize != null 
+		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
+		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	
 }
+
+
+
+
+
+
+
+
+
+
+

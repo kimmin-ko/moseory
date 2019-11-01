@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +28,9 @@ import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -33,16 +40,20 @@ public class AdminController {
 	
 	@GetMapping("/productregist")
 	public String productRegist() {
-		
-		return "admin/productregist";
+	    
+	    return "admin/productregist";
 	}
 
 	@PostMapping("/productregist")
 	public String productRegist(
 			@ModelAttribute ProductVO productVO,
-			@ModelAttribute ProductDetailVO productdetailVO
+			@ModelAttribute ProductDetailVO productdetailVO,
+			@ModelAttribute List<ProductDetailVO> productDetailVOList
 			) {
-		
+	    
+	    	
+	    	productDetailVOList.stream().forEach(x -> log.info(x.getProduct_stock()));
+	    
 		System.out.println(productVO);
 		System.out.println(productdetailVO);
 //		productVO.setHigh_cate(HighCate.OUTER);
@@ -98,7 +109,7 @@ public class AdminController {
                     + callback
                     + ",'"
                     + fileUrl
-                    + "','�̹����� ���ε� �Ͽ����ϴ�.'"
+                    + "',''"
                     + ")</script>");
         	
         	printWriter.flush();

@@ -6,15 +6,17 @@
 
 	<!-- 상품정보 등록 -->
 	<insert id="regist" parameterType="productVO">
-		insert into tbl_product values(
+		INSERT INTO tbl_product
+			(code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment) 
+		VALUES(
 			seq_product_code.nextval,
 			#{name},
 			#{high_code},
 			#{low_code},
 			#{price},
-			0,
-			0,
-			0,
+			0, <!-- sale_count -->
+			0, <!-- grade -->
+			0,<!-- wish_count -->
 			#{file_path},
 			#{file_name},
 			#{product_comment}

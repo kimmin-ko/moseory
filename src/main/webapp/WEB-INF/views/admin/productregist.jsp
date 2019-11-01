@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,14 +20,8 @@
 </head>
 <body>
 
-<!-- Daum 우편번호 찾기 API 	-->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-
-</script>
-
 <%@ include file="../includes/sidebar.jsp" %>
-<script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script>
+<!-- <script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script> -->
 <!-- <script>
 	var uploadFile = HttpContext.Current.Request.Files;
 	
@@ -214,23 +209,28 @@ $(document).ready(function(){
   	              			<div id = "Info">
 	  	              			<div id = "addColor">
 	  	              				<select name = "product_color">
-	                					<option value = "WH">WHITE</option>
-	                					<option value = "BL">BALCK</option>
-	                					<option value = "RD">RED</option>
-	                					<option value = "GR">GRAY</option>
+	                					<option value = "화이트">화이트</option>
+	                					<option value = "블랙">블랙</option>
+	                					<option value = "레드">레드</option>
+	                					<option value = "그레이">그레이</option>
 	                				</select>
 	 	              			</div>
 	 	              			<div id = "addSize">
 	 	              				<input type="checkbox" id="size" name="product_size" value="xs">XS
-	                				<input type = "text"><br>
+	                				<input type = "text" name = "product_stock"><br>
+	                				
 	 	              				<input type="checkbox" id="size" name="product_size" value="s">S
-	                				<input type = "text"  ><br>
+	                				<input type = "text" name = "product_stock" ><br>
+	                				
 	                				<input type="checkbox" id="size" name="product_size" value="m" >M
-	           				      	<input type = "text"  name = "product_stock"><br>
+	           				      	<input type = "text" name = "product_stock"><br>
+	           				      	
 	                				<input type="checkbox" id="size" name="product_size" value="l">L
-	                				<input type = "text" ><br>
+	                				<input type = "text" name = "product_stock"><br>
+	                				
 	                				<input type="checkbox" id="size" name="product_size" value="xl">XL
-	                				<input type = "text"><br>
+	                				<input type = "text" name = "product_stock"><br>
+	                				
 	 	              			</div>
 	  	              			<div id = "field"></div>
   	              			</div>
@@ -247,7 +247,7 @@ $(document).ready(function(){
 	                	<td>
 							<textarea class = "form-control" name = "product_comment" id = "product_comment" cols="20" rows="15"></textarea>	                	
 							<script> 
-								CKEDITOR.replace('product_comment');
+								// CKEDITOR.replace('product_comment');
 							</script>
 	                	</td>
 	                </tr>
