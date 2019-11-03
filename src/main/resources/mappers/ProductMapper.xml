@@ -69,29 +69,131 @@
 	
 	<!-- 해당 상품의 색상을 중복 없이 조회 -->
 	<select id="getProductColor" resultType="String">
-		SELECT
-			distinct product_color 
-		FROM
-			tbl_product_detail 
-		WHERE
-			product_code = #{product_code}
+	SELECT
+		distinct product_color 
+	FROM
+		tbl_product_detail 
+	WHERE
+		product_code = #{product_code}
 	</select>
 	
 	<!-- 해당 상품 색상의 사이즈를 조회 -->
 	<select id="getProductSize" resultType="String">
-		SELECT
-			product_size
-		FROM
-			tbl_product_detail
-		WHERE
-			product_code = #{product_code} 
-			<if test="product_color != null">
-				AND product_color = #{product_color}
-			</if>
-			<if test="product_color == null">
-				AND product_color is null
-			</if>
+	SELECT
+		product_size
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code} 
+		<if test="product_color != null">
+			AND product_color = #{product_color}
+		</if>
+		<if test="product_color == null">
+			AND product_color is null
+		</if>
 	</select>
+	
+	<!-- 해당 상품의 리뷰 개수 조회 -->
+	<select id="getReviewCount" resultType="int">
+	SELECT
+    	count(*)
+	FROM
+	    tbl_review r left outer join tbl_product_detail pd on r.product_detail_no = pd.no
+	WHERE 
+	    product_code = #{product_code}
+	</select>
+	
+	<!-- 해당 상품의 문의글 개수 조회 -->
+	<select id="getQnaCount" resultType="int">
+	SELECT
+	    count(*)
+	FROM
+	    tbl_qna
+	WHERE 
+	    product_code = #{product_code}
+	</select>
+	
+	<resultMap type="ReviewVO" id="reviewMap">
+		<result column="no" property="no" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="reg_date" property="reg_date" />
+		<result column="hit" property="hit" />
+		<result column="file_path" property="file_path" />
+		<result column="file_name" property="file_name" />
+		<result column="recommend" property="recommend" />
+		<result column="grade" property="grade" />
+		<association property="member" javaType="MemberVO">
+			<result column="id" property="id" />
+			<result column="lev" property="level" typeHandler="LevelEnumTypeHandler" />
+		</association>
+		<association property="product_detail" javaType="productdetailVO">
+			<result column="product_detail_no" property="no" />
+			<result column="product_code" property="product_code" />
+			<result column="product_color" property="product_color" />
+			<result column="product_size" property="product_size" />
+		</association>
+	</resultMap>
+	
+	<!-- 상품 정보 페이지의 리뷰 조회 -->
+	<select id="getReview" resultMap="reviewMap">
+	SELECT 
+	    m.id, m.lev, r.no, r.title, r.content, r.reg_date, r.hit, r.file_path, r.file_name, r.recommend, r.grade,
+	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
+	FROM
+	    tbl_member m, tbl_review r, tbl_product_detail pd
+	WHERE
+	    r.product_detail_no = pd.no 
+	    AND m.id = r.member_id
+	    AND pd.product_code = #{product_code}
+	ORDER BY
+		r.no desc
+	</select>
+	
+	<select id="getOriginalReview" resultMap="reviewMap">
+	SELECT
+		*
+	FROM
+		tbl_review
+	WHERE
+		no = #{no}
+	</select>
+	
+	<resultMap type="QnAVO" id="QnAMap">
+		<result column="no" property="no" />
+		<result column="product_code" property="product_code" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="reg_date" property="reg_date" />
+		<result column="hit" property="hit" />
+		<association property="member" javaType="MemberVO">
+			<result column="id" property="id" />
+			<result column="name" property="name" />
+		</association>
+	</resultMap>
+	
+	<!-- 상품 정보 페이지의 Q&A 조회 -->
+	<select id="getQnA" resultMap="QnAMap">
+	SELECT
+	    q.no, m.id, m.name, q.product_code, q.title, q.content, q.reg_date, q.hit
+	FROM
+	    tbl_qna q LEFT OUTER JOIN tbl_member m ON q.member_id = m.id
+	WHERE
+		product_code = #{product_code}
+	ORDER BY
+		q.no desc
+	</select>
+	
+	<!-- 추천수 증가 -->
+	<update id="modifyRecommend">
+	UPDATE 
+    	tbl_review 
+	SET 
+	    recommend = recommend + 1
+	WHERE
+	    no = #{no}
+	</update>
+	
 </mapper>
 
 

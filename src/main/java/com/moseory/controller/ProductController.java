@@ -9,11 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
+import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
 
 import lombok.extern.log4j.Log4j;
@@ -74,7 +78,37 @@ public class ProductController {
 		model.addAttribute("productDetailList", productDetailVO);
 		model.addAttribute("product", productVO);
 		
+		// 상품의 리뷰 개수
+		int reviewCount = productService.getReviewCount(code);
+		model.addAttribute("reviewCount", reviewCount);
+		
+		//상품의 QnA 개수
+		int qnaCount = productService.getQnaCount(code);
+		model.addAttribute("qnaCount", qnaCount);
+		
+		// 리뷰 리스트
+		List<ReviewVO> reviewList = productService.getReview(code);
+		model.addAttribute("reviewList", reviewList);
+		
+		// 문의 리스트
+		List<QnAVO> qnaList = productService.getQnA(code);
+		model.addAttribute("qnaList", qnaList);
+		
 		return "product/productInfo";
+	}
+	
+	@PostMapping("/increaseRecommend/{review_no}")
+	public ResponseEntity<Integer> increaseRecommend(@PathVariable("review_no") int review_no) {
+	    
+	    if(review_no < 1) {
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	    
+	    productService.increaseRecommend(review_no);
+	    
+	    int review_recommend = productService.getOriginalReview(review_no).getRecommend();
+	    
+	    return new ResponseEntity<>(review_recommend, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getSize/{code}/{color}")

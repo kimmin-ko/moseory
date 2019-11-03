@@ -72,19 +72,6 @@ public class AdminController {
 	}
 		
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@RequestMapping(value="/imageUpload", method=RequestMethod.POST)
 	public void imageUpload(HttpServletRequest request, HttpServletResponse response,
 								@RequestParam(value="upload") MultipartFile upload) {
