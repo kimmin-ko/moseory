@@ -26,8 +26,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 		HttpSession session = request.getSession();
 		ModelMap modelMap = modelAndView.getModelMap();
 		Object memberVO = modelMap.get("user");
-//		log.info("LoginInterceptor VO Check "+memberVO.toString());
+
 		if(memberVO != null) {
+			log.info("LoginInterceptor VO Check "+memberVO.toString());
 			session.setAttribute("user", memberVO);
 			Object destination = session.getAttribute("destination");
 			response.sendRedirect(destination != null ? (String) destination : "/index");

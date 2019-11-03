@@ -50,4 +50,17 @@ public class MemberDaoImpl implements MemberDao {
     	return sqlSession.selectList(namespace+".findIdProc", param);
     }
 
+
+	@Override
+	public Map<String, Object> findPwProc(Map<String, Object> param) {
+
+		return sqlSession.selectOne(namespace+".findPwProc", param);
+	}
+
+	@Override
+	public int pwChange(Map<String, Object> param) {
+		
+		return sqlSession.update(namespace+".pwChange", param);
+	}
+
 }

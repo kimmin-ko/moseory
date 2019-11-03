@@ -1,11 +1,7 @@
 
 package com.moseory.service;
 
-import com.moseory.domain.ProductDetailVO;
-import com.moseory.domain.ProductVO;
-
 import java.util.List;
-
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 

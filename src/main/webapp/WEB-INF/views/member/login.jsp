@@ -31,7 +31,7 @@ if(message != ""){
         </div>
     </div>
 
-    <form action="/member/loginProc" method="post">
+    <form action="/member/loginProc" method="post" id="loginProc">
         <div class="row loginForm-row" style="margin-top: 60px;">
             <div class="col-md-4 col-md-offset-4">
                 <input type="text" class="form-control" name="inputId" placeholder="아이디">
@@ -40,7 +40,7 @@ if(message != ""){
                 <input type="password" class="form-control" name="inputPassword" placeholder="비밀번호">
             </div>
             <div class="col-md-4 col-md-offset-4">
-                <button type="submit" class="btn btn-default btn-block login-btn">로그인</button>
+                <button type="button" id="loginBtn" class="btn btn-default btn-block login-btn">로그인</button>
             </div>
             <div class="col-md-4 col-md-offset-4">
                 <div class="checkbox">
@@ -70,4 +70,22 @@ if(message != ""){
 </div>
 <!-- container end -->
 </body>
+<script>
+$(document).ready(function(){
+	var form = $("#loginProc");
+	$("#loginBtn").click(function(){
+		if($('input[name="inputId"]').val() == "" || $('input[name="inputId"]').val() == null){
+			alert("아이디를 입력해주세요.");
+			$('input[name="inputId"]').focus();
+			return false;
+		}
+		if($('input[name="inputPassword"]').val() == "" || $('input[name="inputPassword"]').val() == null){
+			alert("비밀번호를 입력해주세요.");
+			$('input[name="inputPassword"]').focus();
+			return false;
+		}
+		form.submit();
+	})
+});
+</script>
 </html>

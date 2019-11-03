@@ -50,9 +50,9 @@ if(message != ""){
 		                </tr>
 		                <tr id="find_phone" style="display: none;">
 		                    <th>휴대폰 번호로 찾기</th>
-		                    <td><input type="text" name="phone1" style="width: 40px;" /> - 
-		                        <input type="text" name="phone2" style="width: 50px;" /> - 
-		                        <input type="text" name="phone3" style="width: 50px;" /></td>
+		                    <td><input type="text" name="phone1" style="width: 40px;"  maxlength="3"/> - 
+		                        <input type="text" name="phone2" style="width: 50px;" maxlength="4"/> - 
+		                        <input type="text" name="phone3" style="width: 50px;" maxlength="4"/></td>
 		                </tr>
 		                <tr>
 		                    <td colspan="2" style="text-align: center;"><button type="button" id="submitBtn" class="btn btn-default">확인</button></td>
