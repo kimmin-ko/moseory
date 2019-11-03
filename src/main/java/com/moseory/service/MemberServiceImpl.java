@@ -66,11 +66,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-    @Override
-    public MemberVO readMember(String id) {
-	return memberDao.getMember(id);
-    }
-
 	@Override
 	public int findPwProc(Map<String, Object> param) {
 		
