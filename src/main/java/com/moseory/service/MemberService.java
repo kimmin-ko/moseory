@@ -25,4 +25,7 @@ public interface MemberService {
     // 회원 아이디 여부
     public int isMember(String id);
     
+    //PW찾기
+    public int findPwProc(Map<String, Object> param);
+    
 }

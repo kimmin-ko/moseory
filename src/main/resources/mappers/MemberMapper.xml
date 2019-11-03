@@ -60,13 +60,13 @@
 		FROM 
 		  tbl_member
 		WHERE 
-		<if test='findType == "email"'>
-		 email = #{email}
-		</if>
-		<if test='findType == "phone"'>
-		 phone = #{phone}
-		</if>
-		 AND name =#{name}
+		  <if test='findType == "email"'>
+		    email = #{email}
+		  </if>
+		  <if test='findType == "phone"'>
+		    phone = #{phone}
+		  </if>
+		  AND name =#{name}
 	</select>
 
 	<select id="getMember" resultMap="memberResultMap">
@@ -80,5 +80,28 @@
 	delete from tbl_member where id = #{id}
 	</delete>
 
+	<select id="findPwProc" parameterType="map" resultType="map">
+		SELECT 
+		  id, email
+		FROM 
+		  tbl_member
+		WHERE 
+		  <if test='findType == "email"'>
+		    email = #{email}
+		  </if>
+		  <if test='findType == "phone"'>
+		    phone = #{phone}
+		  </if>
+		  AND name =#{name}
+		  AND id =#{id}
+	</select>
+
+	<update id="pwChange" parameterType="map">
+		UPDATE 
+		  tbl_member
+		SET
+		  password = #{pw}
+		WHERE id = #{ID}
+	</update>
 	
 </mapper>

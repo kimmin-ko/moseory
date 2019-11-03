@@ -1,12 +1,13 @@
 package com.moseory.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import org.slf4j.event.Level;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -87,6 +88,14 @@ public class MemberController {
     @GetMapping("/findPw")
     public void findPw() {
 	
+    }
+    
+    @PostMapping("/findPwProc")
+    public @ResponseBody int findPwProc(@RequestParam Map<String, Object> param) {
+    	log.info("Contorller findPwProc param ["+ param.toString() +"]");
+    	int result=0;
+    	result = memberService.findPwProc(param);
+    	return result;
     }
     
     @GetMapping("/join")
