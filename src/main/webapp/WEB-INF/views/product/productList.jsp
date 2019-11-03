@@ -90,9 +90,9 @@
 				
 				<c:forEach var = "product" items = "${productVO }">
 					<div class="col-md-4 prod-desc ma-bo-50">
-						<a href="#"><img src="/images/001.gif"></a>
+						<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}"><img src="/images/001.gif"></a>
 						<p>
-							<a href = "#">${product.name }</a>
+							<a href = "${pageContext.request.contextPath }/product/productInfo?code=${product.code}">${product.name }</a>
 						</p>
 						<p>${product.price }</p>
 						<p>comment</p>

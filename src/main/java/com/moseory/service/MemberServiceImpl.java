@@ -17,7 +17,6 @@ import lombok.extern.log4j.Log4j;
 
 
 @Service
-@Log4j
 public class MemberServiceImpl implements MemberService {
     
 	
@@ -31,7 +30,6 @@ public class MemberServiceImpl implements MemberService {
     // 회원 등록
     @Override
     public void registerMember(MemberVO vo) {
-	log.info("service vo : " + vo);
 	memberDao.insertMember(vo);
     }
 
@@ -66,6 +64,7 @@ public class MemberServiceImpl implements MemberService {
     public int isMember(String id) {
 	return memberDao.getCountMember(id);
     }
+
 
     @Override
     public MemberVO readMember(String id) {

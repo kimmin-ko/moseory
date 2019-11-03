@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moseory.mapper.HomeMapper">
+	
+	<select id="getProductSaleCount" resultType="productVO">
+	SELECT
+    	code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
+	FROM
+    	tbl_product
+	ORDER BY
+    	sale_count desc
+	</select>
+	
+	
+	<select id="getProductNew" resultType="productVO">
+	SELECT
+    	code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
+	FROM
+    	tbl_product
+	ORDER BY
+    	code desc
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

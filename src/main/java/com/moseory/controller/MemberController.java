@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
 
@@ -31,7 +28,7 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/member/*")
+@RequestMapping("/member/*") // 로그인 정보가 필요하지 않음
 public class MemberController {
     
     @Setter(onMethod_ = @Autowired)
@@ -115,6 +112,8 @@ public class MemberController {
 	return "redirect:joinOk";
     }
     
+    
+    
     // 회원가입 시 아이디 중복  체크
     @GetMapping("/checkDuplId/{id}")
     @ResponseBody
@@ -132,41 +131,6 @@ public class MemberController {
     // 회원 가입 성공 페이지
     @GetMapping("/joinOk")
     public void joinOk() {
-	
-    }
-    
-    // 마이페이지
-    @GetMapping("/myPage")
-    public void myPage(@RequestParam String id, Model model) {
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-    }
-    
-    // 회원 정보 수정
-    @GetMapping("/modify")
-    public void modify(@RequestParam String id, Model model) {
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	model.addAttribute("member", member);
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-    }
-    
-    // 회원 탈퇴
-    @GetMapping("/withdrawal")
-    public void withdrawal() {
 	
     }
     

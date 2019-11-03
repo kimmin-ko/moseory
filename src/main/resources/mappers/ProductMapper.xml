@@ -6,15 +6,17 @@
 
 	<!-- 상품정보 등록 -->
 	<insert id="regist" parameterType="productVO">
-		insert into tbl_product values(
+		INSERT INTO tbl_product
+			(code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment) 
+		VALUES(
 			seq_product_code.nextval,
 			#{name},
 			#{high_code},
 			#{low_code},
 			#{price},
-			0,
-			0,
-			0,
+			0, <!-- sale_count -->
+			0, <!-- grade -->
+			0,<!-- wish_count -->
 			#{file_path},
 			#{file_name},
 			#{product_comment}
@@ -31,7 +33,7 @@
 	<insert id="product_detail_regist" parameterType="productdetailVO">
 		insert into tbl_product_detail values(
 			seq_product_detail_no.nextval,
-			#{product_code},
+			seq_product_code.currval,
 			#{product_color},
 			#{product_size},
 			#{product_stock}
@@ -45,4 +47,56 @@
 			where high_code = #{high_code}
 	</select>
 	
+	<!--상품 코드로 정보 조회 -->
+	<select id="getView" parameterType="int" resultType = "productVO">
+	SELECT
+		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
+	FROM
+		tbl_product
+	WHERE
+		code = #{code}
+	</select>
+	
+	<!-- 상품 코드로 디테일 정보 조회 -->
+	<select id="getDetailView" parameterType="int" resultType = "productdetailVO">
+	SELECT
+		no, product_code, product_color, product_size, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+	</select>
+	
+	<!-- 해당 상품의 색상을 중복 없이 조회 -->
+	<select id="getProductColor" resultType="String">
+		SELECT
+			distinct product_color 
+		FROM
+			tbl_product_detail 
+		WHERE
+			product_code = #{product_code}
+	</select>
+	
+	<!-- 해당 상품 색상의 사이즈를 조회 -->
+	<select id="getProductSize" resultType="String">
+		SELECT
+			product_size
+		FROM
+			tbl_product_detail
+		WHERE
+			product_code = #{product_code} 
+			<if test="product_color != null">
+				AND product_color = #{product_color}
+			</if>
+			<if test="product_color == null">
+				AND product_color is null
+			</if>
+	</select>
 </mapper>
+
+
+
+
+
+
+

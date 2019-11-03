@@ -8,33 +8,24 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/cartForm.css">
+    <link rel="stylesheet" href="/css/cart.css">
 </head>
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    
-    $(".check-all").click(function() {
-        $(".checkCart").prop("checked", this.checked);
-    });
-
-});
-</script>
-
-
-          
 <!-- CartForm Start -->
 <div class="container" style="margin-left:22%;">
 
     <div class="row cartLabel-row">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-10 col-md-offset-1" style="margin-bottom: 40px;">
             <p>CART</p>
         </div>
+        
+		<%@ include file="benefitExplain.jsp" %>
+		
     </div>
-
+    
     <ul class="nav nav-tabs col-md-10 col-md-offset-1">
         <li role="presentation" class="active"><a href="#"><small><strong>국내 배송 상품(1)</strong></small></a></li>
         <li role="presentation"><a href="#"><small><strong>해외 배송 상품(0)</strong></small></a></li>
@@ -100,7 +91,7 @@ $(document).ready(function() {
                         <td><span class="final-prod-price">37,000원</span></td>
                         <!-- 선택 -->
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">주문하기</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
                             <button type="button" class="btn btn-default btn-sm">관심상품</button>
                             <button type="button" class="btn btn-default btn-sm">삭제하기</button>
                         </td>
@@ -124,7 +115,7 @@ $(document).ready(function() {
                         <td>3,000원</td>
                         <td><span class="final-prod-price">152,000원</span></td>
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">주문하기</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
                             <button type="button" class="btn btn-default btn-sm">관심상품</button>
                             <button type="button" class="btn btn-default btn-sm">삭제하기</button>
                         </td>
@@ -179,8 +170,8 @@ $(document).ready(function() {
 
         <div class="col-md-10 col-md-offset-1" style="text-align : center; margin-bottom: 80px;">
             <button type="button" class="btn btn-default btn-sm" 
-            	style="background-color: black; color: white;" onclick="location.href='/product/order'">전체상품주문</button>
-            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/product/order'">선택상품주문</button>
+            	style="background-color: black; color: white;" onclick="location.href='/user/order'">전체상품주문</button>
+            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">선택상품주문</button>
             <button type="button" class="btn btn-default btn-sm" onclick="location.href='/index'">쇼핑계속</button>
         </div>
 
@@ -216,6 +207,17 @@ $(document).ready(function() {
 	<%@ include file="../includes/footer.jsp" %>
 	
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    
+	// 최상위 체크박스 선택 시 전체 선택
+    $(".check-all").click(function() {
+        $(".checkCart").prop("checked", this.checked);
+    });
+
+});
+</script>
 
 </body>
 </html>

@@ -20,7 +20,7 @@
     <div class="row" style="margin-top: 60px; margin-bottom: 150px;">
 
         <div class="col-md-7 product_image">
-            <img class="prod-img" src="/images/1.jpg">
+            <img class="prod-img" src="<c:out value='${product.file_path }' />">
 
             <ul class="prod-info-list">
                 <li>DETAIL</li>
@@ -31,11 +31,11 @@
         </div>
             
         <div class="col-md-5" class="prod-detail-info">
-            <div class="ft-size-12">포니 헨리넥 셔츠<br>37,000원</div>
+            <div class="ft-size-12"><c:out value="${product.name }" /><br><c:out value="${product.price }" />원</div>
             <br>
             <div class="info-title">COMMENT</div>
             <p class="ft-size-12">
-                적당한 두께감으로 4계절 내내 입을수 있는 셔츠입니다^^! 여름에 입기에 너무 두껍지 않고 딱 적당한 두께라 팔 걷고 슬랙스, 데님이랑 매칭하기 좋은 상품입니다. 가을에는 아우터와 함께 매치하기 이쁜 상품으로 포인트 주기 딱 좋은 제품 아닌가 싶습니다!
+                <c:out value="${product.product_comment }" />
             </p>
             <br>
             <div class="info-title">DETAIL</div>
@@ -48,14 +48,49 @@
                 </p>
 
             <hr style="border: 0.5px solid #DFDFDF">
-
-            <span class="ft-size-12">컬러</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <select class="ft-size-12 prod-option">
-                <option>-[필수] 옵션을 선택해 주세요.</option>
-                <option>---------------</option>
-                <option>네이비</option>
-                <option>베이지</option>
-            </select>
+            
+            <script type="text/javascript">
+            	function getSize() {
+            		// 현재 select-size의 option 삭제
+            		$("#select-size option").remove();
+            		$("#select-size").append('<option>옵션 선택</option>');
+            		
+            		// 해당 상품 코드
+            		var code = ${product.code};
+            		// 선택된 색상
+            		var color = $("#select-color option:selected").val();
+            		
+            		// code와 color를 이용해서 size를 가져옴
+            		$.ajax({
+            			type : 'get',
+            			url : '/product/getSize/' + code + '/' + color,
+            			success : function(result) {
+            				for(var i = 0; i < result.length; i++) {
+            					// 가져온 사이즈를 select-size의 option으로 추가
+            					$("#select-size").append('<option>'+result[i]+'</option>');
+            				}
+            			}
+            		});
+            	} // getSize
+            </script>
+            <!-- 컬러 -->
+            <c:if test="${color != null }">
+	            <select id="select-color" class="ft-size-12 prod-option form-control" onchange="getSize()">
+	                <option>옵션 선택</option>
+	                <c:forEach var="productColor" items="${productColorList }">
+	                	<option><c:out value="${productColor }" /></option>
+	                </c:forEach>
+	            </select>
+            </c:if>
+            <!-- 사이즈 -->
+            <c:if test="${size != null }">
+	            <select id="select-size" class="ft-size-12 prod-option form-control">
+	                <option>옵션 선택</option>
+	                <c:forEach var="productSize" items="${productSizeList }">
+	                	<option><c:out value="${productSize }" /></option>
+	                </c:forEach>
+	            </select>
+            </c:if>
 
             <p class="ft-size-12">(최소주문수량 1개 이상)</p>
 
@@ -69,12 +104,12 @@
                 <button type="button" class="btn btn-default btn-lg btn-buy">BUY NOW</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg">ADD TO CART</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="addProductToCart()">ADD TO CART</button>
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-default btn-lg">WISH LIST</button>
             </div>
-
+            
         </div>
 
     </div> <!-- row -->

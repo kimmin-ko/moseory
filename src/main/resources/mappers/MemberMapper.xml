@@ -6,7 +6,6 @@
 <mapper namespace="com.moseory.mapper.MemberMapper">
 
 	<resultMap type="MemberVO" id="memberResultMap">
-		<result column="no" property="no" />
 		<result column="id" property="id" />
 		<result column="password" property="password" />
 		<result column="pwd_confirm_q" property="pwd_confirm_q" />
@@ -26,27 +25,38 @@
 	</resultMap>
 	
 	<insert id="insertMember">
-	insert into tbl_member (no, id, password, pwd_confirm_q, pwd_confirm_a , name, 
-	zipcode, address1, address2, tel, phone, email, birth)
-	values (seq_member_no.nextval, #{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
-	#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
+	INSERT INTO 
+		tbl_member (id, password, pwd_confirm_q, pwd_confirm_a , name, 
+		zipcode, address1, address2, tel, phone, email, birth)
+	VALUES 
+		(#{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
+		#{zipcode}, #{address1}, #{address2}, #{tel}, #{phone}, #{email}, #{birth})
 	</insert>
 	
 	<delete id="deleteAll">
-	delete from tbl_member
+	DELETE FROM
+		tbl_member
 	</delete>
 	
 	<select id="getCountMember" resultType="int">
-	select count(*) from tbl_member where id = #{id}
+	SELECT
+		count(*)
+	FROM 
+		tbl_member
+	WHERE
+		id = #{id}
 	</select>
 	
 	<select id="getCount" resultType="int">
-	select count(*) from tbl_member
+	SELECT
+		count(*)
+	FROM
+		tbl_member
 	</select>
 	
-	<select id="loginProc" parameterType="map" resultType="com.moseory.domain.MemberVO">
+	<select id="loginProc" parameterType="map" resultMap="memberResultMap">
 		SELECT 
-		  id, name, email, phone
+		  id, pwd_confirm_q, pwd_confirm_a, name, zipcode, address1, address2, tel, phone, email, birth, lev, point, total
 		FROM 
 		  tbl_member
 		WHERE 1 = 1 
@@ -68,19 +78,8 @@
 		  </if>
 		  AND name =#{name}
 	</select>
-
-	<select id="getMember" resultMap="memberResultMap">
-	select no, id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
-	tel, phone, email, birth, lev, point, total, join_date
-	from tbl_member
-	where id = #{id}
-	</select>
-	
-	<delete id="deleteMember">
-	delete from tbl_member where id = #{id}
-	</delete>
-
-	<select id="findPwProc" parameterType="map" resultType="map">
+    
+    <select id="findPwProc" parameterType="map" resultType="map">
 		SELECT 
 		  id, email
 		FROM 
@@ -103,5 +102,5 @@
 		  password = #{pw}
 		WHERE id = #{ID}
 	</update>
-	
+    
 </mapper>
