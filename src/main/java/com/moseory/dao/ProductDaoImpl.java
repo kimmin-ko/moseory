@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
+import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewVO;
 
 @Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
@@ -47,4 +49,56 @@ public class ProductDaoImpl implements ProductDao{
 	    return sqlSession.selectList("product.getProductSize", map);
 	}
 
+	@Override
+	public int getReviewCount(int product_code) {
+	    return sqlSession.selectOne("product.getReviewCount", product_code);
+	}
+
+	@Override
+	public int getQnaCount(int product_code) {
+	    return sqlSession.selectOne("product.getQnaCount", product_code);
+	}
+
+	@Override
+	public List<ReviewVO> getReview(int product_code) {
+	    return sqlSession.selectList("product.getReview", product_code);
+	}
+
+	
+	@Override
+	public ReviewVO getOriginalReview(int review_no) {
+	    return sqlSession.selectOne("product.getOriginalReview", review_no);
+	}
+	
+	@Override
+	public List<QnAVO> getQnA(int product_code) {
+	    return sqlSession.selectList("product.getQnA", product_code);
+	}
+
+	@Override
+	public void modifyRecommend(int review_no) {
+	    sqlSession.update("product.modifyRecommend", review_no);
+	}
+	
+	
+	
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
