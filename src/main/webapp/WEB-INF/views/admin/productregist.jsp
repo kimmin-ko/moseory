@@ -20,14 +20,8 @@
 </head>
 <body>
 
-<<<<<<< HEAD
-<!-- Daum 우편번호 찾기 API 	-->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <%@ include file="../includes/sidebar.jsp" %>
 
-=======
-<%@ include file="../includes/sidebar.jsp" %>
 <!-- <script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script> -->
 <!-- <script>
 	var uploadFile = HttpContext.Current.Request.Files;
@@ -63,7 +57,6 @@
 		 }
 	}
 </script> -->
->>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 <script>
 	
 	function highCategory(e){
@@ -115,13 +108,18 @@
 		});
     });
 }); */
+	var productDetail = null;
 	
-	
-	
+	function regist() {
+		
+		detailInfo();
+		
+		$("#registForm").submit();
+		
+	}
 	
 	function detailInfo() {
 		
-		var productDetail = null;
 	
 		var colorArray = [];
 		var sizeArray = [];
@@ -186,8 +184,8 @@
 			});
 	
 		} // sendPro
-	
-			return {sendPro : sendPro};
+		
+		return {sendPro : sendPro};
 	})();
 </script>
 
@@ -213,7 +211,7 @@
 
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-       		<form action = "productregist" method = "post">
+       		<form id="registForm" action = "productregist" method = "post">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
@@ -255,7 +253,6 @@
 	                <tr>
 	                	<th>상품정보 <img src="/images/ico_required.gif"></th>
 	                	<td>
-<<<<<<< HEAD
 	                		<div class = "detailInfo">
 		                		<div class = "addColor">
 			                		<select name = "product_color">
@@ -282,38 +279,7 @@
 					            
 					            </div>	       
 							</div>      		
-  	              			<button type = "button" onclick="detailInfo()">추가</button>
-=======
-  	              			<button type = "button" onclick="addInfo()">추가</button>
-  	              			<div id = "Info">
-	  	              			<div id = "addColor">
-	  	              				<select name = "product_color">
-	                					<option value = "화이트">화이트</option>
-	                					<option value = "블랙">블랙</option>
-	                					<option value = "레드">레드</option>
-	                					<option value = "그레이">그레이</option>
-	                				</select>
-	 	              			</div>
-	 	              			<div id = "addSize">
-	 	              				<input type="checkbox" id="size" name="product_size" value="xs">XS
-	                				<input type = "text" name = "product_stock"><br>
-	                				
-	 	              				<input type="checkbox" id="size" name="product_size" value="s">S
-	                				<input type = "text" name = "product_stock" ><br>
-	                				
-	                				<input type="checkbox" id="size" name="product_size" value="m" >M
-	           				      	<input type = "text" name = "product_stock"><br>
-	           				      	
-	                				<input type="checkbox" id="size" name="product_size" value="l">L
-	                				<input type = "text" name = "product_stock"><br>
-	                				
-	                				<input type="checkbox" id="size" name="product_size" value="xl">XL
-	                				<input type = "text" name = "product_stock"><br>
-	                				
-	 	              			</div>
-	  	              			<div id = "field"></div>
-  	              			</div>
->>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
+  	              			<button type = "button">추가</button>
 	                	</td>
 	                </tr>
 	                <!-- 
@@ -329,13 +295,12 @@
 							<script> 
 								// CKEDITOR.replace('product_comment');
 							</script>
->>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 	                	</td>
 	                </tr>
 	            
 	            </table>
 	            <div class = "regist_btn_area text-center">
-					<input type = "submit" value = "등록" class = "btn btn-primary btn-md">
+					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()">
 					<input type = "button"  value = "취소" class ="btn btn-default btn-md">
 				</div>
 				

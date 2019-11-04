@@ -69,16 +69,17 @@
             		$("#sortReview").on("click", "li", function() {
             			var product_code = "${product.code}";
             			var type = $(this).attr('value');
-            			var reply = $(".reply");
+            			var reviewUL = $(".reviewUL");
             			
             			productJs.getReviewList(product_code, type, function(reviewList) {
             				
             				console.log(reviewList);
             				
             				if(reviewList.length == 0 || reviewList == null) {
+            					reviewUL.html("");
             					
+            					return;
             				}
-            				
             				
             			}); // getReviewList
             			
@@ -323,7 +324,7 @@
             </ul>
         </div> <!-- review header -->
        
-       <ul class="list-unstyled reply">
+       <ul class="list-unstyled reviewUL">
 	       	<c:forEach var="review" items="${reviewList }">
 	       	<li>
 		        <div class="col-md-10 col-md-offset-1 review-body">  <!-- review body start -->
