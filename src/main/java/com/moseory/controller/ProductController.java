@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
 
@@ -78,7 +82,7 @@ public class ProductController {
 		model.addAttribute("productDetailList", productDetailVO);
 		model.addAttribute("product", productVO);
 		
-		// 상품의 리뷰 개수
+		// 상품의 Review 개수
 		int reviewCount = productService.getReviewCount(code);
 		model.addAttribute("reviewCount", reviewCount);
 		
@@ -86,11 +90,12 @@ public class ProductController {
 		int qnaCount = productService.getQnaCount(code);
 		model.addAttribute("qnaCount", qnaCount);
 		
-		// 리뷰 리스트
-		List<ReviewVO> reviewList = productService.getReview(code);
+		// Review 리스트
+		ReviewCri reviewCri = new ReviewCri(code, "N");
+		List<ReviewVO> reviewList = productService.getReview(reviewCri);
 		model.addAttribute("reviewList", reviewList);
 		
-		// 문의 리스트
+		// QnA 리스트
 		List<QnAVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
 		
@@ -120,6 +125,19 @@ public class ProductController {
 	    return productSize != null 
 		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
 		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(value = "/getReviewList/{product_code}/{type}",
+		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<List<ReviewVO>> getReviewList(
+		@PathVariable("product_code") int product_code,
+		@PathVariable("type") String type) {
+	    
+	    ReviewCri reviewCri = new ReviewCri(product_code, type);
+	    
+	    List<ReviewVO> reviewList = productService.getReview(reviewCri);
+	    
+	    return new ResponseEntity<>(reviewList, HttpStatus.OK);
 	}
 	
 	

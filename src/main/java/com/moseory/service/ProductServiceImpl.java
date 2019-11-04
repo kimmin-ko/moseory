@@ -9,6 +9,7 @@ import com.moseory.dao.ProductDao;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
 @Service("productService")
@@ -53,8 +54,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ReviewVO> getReview(int product_code) {
-	    return productDao.getReview(product_code);
+	public List<ReviewVO> getReview(ReviewCri reviewCri) {
+	    return productDao.getReview(reviewCri);
 	}
 
 	@Override

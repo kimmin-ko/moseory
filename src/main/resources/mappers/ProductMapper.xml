@@ -147,7 +147,20 @@
 	    AND m.id = r.member_id
 	    AND pd.product_code = #{product_code}
 	ORDER BY
-		r.no desc
+		<choose>
+			<when test="type == 'N'.toString()">
+				r.no desc
+			</when>
+			<when test="type == 'R'.toString()">
+				r.recommend desc
+			</when>
+			<when test="type == 'H'.toString()">
+				r.grade desc
+			</when>
+			<when test="type == 'L'.toString()">
+				r.grade asc
+			</when>
+		</choose>
 	</select>
 	
 	<select id="getOriginalReview" resultMap="reviewMap">

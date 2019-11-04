@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
 @Repository("productDao")
@@ -27,7 +28,7 @@ public interface ProductDao {
 
 	int getQnaCount(int product_code);
 	
-	List<ReviewVO> getReview(int product_code);
+	List<ReviewVO> getReview(ReviewCri reviewCri);
 	
 	ReviewVO getOriginalReview(int review_no);
 	

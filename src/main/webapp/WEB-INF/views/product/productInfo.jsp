@@ -50,6 +50,8 @@
 
             <hr style="border: 0.5px solid #DFDFDF">
             
+            <script src="/js/product/productInfo.js"></script>
+            
             <script type="text/javascript">
             	// 총 주문 가격
             	var total_price = 0;
@@ -63,6 +65,26 @@
             	$(document).ready(function() {
             		$("#total-price").text(total_price + '원');
             		$("#total-quantity").text(total_quantity + '개');
+            		
+            		$("#sortReview").on("click", "li", function() {
+            			var product_code = "${product.code}";
+            			var type = $(this).attr('value');
+            			var reply = $(".reply");
+            			
+            			productJs.getReviewList(product_code, type, function(reviewList) {
+            				
+            				console.log(reviewList);
+            				
+            				if(reviewList.length == 0 || reviewList == null) {
+            					
+            				}
+            				
+            				
+            			}); // getReviewList
+            			
+            		}) // sortReview
+            		
+            		console.log(productJs.name);
             	});
             	
             	// 색상 선택 시 해당 색상의 사이즈를 조회
@@ -183,7 +205,7 @@
 					}
 					
 					$("#total-quantity").text(total_quantity + '개');
-					$("#total-price").text((${product.price} * total_quantity) + '원');
+					$("#total-price").text(("${product.price}" * total_quantity) + '원');
 					
             	} // sumQuantity
             	
@@ -223,7 +245,6 @@
             		});
             		
             	} // upRecommend
-            	
 	            </script>
             <!-- 컬러 -->
             <c:if test="${color != null }">
@@ -294,51 +315,54 @@
 
         <div class="col-md-10 col-md-offset-1 review-header"> <!-- review header -->
             <p>Review(<c:out value="${reviewCount }" />)</p>
-            <ul>
-                <li>최신순</li>
-                <li>댓글순</li>
-                <li>추천순</li>
-                <li>높은평점순</li>
-                <li>낮은평점순</li>
+            <ul id="sortReview">
+                <li value="N">최신순</li>
+                <li value="R">추천순</li>
+                <li value="H">높은평점순</li>
+                <li value="L">낮은평점순</li>
             </ul>
         </div> <!-- review header -->
        
-       	<c:forEach var="review" items="${reviewList }">
-	        <div class="col-md-10 col-md-offset-1 review-body">  <!-- review body start -->
-	            <p>
-	                <span>[<c:out value="${review.member.level }" />]</span>
-	                <span>${review.member.id }</span><span style="color: #B5B7BA;"> | </span>
-	                <span class="review-date"><c:out value="${review.reg_date }" /></span>
-	                <span style="color: #B5B7BA;"> | </span>
-	                <span class="review-grade"><c:out value="${review.grade }" /></span>
-	            </p>
-	
-	            <hr style="border: 0.5px #7F858A solid;">
-	
-	            <div class="col-md-1"><img src='<c:out value="${review.file_path }" />'></div>
-	            <div class="col-md-11 review-body-prod-name">
-	                ${product.name }<br>
-	                [옵션 : <c:out value="${review.product_detail.product_color }" />&nbsp;
-	                		<c:out value="${review.product_detail.product_size }" />]
-	            </div>
-	
-	            <div class="col-md-12 review-title">
-	                <p><c:out value="${review.title }" /></p>
-	            </div>
-	
-	            <div class="col-md-12 review-content">
-	                <p>
-	                	<c:out value="${review.content }" />   
-	                </p>
-	            </div>
-	
-	            <div class="col-md-12 review-like">
-	                <button type="button" class="btn btn-warning" onclick="increaseRecommend(${review.no}, this)">
-	                	LIKE (<c:out value="${review.recommend }" />)
-	                </button>
-	            </div>
-			</div> <!-- review body end -->
-        </c:forEach>
+       <ul class="list-unstyled reply">
+	       	<c:forEach var="review" items="${reviewList }">
+	       	<li>
+		        <div class="col-md-10 col-md-offset-1 review-body">  <!-- review body start -->
+		            <p> 
+		                <span>[<c:out value="${review.member.level }" />]</span>
+		                <span>${review.member.id }</span><span style="color: #B5B7BA;"> | </span>
+		                <span class="review-date"><c:out value="${review.reg_date }" /></span>
+		                <span style="color: #B5B7BA;"> | </span>
+		                <span class="review-grade"><c:out value="${review.grade }" /></span>
+		            </p>
+		
+		            <hr style="border: 0.5px #7F858A solid;">
+		
+		            <div class="col-md-1"><img src='<c:out value="${review.file_path }" />'></div>
+		            <div class="col-md-11 review-body-prod-name">
+		                ${product.name }<br>
+		                [옵션 : <c:out value="${review.product_detail.product_color }" />&nbsp;
+		                		<c:out value="${review.product_detail.product_size }" />]
+		            </div>
+		
+		            <div class="col-md-12 review-title">
+		                <p><c:out value="${review.title }" /></p>
+		            </div>
+		
+		            <div class="col-md-12 review-content">
+		                <p>
+		                	<c:out value="${review.content }" />   
+		                </p>
+		            </div>
+		
+		            <div class="col-md-12 review-like">
+		                <button type="button" class="btn btn-warning" onclick="increaseRecommend(${review.no}, this)">
+		                	LIKE (<c:out value="${review.recommend }" />)
+		                </button>
+		            </div>
+				</div> <!-- review body end -->
+			</li>
+	        </c:forEach>
+        </ul>
 
         <div class="col-md-10 col-md-offset-1 qna-header"> <!-- Q&A header -->
             <p>Q & A(<c:out value="${qnaCount }" />)</p>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
 @Service("productService")
@@ -26,7 +27,7 @@ public interface ProductService {
 	
 	int getQnaCount(int product_code);
 	
-	List<ReviewVO> getReview(int product_code);
+	List<ReviewVO> getReview(ReviewCri reviewCri);
 	
 	ReviewVO getOriginalReview(int review_no);
 	

@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
+import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
 import lombok.Setter;
@@ -65,7 +66,8 @@ public class ProductDaoTest {
     
     @Test
     public void testGetReview() {
-	List<ReviewVO> reviewList = productDao.getReview(34);
+	ReviewCri reviewCri = new ReviewCri(34, "L");
+	List<ReviewVO> reviewList = productDao.getReview(reviewCri);
 	reviewList.stream().forEach(x -> log.info(x.toString()));
     }
     
