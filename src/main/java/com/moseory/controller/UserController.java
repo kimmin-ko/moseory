@@ -132,4 +132,12 @@ public class UserController {
 	
     }
     
+    //로그아웃 기능
+    @GetMapping("/logout")
+    public String logout(HttpSession session, Model model) {
+    	// 세션 전체를 날린다.
+        session.invalidate();  
+        return "redirect:/index"; 
+    }
+
 }
