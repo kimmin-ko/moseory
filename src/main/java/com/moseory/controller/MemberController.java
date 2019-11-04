@@ -1,11 +1,14 @@
 package com.moseory.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
+import com.moseory.util.KakaoConnectionUtil;
+import com.moseory.util.MailUtil;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -32,6 +38,9 @@ public class MemberController {
     
     @Setter(onMethod_ = @Autowired)
     private MemberService memberService;
+    
+    @Setter(onMethod_ = @Autowired)
+    private KakaoConnectionUtil kakao;
     
     // 요청 시 해당 필드만 데이터 입력 허용
     @InitBinder
@@ -86,6 +95,14 @@ public class MemberController {
 	
     }
     
+    @PostMapping("/findPwProc")
+    public @ResponseBody int findPwProc(@RequestParam Map<String, Object> param) {
+    	log.info("Contorller findPwProc param ["+ param.toString() +"]");
+    	int result=0;
+    	result = memberService.findPwProc(param);
+    	return result;
+    }
+    
     @GetMapping("/join")
     public void joinForm() {
 	
@@ -123,6 +140,20 @@ public class MemberController {
     @GetMapping("/joinOk")
     public void joinOk() {
 	
+    }
+    
+    @GetMapping("/kakaoLogin")
+    public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra, Model model,
+    		HttpSession session, HttpServletResponse res) throws Exception {
+    	log.info("kakao Code : " + code);	
+    	String accessToken = kakao.getAccessToken(code);
+    	log.info("kakao accessToken : " + accessToken);
+    	
+    	MemberVO vo = kakao.getUserInfo(accessToken);
+    	log.info("kakao getUserInfo : " + vo);
+
+    	model.addAttribute("user", vo);
+    	return "/index";
     }
     
 }

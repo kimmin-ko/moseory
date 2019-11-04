@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -39,6 +44,8 @@ public class AdminController {
 	public String productRegist() {
 		
 		return "admin/productregist";
+	    
+	    return "admin/productregist";
 	}
 
 	@PostMapping(value = "/productInfo", consumes = "application/json")
@@ -106,24 +113,15 @@ public class AdminController {
 		//3. 중복되지 않는 name으로 code를 조회해옴
 		productdetailVO.setProduct_code(code);
 		//4. detail에 데이터 등록
+<<<<<<< HEAD
+=======
+		adminService.product_regist(productVO);
+>>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";
 	}
 		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@RequestMapping(value="/imageUpload", method=RequestMethod.POST)
 	public void imageUpload(HttpServletRequest request, HttpServletResponse response,
@@ -149,7 +147,7 @@ public class AdminController {
                     + callback
                     + ",'"
                     + fileUrl
-                    + "','�̹����� ���ε� �Ͽ����ϴ�.'"
+                    + "',''"
                     + ")</script>");
         	
         	printWriter.flush();

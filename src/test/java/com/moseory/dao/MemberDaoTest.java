@@ -21,6 +21,9 @@ import lombok.Setter;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class MemberDaoTest {
+    
+    @Setter(onMethod_ = @Autowired)
+    private UserDao userDao;
  
     @Setter(onMethod_ = @Autowired)
     private MemberDao dao;
@@ -30,22 +33,17 @@ public class MemberDaoTest {
     
     @Before
     public void setUp() {
-	member1 = new MemberVO(null, "min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
+	member1 = new MemberVO("min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
 		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.SILVER, 0, 0, LocalDate.now());
-	member2 = new MemberVO(null, "min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
+	
+	member2 = new MemberVO("min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
 		null, "010-3725-9670", "kimmin@daum.net", null, Level.GOLD, 0, 0, LocalDate.now());
     } 
     
-	member1 = new MemberVO("min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
-		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.BRONZE, 0, 0, LocalDate.now());
-	member2 = new MemberVO("min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
-		null, "010-3725-9670", "kimmin@daum.net", null, null, 0, 0, LocalDate.now());
-    }
-    
     @Test
     public void testInsertMember() {
-	dao.deleteMember(member1.getId());
-	dao.deleteMember(member2.getId());
+	userDao.deleteMember(member1.getId());
+	userDao.deleteMember(member2.getId());
 	
 	dao.insertMember(member1);
 	dao.insertMember(member2);
@@ -73,7 +71,7 @@ public class MemberDaoTest {
     
     @Test
     public void testIsMember() {
-	dao.deleteMember(member1.getId());
+	userDao.deleteMember(member1.getId());
 	
 	dao.insertMember(member1);
 	

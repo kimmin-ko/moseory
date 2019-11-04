@@ -8,7 +8,7 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/orderForm.css">
+    <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -85,30 +85,13 @@
         <div class="col-md-10 col-md-offset-1 orderLabel-row">
             <p>ORDER</p>
         </div>
+        
+        <%@ include file="benefitExplain.jsp" %>
+        
     </div>
 
     <div class="row">
         <div class="col-md-10 col-md-offset-1" style="margin-bottom: 50px;">
-            <!-- benefit-info table -->
-            <table class="table table-bordered benefit-info-table">
-                <tr>
-                    <td rowspan="2" class="benefit-info">
-                        <span>혜택정보</span>
-                    </td>
-                    <td>
-                        <span><strong>김민</strong> 님은, [브론즈] 회원이십니다.</span><br>
-                        <span>10,000원 이상 구매시 1%을 추가적립 받으실 수 있습니다.</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        가용적립금 : <span><strong>1,000</strong></span>원 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        쿠폰 : <span><strong>0</strong></span>개
-                    </td>
-                </tr>
-            </table>
-            <!-- benefit-info table -->
-
             <!-- prod-order-list table -->
             <table class="table table-striped prod-order-list-table">
                 <colgroup>

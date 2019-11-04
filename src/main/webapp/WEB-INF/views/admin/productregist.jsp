@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,11 +20,50 @@
 </head>
 <body>
 
+<<<<<<< HEAD
 <!-- Daum 우편번호 찾기 API 	-->
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <%@ include file="../includes/sidebar.jsp" %>
 
+=======
+<%@ include file="../includes/sidebar.jsp" %>
+<!-- <script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script> -->
+<!-- <script>
+	var uploadFile = HttpContext.Current.Request.Files;
+	
+	var currentUploadFile = uploadFile[0];
+	if (currentUploadFile != null && currentUploadFile.ContentLength > 0){
+		var uploadFileName = Path.GetFileName(currentUploadFile.FileName);
+	 
+		 var baseDomainAddress = "toughman.pe.kr";
+		 var fileUploadFolder = "d:\\www\editor_upload\\";
+		 var fileUploadFolderWebPath = baseDomainAddress + "/editor_upload" ;
+		 
+		 if (Directory.Exists(fileUploadFolder) == false){
+		 	Directory.CreateDirectory(fileUploadFolder);
+		 }
+	 
+		 var fileUploadAllowExtension = "jpg,png,jpeg";
+		 
+		 var uniqueFileNameFullPath = GetUniqueFileName(fileUploadFolder, uploadFileName);
+		 
+		 var fileExtension = uniqueFileNameFullPath.Substring(uniqueFileNameFullPath.LastIndexOf(".") + 1).ToLower();
+		 
+		 var allowFileExtension = fileUploadAllowExtension.Split(',');
+		 
+	 	if (allowFileExtension.Contains(fileExtension) == true){
+			currentUploadFile.SaveAs(uniqueFileNameFullPath);
+			var webPath = fileUploadFolderWebPath + Path.GetFileName(uniqueFileNameFullPath);
+			
+			Response.Write("<script type='text/javascript'>\nwindow.parent.CKEDITOR.tools.callFunction(1, '" + webPath + "', '');\n</script>");
+		}
+		else {
+			Response.Write("<script type='text/javascript'>\nalert('허용되지 않은 파일 유형입니다.');\n</script>");
+		 }
+	}
+</script> -->
+>>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 <script>
 	
 	function highCategory(e){
@@ -215,6 +255,7 @@
 	                <tr>
 	                	<th>상품정보 <img src="/images/ico_required.gif"></th>
 	                	<td>
+<<<<<<< HEAD
 	                		<div class = "detailInfo">
 		                		<div class = "addColor">
 			                		<select name = "product_color">
@@ -242,6 +283,37 @@
 					            </div>	       
 							</div>      		
   	              			<button type = "button" onclick="detailInfo()">추가</button>
+=======
+  	              			<button type = "button" onclick="addInfo()">추가</button>
+  	              			<div id = "Info">
+	  	              			<div id = "addColor">
+	  	              				<select name = "product_color">
+	                					<option value = "화이트">화이트</option>
+	                					<option value = "블랙">블랙</option>
+	                					<option value = "레드">레드</option>
+	                					<option value = "그레이">그레이</option>
+	                				</select>
+	 	              			</div>
+	 	              			<div id = "addSize">
+	 	              				<input type="checkbox" id="size" name="product_size" value="xs">XS
+	                				<input type = "text" name = "product_stock"><br>
+	                				
+	 	              				<input type="checkbox" id="size" name="product_size" value="s">S
+	                				<input type = "text" name = "product_stock" ><br>
+	                				
+	                				<input type="checkbox" id="size" name="product_size" value="m" >M
+	           				      	<input type = "text" name = "product_stock"><br>
+	           				      	
+	                				<input type="checkbox" id="size" name="product_size" value="l">L
+	                				<input type = "text" name = "product_stock"><br>
+	                				
+	                				<input type="checkbox" id="size" name="product_size" value="xl">XL
+	                				<input type = "text" name = "product_stock"><br>
+	                				
+	 	              			</div>
+	  	              			<div id = "field"></div>
+  	              			</div>
+>>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 	                	</td>
 	                </tr>
 	                <!-- 
@@ -254,6 +326,10 @@
 	                	<th>코멘트</th>
 	                	<td>
 							<textarea class = "form-control" name = "product_comment" id = "product_comment" cols="20" rows="15"></textarea>	                	
+							<script> 
+								// CKEDITOR.replace('product_comment');
+							</script>
+>>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e
 	                	</td>
 	                </tr>
 	            

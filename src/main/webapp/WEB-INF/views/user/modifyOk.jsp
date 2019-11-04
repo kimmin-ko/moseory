@@ -29,6 +29,7 @@
 				</p>
 
 				<button class="btn btn-default btn-sm" onclick="location.href='/index'">메인화면</button>
+				<button class="btn btn-default btn-sm" onclick="location.href='/user/myPage'">마이페이지</button>
 			</div>
 
 		</div> <!-- row end -->

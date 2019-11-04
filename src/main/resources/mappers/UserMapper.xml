@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moseory.mapper.UserMapper">
+
+	<resultMap type="MemberVO" id="memberResultMap">
+		<result column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="pwd_confirm_q" property="pwd_confirm_q" />
+		<result column="pwd_confirm_a" property="pwd_confirm_a" />
+		<result column="name" property="name" />
+		<result column="zipcode" property="zipcode" />
+		<result column="address1" property="address1" />
+		<result column="address2" property="address2" />
+		<result column="tel" property="tel" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="birth" property="birth" />
+		<result column="lev" property="level" typeHandler="LevelEnumTypeHandler" />
+		<result column="point" property="point" />
+		<result column="total" property="total" />
+		<result column="join_date" property="join_date" />
+	</resultMap>
+	
+	<select id="getMember" resultMap="memberResultMap">
+	SELECT
+		id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
+		tel, phone, email, birth, lev, point, total, join_date
+	FROM
+		tbl_member
+	WHERE
+		id = #{id}
+	</select>
+	
+	<update id="updateMember">
+	UPDATE
+    	tbl_member 
+	SET
+	    password = #{password}, pwd_confirm_q = #{pwd_confirm_q}, pwd_confirm_a = #{pwd_confirm_a}, name = #{name}, 
+	    zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, tel = #{tel}, phone = #{phone}, email = #{email}, birth = #{birth}
+	WHERE
+	    id = #{id}
+	</update>
+	
+	<delete id="deleteMember">
+	DELETE FROM
+		tbl_member
+	WHERE
+		id = #{id}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

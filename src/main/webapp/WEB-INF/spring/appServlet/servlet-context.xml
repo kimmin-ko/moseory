@@ -35,13 +35,11 @@
 	<interceptors>
 		<interceptor>
 			<!-- session 없을시 접근 불가능한 URL  -->
-			<mapping path="/index"/>
 			<mapping path="/user/**"/>
 			<mapping path="/admin/**"/>
 			<beans:ref bean="authInterceptor"></beans:ref>
 		</interceptor>
 	</interceptors>
-	 
 	
 	<context:component-scan base-package="com.moseory.controller" />
 </beans:beans>

@@ -8,4 +8,6 @@ public interface UserService {
     
     public void modifyMember(MemberVO vo);
     
+    public void removeMember(String id);
+    
 }

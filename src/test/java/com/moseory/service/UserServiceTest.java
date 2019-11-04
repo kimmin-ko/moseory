@@ -1,6 +1,5 @@
-package com.moseory.dao;
+package com.moseory.service;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
@@ -21,14 +20,14 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
-public class UserDaoTest {
+public class UserServiceTest {
     
     @Setter(onMethod_ = @Autowired)
-    private MemberDao memberDao;
+    private UserService userService;
+    
+    @Setter(onMethod_ = @Autowired)
+    private MemberService memberService;
 
-    @Setter(onMethod_ = @Autowired)
-    private UserDao userDao;
-    
     private MemberVO member1;
     private MemberVO member2;
     
@@ -41,53 +40,16 @@ public class UserDaoTest {
     }
     
     @Test
-    public void testGetMember() {
-	userDao.deleteMember(member1.getId());
+    public void testModifyMember() {
+	userService.removeMember(member1.getId());
 	
-	memberDao.insertMember(member1);
+	memberService.registerMember(member1);
 	
-	log.info("member1 id : " + member1.getId());
-	log.info("userDao.getMember id : " + userDao.getMember(member1.getId()).getId());
+	member1.setPwd_confirm_a("hh");
 	
-	assertThat(userDao.getMember(member1.getId()).getId(), is(member1.getId()));
-    }
-    
-    @Test
-    public void testUpdateMember() {
-	userDao.deleteMember(member1.getId());
+	userService.modifyMember(member1);
 	
-	memberDao.insertMember(member1);
-	
-	member1.setPwd_confirm_a("물통 modify");
-	member1.setEmail("min00@daum.net");
-	
-	userDao.updateMember(member1);
-	
-	MemberVO modifyVO = userDao.getMember(member1.getId());
-	
-	assertThat(modifyVO.getPwd_confirm_a(), is("물통 modify"));
-	assertThat(modifyVO.getEmail(), is("min00@daum.net"));
     }
 
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

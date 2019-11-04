@@ -1,3 +1,7 @@
 .findPwLabel-row {
     text-align: center;
 }
+
+.pop_wrap {display:none; position:fixed; z-index:9999; left:50%; top:0; width:100%; height:100%; background:rgba(0,0,0,.5); transform:translateX(-50%);}
+.pop_con {position:absolute; z-index:9999; top:50%; width:calc(100% - 180px); margin:0 90px; padding:60px; border-radius:40px; background:#fff; transform:translateY(-50%);}
+.pop_con.alert_pop {padding:80px 60px; text-align:center;}
