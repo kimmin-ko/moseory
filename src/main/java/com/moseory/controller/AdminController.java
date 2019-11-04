@@ -7,23 +7,19 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.moseory.domain.ProductDetailVO;
@@ -46,22 +42,20 @@ public class AdminController {
 	return "admin/productregist";
     }
     
-    private List<ProductDetailVO> detailInfo = null;
+    private static List<ProductDetailVO> detailInfo = new ArrayList<ProductDetailVO>();
 
     @PostMapping(value = "/productInfo", consumes = "application/json")
-    public void productInfo(@RequestBody ProductDetailVO productDetail, Model model) {
-	detailInfo = new ArrayList<ProductDetailVO>();
+    public void productInfo(@RequestBody ProductDetailVO productDetail) {
 	detailInfo.add(productDetail);
 	
-	System.out.println("detailInfo = " + detailInfo);
+	log.info("productDetail : " + productDetail);
     }
 
     @PostMapping("/productregist")
-	public String productRegist(
-			@ModelAttribute ProductVO productVO
-			) {
+	public String productRegist(@ModelAttribute ProductVO productVO) {
 		
-		System.out.println(productVO);
+		log.info("productVO : " + productVO);
+		log.info("detailInfo : " + detailInfo.toString());
 		
 		/**
 		ProductVO(code=0, name=moseory, high_code=1, low_code=10, price=30000, sale_count=0, wish_count=0, grade=0, file_path=this is null, file_name=this is null, product_comment=)
@@ -102,7 +96,6 @@ public class AdminController {
 		//3. 중복되지 않는 name으로 code를 조회해옴
 //		productdetailVO.setProduct_code(code);
 		//4. detail에 데이터 등록
-		adminService.product_regist(productVO);
 //		adminService.product_detail_regist(productdetailVO);
 		
 		return "redirect:/index";

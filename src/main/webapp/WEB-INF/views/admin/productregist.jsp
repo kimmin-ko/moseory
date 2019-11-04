@@ -108,19 +108,17 @@
 		});
     });
 }); */
-	var productDetail = null;
 	
 	function regist() {
 		
 		detailInfo();
 		
 		$("#registForm").submit();
-		
 	}
 	
 	function detailInfo() {
+		var productDetail = null;
 		
-	
 		var colorArray = [];
 		var sizeArray = [];
 		var stockArray = [];
@@ -176,11 +174,8 @@
 				type : "post",
 				url : "/admin/productInfo",
 				data : JSON.stringify(productDetail),
-				dataType : "json",
-				contentType : "application/json; charset=utf-8",
-				success : function(result){
-					console.log(result);
-				}
+				async : false,
+				contentType : "application/json; charset=utf-8"
 			});
 	
 		} // sendPro
@@ -211,7 +206,7 @@
 
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-       		<form id="registForm" action = "productregist" method = "post">
+       		<form id="registForm" action = "/admin/productregist" method = "post">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
