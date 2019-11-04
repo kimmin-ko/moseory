@@ -57,7 +57,12 @@ if(message != ""){
                 <img src="/images/btn_google_login.gif">
             </div>
             <div class="col-md-4 col-md-offset-4" style="margin-bottom: 150px;">
-                <img src="/images/btn_kakao_login.gif">
+	            <a href="https://kauth.kakao.com/oauth/authorize?client_id=b419ae28c858db8583adbbee9c54f3bc&redirect_uri=http://localhost:9090/member/kakaoLogin&response_type=code">
+	                <img src="/images/btn_kakao_login.gif">
+	            </a>
+			    <c:if test="${!empty user}">
+			        <h1>로그인 성공입니다</h1>
+			    </c:if>
                 <img src="/images/btn_naver_login.gif">
             </div>
         </div>  
