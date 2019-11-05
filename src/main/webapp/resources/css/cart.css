@@ -1,3 +1,4 @@
+/* cart css start */
 .cartLabel-row {
     text-align: center;
     margin-top: 80px;
@@ -78,3 +79,4 @@
 .cart-use-guide li:before {
     content: '!  ';
 }
+/* cart css end */

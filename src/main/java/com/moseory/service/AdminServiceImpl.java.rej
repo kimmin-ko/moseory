@@ -1,0 +1,6 @@
+diff a/src/main/java/com/moseory/service/AdminServiceImpl.java b/src/main/java/com/moseory/service/AdminServiceImpl.java	(rejected hunks)
+@@ -41,3 +41,4 @@
+ =======
+ 	
+ }
++>>>>>>> cc6ee1f64a5d04f76b70d64129ef1e07ddf6125e

@@ -30,20 +30,27 @@
 		</c:if>
 		<c:if test="${!empty user}">
 			<div class="col-md-3 col-md-offset-2 font-12">
-				<a href="/member/logout">LOG-OUT</a>
+				<a href="/user/logout">LOGOUT</a>
 			</div>
 		</c:if>
-		<div class="col-md-5 font-12 joinus">
-			<a href="/member/join">JOIN US</a>
-		</div>
+		<c:if test="${empty user }">
+			<div class="col-md-5 font-12 joinus">
+				<a href="/member/join">JOIN US</a>
+			</div>
+		</c:if>
+		<c:if test="${!empty user }">
+			<div class="col-md-5 font-12 joinus">
+				
+			</div>
+		</c:if>
 	</div>
 
 	<div class="row ma-bo-50">
 		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/cart/cartList">CART(0)</a>
+			<a href="/user/cart">CART(0)</a>
 		</div>
 		<div class="col-md-5 font-12">
-			<a href="/member/myPage?id=${user.id }">MY PAGE</a>
+			<a href="/user/myPage">MY PAGE</a>
 		</div>
 	</div>
 

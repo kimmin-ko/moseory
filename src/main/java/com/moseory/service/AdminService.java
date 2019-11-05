@@ -8,7 +8,9 @@
   
  
 import java.util.List;
+package com.moseory.service;
 
+import java.util.List;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 

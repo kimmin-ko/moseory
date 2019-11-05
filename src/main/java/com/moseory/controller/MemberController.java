@@ -1,16 +1,15 @@
 package com.moseory.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.util.Map;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,23 +21,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
-import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
 import com.moseory.service.MemberService;
+import com.moseory.util.KakaoConnectionUtil;
+import com.moseory.util.MailUtil;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/member/*")
+@RequestMapping("/member/*") // 로그인 정보가 필요하지 않음
 public class MemberController {
     
     @Setter(onMethod_ = @Autowired)
     private MemberService memberService;
+    
+    @Setter(onMethod_ = @Autowired)
+    private KakaoConnectionUtil kakao;
     
     // 요청 시 해당 필드만 데이터 입력 허용
     @InitBinder
@@ -93,6 +95,14 @@ public class MemberController {
 	
     }
     
+    @PostMapping("/findPwProc")
+    public @ResponseBody int findPwProc(@RequestParam Map<String, Object> param) {
+    	log.info("Contorller findPwProc param ["+ param.toString() +"]");
+    	int result=0;
+    	result = memberService.findPwProc(param);
+    	return result;
+    }
+    
     @GetMapping("/join")
     public void joinForm() {
 	
@@ -132,50 +142,18 @@ public class MemberController {
 	
     }
     
-    // 마이페이지
-    @GetMapping("/myPage")
-    public String myPage(@RequestParam @Nullable String id, Model model) {
-	// 로그인하지 않았을 때
-	if(id == null || id.equals("") || id.length() == 0) return "redirect:/member/login";
-	
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-	
-	return "/member/myPage";
-    }
-    
-    // 회원 정보 수정
-    @GetMapping("/modify")
-    public String modify(@RequestParam @Nullable String id, Model model) {
-	
-	// 로그인하지 않았을 때
-	if(id == null || id.equals("") || id.length() == 0) return "redirect:/member/login";
-		
-	MemberVO member = memberService.readMember(id);
-	LevelEnumMapperValue levelMapper = new LevelEnumMapperValue(member.getLevel());
-	
-	String memberJson = new Gson().toJson(member);
-	String levelJson = new Gson().toJson(levelMapper);
-	
-	model.addAttribute("member", member);
-	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
-	model.addAttribute("memberJson", memberJson);
-	model.addAttribute("levelJson", levelJson);
-	
-	return "/member/modify";
-    }
-    
-    // 회원 탈퇴
-    @GetMapping("/withdrawal")
-    public void withdrawal() {
-	
+    @GetMapping("/kakaoLogin")
+    public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra, Model model,
+    		HttpSession session, HttpServletResponse res) throws Exception {
+    	log.info("kakao Code : " + code);	
+    	String accessToken = kakao.getAccessToken(code);
+    	log.info("kakao accessToken : " + accessToken);
+    	
+    	MemberVO vo = kakao.getUserInfo(accessToken);
+    	log.info("kakao getUserInfo : " + vo);
+
+    	model.addAttribute("user", vo);
+    	return "/index";
     }
     
 }

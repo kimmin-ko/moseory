@@ -35,16 +35,6 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public MemberVO getMember(String id) {
-	return sqlSession.selectOne(namespace+".getMember", id);
-    }
-
-    @Override
-    public void deleteMember(String id) {
-	sqlSession.delete(namespace+".deleteMember", id);
-    }
-
-    @Override
     public int getCountMember(String id) {
 	return sqlSession.selectOne(namespace+".getCountMember", id);
     }
@@ -60,11 +50,17 @@ public class MemberDaoImpl implements MemberDao {
     	return sqlSession.selectList(namespace+".findIdProc", param);
     }
 
-    @Override
-    public int updateMember(MemberVO vo) {
-	return sqlSession.update(namespace+".updateMember", vo);
-    }
 
-	
-        
+	@Override
+	public Map<String, Object> findPwProc(Map<String, Object> param) {
+
+		return sqlSession.selectOne(namespace+".findPwProc", param);
+	}
+
+	@Override
+	public int pwChange(Map<String, Object> param) {
+		
+		return sqlSession.update(namespace+".pwChange", param);
+	}
+
 }

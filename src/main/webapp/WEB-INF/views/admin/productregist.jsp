@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,19 +15,14 @@
 2. 체크박스로 사이즈 다중 선택
 3. 체크가 되면 박스 옆에 text생기면서 재고 입력
 4. 색상 추가 버튼
--->
+-->  
 
 </head>
 <body>
 
-<!-- Daum 우편번호 찾기 API 	-->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-
-</script>
-
 <%@ include file="../includes/sidebar.jsp" %>
-<script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script>
+
+<!-- <script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script> -->
 <!-- <script>
 	var uploadFile = HttpContext.Current.Request.Files;
 	
@@ -91,61 +87,103 @@
 		}
 	}
 	
-	function addInfo(){
-		var div = document.createElement("div");
-	    div.innerHTML = document.getElementById("Info").innerHTML
-	    document.getElementById("field").appendChild(div);
-	}
-	
-	function size_check(){
-		
-	}
-	
 </script>
 <script>
-	/* $(document).ready(function(){
-/* 		console.log($('#size:checked'));*/	
- 
-		$("#size:checked").each(function() {
-			
-			 this.checked = true;
+/* $(document).ready(function(){ 
+    $('.addStock').hide();
+    var check = $(".size1").prop("checked");
+    $(".size").change(function(){
+	    var numberOfChecked1 = $('input:checkbox:checked').length;
+	    console.log(numberOfChecked1);
+        if($(this).is(":checked")){
+            console.log("트루,,,");
+            $('.addStock').show();
+        }else{
+            console.log("거짓,,,");
+            $('.addStock').hide();
+        }
+        $('input[name="product_stock"]').each(function(i) {
+        	
+        	console.log($(this).val());
 		});
-	 
+    });
+}); */
+	
+	function regist() {
+		
+		detailInfo();
+		
+		$("#registForm").submit();
+	}
+	
+	function detailInfo() {
+		var productDetail = null;
+		
+		var colorArray = [];
+		var sizeArray = [];
+		var stockArray = [];
+		var numberOfChecked = $('input:checkbox:checked').length;
+
+		for(var i = 0; i < numberOfChecked; i++) {
+			$('select[name="product_color"]').each(function(i){
+				colorArray.push($(this).val());
+			});
+		}
+		$('input[name="product_size"]:checked').each(function(i){
+			sizeArray.push($(this).val());
+		});
+		
+		
+		$('input[name="product_stock"]').each(function(i) {
+			
+			if($(this).val() != ""){
+				stockArray.push($(this).val());
+			}
+		});
+
+		var stockLength = stockArray.length;
+		var sizeLength = sizeArray.length;
+		
+		if(stockLength != sizeLength){
+			alert("사이즈와 수량을 확인해주세요");
+		}
+		
+		
+		console.log(colorArray);
+		console.log(sizeArray);
+		console.log(stockArray);
+		
+		
+		for(var i = 0; i < numberOfChecked; i++) {
+			productDetail = {
+				product_color : colorArray[i],
+				product_size : sizeArray[i],
+				product_stock : stockArray[i]
+			}
+			sendDetail.sendPro(productDetail);
+		}
+
+	}
+	
+	
+	var sendDetail = (function() {
+		
+		function sendPro(productDetail) {
+	
+			$.ajax({
+				type : "post",
+				url : "/admin/productInfo",
+				data : JSON.stringify(productDetail),
+				async : false,
+				contentType : "application/json; charset=utf-8"
+			});
+	
+		} // sendPro
+		
+		return {sendPro : sendPro};
+	})();
 </script>
 
-<!-- <script>
-	$(document).ready(function(){
-		var time = new Date();
-		var code = time.getTime();
-		$("input[name=code]").val(code);
-	});
-</script> -->
-
-<!-- <script>
-$(document).ready(function(){
-	// ckeditor setting
-       var ckeditor_config = {
-            resize_enabled : false, //에디터 크기조절 X
-            enterMode : CKEDITOR.ENTER_BR , // 엔터키를 <br> 로 적용.
-            toolbarCanCollapse : true , 
-            filebrowserUploadUrl: '/admin/imageUpload', // 파일 업로드를 처리 할 경로 설정.
-
-            // 에디터에 사용할 기능들 정의
-            toolbar : [
-              [ 'Source', '-' , 'NewPage', 'Preview' ],
-              [ 'Cut', 'Copy', 'Paste', 'PasteText', '-', 'Undo', 'Redo' ],
-              [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-              [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ],
-              '/',
-              [ 'Styles', 'Format', 'Font', 'FontSize' ],
-              [ 'TextColor', 'BGColor' ],
-              [ 'Image', 'Flash', 'Table' , 'SpecialChar' , 'Link', 'Unlink']
-
-            ]
-
-          };
-       });
-</script> -->
 <div class="container joinForm-container" style="margin-left:22%">
 
     <!-- Join Form Start -->
@@ -168,7 +206,7 @@ $(document).ready(function(){
 
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-       		<form action = "productregist" method = "post">
+       		<form id="registForm" action = "/admin/productregist" method = "post">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
@@ -210,30 +248,33 @@ $(document).ready(function(){
 	                <tr>
 	                	<th>상품정보 <img src="/images/ico_required.gif"></th>
 	                	<td>
-  	              			<button onclick="addInfo()">추가</button>
-  	              			<div id = "Info">
-	  	              			<div id = "addColor">
-	  	              				<select name = "product_color">
-	                					<option value = "WH">WHITE</option>
-	                					<option value = "BL">BALCK</option>
-	                					<option value = "RD">RED</option>
-	                					<option value = "GR">GRAY</option>
+	                		<div class = "detailInfo">
+		                		<div class = "addColor">
+			                		<select name = "product_color">
+	                					<option value = "화이트">WHITE</option>
+	                					<option value = "블랙">BALCK</option>
+	                					<option value = "레드">RED</option>
+	                					<option value = "그레이">GRAY</option>
 	                				</select>
-	 	              			</div>
-	 	              			<div id = "addSize">
-	 	              				<input type="checkbox" id="size" name="product_size" value="xs">XS
-	                				<input type = "text"><br>
-	 	              				<input type="checkbox" id="size" name="product_size" value="s">S
-	                				<input type = "text" ><br>
-	                				<input type="checkbox" id="size" name="product_size" value="m" >M
-	           				      	<input type = "text" name = "product_stock"><br>
-	                				<input type="checkbox" id="size" name="product_size" value="l">L
-	                				<input type = "text" ><br>
-	                				<input type="checkbox" id="size" name="product_size" value="xl">XL
-	                				<input type = "text"><br>
-	 	              			</div>
-	  	              			<div id = "field"></div>
-  	              			</div>
+		                		</div>
+								<div class = "addSize">
+					                <input type="checkbox" class ="size" name="product_size" value="xs">XS
+    					            <input type = "text" name = "product_stock" class= "product_stock">개<br>
+					                <!-- <div class = "addStock">
+					                </div> -->
+					                <input type="checkbox" class ="size" name="product_size" value="s">S
+					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
+					                
+					                <input type="checkbox" class ="size" name="product_size" value="m" id = "sizeArea">M
+					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
+					                <input type="checkbox" class ="size" name="product_size" value="l">L
+					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
+					                <input type="checkbox" class ="size" name="product_size" value="xl">XL
+					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
+					            
+					            </div>	       
+							</div>      		
+  	              			<button type = "button">추가</button>
 	                	</td>
 	                </tr>
 	                <!-- 
@@ -243,18 +284,18 @@ $(document).ready(function(){
 	                	4. 색상 추가 버튼
 	                 -->
 	                <tr>
-	                	<th>이미지</th>
+	                	<th>코멘트</th>
 	                	<td>
 							<textarea class = "form-control" name = "product_comment" id = "product_comment" cols="20" rows="15"></textarea>	                	
 							<script> 
-								CKEDITOR.replace('product_comment');
+								// CKEDITOR.replace('product_comment');
 							</script>
 	                	</td>
 	                </tr>
 	            
 	            </table>
 	            <div class = "regist_btn_area text-center">
-					<input type = "submit" value = "등록" class = "btn btn-primary btn-md">
+					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()">
 					<input type = "button"  value = "취소" class ="btn btn-default btn-md">
 				</div>
 				

@@ -10,6 +10,7 @@ import com.moseory.domain.ProductVO;
 
 import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public void product_regist(ProductVO productVO) {
 		System.out.println("���񽺱��� ��");
+	
+	@Override
+	public void product_regist(ProductVO productVO) {
 		adminDao.product_regist(productVO);
 	}
 
@@ -40,5 +44,6 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 
+}	
 
 }

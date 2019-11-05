@@ -16,7 +16,9 @@
 }
 
 .prod-option {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
+    width: 240px;
+    height: 30px;
 }
 
 .btn-lg {
@@ -129,3 +131,34 @@
 .qna-body table {
     font-size: 12px;
 }
+
+/* 상품 옵션 선택 및 추가 Start */
+.add-pro-name {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.add-pro-option {
+    font-size: 12px;
+}
+
+.add-cancel {
+    width: 20px;
+    height: 20px;
+}
+
+.quantity {
+    width: 40px;
+    height: 20px;
+}
+
+.add-pro-quantity {
+    text-align: right;
+}
+
+.add-pro-price {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
+}
+/* 상품 옵션 선택 및 추가 End */
