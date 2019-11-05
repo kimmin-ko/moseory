@@ -30,8 +30,8 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 	
 	@Override
-	public NoticeVO read(int notice_no){
-		return sqlSession.selectOne(namespace+".view",notice_no);
+	public NoticeVO read(int No){
+		return sqlSession.selectOne(namespace+".select",No);
 	}
 	
 	@Override

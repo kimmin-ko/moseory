@@ -19,6 +19,8 @@ public class HomeController {
     	private HomeService homeService;
 
 	@GetMapping("/index")
+	public void index() {
+		
 	public void index(Model model) {
 	    // WEEKLY BEST ITEM -> 판매량 순으로 데이터를 가져옴
 	    List<ProductVO> productSaleCount = homeService.readProductSaleCount();
