@@ -12,13 +12,13 @@ public interface NoticeDao {
 	public List<NoticeVO> noticeList();
 	
 	// 게시글 번호로 조회하기
-	public NoticeVO read(int seq_notice_no);
+	public NoticeVO read(int No);
 	
 	// 게시글 수정하기
 	public void update(NoticeVO vo);
 	
 	// 게시글 삭제하기
-	public void delete(int seq_notice_no);
+	public void delete(int No);
 	
 
 }
