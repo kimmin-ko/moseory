@@ -62,10 +62,76 @@
             	// 각 tr의 id를 지정해주기 위한 index 0으로 초기화
             	var idx = 0;
             	
+            	Date.prototype.yyyymmdd = function()
+            	{
+            	    var yyyy = this.getFullYear().toString();
+            	    var mm = (this.getMonth() + 1).toString();
+            	    var dd = this.getDate().toString();
+            	 
+            	    return yyyy + (mm[1] ? mm : '0'+mm[0]) + (dd[1] ? dd : '0'+dd[0]);
+            	}
+
             	$(document).ready(function() {
             		$("#total-price").text(total_price + '원');
             		$("#total-quantity").text(total_quantity + '개');
             		
+            		var product_code = "${product.code}";
+            		var reviewUL = $(".reviewUL");
+            		productJs.getReviewList(product_code, 'N', function(reviewList) {
+        				
+        				console.log(reviewList);
+        				
+        				var str = "";
+        				
+        				if(reviewList.length == 0 || reviewList == null) {
+        					reviewUL.html("");
+           					return;
+        				}
+
+        				for(var i = 0, len = reviewList.length || 0; i < len; i++) {
+        					var year = reviewList[i].reg_date.year;
+        					var month = reviewList[i].reg_date.monthValue;
+        					var day = reviewList[i].reg_date.dayOfMonth + 1;
+        					var reg_date = year + '-' + month + '-' + day;
+        					
+        					str += "<li data-no='" + reviewList[i].no + "'>";
+        					str += "	<div class='col-md-10 col-md-offset-1 review-body'>";
+        					str += "		<p>";
+        					str += "			<span>[" + reviewList[i].member.level + "]</span>";
+        					str += "			<span>" + reviewList[i].member.id + "</span><span style='color: #B5B7BA;'> | </span>";
+        					str += "			<span class='review-date'>" + reg_date + "</span>";
+        					str += "			<span style='color: #B5B7BA;'> | </span>";
+        					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
+        					str += "		</p>";
+        					str += "		<hr style='border: 0.5px #7F858A solid;'>";
+        					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
+        					str += "		<div class='col-md-11 review-body-prod-name'>";
+        					str += "			${product.name }<br>";
+        					str += "			[옵션 : " + reviewList[i].product_detail.product_color + "&nbsp;";
+        					str += "			" + reviewList[i].product_detail.product_size + "]";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-title'>";
+        					str += "			<p>" + reviewList[i].title + "</p>";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-content'>";
+        					str += "			<p>";
+        					str += "				" + reviewList[i].content;
+        					str += "			</p>";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-like'>";
+        					str += "			<button type='button' class='btn btn-warning' onclick='increaseRecommend(" + reviewList[i].no + ", this)'>";
+        					str += "				LIKE (" + reviewList[i].recommend + ")";
+        					str += "			</button>";
+        					str += "		</div>";
+        					str += "	</div>";
+        					str += "</li>";
+        				}
+        				
+        				reviewUL.html(str);
+        				
+        			}); // getReviewList
+            		
+            		// 리뷰 순서 변경
             		$("#sortReview").on("click", "li", function() {
             			var product_code = "${product.code}";
             			var type = $(this).attr('value');
@@ -75,17 +141,64 @@
             				
             				console.log(reviewList);
             				
+            				var str = "";
+            				
             				if(reviewList.length == 0 || reviewList == null) {
             					reviewUL.html("");
-            					
-            					return;
+	           					return;
             				}
+
+            				for(var i = 0, len = reviewList.length || 0; i < len; i++) {
+            					var year = reviewList[i].reg_date.year;
+            					var month = reviewList[i].reg_date.monthValue;
+            					var day = reviewList[i].reg_date.dayOfMonth + 1;
+            					var reg_date = year + '-' + month + '-' + day;
+            					
+            					str += "<li data-no='" + reviewList[i].no + "'>";
+            					str += "	<div class='col-md-10 col-md-offset-1 review-body'>";
+            					str += "		<p>";
+            					str += "			<span>[" + reviewList[i].member.level + "]</span>";
+            					str += "			<span>" + reviewList[i].member.id + "</span><span style='color: #B5B7BA;'> | </span>";
+            					str += "			<span class='review-date'>" + reg_date + "</span>";
+            					str += "			<span style='color: #B5B7BA;'> | </span>";
+            					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
+            					str += "		</p>";
+            					str += "		<hr style='border: 0.5px #7F858A solid;'>";
+            					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
+            					str += "		<div class='col-md-11 review-body-prod-name'>";
+            					str += "			${product.name }<br>";
+            					str += "			[옵션 : " + reviewList[i].product_detail.product_color + "&nbsp;";
+            					str += "			" + reviewList[i].product_detail.product_size + "]";
+            					str += "		</div>";
+            					str += "		<div class='col-md-12 review-title'>";
+            					str += "			<p>" + reviewList[i].title + "</p>";
+            					str += "		</div>";
+            					str += "		<div class='col-md-12 review-content'>";
+            					str += "			<p>";
+            					str += "				" + reviewList[i].content;
+            					str += "			</p>";
+            					str += "		</div>";
+            					str += "		<div class='col-md-12 review-like'>";
+            					str += "			<button type='button' class='btn btn-warning' onclick='increaseRecommend(" + reviewList[i].no + ", this)'>";
+            					str += "				LIKE (" + reviewList[i].recommend + ")";
+            					str += "			</button>";
+            					str += "		</div>";
+            					str += "	</div>";
+            					str += "</li>";
+            				}
+            				
+            				reviewUL.html(str);
             				
             			}); // getReviewList
             			
             		}) // sortReview
             		
-            		console.log(productJs.name);
+            		// li changeColor
+                	$("#sortReview li").on("click", function() {
+                		$("#sortReview li").removeClass();
+                		$(this).addClass('on');
+                	});
+        			
             	});
             	
             	// 색상 선택 시 해당 색상의 사이즈를 조회
@@ -179,7 +292,7 @@
             		if(count === '0' || count === '') {
             			alert("최소 주문수량은 1개 입니다.");
             			$(countInput).val(1);
-            			return;
+            			count = 1;
             		}
             		
             		var trNum = $(countInput).closest('tr').prevAll().length;
@@ -236,16 +349,24 @@
             	
             	// 추천 증가
             	function increaseRecommend(review_no, recommend_btn) {
+            		var user = "${user}";
+					var userId = "${user.id}";
+					
+					if(user == null || user == '') {
+						alert("로그인 후에 LIKE/CLEAR LIKE하실 수 있습니다.");
+						return;
+					}
             		
             		$.ajax({
             			type : 'post',
-            			url : '/product/increaseRecommend/' + review_no,
+            			url : '/product/increaseRecommend/' + review_no + '/' + userId,
             			success : function(result) {
             				$(recommend_btn).text('LIKE (' + result + ')');
             			}
             		});
             		
-            	} // upRecommend
+            	} // increaseRecommend
+            	
 	            </script>
             <!-- 컬러 -->
             <c:if test="${color != null }">
@@ -317,52 +438,15 @@
         <div class="col-md-10 col-md-offset-1 review-header"> <!-- review header -->
             <p>Review(<c:out value="${reviewCount }" />)</p>
             <ul id="sortReview">
-                <li value="N">최신순</li>
+                <li class="on" value="N">최신순</li>
                 <li value="R">추천순</li>
                 <li value="H">높은평점순</li>
                 <li value="L">낮은평점순</li>
             </ul>
         </div> <!-- review header -->
-       
-       <ul class="list-unstyled reviewUL">
-	       	<c:forEach var="review" items="${reviewList }">
-	       	<li>
-		        <div class="col-md-10 col-md-offset-1 review-body">  <!-- review body start -->
-		            <p> 
-		                <span>[<c:out value="${review.member.level }" />]</span>
-		                <span>${review.member.id }</span><span style="color: #B5B7BA;"> | </span>
-		                <span class="review-date"><c:out value="${review.reg_date }" /></span>
-		                <span style="color: #B5B7BA;"> | </span>
-		                <span class="review-grade"><c:out value="${review.grade }" /></span>
-		            </p>
-		
-		            <hr style="border: 0.5px #7F858A solid;">
-		
-		            <div class="col-md-1"><img src='<c:out value="${review.file_path }" />'></div>
-		            <div class="col-md-11 review-body-prod-name">
-		                ${product.name }<br>
-		                [옵션 : <c:out value="${review.product_detail.product_color }" />&nbsp;
-		                		<c:out value="${review.product_detail.product_size }" />]
-		            </div>
-		
-		            <div class="col-md-12 review-title">
-		                <p><c:out value="${review.title }" /></p>
-		            </div>
-		
-		            <div class="col-md-12 review-content">
-		                <p>
-		                	<c:out value="${review.content }" />   
-		                </p>
-		            </div>
-		
-		            <div class="col-md-12 review-like">
-		                <button type="button" class="btn btn-warning" onclick="increaseRecommend(${review.no}, this)">
-		                	LIKE (<c:out value="${review.recommend }" />)
-		                </button>
-		            </div>
-				</div> <!-- review body end -->
-			</li>
-	        </c:forEach>
+       	
+       	<!-- 리뷰 ul -->
+       	<ul class="list-unstyled reviewUL">
         </ul>
 
         <div class="col-md-10 col-md-offset-1 qna-header"> <!-- Q&A header -->

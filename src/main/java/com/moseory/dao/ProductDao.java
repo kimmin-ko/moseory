@@ -34,5 +34,7 @@ public interface ProductDao {
 	
 	List<QnAVO> getQnA(int product_code);
 	
-	void modifyRecommend(int review_no);
+	void plusRecommend(int review_no);
+	
+	void minusRecommend(int review_no);
 }

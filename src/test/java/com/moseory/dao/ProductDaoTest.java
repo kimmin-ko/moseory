@@ -81,7 +81,7 @@ public class ProductDaoTest {
     public void testModifyRecommend() {
 	ReviewVO review = productDao.getOriginalReview(21);
 	
-	productDao.modifyRecommend(21);
+	productDao.plusRecommend(21);
 	
 	ReviewVO updateReview = productDao.getOriginalReview(21);
 	

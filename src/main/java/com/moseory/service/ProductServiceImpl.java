@@ -70,7 +70,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void increaseRecommend(int review_no) {
-	    productDao.modifyRecommend(review_no);
+	    productDao.plusRecommend(review_no);
 	}
+
+	@Override
+	public void decreaseRecommend(int review_no) {
+	    productDao.minusRecommend(review_no);
+	}
+	
+	
 	
 }

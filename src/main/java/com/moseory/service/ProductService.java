@@ -34,4 +34,6 @@ public interface ProductService {
 	List<QnAVO> getQnA(int product_code);
 	
 	void increaseRecommend(int review_no);
+	
+	void decreaseRecommend(int review_no);
 }

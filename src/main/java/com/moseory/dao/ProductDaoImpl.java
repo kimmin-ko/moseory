@@ -77,11 +77,14 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public void modifyRecommend(int review_no) {
-	    sqlSession.update("product.modifyRecommend", review_no);
+	public void plusRecommend(int review_no) {
+	    sqlSession.update("product.plusRecommend", review_no);
 	}
-	
-	
+
+	@Override
+	public void minusRecommend(int review_no) {
+	    sqlSession.update("product.minusRecommend", review_no);
+	}
 	
 
 }

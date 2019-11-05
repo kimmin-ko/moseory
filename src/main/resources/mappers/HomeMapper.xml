@@ -6,22 +6,35 @@
 <mapper namespace="com.moseory.mapper.HomeMapper">
 	
 	<select id="getProductSaleCount" resultType="productVO">
+	<![CDATA[
 	SELECT
     	code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
 	FROM
-    	tbl_product
-	ORDER BY
-    	sale_count desc
+    	(SELECT
+			rownum, code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
+		FROM
+			tbl_product
+		ORDER BY
+			sale_count desc)
+	WHERE
+	    rownum <= 3
+    ]]>
 	</select>
 	
 	
 	<select id="getProductNew" resultType="productVO">
+	<![CDATA[
 	SELECT
     	code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
 	FROM
-    	tbl_product
-	ORDER BY
-    	code desc
+    	(SELECT
+			rownum, code, name, high_code, low_code, price, sale_count, grade ,wish_count, file_path, file_name, product_comment
+		FROM
+			tbl_product
+		ORDER BY code desc)
+	WHERE
+	    rownum <= 60
+   	]]>
 	</select>
 	
 </mapper>

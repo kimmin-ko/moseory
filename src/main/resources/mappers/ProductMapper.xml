@@ -198,11 +198,21 @@
 	</select>
 	
 	<!-- 추천수 증가 -->
-	<update id="modifyRecommend">
+	<update id="plusRecommend">
 	UPDATE 
     	tbl_review 
 	SET 
 	    recommend = recommend + 1
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- 추천수 감소 -->
+	<update id="minusRecommend">
+	UPDATE 
+    	tbl_review 
+	SET 
+	    recommend = recommend - 1
 	WHERE
 	    no = #{no}
 	</update>

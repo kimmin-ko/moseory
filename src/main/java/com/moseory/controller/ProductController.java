@@ -2,6 +2,10 @@ package com.moseory.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,21 +105,60 @@ public class ProductController {
 		
 		return "product/productInfo";
 	}
-	
-	@PostMapping("/increaseRecommend/{review_no}")
-	public ResponseEntity<Integer> increaseRecommend(@PathVariable("review_no") int review_no) {
+
+	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
+	public ResponseEntity<Integer> increaseRecommend(
+		@PathVariable("review_no") int review_no, @PathVariable("user_id") String user_id, 
+		HttpServletRequest req, HttpServletResponse res) {
+	    boolean isCookie = false;
 	    
-	    if(review_no < 1) {
-		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    Cookie[] cookies = req.getCookies();
+	    
+	    Cookie like_cookie = null;
+	    
+	    if(cookies != null) {
+		for(int i = 0; i < cookies.length; i++) {
+        		log.info("cookie name : " + cookies[i].getName());
+        		log.info("cookie value : " + cookies[i].getValue());
+        		
+        		if(cookies[i].getName().equals("like_" + user_id + "_" + review_no)) {
+        		    isCookie = true;
+        		    like_cookie = cookies[i];
+        		}
+    	    	}
 	    }
 	    
-	    productService.increaseRecommend(review_no);
+	    // cookie가 존재하지 않을 경우
+	    if(!isCookie) {
+		// 쿠키 생성
+		like_cookie = new Cookie("like_" + user_id + "_" + review_no, "exist_cookie");
+		like_cookie.setMaxAge(60 * 60 * 24 * 365);
+		like_cookie.setPath("/");
+
+		// 쿠키 저장
+		res.addCookie(like_cookie);
+
+		// 추천 수 증가
+		productService.increaseRecommend(review_no);
+	    } 
+	    // cookie가 존재할 경우
+	    else {
+		// 쿠키 삭제
+		like_cookie.setMaxAge(0);
+		like_cookie.setPath("/");
+		
+		// 쿠키 저장
+		res.addCookie(like_cookie);
+
+		// 추천 수 감소
+		productService.decreaseRecommend(review_no);
+	    }
 	    
 	    int review_recommend = productService.getOriginalReview(review_no).getRecommend();
 	    
 	    return new ResponseEntity<>(review_recommend, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getSize/{code}/{color}")
 	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code,
 			     @PathVariable("color") String color) {

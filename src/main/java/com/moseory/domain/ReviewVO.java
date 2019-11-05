@@ -20,6 +20,7 @@ public class ReviewVO {
     private String title;
     private String content;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDate reg_date;
     private int hit;
     private String file_path;
