@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,11 +93,6 @@ public class ProductController {
 		int qnaCount = productService.getQnaCount(code);
 		model.addAttribute("qnaCount", qnaCount);
 		
-		// Review 리스트
-		ReviewCri reviewCri = new ReviewCri(code, "N");
-		List<ReviewVO> reviewList = productService.getReview(reviewCri);
-		model.addAttribute("reviewList", reviewList);
-		
 		// QnA 리스트
 		List<QnAVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
@@ -170,13 +164,13 @@ public class ProductController {
 		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping(value = "/getReviewList/{product_code}/{type}",
+	@GetMapping(value = "/getReviewList/{product_code}/{type}/{limit}",
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<List<ReviewVO>> getReviewList(
 		@PathVariable("product_code") int product_code,
-		@PathVariable("type") String type) {
-	    
-	    ReviewCri reviewCri = new ReviewCri(product_code, type);
+		@PathVariable("type") String type,
+		@PathVariable("limit") int limit) {
+	    ReviewCri reviewCri = new ReviewCri(product_code, type, limit);
 	    
 	    List<ReviewVO> reviewList = productService.getReview(reviewCri);
 	    

@@ -11,5 +11,6 @@ public class ReviewCri {
     
     private int product_code;
     private String type;
+    private int limit;
 
 }

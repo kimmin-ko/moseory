@@ -53,6 +53,8 @@
             <script src="/js/product/productInfo.js"></script>
             
             <script type="text/javascript">
+            	// 자주 쓰이는 상품 번호 전연변수로 선언
+            	var product_code = "${product.code}";
             	// 총 주문 가격
             	var total_price = 0;
             	// 총 주문 수량 
@@ -61,25 +63,15 @@
             	var quantity_map = new Map();
             	// 각 tr의 id를 지정해주기 위한 index 0으로 초기화
             	var idx = 0;
+            	// 상품 페이지에 뿌려줄 리뷰의 갯수 초기화
+            	var limit = new Number(5);
+            	// 상품 페이지에 뿌려줄 리뷰 정렬 초기화
+            	var type = 'N';
             	
-            	Date.prototype.yyyymmdd = function()
-            	{
-            	    var yyyy = this.getFullYear().toString();
-            	    var mm = (this.getMonth() + 1).toString();
-            	    var dd = this.getDate().toString();
-            	 
-            	    return yyyy + (mm[1] ? mm : '0'+mm[0]) + (dd[1] ? dd : '0'+dd[0]);
-            	}
-
-            	$(document).ready(function() {
-            		$("#total-price").text(total_price + '원');
-            		$("#total-quantity").text(total_quantity + '개');
+            	function getReviewList(product_code, type, limit) {
             		
-            		var product_code = "${product.code}";
             		var reviewUL = $(".reviewUL");
-            		productJs.getReviewList(product_code, 'N', function(reviewList) {
-        				
-        				console.log(reviewList);
+            		productJs.getReviewList(product_code, type, limit, function(reviewList) {
         				
         				var str = "";
         				
@@ -129,68 +121,28 @@
         				
         				reviewUL.html(str);
         				
-        			}); // getReviewList
+        			}); // getReviewList (ajax)
+        			
+        			if("${reviewCount}" > limit) {
+            			$(".more-review").html('<button class="btn btn-info" onclick="moreReview()">리뷰 더보기</button>');
+            		} else {
+            			$(".more-review").html('');
+            		}
+        			
+            	} // getReviewList
+            	
+            	$(document).ready(function() {
+            		$("#total-price").text(total_price + '원');
+            		$("#total-quantity").text(total_quantity + '개');
+            		
+            		getReviewList(product_code, type, limit);
             		
             		// 리뷰 순서 변경
             		$("#sortReview").on("click", "li", function() {
-            			var product_code = "${product.code}";
-            			var type = $(this).attr('value');
-            			var reviewUL = $(".reviewUL");
+            			type = $(this).attr('value');
+            			limit = new Number(5);
             			
-            			productJs.getReviewList(product_code, type, function(reviewList) {
-            				
-            				console.log(reviewList);
-            				
-            				var str = "";
-            				
-            				if(reviewList.length == 0 || reviewList == null) {
-            					reviewUL.html("");
-	           					return;
-            				}
-
-            				for(var i = 0, len = reviewList.length || 0; i < len; i++) {
-            					var year = reviewList[i].reg_date.year;
-            					var month = reviewList[i].reg_date.monthValue;
-            					var day = reviewList[i].reg_date.dayOfMonth + 1;
-            					var reg_date = year + '-' + month + '-' + day;
-            					
-            					str += "<li data-no='" + reviewList[i].no + "'>";
-            					str += "	<div class='col-md-10 col-md-offset-1 review-body'>";
-            					str += "		<p>";
-            					str += "			<span>[" + reviewList[i].member.level + "]</span>";
-            					str += "			<span>" + reviewList[i].member.id + "</span><span style='color: #B5B7BA;'> | </span>";
-            					str += "			<span class='review-date'>" + reg_date + "</span>";
-            					str += "			<span style='color: #B5B7BA;'> | </span>";
-            					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
-            					str += "		</p>";
-            					str += "		<hr style='border: 0.5px #7F858A solid;'>";
-            					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
-            					str += "		<div class='col-md-11 review-body-prod-name'>";
-            					str += "			${product.name }<br>";
-            					str += "			[옵션 : " + reviewList[i].product_detail.product_color + "&nbsp;";
-            					str += "			" + reviewList[i].product_detail.product_size + "]";
-            					str += "		</div>";
-            					str += "		<div class='col-md-12 review-title'>";
-            					str += "			<p>" + reviewList[i].title + "</p>";
-            					str += "		</div>";
-            					str += "		<div class='col-md-12 review-content'>";
-            					str += "			<p>";
-            					str += "				" + reviewList[i].content;
-            					str += "			</p>";
-            					str += "		</div>";
-            					str += "		<div class='col-md-12 review-like'>";
-            					str += "			<button type='button' class='btn btn-warning' onclick='increaseRecommend(" + reviewList[i].no + ", this)'>";
-            					str += "				LIKE (" + reviewList[i].recommend + ")";
-            					str += "			</button>";
-            					str += "		</div>";
-            					str += "	</div>";
-            					str += "</li>";
-            				}
-            				
-            				reviewUL.html(str);
-            				
-            			}); // getReviewList
-            			
+            			getReviewList(product_code, type, limit);
             		}) // sortReview
             		
             		// li changeColor
@@ -198,9 +150,16 @@
                 		$("#sortReview li").removeClass();
                 		$(this).addClass('on');
                 	});
-        			
-            	});
+            		
+            	}); // document
             	
+            	function moreReview() {
+            		limit += 5;
+            		
+            		getReviewList(product_code, type, limit);
+            		
+            	} // moreReview
+        		
             	// 색상 선택 시 해당 색상의 사이즈를 조회
             	function getSize() {
             		// 현재 select-size의 option 삭제
@@ -367,6 +326,8 @@
             		
             	} // increaseRecommend
             	
+            	
+            	
 	            </script>
             <!-- 컬러 -->
             <c:if test="${color != null }">
@@ -448,6 +409,11 @@
        	<!-- 리뷰 ul -->
        	<ul class="list-unstyled reviewUL">
         </ul>
+
+		<!-- 더보기 버튼 -->
+		<div class="col-md-10 col-md-offset-1 more-review">
+			
+		</div>
 
         <div class="col-md-10 col-md-offset-1 qna-header"> <!-- Q&A header -->
             <p>Q & A(<c:out value="${qnaCount }" />)</p>

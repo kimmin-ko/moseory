@@ -1,7 +1,6 @@
 package com.moseory.dao;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -66,7 +65,7 @@ public class ProductDaoTest {
     
     @Test
     public void testGetReview() {
-	ReviewCri reviewCri = new ReviewCri(34, "L");
+	ReviewCri reviewCri = new ReviewCri(34, "L", 10);
 	List<ReviewVO> reviewList = productDao.getReview(reviewCri);
 	reviewList.stream().forEach(x -> log.info(x.toString()));
     }
