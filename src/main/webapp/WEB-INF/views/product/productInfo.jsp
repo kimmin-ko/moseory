@@ -326,7 +326,24 @@
             		
             	} // increaseRecommend
             	
-            	
+            	function addWishList() {
+            		var member_id = "${user.id}";
+            		
+            		console.log(member_id);
+            		
+            		// 로그인되어있을 때
+            		if(member_id) {
+	            		productJs.addWishList(member_id, product_code, function(result) {
+	            			if(result == 'success') {
+		            			alert("관심상품이 등록되었습니다.");
+	            			} else {
+	            				alert("이미 등록되어 있습니다.");
+	            			}
+	            		});
+            		} else {
+            			alert('로그인 후 이용해주세요.');
+            		}
+            	} // addWishList
             	
 	            </script>
             <!-- 컬러 -->
@@ -378,10 +395,10 @@
                 <button type="button" class="btn btn-default btn-lg btn-buy">BUY NOW</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg" onclick="addProductToCart()">ADD TO CART</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="addToCart()">ADD TO CART</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg">WISH LIST</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="addWishList()">WISH LIST</button>
             </div>
             
         </div>

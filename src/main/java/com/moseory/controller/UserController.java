@@ -7,16 +7,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.WishListVO;
 import com.moseory.service.UserService;
 
 import lombok.Setter;
@@ -62,8 +68,6 @@ public class UserController {
 	
 	return "/user/myPage";
     }
-    
-
     
     // 회원 정보 수정 페이지
     @GetMapping("/modify")
@@ -139,5 +143,60 @@ public class UserController {
         session.invalidate();  
         return "redirect:/index"; 
     }
+    
+    // 관심상품 페이지
+    @GetMapping("/wishList")
+    public void wishList(HttpServletRequest req, Model model) {
+	// 로그인한 사용자의 아이디를 얻어옴
+	HttpSession session = req.getSession();
+	
+	MemberVO member = (MemberVO)session.getAttribute("user");
+	
+	String member_id = member.getId();
+	
+	// 아이디를 이용해 WishList 를 가져옴
+	WishListVO wishList = userService.getWishList(member_id);
+	
+	model.addAttribute("wishList", wishList);
+    }
+    
+    // 관심상품 등록
+    @PostMapping("/addWishList")
+    public @ResponseBody ResponseEntity<String> addWishList(
+	    @RequestBody Map<String, Object> param) {
+	
+	int result = userService.checkWishList(param);
+	
+	// 이미 관심상품으로 등록되어 있을 경우
+	if(result == 1) {
+	    return new ResponseEntity<>("fail", HttpStatus.OK);
+	} else {
+	    userService.addWishList(param);
+	    return new ResponseEntity<>("success", HttpStatus.OK);
+	}
+    }
+    
+    @PostMapping("/deleteWishList")
+    public @ResponseBody ResponseEntity<String> deleteWidhList(
+	    @RequestBody Map<String, Object> param) {
+	
+	int result = userService.deleteWishList(param);
+	
+	// result = 1, 삭제 성공
+	if(result == 1) {
+	    return new ResponseEntity<>("success", HttpStatus.OK);
+	} else {
+	    return new ResponseEntity<>("fail", HttpStatus.OK);
+	}
+	
+    }
+    
 
-}
+} // END
+
+
+
+
+
+
+

@@ -4,6 +4,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -69,6 +74,42 @@ public class UserDaoTest {
 	assertThat(modifyVO.getEmail(), is("min00@daum.net"));
     }
 
+    @Test
+    public void testAddWishList() {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("member_id", "admin00");
+	param.put("product_code", 34);
+	
+	userDao.deleteWishList(param);
+	
+	userDao.addWishList(param);
+    }
+    
+    @Test
+    public void testGetWishList() {
+	WishListVO vo = new WishListVO();
+	vo = userDao.getWishList("admin11");
+	
+	vo.getProducts().stream().forEach(x -> log.info(x.toString()));
+    }
+    
+    @Test
+    public void testCheckWishList() {
+	Map<String, Object> param1 = new HashMap<String, Object>();
+	param1.put("member_id", "admin11");
+	param1.put("product_code", 2);
+	
+	Map<String, Object> param2 = new HashMap<String, Object>();
+	param2.put("member_id", "admin11");
+	param2.put("product_code", 77);
+	
+	int result1 = userDao.checkWishList(param1);
+	userDao.increaseWishCount((Integer)(param1.get("product_code")));
+	int result2 = userDao.checkWishList(param2);
+	
+	log.info("result1: " + result1);
+	log.info("result2 : " + result2);
+    }
     
 }
 

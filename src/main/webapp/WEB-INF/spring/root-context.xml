@@ -62,4 +62,6 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	<tx:annotation-driven />
+	
 </beans>

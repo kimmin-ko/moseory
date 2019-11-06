@@ -13,7 +13,6 @@ import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
 
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
