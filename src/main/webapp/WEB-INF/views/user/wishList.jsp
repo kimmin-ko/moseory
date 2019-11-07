@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,12 +32,13 @@
 	                <img src='<c:out value="${wish.file_path }" />'>
 	            </div>
 	            <div class="col-md-8">
-	                <p><c:out value="${wish.name }" /></p>
-	                <p><c:out value="${wish.price }" />원</p>
-	                <p class="wl-count"><i class="glyphicon glyphicon-heart"></i>&nbsp;<c:out value="${wish.wish_count }" /></p>
-	                <p>
-	                    <button type="button" class="btn btn-wl-delete" onclick="deleteWishList(${wish.code })">삭제</button>
+	                <p><a href="/product/productInfo?code=<c:out value='${wish.code }' />"><c:out value="${wish.name }" /></a></p>
+	                <p><fmt:formatNumber value="${wish.price }" pattern="#,###" />원</p>
+	                <p class="wl-count">
+	                	<i class="glyphicon glyphicon-heart"></i>&nbsp;
+	                	<fmt:formatNumber value="${wish.wish_count }" pattern="#,###" />
 	                </p>
+	                <p><button type="button" class="btn btn-wl-delete" onclick="deleteWishList(${wish.code })">삭제</button></p>
 	            </div>
 	        </div>
 	        </c:forEach>

@@ -63,24 +63,18 @@ public class ProductController {
 		    // 상품 색상 중복 없이 조회
 		    productColor = productService.getProductColor(code);
 		}
-		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		model.addAttribute("productColorList", productColor);
-		
-		log.info("is product color : " + color);
-		log.info("is product productColor : " + productColor);
+		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		
 		/* 사이즈 조회 */
 		String size = productDetailVO.get(0).getProduct_size();
-		List<String> productSize = null;
+		List<ProductDetailVO> productSize = null;
 		// 사이즈가 있고, 색상이 없을 경우에는 상품 정보 페이지에 사이즈 뿌려줌
 		if(size != null && color == null) {
 		    productSize = productService.getProductSize(code, color);
 		}
-		model.addAttribute("size", size); // 해당 상품의 사이즈 option 표시 여부 수단
 		model.addAttribute("productSizeList", productSize);
-		
-		log.info("is product size : " + size);
-		log.info("is product productSize : " + productSize);
+		model.addAttribute("size", size); // 해당 상품의 사이즈 option 표시 여부 수단
 		
 		model.addAttribute("productDetailList", productDetailVO);
 		model.addAttribute("product", productVO);
@@ -112,8 +106,6 @@ public class ProductController {
 	    
 	    if(cookies != null) {
 		for(int i = 0; i < cookies.length; i++) {
-        		log.info("cookie name : " + cookies[i].getName());
-        		log.info("cookie value : " + cookies[i].getValue());
         		
         		if(cookies[i].getName().equals("like_" + user_id + "_" + review_no)) {
         		    isCookie = true;
@@ -154,10 +146,10 @@ public class ProductController {
 	}
 
 	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code,
+	public ResponseEntity<List<ProductDetailVO>> getColor(@PathVariable("code") int code,
 			     @PathVariable("color") String color) {
 	    
-	    List<String> productSize = productService.getProductSize(code, color);
+	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
 	    
 	    return productSize != null 
 		    ? new ResponseEntity<>(productSize, HttpStatus.OK)

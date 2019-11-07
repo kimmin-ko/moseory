@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,10 @@
         
             
         <div class="col-md-5" class="prod-detail-info">
-            <div class="ft-size-12"><c:out value="${product.name }" /><br><c:out value="${product.price }" />원</div>
+            <div class="ft-size-12">
+            	<c:out value="${product.name }" /><br>
+            	<fmt:formatNumber value="${product.price }" pattern="#,###" />원
+            </div>
             <br>
             <div class="info-title">COMMENT</div>
             <p class="ft-size-12">
@@ -68,6 +72,25 @@
             	// 상품 페이지에 뿌려줄 리뷰 정렬 초기화
             	var type = 'N';
             	
+            	// #,### formatNumber
+            	Number.prototype.format = function(){
+            	    if(this==0) return 0;
+            	 
+            	    var reg = /(^[+-]?\d+)(\d{3})/;
+            	    var n = (this + '');
+            	 
+            	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+            	 
+            	    return n;
+            	};
+            	
+            	String.prototype.format = function(){
+            	    var num = parseFloat(this);
+            	    if( isNaN(num) ) return "0";
+            	 
+            	    return num.format();
+            	};
+
             	function getReviewList(product_code, type, limit) {
             		
             		var reviewUL = $(".reviewUL");
@@ -132,7 +155,7 @@
             	} // getReviewList
             	
             	$(document).ready(function() {
-            		$("#total-price").text(total_price + '원');
+            		$("#total-price").text(total_price.format() + '원');
             		$("#total-quantity").text(total_quantity + '개');
             		
             		getReviewList(product_code, type, limit);
@@ -175,10 +198,15 @@
             		$.ajax({
             			type : 'get',
             			url : '/product/getSize/' + code + '/' + color,
+            			dataType : 'json',
             			success : function(result) {
             				for(var i = 0; i < result.length; i++) {
             					// 가져온 사이즈를 select-size의 option으로 추가
-            					$("#select-size").append('<option>'+result[i]+'</option>');
+            					if(result[i].product_stock != 0) {
+            						$("#select-size").append('<option>' + result[i].product_size + '</option>');
+            					} else {
+            						$("#select-size").append('<option>' + result[i].product_size + '(품절)</option>');
+            					}
             				}	
             			}
             		});
@@ -191,10 +219,21 @@
             		var name = "${product.name}";
             		var color = $("#select-color option:selected").val();
             		var size = $("#select-size option:selected").val();
-            		var price = "${product.price}";
+            		var price = "${product.price}".format();
+            		
+            		console.log(typeof color);
+            		console.log(typeof size);
+            		
+            		console.log("color : " + color+"");
+            		console.log("size : " + size+"");
             		
             		// 옵션 선택 = function 종료
             		if(color == '옵션 선택' || size == '옵션 선택') return;
+            		// (품절)일 경우 알림창 띄워준 후 종료
+            		if(String(color).includes('품절') || String(size).includes('품절')) {
+            			alert("해당 상품은 품절되었습니다.");
+            			return;
+            		}
             		
             		if (color && size) { // 컬러 true && size true
             			size = '/' + size;
@@ -247,6 +286,7 @@
             	function changeCount(countInput) {
             		var count = $(countInput).val();
             		var price = "${product.price}";
+            		var total = (price * count).format();
 
             		if(count === '0' || count === '') {
             			alert("최소 주문수량은 1개 입니다.");
@@ -256,10 +296,10 @@
             		
             		var trNum = $(countInput).closest('tr').prevAll().length;
             		
-            		$('.add-pro-table > tbody > tr:eq(' + trNum + ') > td:last').html('<p class="add-pro-price">' + (price * count) + '원</p>');
+            		$('.add-pro-table > tbody > tr:eq(' + trNum + ') > td:last').html('<p class="add-pro-price">' + total + '원</p>');
             		
             		// count가 string type이기 때문에 number type으로 변환
-            		quantity_map.set($(countInput).attr('id'), new Number(count));
+            		quantity_map.set($(countInput).attr('id'), Number(count));
             		
             		// 수량 합산
             		sumQuantity();
@@ -271,14 +311,14 @@
             	function sumQuantity() {
             		
             		// map의 값을 모두 더해주기 전에 0으로 초기화
-            		total_quantity = new Number(0);
+            		total_quantity = Number(0);
 
 					for(var value of quantity_map.values()) {
 						total_quantity += value;
 					}
 					
-					$("#total-quantity").text(total_quantity + '개');
-					$("#total-price").text(("${product.price}" * total_quantity) + '원');
+					$("#total-quantity").text(total_quantity.format() + '개');
+					$("#total-price").text(("${product.price}" * total_quantity).format() + '원');
 					
             	} // sumQuantity
             	
@@ -359,8 +399,17 @@
 	            <c:if test="${size == null }"> <!-- 사이즈가 없으면 주문목록 추가 -->
 	            	<select id="select-color" class="ft-size-12 prod-option form-control" onchange="addOrderProd()">
 		            	<option>옵션 선택</option>
-		                <c:forEach var="productColor" items="${productColorList }" varStatus="status">
-		                	<option><c:out value="${productColor }" /></option>
+		                <c:forEach var="productDetail" items="${productDetailList }">
+		                
+		                	<c:choose>
+		                		<c:when test="${productDetail.product_stock ne 0 }">
+			                		<option><c:out value="${productDetail.product_color }" /></option>
+		                		</c:when>
+		                		<c:otherwise>
+			                		<option><c:out value="${productDetail.product_color }" />(품절)</option>
+		                		</c:otherwise>
+		                	</c:choose>
+		                	
 		                </c:forEach>
 		            </select>
 	            </c:if>
@@ -370,7 +419,14 @@
 	            <select id="select-size" class="ft-size-12 prod-option form-control" onchange="addOrderProd()">
 	                <option>옵션 선택</option>
 	                <c:forEach var="productSize" items="${productSizeList }">
-	                	<option><c:out value="${productSize }" /></option>
+	                	<c:choose>
+	                		<c:when test="${productSize.product_stock ne 0 }">
+		                		<option><c:out value="${productSize.product_size }" /></option>
+	                		</c:when>
+	                		<c:otherwise>
+		                		<option><c:out value="${productSize.product_size }" />(품절)</option>
+	                		</c:otherwise>
+	                	</c:choose>
 	                </c:forEach>
 	            </select>
             </c:if>

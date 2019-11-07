@@ -43,7 +43,7 @@ public class ProductDaoImpl implements ProductDao{
 
 	// 상품 색상의 사이즈를 조회
 	@Override
-	public List<String> getProductSize(int product_code, String product_color) {
+	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("product_code", product_code);
 	    map.put("product_color", product_color);
@@ -77,13 +77,13 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public void plusRecommend(int review_no) {
-	    sqlSession.update("product.plusRecommend", review_no);
+	public void increaseRecommend(int review_no) {
+	    sqlSession.update("product.increaseRecommend", review_no);
 	}
 
 	@Override
-	public void minusRecommend(int review_no) {
-	    sqlSession.update("product.minusRecommend", review_no);
+	public void decreaseRecommend(int review_no) {
+	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
 	
 

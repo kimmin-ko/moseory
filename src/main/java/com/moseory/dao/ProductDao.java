@@ -21,7 +21,7 @@ public interface ProductDao {
 	
 	List<String> getProductColor(int product_code);
 	
-	List<String> getProductSize(int product_code, String product_color);
+	List<ProductDetailVO> getProductSize(int product_code, String product_color);
 	
 	int getReviewCount(int product_code);
 
@@ -33,7 +33,7 @@ public interface ProductDao {
 	
 	List<QnAVO> getQnA(int product_code);
 	
-	void plusRecommend(int review_no);
+	void increaseRecommend(int review_no);
 	
-	void minusRecommend(int review_no);
+	void decreaseRecommend(int review_no);
 }

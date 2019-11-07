@@ -47,7 +47,7 @@ public class ProductDaoTest {
     
     @Test
     public void testGetProductSize() {
-	List<String> sizeStr = productDao.getProductSize(34, "화이트");
+	List<ProductDetailVO> sizeStr = productDao.getProductSize(34, "화이트");
 	sizeStr.stream().forEach(x -> log.info(x));
     }
     
@@ -80,12 +80,15 @@ public class ProductDaoTest {
     public void testModifyRecommend() {
 	ReviewVO review = productDao.getOriginalReview(21);
 	
-	productDao.plusRecommend(21);
+	productDao.increaseRecommend(21);
 	
 	ReviewVO updateReview = productDao.getOriginalReview(21);
 	
 	assertThat(review.getRecommend() + 1, is(updateReview.getRecommend()));
     }
+    
+    
+    
 }
 
 

@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<String> getProductSize(int product_code, String product_color) {
+	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
 	    return productDao.getProductSize(product_code, product_color);
 	}
 
@@ -70,12 +70,12 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void increaseRecommend(int review_no) {
-	    productDao.plusRecommend(review_no);
+	    productDao.increaseRecommend(review_no);
 	}
 
 	@Override
 	public void decreaseRecommend(int review_no) {
-	    productDao.minusRecommend(review_no);
+	    productDao.decreaseRecommend(review_no);
 	}
 	
 	

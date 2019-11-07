@@ -21,7 +21,7 @@ public interface ProductService {
 	
 	List<String> getProductColor(int product_code);
 
-	List<String> getProductSize(int product_code, String product_color);
+	List<ProductDetailVO> getProductSize(int product_code, String product_color);
 	
 	int getReviewCount(int product_code);
 	

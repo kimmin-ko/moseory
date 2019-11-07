@@ -78,9 +78,9 @@
 	</select>
 	
 	<!-- 해당 상품 색상의 사이즈를 조회 -->
-	<select id="getProductSize" resultType="String">
+	<select id="getProductSize" resultType="productdetailVO">
 	SELECT
-		product_size
+		no, product_code, product_color, product_size, product_stock
 	FROM
 		tbl_product_detail
 	WHERE
@@ -184,7 +184,7 @@
 	</select>
 	
 	<!-- 추천수 증가 -->
-	<update id="plusRecommend">
+	<update id="increaseRecommend">
 	UPDATE 
     	tbl_review 
 	SET 
@@ -194,7 +194,7 @@
 	</update>
 	
 	<!-- 추천수 감소 -->
-	<update id="minusRecommend">
+	<update id="decreaseRecommend">
 	UPDATE 
     	tbl_review 
 	SET 
