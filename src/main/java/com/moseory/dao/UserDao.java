@@ -1,7 +1,9 @@
 package com.moseory.dao;
 
+import java.util.List;
 import java.util.Map;
 
+import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
 
@@ -24,4 +26,20 @@ public interface UserDao {
     public WishListVO getWishList(String member_id);
     
     public int checkWishList(Map<String, Object> param);
+    
+    public void addToCart(Map<String, Object> param);
+    
+    public int isExistProductInCart(Map<String, Object> param);
+    
+    public List<CartVO> getCartList(String member_id);
+    
+    public int getCartCount(String member_id);
+    
+    public int updateCartQuantity(int no, int quantity);
+    
+    public int getCartQuantity(int no);
+    
+    public void deleteCartList(int no);
+    
+    public void deleteCartAll(String member_id);
 }

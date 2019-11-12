@@ -1,11 +1,14 @@
 package com.moseory.dao;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
 
@@ -67,6 +70,48 @@ public class UserDaoImpl implements UserDao {
 	return sqlSession.selectOne(namespace+".checkWishList", param);
     }
 
+    @Override
+    public void addToCart(Map<String, Object> param) {
+	sqlSession.insert(namespace+".addToCart", param);
+    }
 
+    @Override
+    public int isExistProductInCart(Map<String, Object> param) {
+	return sqlSession.selectOne(namespace+".isExistProductInCart", param);
+    }
+
+    @Override
+    public List<CartVO> getCartList(String member_id) {
+	return sqlSession.selectList(namespace+".getCartList", member_id);
+    }
+
+    @Override
+    public int getCartCount(String member_id) {
+	return sqlSession.selectOne(namespace+".getCartCount", member_id);
+    }
+
+    @Override
+    public int updateCartQuantity(int no, int quantity) {
+	Map<String, Integer> param = new HashMap<String, Integer>();
+	param.put("no", no);
+	param.put("quantity", quantity);
+	
+	return sqlSession.update(namespace+".updateCartQuantity", param);
+    }
+
+    @Override
+    public int getCartQuantity(int no) {
+	return sqlSession.selectOne(namespace+".getCartQuantity", no);
+    }
+
+    @Override
+    public void deleteCartList(int no) {
+	sqlSession.delete(namespace+".deleteCartList", no);
+    }
+
+    @Override
+    public void deleteCartAll(String member_id) {
+	sqlSession.delete(namespace+".deleteCartAll", member_id);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.moseory.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,8 @@ public interface ProductDao {
 	List<String> getProductColor(int product_code);
 	
 	List<ProductDetailVO> getProductSize(int product_code, String product_color);
+	
+	int getProductDetailNo(Map<String, Object> param);
 	
 	int getReviewCount(int product_code);
 

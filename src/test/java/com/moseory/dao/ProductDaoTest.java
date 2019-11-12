@@ -3,7 +3,9 @@ package com.moseory.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,7 @@ import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
+import com.moseory.service.ProductService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -24,6 +27,9 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class ProductDaoTest {
+    
+    @Setter(onMethod_ = @Autowired)
+    private ProductService productService;
     
     @Setter(onMethod_ = @Autowired)
     private ProductDao productDao;
@@ -87,7 +93,17 @@ public class ProductDaoTest {
 	assertThat(review.getRecommend() + 1, is(updateReview.getRecommend()));
     }
     
-    
+    @Test
+    public void testGetproductDetailNo() {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("product_code", 32);
+	param.put("product_color", "블랙");
+	param.put("product_size", null);
+	
+	int result = productDao.getProductDetailNo(param);
+	
+	log.info("result : " + result);
+    }
     
 }
 

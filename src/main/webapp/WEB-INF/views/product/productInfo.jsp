@@ -57,6 +57,8 @@
             <script src="/js/product/productInfo.js"></script>
             
             <script type="text/javascript">
+            	// session에 저장된 로그인한 사용자
+            	var user = "${user}";
             	// 자주 쓰이는 상품 번호 전연변수로 선언
             	var product_code = "${product.code}";
             	// 총 주문 가격
@@ -65,8 +67,6 @@
 				var total_quantity = new Number(0);
             	// 각 tr의 수량을 저장할 Map
             	var quantity_map = new Map();
-            	// 각 tr의 id를 지정해주기 위한 index 0으로 초기화
-            	var idx = 0;
             	// 상품 페이지에 뿌려줄 리뷰의 갯수 초기화
             	var limit = new Number(5);
             	// 상품 페이지에 뿌려줄 리뷰 정렬 초기화
@@ -82,14 +82,61 @@
             	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
             	 
             	    return n;
-            	};
+            	}; // Number.format()
             	
             	String.prototype.format = function(){
             	    var num = parseFloat(this);
             	    if( isNaN(num) ) return "0";
             	 
             	    return num.format();
-            	};
+            	}; // String.format()
+            	
+            	function addToCart() {
+            		var member_id = "${user.id}";
+            		
+            		if(user == null || user == '') {
+            			alert("로그인 후 이용해주세요.");
+            			return;
+            		}
+            		
+            		if(total_quantity == 0) {
+            			alert("옵션을 선택해주세요.");
+            			return;
+            		}
+            		// 장바구니에 정상적인 추가 또는 중복 확인 결과를 담을 변수
+            		var r = false;
+            		for(var i = 0; i < duplCheckArr.length; i++) {
+						var cart = {
+								member_id : member_id,
+								product_detail_no : duplCheckArr[i],
+								quantity : $('#quantity' + duplCheckArr[i]).val()
+						};
+						
+						productJs.addToCart(cart, function(result) {
+							// 장바구니에 해당 상품이 정상적으로 INSERT 되었거나 존재 여부를 확인 했을 경우 true
+							if (result == 'success' || result == 'duplication') {
+								r = true;
+							}
+						}); // end ajax
+					} // end for
+					
+					// confirm() 의 결과 값. OK = true, CANCEL = false
+            		var cf = null;
+					
+            		// addToCart가 정상적으로 실행 되었을 경우
+					if(r) {
+						cf = confirm("장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?");
+					} else {
+						alert("오류가 발생하였습니다. 다시 시도해주세요.");
+					}
+            		
+            		if(cf) { // OK 버튼을 눌렀을 경우 장바구니 페이지로 이동
+            			location.href='/user/cart';
+            		} else { // CANCEL 버튼을 눌럿을 경우 함수 종료
+            			return;
+            		}
+            		
+            	} // end addToCart
 
             	function getReviewList(product_code, type, limit) {
             		
@@ -218,14 +265,9 @@
             	function addOrderProd() {
             		var name = "${product.name}";
             		var color = $("#select-color option:selected").val();
+            		var originSize = $("#select-size option:selected").val();
             		var size = $("#select-size option:selected").val();
             		var price = "${product.price}".format();
-            		
-            		console.log(typeof color);
-            		console.log(typeof size);
-            		
-            		console.log("color : " + color+"");
-            		console.log("size : " + size+"");
             		
             		// 옵션 선택 = function 종료
             		if(color == '옵션 선택' || size == '옵션 선택') return;
@@ -235,17 +277,25 @@
             			return;
             		}
             		
-            		if (color && size) { // 컬러 true && size true
+            		if (color && size) { // 컬러 true && 사이즈 true
             			size = '/' + size;
-            		} else if (color && !size) {
+            		} else if (color && !size) { // 컬러 true && 사이즈 false
             			size = '';
-            		} else if (!color && size) { // 컬러 false && size true
+            			originSize = '';
+            		} else if (!color && size) { // 컬러 false && 사이즈 true
             			color = '';
             		}
             		
-            		// 중복체크
-            		var check = color + size;
-            		var flag = duplCheckArr.includes(check);
+            		console.log("color : " + color);
+            		console.log("originSize : " + originSize);
+            		
+            		// 중복체크 및 디테일 번호 저장
+            		var pdNo = 0; 
+            		productJs.getProductDetailNo(product_code, color, originSize, function(result) {
+            			pdNo = result;
+            		});
+            		
+            		var flag = duplCheckArr.includes(pdNo);
             		
             		if(flag) { // 중복일 경우
             			alert("이미 선택되어 있는 옵션입니다.");
@@ -253,7 +303,9 @@
             			return;
             		}
             		
-            		duplCheckArr.push(check);
+            		duplCheckArr.push(pdNo);
+            		
+            		console.log("추가 후 듀플 : " + duplCheckArr);
             		
             		// tr 추가
             		$(".add-pro-table > tbody:last").append(''
@@ -264,9 +316,9 @@
                         + 	'</td>'
                         + 	'<td>'
                         + 		'<p class="add-pro-quantity">'
-                        + 			'<input type="number" id="quantity' + idx + '" min="1" max="99" value="1" oninput="changeCount(this)">&nbsp'
+                        + 			'<input type="number" id="quantity' + pdNo + '" min="1" max="99" value="1" oninput="changeCount(this)">&nbsp'
                         + 			'<img src="http://img.echosting.cafe24.com/design/skin/default/product/btn_price_delete.gif"'
-                        +					'onclick="removeOrderProd(\'' + color + '\', \'' + size + '\', this)">'
+                        +					'onclick="removeOrderProd(\'' + color + '\', \'' + originSize + '\', this)">'
                         + 		'</p>'
                         + 	'</td>'
                         + 	'<td>'
@@ -274,12 +326,10 @@
                         + 	'</td>'
                         + '</tr>');
             		
-            		quantity_map.set("quantity" + idx, 1);
+            		quantity_map.set("quantity" + pdNo, 1);
             		
             		// 수량 합산
             		sumQuantity();
-            		
-            		idx++;
             	} // addOrderProd
             	
             	// 주문 개수 변경
@@ -303,8 +353,6 @@
             		
             		// 수량 합산
             		sumQuantity();
-            		
-            		console.log("total_quantity : " + total_quantity);
             	} // changeCount
             	
             	// 수량 합산
@@ -324,10 +372,11 @@
             	
             	// 주문 목록 삭제
             	function removeOrderProd(color, size, cancelBtn) {
-            		var check = color + size;
+            		var pdNo = 0;
             		
-            		// 취소 버튼과 가장 가까운 tr의 index를 찾는다
-            		var trNum = $(cancelBtn).closest('tr').prevAll().length;
+            		productJs.getProductDetailNo(product_code, color, size, function(result) {
+            			pdNo = result;
+            		});
             		
 					// 삭제 input id
 					var quantity_id = $(cancelBtn).prev().attr('id');
@@ -336,19 +385,23 @@
 					// 총 수량 다시 계산
 					sumQuantity();
 
+					// 취소 버튼과 가장 가까운 tr의 index를 찾는다
+            		var trNum = $(cancelBtn).closest('tr').prevAll().length;
+					
             		// 해당 index의 tr을 제거한다
             		$('.add-pro-table > tbody > tr:eq(' + trNum + ')').remove();
             		
             		// 중복 체크 배열에서 삭제한 옵션 제거
             		duplCheckArr = jQuery.grep(duplCheckArr, function(value) {
-                        return value != check;
+                        return value != pdNo;
                     });
+            		
+            		console.log("삭제 후 듀플 : " + duplCheckArr);
             		
             	} // removeOrderProd
             	
             	// 추천 증가
             	function increaseRecommend(review_no, recommend_btn) {
-            		var user = "${user}";
 					var userId = "${user.id}";
 					
 					if(user == null || user == '') {
@@ -368,8 +421,6 @@
             	
             	function addWishList() {
             		var member_id = "${user.id}";
-            		
-            		console.log(member_id);
             		
             		// 로그인되어있을 때
             		if(member_id) {
@@ -400,7 +451,6 @@
 	            	<select id="select-color" class="ft-size-12 prod-option form-control" onchange="addOrderProd()">
 		            	<option>옵션 선택</option>
 		                <c:forEach var="productDetail" items="${productDetailList }">
-		                
 		                	<c:choose>
 		                		<c:when test="${productDetail.product_stock ne 0 }">
 			                		<option><c:out value="${productDetail.product_color }" /></option>
@@ -409,7 +459,6 @@
 			                		<option><c:out value="${productDetail.product_color }" />(품절)</option>
 		                		</c:otherwise>
 		                	</c:choose>
-		                	
 		                </c:forEach>
 		            </select>
 	            </c:if>
@@ -421,6 +470,7 @@
 	                <c:forEach var="productSize" items="${productSizeList }">
 	                	<c:choose>
 	                		<c:when test="${productSize.product_stock ne 0 }">
+	                			<c:set var="productDetailNo" value="${productSize.no }" />
 		                		<option><c:out value="${productSize.product_size }" /></option>
 	                		</c:when>
 	                		<c:otherwise>

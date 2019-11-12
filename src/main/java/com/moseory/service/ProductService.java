@@ -1,6 +1,7 @@
 package com.moseory.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public interface ProductService {
 	List<String> getProductColor(int product_code);
 
 	List<ProductDetailVO> getProductSize(int product_code, String product_color);
+	
+	int getProductDetailNo(Map<String, Object> param);
 	
 	int getReviewCount(int product_code);
 	

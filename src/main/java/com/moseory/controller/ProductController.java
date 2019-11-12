@@ -1,6 +1,8 @@
 package com.moseory.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,7 +41,6 @@ public class ProductController {
 	
 	@GetMapping("/productList")
 	public String productList(@RequestParam int high_code, Model model) {
-		System.out.println(high_code);
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
 		for(ProductVO pVO : productVO) System.out.println(pVO);
@@ -92,6 +93,16 @@ public class ProductController {
 		model.addAttribute("qnaList", qnaList);
 		
 		return "product/productInfo";
+	}
+	
+	@GetMapping("/getProductDetailNo")
+	public @ResponseBody ResponseEntity<Integer> getProductDetailNo(
+		@RequestParam(required = false) Map<String, Object> param) {
+	    
+	    int no = productService.getProductDetailNo(param);
+	    
+	    return no != 0 ? new ResponseEntity<>(no, HttpStatus.OK)
+		    	   : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
@@ -148,7 +159,6 @@ public class ProductController {
 	@GetMapping("/getSize/{code}/{color}")
 	public ResponseEntity<List<ProductDetailVO>> getColor(@PathVariable("code") int code,
 			     @PathVariable("color") String color) {
-	    
 	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
 	    
 	    return productSize != null 

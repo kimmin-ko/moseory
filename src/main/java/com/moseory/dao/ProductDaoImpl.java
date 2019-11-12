@@ -14,6 +14,9 @@ import com.moseory.domain.QnAVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
 
@@ -48,6 +51,11 @@ public class ProductDaoImpl implements ProductDao{
 	    map.put("product_code", product_code);
 	    map.put("product_color", product_color);
 	    return sqlSession.selectList("product.getProductSize", map);
+	}
+	
+	@Override
+	public int getProductDetailNo(Map<String, Object> param) {
+	    return sqlSession.selectOne("product.getProductDetailNo", param);
 	}
 
 	@Override
@@ -85,6 +93,7 @@ public class ProductDaoImpl implements ProductDao{
 	public void decreaseRecommend(int review_no) {
 	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
+
 	
 
 }

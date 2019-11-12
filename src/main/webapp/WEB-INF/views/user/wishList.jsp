@@ -29,7 +29,7 @@
 			<c:forEach var="wish" items="${wishList.products }">
 	        <div class="col-md-3 wl-prod">
 	            <div class="col-md-4">
-	                <img src='<c:out value="${wish.file_path }" />'>
+	                <a href="/product/productInfo?code=<c:out value='${wish.code }' />"><img src='<c:out value="${wish.file_path }" />'></a>
 	            </div>
 	            <div class="col-md-8">
 	                <p><a href="/product/productInfo?code=<c:out value='${wish.code }' />"><c:out value="${wish.name }" /></a></p>

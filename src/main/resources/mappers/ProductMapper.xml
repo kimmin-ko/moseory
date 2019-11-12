@@ -40,7 +40,6 @@
 		)
 	</insert>
 	
-	
 	<!-- 상위카테고리 상품리스트 -->
 	<select id="highCateList" parameterType="int" resultType = "productVO">
 		select * from tbl_product
@@ -90,6 +89,28 @@
 		</if>
 		<if test="product_color == null">
 			AND product_color is null
+		</if>
+	</select>
+	
+	<!-- 해당 정보의 상품 디테일 번호 조회 -->
+	<select id="getProductDetailNo" resultType="int">
+	SELECT
+		no
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+		<if test="product_color != null">
+			AND product_color = #{product_color}
+		</if>
+		<if test="product_color == null">
+			AND product_color is null
+		</if>
+		<if test="product_size != null">
+			AND product_size = #{product_size}
+		</if>
+		<if test="product_size == null">
+			AND product_size is null
 		</if>
 	</select>
 	
