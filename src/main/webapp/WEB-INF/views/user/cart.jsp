@@ -26,26 +26,31 @@
 		
     </div>
     
+    <form id="cartForm">
+    	<input type="hidden" name="no" />
+    	<input type="hidden" name="quantity" />
+    	<input type="hidden" name="noList" />
+    	<input type="hidden" name="member_id" />
+    </form>
+  
     <ul class="nav nav-tabs col-md-10 col-md-offset-1">
-        <li role="presentation" class="active"><a href="#"><small><strong>국내 배송 상품(1)</strong></small></a></li>
-        <li role="presentation"><a href="#"><small><strong>해외 배송 상품(0)</strong></small></a></li>
+        <li role="presentation" class="active"><a href="#"><small><strong>국내 배송 상품(<c:out value="${cartCount }" />)</strong></small></a></li>
     </ul>
 
     <div class="row cart-list" style="margin-bottom: 100px;">
-        <div class="col-md-10 col-md-offset-1"><strong>일반 상품(1)</strong></div>
+        <div class="col-md-10 col-md-offset-1"><strong>일반 상품(<c:out value="${cartCount }" />)</strong></div>
         <div class="col-md-10 col-md-offset-1">
             <table class="table cart-table">
                 <colgroup>
-                    <col  style="width: auto;">
-                    <col  style="width: auto;">
-                    <col  style="width: 220px;">
-                    <col  style="width: 100px;">
-                    <col  style="width: 140px;">
-                    <col  style="width: 100px;">
-                    <col  style="width: 100px;">
-                    <col  style="width: 100px;">
-                    <col  style="width: 100px;">
-                    <col  style="width: 100px;">
+                    <col  style="width: auto;"> <!-- 체크박스 -->
+                    <col  style="width: 80px;"> <!-- 이미지 -->
+                    <col  style="width: 220px;"> <!-- 상품정보 -->
+                    <col  style="width: 100px;"> <!-- 판매가 -->
+                    <col  style="width: 140px;"> <!-- 회원 할인 -->
+                    <col  style="width: 160px;"> <!-- 수량 -->
+                    <col  style="width: 100px;"> <!-- 배송비 -->
+                    <col  style="width: 100px;"> <!-- 주문금액 -->
+                    <col  style="width: 100px;"> <!-- 주문관리 -->
                 </colgroup>
                 <thead>
                     <tr class="active">
@@ -53,74 +58,104 @@
                         <th>이미지</th>
                         <th>상품정보</th>
                         <th>판매가</th>
+                        <th>회원 할인</th>
                         <th>수량</th>
-                        <th>적립금</th>
-                        <th>배송구분</th>
                         <th>배송비</th>
-                        <th>합계</th>
-                        <th>선택</th>
+                        <th>주문금액<br>(적립금)</th>	
+                        <th>주문관리</th>
                     </tr>
                 </thead>
                 <tbody>
+                	<c:forEach var="cart" items="${cartList }">
+                		<c:set var="price" value="${cart.product_price }" />
+                   		<c:set var="discount" value="${member.level.discount }" />
+                   		<c:set var="saving" value="${member.level.saving }" />
+                   		<c:set var="quantity" value="${cart.quantity }" />
                     <tr>
                         <!-- 상품 체크 박스 -->
-                        <td><input type="checkbox" name="cart-list-1" class="checkCart" /></td>
+                        <td><input type="checkbox" name="check_cart" class="checkCart" value='<c:out value="${cart.no }" />' /></td>
                         <!-- 상품 이미지 -->
-                        <td><img src="/images/1.jpg" class="cart-img"></td>
+                        <td>
+                        	<a href='/product/productInfo?code=<c:out value="${cart.product_code }" />'>
+                        		<img src='<c:out value="${cart.product_file_path }" />' class="cart-img">
+                        	</a>
+                        </td>
                         <!-- 상품 정보 -->
                         <td class="prod-info">
-                            <span class="prod-name">포니 헨리넥 셔츠</span><br><br>
-                            <span class="prod-option">[옵션: 네이비]</span>
+                            <span class="prod-name">
+                            	<a href='/product/productInfo?code=<c:out value="${cart.product_code }" />'>
+                            		<c:out value="${cart.product_name }" />
+                            	</a>
+                            </span><br><br>
+                            <span class="prod-option">
+                            	[옵션:&nbsp;
+                            	<!-- color가 있을 때 -->
+                            	<c:if test="${cart.product_color ne null }"> 
+                            		<!-- size가 있을 때 -->
+                            		<c:if test="${cart.product_size ne null }"> 
+                            			<c:out value="${cart.product_color }" />/
+                            			<c:out value="${cart.product_size }" />
+                            		</c:if>
+                            		<!-- size가 없을 때 -->
+                            		<c:if test="${cart.product_size eq null }">
+                            			<!-- size가 없는 상품은 color만 표시 -->
+                            			<c:out value="${cart.product_color }" />
+                            		</c:if>
+                            	</c:if>	
+                            	<!-- color가 없을 때 -->
+                            	<c:if test="${cart.product_color eq null }">
+                            		<c:out value="${cart.product_size }" />
+                            	</c:if>
+                            	]
+                            </span>
                         </td>
-                        <!-- 상품 가격 -->
+                        <!-- 판매가 -->
                         <td>
-                            <span class="prod-price">37,000원</span>
+                            <span class="prod-price">
+                            	<fmt:formatNumber value="${cart.product_price }" pattern="#,###" />원
+                            </span>
+                        </td>
+                        <!-- 회원 할인 -->
+                        <td>
+                        	<span class="prod-discount">
+                        		- <fmt:formatNumber value="${(price / 100) * discount * quantity }" pattern="#,###" />원
+                        	</span>
                         </td>
                         <!-- 상품 수량 -->
                         <td>
-                            <input type="number" min="1" max="99" step="1" value="1">
-                            <button type="button" onclick="changeQuantity()">변경</button>
+                            <input type="text" name="qty" class="qtyVal" value='<c:out value="${quantity }" />'>
+                            <!-- + 와 - 태그를 붙이기 위해 개행하지 않음 -->
+                            <p class="btn-inc"><a href="javascript:void(0)">&nbsp;+&nbsp;&nbsp;</a></p><p class="btn-dec"><a href="javascript:void(0)">&nbsp;-&nbsp;&nbsp;</a></p>
+                            <!-- this를 인자로 보내서 형제 노드인 input 태그를 찾아 수량을 가져온다. -->
+                            <button type="button" class="modifyQtyBtn" onclick="changeQuantity(${cart.no}, this)">수정</button>
                         </td>
-                        <!-- 적립금 -->
-                        <td>-</td>
-                        <!-- 배송구분 -->
-                        <td>기본배송</td>
                         <!-- 배송비 -->
-                        <td>3,000원</td>
-                        <!-- 합계 -->
-                        <td><span class="final-prod-price">37,000원</span></td>
-                        <!-- 선택 -->
                         <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
-                            <button type="button" class="btn btn-default btn-sm">관심상품</button>
-                            <button type="button" class="btn btn-default btn-sm">삭제하기</button>
+                        	<span class="delivery-charge">
+                        		<c:if test="${total_product_price > 50000 }">
+                        			무료
+                        		</c:if>
+                        		<c:if test="${total_product_price <=50000 }">
+                        			3,000원
+                        		</c:if>
+                        	</span>
+                        </td>
+                        <!-- 주문금액 -->
+                        <td>
+                        	<c:set var="final_prod_price" value="${(price * cart.quantity) - ((price / 100) * discount) * quantity }" />
+                        	<span class="final-prod-price">
+                        		<!-- (상품 가격 * 수량) - (할인가 * 수량) -->
+ 		                    	<fmt:formatNumber value="${final_prod_price }" pattern="#,###" />원	<br>
+ 		                    	<!-- 적립금 -->
+ 		                    	(<fmt:formatNumber value="${(price / 100) * saving * quantity}" pattern="#,###" />)
+                        	</span>
+                        </td>
+                        <!-- 주문관리 -->
+                        <td>
+                            <button type="button" class="btn btn-default btn-sm" onclick="deleteCartList(${cart.no})">삭제하기</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td><input type="checkbox" name="cart-list-1" class="checkCart" /></td>
-                        <td><img src="/images/8.jpg" class="cart-img"></td>
-                        <td class="prod-info">
-                            <span class="prod-name">레이널 레더 플립플랍</span><br><br>
-                            <span class="prod-option">[옵션: 블랙/250]</span>
-                        </td>
-                        <td>
-                            <span class="prod-price">76,000원</span>
-                        </td>
-                        <td>
-                            <input type="number" min="1" max="99" step="1" value="2">
-                            <button type="button" onclick="changeQuantity()">변경</button>
-                        </td>
-                        <td>-</td>
-                        <td>기본배송</td>
-                        <td>3,000원</td>
-                        <td><span class="final-prod-price">152,000원</span></td>
-                        <td>
-                            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">주문하기</button>
-                            <button type="button" class="btn btn-default btn-sm">관심상품</button>
-                            <button type="button" class="btn btn-default btn-sm">삭제하기</button>
-                        </td>
-                    </tr>
-    
+                    </c:forEach>
                 </tbody>
                 <tfoot>
                     <tr class="active">
@@ -129,18 +164,32 @@
                         </td>
                         <td colspan="5" style="text-align: right;">
                             <b>상품구매금액</b>
-                            <span class="total-prod-price" style="font-weight: bold;">189,000</span>
+                            <span class="total-prod-price"><fmt:formatNumber value="${total_product_price }" pattern="#,###" /></span>
                              + 배송비 
-                             <span class="delivery-charge">3,000</span>
-                              = 합계 : 
-                            <span class="total-order-price">192,000원</span>
+                            <span class="delivery-charge">
+                            	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                        			무료
+                        		</c:if>
+                        		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                        			3,000
+                        		</c:if>
+                            </span>
+                             = 합계 : 
+                            <span class="total-order-price">
+                            	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                        			<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
+                        		</c:if>
+                        		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                        			<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
+                        		</c:if>
+                            </span>
                         </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         
-                <div class="col-md-10 col-md-offset-1" style="margin-bottom: 30px;">
+        <div class="col-md-10 col-md-offset-1" style="margin-bottom: 30px;">
             할인 적용 금액은 주문서작성의 결제예정금액에서 확인 가능합니다.
         </div>
 
@@ -149,7 +198,7 @@
                 <button type="button" class="btn btn-default btn-sm btn-delete">선택상품삭제</button>
             </div>
             <div class="col-md-6" style="text-align: right;">
-                <button type="button" class="btn btn-default btn-sm btn-delete-cart">장바구니비우기</button>
+                <button type="button" class="btn btn-default btn-sm btn-delete-cart" onclick="deleteCartAll('${member.id}')">장바구니비우기</button>
             </div>
         </div>
 
@@ -161,9 +210,23 @@
                     <th>결제 예정 금액</th>
                 </tr>
                 <tr>
-                    <td>189,000원</td>
-                    <td>+3,000원</td>
-                    <td style="color: #CE1F14;">=192,000원</td>
+                    <td><fmt:formatNumber value="${total_product_price }" pattern="#,###" />원</td>
+                    <td>
+                    	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                   			무료
+                   		</c:if>
+                   		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                   			+3,000원
+                   		</c:if>
+                    </td>
+                    <td style="color: #CE1F14;">
+                    	<c:if test="${total_product_price > 50000|| total_product_price == 0 }">
+                  			=<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
+                  		</c:if>
+                  		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                  			=<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
+                  		</c:if>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -208,16 +271,7 @@
 	
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-    
-	// 최상위 체크박스 선택 시 전체 선택
-    $(".check-all").click(function() {
-        $(".checkCart").prop("checked", this.checked);
-    });
-
-});
-</script>
+<script type="text/javascript" src="/js/user/cart.js"></script>
 
 </body>
 </html>

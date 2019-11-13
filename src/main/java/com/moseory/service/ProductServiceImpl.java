@@ -1,6 +1,7 @@
 package com.moseory.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +40,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<String> getProductSize(int product_code, String product_color) {
+	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
 	    return productDao.getProductSize(product_code, product_color);
+	}
+	
+	@Override
+	public int getProductDetailNo(Map<String, Object> param) {
+	    return productDao.getProductDetailNo(param);
 	}
 
 	@Override
@@ -70,7 +76,15 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public void increaseRecommend(int review_no) {
-	    productDao.modifyRecommend(review_no);
+	    productDao.increaseRecommend(review_no);
 	}
+
+	@Override
+	public void decreaseRecommend(int review_no) {
+	    productDao.decreaseRecommend(review_no);
+	}
+
+	
+	
 	
 }

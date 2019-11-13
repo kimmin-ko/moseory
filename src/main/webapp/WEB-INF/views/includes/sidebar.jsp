@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="/css/sidebar.css">
 
@@ -47,7 +48,7 @@
 
 	<div class="row ma-bo-50">
 		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/user/cart">CART(0)</a>
+			<a href="/user/cart">CART</a>
 		</div>
 		<div class="col-md-5 font-12">
 			<a href="/user/myPage">MY PAGE</a>

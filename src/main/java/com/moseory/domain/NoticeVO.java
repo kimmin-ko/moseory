@@ -12,12 +12,19 @@ import lombok.NoArgsConstructor;
 public class NoticeVO {
 	
 	private int NO;
+	
 	private int MEMBER_NO;
+	
 	private String TITLE;
+	
 	private String CONTENT;
+	
 	private Date REG_DATE;
+	
 	private int HIT;
+	
 	private String FILE_PATH;
+	
 	private String FILE_NAME;
-
+	
 }

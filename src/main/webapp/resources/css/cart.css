@@ -14,13 +14,17 @@
 }
 
 .cart-img {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: auto;
 }
 
 .cart-table th,
 .cart-table td  {
     text-align: center;
+}
+
+.table > thead > tr > th {
+    vertical-align: middle;
 }
 
 .table > tbody > tr > td {
@@ -76,7 +80,19 @@
     color: gray;
 }
 
-.cart-use-guide li:before {
-    content: '!  ';
+.qtyVal {
+	width: 30px;
+}
+
+.btn-inc,
+.btn-dec {
+	display: inline-block;
+	cursor: pointer;
+	margin: 0;
+	padding: 0;
+	border: 0.5px solid #BEC2C6;
+	width: 20px;
+	height: 20px;
+	font-weight: bold;
 }
 /* cart css end */

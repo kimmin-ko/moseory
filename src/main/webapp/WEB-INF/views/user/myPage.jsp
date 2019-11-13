@@ -69,7 +69,7 @@
 						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">위시 리스트</a></h6>
+						<h6><a href="/user/wishList">위시 리스트</a></h6>
 						<p>
 							관심상품으로 등록하신 상품의<br>
 							목록을 보여드립니다.

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,10 @@
         
             
         <div class="col-md-5" class="prod-detail-info">
-            <div class="ft-size-12"><c:out value="${product.name }" /><br><c:out value="${product.price }" />원</div>
+            <div class="ft-size-12">
+            	<c:out value="${product.name }" /><br>
+            	<fmt:formatNumber value="${product.price }" pattern="#,###" />원
+            </div>
             <br>
             <div class="info-title">COMMENT</div>
             <p class="ft-size-12">
@@ -53,41 +57,179 @@
             <script src="/js/product/productInfo.js"></script>
             
             <script type="text/javascript">
+            	// session에 저장된 로그인한 사용자
+            	var user = "${user}";
+            	// 자주 쓰이는 상품 번호 전연변수로 선언
+            	var product_code = "${product.code}";
             	// 총 주문 가격
             	var total_price = 0;
             	// 총 주문 수량 
 				var total_quantity = new Number(0);
             	// 각 tr의 수량을 저장할 Map
             	var quantity_map = new Map();
-            	// 각 tr의 id를 지정해주기 위한 index 0으로 초기화
-            	var idx = 0;
+            	// 상품 페이지에 뿌려줄 리뷰의 갯수 초기화
+            	var limit = new Number(5);
+            	// 상품 페이지에 뿌려줄 리뷰 정렬 초기화
+            	var type = 'N';
+            	
+            	// #,### formatNumber
+            	Number.prototype.format = function(){
+            	    if(this==0) return 0;
+            	 
+            	    var reg = /(^[+-]?\d+)(\d{3})/;
+            	    var n = (this + '');
+            	 
+            	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+            	 
+            	    return n;
+            	}; // Number.format()
+            	
+            	String.prototype.format = function(){
+            	    var num = parseFloat(this);
+            	    if( isNaN(num) ) return "0";
+            	 
+            	    return num.format();
+            	}; // String.format()
+            	
+            	function addToCart() {
+            		var member_id = "${user.id}";
+            		
+            		if(user == null || user == '') {
+            			alert("로그인 후 이용해주세요.");
+            			return;
+            		}
+            		
+            		if(total_quantity == 0) {
+            			alert("옵션을 선택해주세요.");
+            			return;
+            		}
+            		// 장바구니에 정상적인 추가 또는 중복 확인 결과를 담을 변수
+            		var r = false;
+            		for(var i = 0; i < duplCheckArr.length; i++) {
+						var cart = {
+								member_id : member_id,
+								product_detail_no : duplCheckArr[i],
+								quantity : $('#quantity' + duplCheckArr[i]).val()
+						};
+						
+						productJs.addToCart(cart, function(result) {
+							// 장바구니에 해당 상품이 정상적으로 INSERT 되었거나 존재 여부를 확인 했을 경우 true
+							if (result == 'success' || result == 'duplication') {
+								r = true;
+							}
+						}); // end ajax
+					} // end for
+					
+					// confirm() 의 결과 값. OK = true, CANCEL = false
+            		var cf = null;
+					
+            		// addToCart가 정상적으로 실행 되었을 경우
+					if(r) {
+						cf = confirm("장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?");
+					} else {
+						alert("오류가 발생하였습니다. 다시 시도해주세요.");
+					}
+            		
+            		if(cf) { // OK 버튼을 눌렀을 경우 장바구니 페이지로 이동
+            			location.href='/user/cart';
+            		} else { // CANCEL 버튼을 눌럿을 경우 함수 종료
+            			return;
+            		}
+            		
+            	} // end addToCart
+
+            	function getReviewList(product_code, type, limit) {
+            		
+            		var reviewUL = $(".reviewUL");
+            		productJs.getReviewList(product_code, type, limit, function(reviewList) {
+        				
+        				var str = "";
+        				
+        				if(reviewList.length == 0 || reviewList == null) {
+        					reviewUL.html("");
+           					return;
+        				}
+
+        				for(var i = 0, len = reviewList.length || 0; i < len; i++) {
+        					var year = reviewList[i].reg_date.year;
+        					var month = reviewList[i].reg_date.monthValue;
+        					var day = reviewList[i].reg_date.dayOfMonth + 1;
+        					var reg_date = year + '-' + month + '-' + day;
+        					
+        					str += "<li data-no='" + reviewList[i].no + "'>";
+        					str += "	<div class='col-md-10 col-md-offset-1 review-body'>";
+        					str += "		<p>";
+        					str += "			<span>[" + reviewList[i].member.level + "]</span>";
+        					str += "			<span>" + reviewList[i].member.id + "</span><span style='color: #B5B7BA;'> | </span>";
+        					str += "			<span class='review-date'>" + reg_date + "</span>";
+        					str += "			<span style='color: #B5B7BA;'> | </span>";
+        					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
+        					str += "		</p>";
+        					str += "		<hr style='border: 0.5px #7F858A solid;'>";
+        					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
+        					str += "		<div class='col-md-11 review-body-prod-name'>";
+        					str += "			${product.name }<br>";
+        					str += "			[옵션 : " + reviewList[i].product_detail.product_color + "&nbsp;";
+        					str += "			" + reviewList[i].product_detail.product_size + "]";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-title'>";
+        					str += "			<p>" + reviewList[i].title + "</p>";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-content'>";
+        					str += "			<p>";
+        					str += "				" + reviewList[i].content;
+        					str += "			</p>";
+        					str += "		</div>";
+        					str += "		<div class='col-md-12 review-like'>";
+        					str += "			<button type='button' class='btn btn-warning' onclick='increaseRecommend(" + reviewList[i].no + ", this)'>";
+        					str += "				LIKE (" + reviewList[i].recommend + ")";
+        					str += "			</button>";
+        					str += "		</div>";
+        					str += "	</div>";
+        					str += "</li>";
+        				}
+        				
+        				reviewUL.html(str);
+        				
+        			}); // getReviewList (ajax)
+        			
+        			if("${reviewCount}" > limit) {
+            			$(".more-review").html('<button class="btn btn-info" onclick="moreReview()">리뷰 더보기</button>');
+            		} else {
+            			$(".more-review").html('');
+            		}
+        			
+            	} // getReviewList
             	
             	$(document).ready(function() {
-            		$("#total-price").text(total_price + '원');
+            		$("#total-price").text(total_price.format() + '원');
             		$("#total-quantity").text(total_quantity + '개');
             		
+            		getReviewList(product_code, type, limit);
+            		
+            		// 리뷰 순서 변경
             		$("#sortReview").on("click", "li", function() {
-            			var product_code = "${product.code}";
-            			var type = $(this).attr('value');
-            			var reviewUL = $(".reviewUL");
+            			type = $(this).attr('value');
+            			limit = new Number(5);
             			
-            			productJs.getReviewList(product_code, type, function(reviewList) {
-            				
-            				console.log(reviewList);
-            				
-            				if(reviewList.length == 0 || reviewList == null) {
-            					reviewUL.html("");
-            					
-            					return;
-            				}
-            				
-            			}); // getReviewList
-            			
+            			getReviewList(product_code, type, limit);
             		}) // sortReview
             		
-            		console.log(productJs.name);
-            	});
+            		// li changeColor
+                	$("#sortReview li").on("click", function() {
+                		$("#sortReview li").removeClass();
+                		$(this).addClass('on');
+                	});
+            		
+            	}); // document
             	
+            	function moreReview() {
+            		limit += 5;
+            		
+            		getReviewList(product_code, type, limit);
+            		
+            	} // moreReview
+        		
             	// 색상 선택 시 해당 색상의 사이즈를 조회
             	function getSize() {
             		// 현재 select-size의 option 삭제
@@ -103,10 +245,15 @@
             		$.ajax({
             			type : 'get',
             			url : '/product/getSize/' + code + '/' + color,
+            			dataType : 'json',
             			success : function(result) {
             				for(var i = 0; i < result.length; i++) {
             					// 가져온 사이즈를 select-size의 option으로 추가
-            					$("#select-size").append('<option>'+result[i]+'</option>');
+            					if(result[i].product_stock != 0) {
+            						$("#select-size").append('<option>' + result[i].product_size + '</option>');
+            					} else {
+            						$("#select-size").append('<option>' + result[i].product_size + '(품절)</option>');
+            					}
             				}	
             			}
             		});
@@ -118,23 +265,37 @@
             	function addOrderProd() {
             		var name = "${product.name}";
             		var color = $("#select-color option:selected").val();
+            		var originSize = $("#select-size option:selected").val();
             		var size = $("#select-size option:selected").val();
-            		var price = "${product.price}";
+            		var price = "${product.price}".format();
             		
             		// 옵션 선택 = function 종료
             		if(color == '옵션 선택' || size == '옵션 선택') return;
+            		// (품절)일 경우 알림창 띄워준 후 종료
+            		if(String(color).includes('품절') || String(size).includes('품절')) {
+            			alert("해당 상품은 품절되었습니다.");
+            			return;
+            		}
             		
-            		if (color && size) { // 컬러 true && size true
+            		if (color && size) { // 컬러 true && 사이즈 true
             			size = '/' + size;
-            		} else if (color && !size) {
+            		} else if (color && !size) { // 컬러 true && 사이즈 false
             			size = '';
-            		} else if (!color && size) { // 컬러 false && size true
+            			originSize = '';
+            		} else if (!color && size) { // 컬러 false && 사이즈 true
             			color = '';
             		}
             		
-            		// 중복체크
-            		var check = color + size;
-            		var flag = duplCheckArr.includes(check);
+            		console.log("color : " + color);
+            		console.log("originSize : " + originSize);
+            		
+            		// 중복체크 및 디테일 번호 저장
+            		var pdNo = 0; 
+            		productJs.getProductDetailNo(product_code, color, originSize, function(result) {
+            			pdNo = result;
+            		});
+            		
+            		var flag = duplCheckArr.includes(pdNo);
             		
             		if(flag) { // 중복일 경우
             			alert("이미 선택되어 있는 옵션입니다.");
@@ -142,7 +303,9 @@
             			return;
             		}
             		
-            		duplCheckArr.push(check);
+            		duplCheckArr.push(pdNo);
+            		
+            		console.log("추가 후 듀플 : " + duplCheckArr);
             		
             		// tr 추가
             		$(".add-pro-table > tbody:last").append(''
@@ -153,9 +316,9 @@
                         + 	'</td>'
                         + 	'<td>'
                         + 		'<p class="add-pro-quantity">'
-                        + 			'<input type="number" id="quantity' + idx + '" min="1" max="99" value="1" oninput="changeCount(this)">&nbsp'
+                        + 			'<input type="number" id="quantity' + pdNo + '" min="1" max="99" value="1" oninput="changeCount(this)">&nbsp'
                         + 			'<img src="http://img.echosting.cafe24.com/design/skin/default/product/btn_price_delete.gif"'
-                        +					'onclick="removeOrderProd(\'' + color + '\', \'' + size + '\', this)">'
+                        +					'onclick="removeOrderProd(\'' + color + '\', \'' + originSize + '\', this)">'
                         + 		'</p>'
                         + 	'</td>'
                         + 	'<td>'
@@ -163,59 +326,57 @@
                         + 	'</td>'
                         + '</tr>');
             		
-            		quantity_map.set("quantity" + idx, 1);
+            		quantity_map.set("quantity" + pdNo, 1);
             		
             		// 수량 합산
             		sumQuantity();
-            		
-            		idx++;
             	} // addOrderProd
             	
             	// 주문 개수 변경
             	function changeCount(countInput) {
             		var count = $(countInput).val();
             		var price = "${product.price}";
+            		var total = (price * count).format();
 
             		if(count === '0' || count === '') {
             			alert("최소 주문수량은 1개 입니다.");
             			$(countInput).val(1);
-            			return;
+            			count = 1;
             		}
             		
             		var trNum = $(countInput).closest('tr').prevAll().length;
             		
-            		$('.add-pro-table > tbody > tr:eq(' + trNum + ') > td:last').html('<p class="add-pro-price">' + (price * count) + '원</p>');
+            		$('.add-pro-table > tbody > tr:eq(' + trNum + ') > td:last').html('<p class="add-pro-price">' + total + '원</p>');
             		
             		// count가 string type이기 때문에 number type으로 변환
-            		quantity_map.set($(countInput).attr('id'), new Number(count));
+            		quantity_map.set($(countInput).attr('id'), Number(count));
             		
             		// 수량 합산
             		sumQuantity();
-            		
-            		console.log("total_quantity : " + total_quantity);
             	} // changeCount
             	
             	// 수량 합산
             	function sumQuantity() {
             		
             		// map의 값을 모두 더해주기 전에 0으로 초기화
-            		total_quantity = new Number(0);
+            		total_quantity = Number(0);
 
 					for(var value of quantity_map.values()) {
 						total_quantity += value;
 					}
 					
-					$("#total-quantity").text(total_quantity + '개');
-					$("#total-price").text(("${product.price}" * total_quantity) + '원');
+					$("#total-quantity").text(total_quantity.format() + '개');
+					$("#total-price").text(("${product.price}" * total_quantity).format() + '원');
 					
             	} // sumQuantity
             	
             	// 주문 목록 삭제
             	function removeOrderProd(color, size, cancelBtn) {
-            		var check = color + size;
+            		var pdNo = 0;
             		
-            		// 취소 버튼과 가장 가까운 tr의 index를 찾는다
-            		var trNum = $(cancelBtn).closest('tr').prevAll().length;
+            		productJs.getProductDetailNo(product_code, color, size, function(result) {
+            			pdNo = result;
+            		});
             		
 					// 삭제 input id
 					var quantity_id = $(cancelBtn).prev().attr('id');
@@ -224,28 +385,57 @@
 					// 총 수량 다시 계산
 					sumQuantity();
 
+					// 취소 버튼과 가장 가까운 tr의 index를 찾는다
+            		var trNum = $(cancelBtn).closest('tr').prevAll().length;
+					
             		// 해당 index의 tr을 제거한다
             		$('.add-pro-table > tbody > tr:eq(' + trNum + ')').remove();
             		
             		// 중복 체크 배열에서 삭제한 옵션 제거
             		duplCheckArr = jQuery.grep(duplCheckArr, function(value) {
-                        return value != check;
+                        return value != pdNo;
                     });
+            		
+            		console.log("삭제 후 듀플 : " + duplCheckArr);
             		
             	} // removeOrderProd
             	
             	// 추천 증가
             	function increaseRecommend(review_no, recommend_btn) {
+					var userId = "${user.id}";
+					
+					if(user == null || user == '') {
+						alert("로그인 후에 LIKE/CLEAR LIKE하실 수 있습니다.");
+						return;
+					}
             		
             		$.ajax({
             			type : 'post',
-            			url : '/product/increaseRecommend/' + review_no,
+            			url : '/product/increaseRecommend/' + review_no + '/' + userId,
             			success : function(result) {
             				$(recommend_btn).text('LIKE (' + result + ')');
             			}
             		});
             		
-            	} // upRecommend
+            	} // increaseRecommend
+            	
+            	function addWishList() {
+            		var member_id = "${user.id}";
+            		
+            		// 로그인되어있을 때
+            		if(member_id) {
+	            		productJs.addWishList(member_id, product_code, function(result) {
+	            			if(result == 'success') {
+		            			alert("관심상품이 등록되었습니다.");
+	            			} else {
+	            				alert("이미 등록되어 있습니다.");
+	            			}
+	            		});
+            		} else {
+            			alert('로그인 후 이용해주세요.');
+            		}
+            	} // addWishList
+            	
 	            </script>
             <!-- 컬러 -->
             <c:if test="${color != null }">
@@ -260,8 +450,15 @@
 	            <c:if test="${size == null }"> <!-- 사이즈가 없으면 주문목록 추가 -->
 	            	<select id="select-color" class="ft-size-12 prod-option form-control" onchange="addOrderProd()">
 		            	<option>옵션 선택</option>
-		                <c:forEach var="productColor" items="${productColorList }" varStatus="status">
-		                	<option><c:out value="${productColor }" /></option>
+		                <c:forEach var="productDetail" items="${productDetailList }">
+		                	<c:choose>
+		                		<c:when test="${productDetail.product_stock ne 0 }">
+			                		<option><c:out value="${productDetail.product_color }" /></option>
+		                		</c:when>
+		                		<c:otherwise>
+			                		<option><c:out value="${productDetail.product_color }" />(품절)</option>
+		                		</c:otherwise>
+		                	</c:choose>
 		                </c:forEach>
 		            </select>
 	            </c:if>
@@ -271,7 +468,15 @@
 	            <select id="select-size" class="ft-size-12 prod-option form-control" onchange="addOrderProd()">
 	                <option>옵션 선택</option>
 	                <c:forEach var="productSize" items="${productSizeList }">
-	                	<option><c:out value="${productSize }" /></option>
+	                	<c:choose>
+	                		<c:when test="${productSize.product_stock ne 0 }">
+	                			<c:set var="productDetailNo" value="${productSize.no }" />
+		                		<option><c:out value="${productSize.product_size }" /></option>
+	                		</c:when>
+	                		<c:otherwise>
+		                		<option><c:out value="${productSize.product_size }" />(품절)</option>
+	                		</c:otherwise>
+	                	</c:choose>
 	                </c:forEach>
 	            </select>
             </c:if>
@@ -296,10 +501,10 @@
                 <button type="button" class="btn btn-default btn-lg btn-buy">BUY NOW</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg" onclick="addProductToCart()">ADD TO CART</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="addToCart()">ADD TO CART</button>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg">WISH LIST</button>
+                <button type="button" class="btn btn-default btn-lg" onclick="addWishList()">WISH LIST</button>
             </div>
             
         </div>
@@ -317,53 +522,21 @@
         <div class="col-md-10 col-md-offset-1 review-header"> <!-- review header -->
             <p>Review(<c:out value="${reviewCount }" />)</p>
             <ul id="sortReview">
-                <li value="N">최신순</li>
+                <li class="on" value="N">최신순</li>
                 <li value="R">추천순</li>
                 <li value="H">높은평점순</li>
                 <li value="L">낮은평점순</li>
             </ul>
         </div> <!-- review header -->
-       
-       <ul class="list-unstyled reviewUL">
-	       	<c:forEach var="review" items="${reviewList }">
-	       	<li>
-		        <div class="col-md-10 col-md-offset-1 review-body">  <!-- review body start -->
-		            <p> 
-		                <span>[<c:out value="${review.member.level }" />]</span>
-		                <span>${review.member.id }</span><span style="color: #B5B7BA;"> | </span>
-		                <span class="review-date"><c:out value="${review.reg_date }" /></span>
-		                <span style="color: #B5B7BA;"> | </span>
-		                <span class="review-grade"><c:out value="${review.grade }" /></span>
-		            </p>
-		
-		            <hr style="border: 0.5px #7F858A solid;">
-		
-		            <div class="col-md-1"><img src='<c:out value="${review.file_path }" />'></div>
-		            <div class="col-md-11 review-body-prod-name">
-		                ${product.name }<br>
-		                [옵션 : <c:out value="${review.product_detail.product_color }" />&nbsp;
-		                		<c:out value="${review.product_detail.product_size }" />]
-		            </div>
-		
-		            <div class="col-md-12 review-title">
-		                <p><c:out value="${review.title }" /></p>
-		            </div>
-		
-		            <div class="col-md-12 review-content">
-		                <p>
-		                	<c:out value="${review.content }" />   
-		                </p>
-		            </div>
-		
-		            <div class="col-md-12 review-like">
-		                <button type="button" class="btn btn-warning" onclick="increaseRecommend(${review.no}, this)">
-		                	LIKE (<c:out value="${review.recommend }" />)
-		                </button>
-		            </div>
-				</div> <!-- review body end -->
-			</li>
-	        </c:forEach>
+       	
+       	<!-- 리뷰 ul -->
+       	<ul class="list-unstyled reviewUL">
         </ul>
+
+		<!-- 더보기 버튼 -->
+		<div class="col-md-10 col-md-offset-1 more-review">
+			
+		</div>
 
         <div class="col-md-10 col-md-offset-1 qna-header"> <!-- Q&A header -->
             <p>Q & A(<c:out value="${qnaCount }" />)</p>

@@ -40,7 +40,6 @@
 		)
 	</insert>
 	
-	
 	<!-- 상위카테고리 상품리스트 -->
 	<select id="highCateList" parameterType="int" resultType = "productVO">
 		select * from tbl_product
@@ -78,9 +77,9 @@
 	</select>
 	
 	<!-- 해당 상품 색상의 사이즈를 조회 -->
-	<select id="getProductSize" resultType="String">
+	<select id="getProductSize" resultType="productdetailVO">
 	SELECT
-		product_size
+		no, product_code, product_color, product_size, product_stock
 	FROM
 		tbl_product_detail
 	WHERE
@@ -90,6 +89,28 @@
 		</if>
 		<if test="product_color == null">
 			AND product_color is null
+		</if>
+	</select>
+	
+	<!-- 해당 정보의 상품 디테일 번호 조회 -->
+	<select id="getProductDetailNo" resultType="int">
+	SELECT
+		no
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+		<if test="product_color != null">
+			AND product_color = #{product_color}
+		</if>
+		<if test="product_color == null">
+			AND product_color is null
+		</if>
+		<if test="product_size != null">
+			AND product_size = #{product_size}
+		</if>
+		<if test="product_size == null">
+			AND product_size is null
 		</if>
 	</select>
 	
@@ -137,32 +158,43 @@
 	
 	<!-- 상품 정보 페이지의 리뷰 조회 -->
 	<select id="getReview" resultMap="reviewMap">
+	<![CDATA[
 	SELECT 
-	    m.id, m.lev, r.no, r.title, r.content, r.reg_date, r.hit, r.file_path, r.file_name, r.recommend, r.grade,
+	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.file_path, r.file_name, r.recommend, r.grade,
 	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
 	FROM
-	    tbl_member m, tbl_review r, tbl_product_detail pd
+	    tbl_member m, 
+	    (SELECT 
+	        rownum, no, member_id, title, content, reg_date, hit, file_path, file_name, product_detail_no, recommend, grade 
+	     FROM
+	        tbl_review
+	     ORDER BY
+	]]>
+	        <choose>
+				<when test="type == 'N'.toString()">
+					no desc
+				</when>
+				<when test="type == 'R'.toString()">
+					recommend desc
+				</when>
+				<when test="type == 'H'.toString()">
+					grade desc
+				</when>
+				<when test="type == 'L'.toString()">
+					grade asc
+				</when>
+			</choose>
+	<![CDATA[
+	     ) r, tbl_product_detail pd
 	WHERE
 	    r.product_detail_no = pd.no 
 	    AND m.id = r.member_id
 	    AND pd.product_code = #{product_code}
-	ORDER BY
-		<choose>
-			<when test="type == 'N'.toString()">
-				r.no desc
-			</when>
-			<when test="type == 'R'.toString()">
-				r.recommend desc
-			</when>
-			<when test="type == 'H'.toString()">
-				r.grade desc
-			</when>
-			<when test="type == 'L'.toString()">
-				r.grade asc
-			</when>
-		</choose>
+	    AND rownum <= #{limit}
+	]]>
 	</select>
 	
+	<!-- 추천 수 불러올 때 사용 -->
 	<select id="getOriginalReview" resultMap="reviewMap">
 	SELECT
 		*
@@ -171,6 +203,26 @@
 	WHERE
 		no = #{no}
 	</select>
+	
+	<!-- 추천수 증가 -->
+	<update id="increaseRecommend">
+	UPDATE 
+    	tbl_review 
+	SET 
+	    recommend = recommend + 1
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- 추천수 감소 -->
+	<update id="decreaseRecommend">
+	UPDATE 
+    	tbl_review 
+	SET 
+	    recommend = recommend - 1
+	WHERE
+	    no = #{no}
+	</update>
 	
 	<resultMap type="QnAVO" id="QnAMap">
 		<result column="no" property="no" />
@@ -197,15 +249,7 @@
 		q.no desc
 	</select>
 	
-	<!-- 추천수 증가 -->
-	<update id="modifyRecommend">
-	UPDATE 
-    	tbl_review 
-	SET 
-	    recommend = recommend + 1
-	WHERE
-	    no = #{no}
-	</update>
+
 	
 </mapper>
 

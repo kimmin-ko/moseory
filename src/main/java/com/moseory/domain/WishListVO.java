@@ -1,5 +1,7 @@
 package com.moseory.domain;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewCri {
+public class WishListVO {
     
-    private int product_code;
-    private String type;
-    private int limit;
-
+    private String member_id;
+    private List<ProductVO> products;
+    
 }

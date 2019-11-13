@@ -1,8 +1,8 @@
 package com.moseory.service;
 
-import static org.junit.Assert.assertThat;
-
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,14 +29,11 @@ public class UserServiceTest {
     private MemberService memberService;
 
     private MemberVO member1;
-    private MemberVO member2;
     
     @Before
     public void setUp() {
 	member1 = new MemberVO("min00", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", "15466", "address1", "address2", 
 		"032-674-2030", "010-3725-9670", "kimmin@daum.net", LocalDate.of(1992, 02, 16), Level.BRONZE, 0, 0, LocalDate.now());
-	member2 = new MemberVO("min01", "minpw00", "기억에 남는 추억의 장소는?", "정동진", "김민", null, null, null, 
-		null, "010-3725-9670", "kimmin@daum.net", null, null, 0, 0, LocalDate.now());
     }
     
     @Test
@@ -49,6 +46,15 @@ public class UserServiceTest {
 	
 	userService.modifyMember(member1);
 	
+    }
+    
+    @Test
+    public void testWishListTx() {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("member_id", "admin00");
+	param.put("product_code", "29");
+	
+	userService.addWishList(param);
     }
 
     
