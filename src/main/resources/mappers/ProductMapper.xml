@@ -6,9 +6,7 @@
 
 	<!-- 상품정보 등록 -->
 	<insert id="regist" parameterType="productVO">
-		INSERT INTO tbl_product
-			(code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment) 
-		VALUES(
+		INSERT INTO tbl_product VALUES(
 			seq_product_code.nextval,
 			#{name},
 			#{high_code},

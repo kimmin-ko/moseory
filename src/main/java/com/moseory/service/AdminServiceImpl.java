@@ -16,6 +16,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public void product_regist(ProductVO productVO) {
+		System.out.println("서비스에 들어온 pVO" + productVO);
 		adminDao.product_regist(productVO);
 	}
 

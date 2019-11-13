@@ -58,7 +58,7 @@
 	function regist() {
 		
 		detailInfo();
-		
+		fileUpload();
 		$("#registForm").submit();
 	}
 	
@@ -83,11 +83,8 @@
 					stockArray.push($(this).val());
 				}
 			});
-			
 		});
 		
-		
-
 		var stockLength = stockArray.length;
 		var sizeLength = sizeArray.length;
 		
@@ -120,6 +117,30 @@
 		} // sendPro
 		return {sendPro : sendPro};
 	})();
+	
+	//=================================================
+	function fileUpload() {
+		
+		var formData = new FormData();
+		for(var i = 0; i < $('#getImage')[0].files.length; i++){
+			console.log("i = " + i);
+			console.log($('#getImage')[0].files[i]);
+			var files = $('#getImage')[0].files[i];
+			formData.append('files',files);
+		}
+		
+ 		var fileRequest = $.ajax({
+			url : "/admin/productregist",
+			type : "post",
+			data : formData,
+			contentType : false,
+			processData : false,
+			success: function(result){
+				console.log("성공??");
+			}
+		}); 
+	}
+	
 </script>
 <!-- <script>
 
@@ -166,7 +187,7 @@
 
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-       		<form id="registForm" action = "/admin/productregist" method = "post">
+       		<form id="registForm" action = "/admin/productregist" method = "post" enctype="multipart/form-data">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
@@ -254,12 +275,8 @@
 	            	<tr>
 	            		<th>이미지</th>
 	            		<td>
-            				<input type = "file" name = "file" id = "fileBtn" onclick="imageUpload()"  multiple>
-		            		<!-- <form action = "imageUpload" method = "post" enctype = "multipart/form-data">
-								파일 : <input type = "file" name = "file" multiple>
-								<br>
-								<input type = "submit" value = "전송">
-							</form> -->
+	            			<input type = "file" id = "getImage" name = "files" multiple>
+	            			<div class = "imageArea"></div>
 	            		</td>
 	            	</tr>
 	            </table>

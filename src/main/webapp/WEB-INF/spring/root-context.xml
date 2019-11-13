@@ -34,7 +34,7 @@
 		
 
 		<!--  서버 데이터 베이스  -->
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@52.79.243.139:1521:xe" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@13.209.4.52:1521:xe" />
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
 		

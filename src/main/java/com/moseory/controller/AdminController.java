@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -53,12 +55,15 @@ public class AdminController {
 	}
 
 	@PostMapping("/productregist")
-	public String productRegist(@ModelAttribute ProductVO productVO) {
-
-		log.info("productVO : " + productVO);
-		log.info("detailInfo : " + detailInfo.toString());
-		System.out.println(detailInfo);
-
+//	public String productRegist(@ModelAttribute ProductVO productVO) throws IllegalStateException, IOException {
+		public String productRegist(@ModelAttribute ProductVO productVO,
+//				 MultipartHttpServletRequest multipartRequest,
+				 HttpServletRequest request) throws IllegalStateException, IOException {
+		
+//		log.info("productVO : " + productVO);
+//		log.info("detailInfo : " + detailInfo.toString());
+//		System.out.println(detailInfo);
+		System.out.println("productVO = " + productVO);
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
 		
@@ -68,36 +73,34 @@ public class AdminController {
 			adminService.product_detail_regist(productdetailVO);
 		}
 		detailInfo.clear();
-		/**
-		ProductVO(code=0, name=moseory, high_code=1, low_code=10, price=30000, sale_count=0, wish_count=0, grade=0, file_path=this is null, file_name=this is null, product_comment=)
-		ProductDetailVO(no=0, product_code=0, product_color=WH, product_size=xs,s,m, product_stock=1234)
-		no = 1,2,3,4,5~~~(++1);
-		product_code = select code from tbl_product;
-		product_color = wh,bl,red,~~~
-		product_size = xs,s,m,l,xl
-		product_stock = 1,10,1,10,1
-
-		1, 청자켓
-		detail = 1, 1, wh, s, 10
-					= 2, 1, wh, m, 10
-					= 3, 1, wh, l, 10
-					= 4, 1, bl, s, 10
-					= 5, 1, bl, m, 10
-					= 6, 1, bl, l, 10
-					= 7, 1, bl, xl, 10
-					~~~
-					~~~
-
-		for(int i = 0; i < product_color.length; i++{
-			productdetailVO.setProduct_color(product_color[i]);
-
-			for(int j = 0; j < product_size.length; j++{
-				productdetailVO.setProduct_size();
-			}
+		
+//		파일 이름 불러와서 폴더경로 + 파일이름
+		String save_path = "/moseory/src/main/webapp/resources/images/bottom/jacket/2/";
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		List<MultipartFile> files = multipartRequest.getFiles("files");
+		//경로가 없으면 디렉토리 생성
+		File file = new File(save_path);
+		if(file.exists() == false) {
+			file.mkdirs();
 		}
 		
-		 **/
-
+		Map<String,String> result = new HashMap<>();
+		for(int i = 0; i < files.size(); i++) {
+			//파일명이 같을 수도 있기 때문에
+			//랜덤36문자_받아온파일이름
+			//으로 파일 저장
+			UUID random = UUID.randomUUID();
+			String fileName = random.toString()+"_"+files.get(i).getOriginalFilename();
+			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+			file = new File(save_path+fileName);
+			files.get(i).transferTo(file);
+			
+			//db에 있는 파일명과 경로를 불러와서 result 반환
+//			result.put(key, value);
+			
+		}
+				
+		
 		return "redirect:/index";
 	}
 
@@ -111,23 +114,39 @@ public class AdminController {
 	
 	
 	@RequestMapping(value = "/imageUpload", method = RequestMethod.POST)
-	public String upload(MultipartHttpServletRequest multipartRequest) throws IllegalStateException, IOException {
-		//파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/outer/jacket/1/";
-		List<MultipartFile> files = multipartRequest.getFiles("fileData");
+	public void upload(MultipartHttpServletRequest multipartRequest) throws IllegalStateException, IOException {
 		
+		//파일 이름 불러와서 폴더경로 + 파일이름
+		String save_path = "/moseory/src/main/webapp/resources/images/bottom/jacket/2/";
+		List<MultipartFile> files = multipartRequest.getFiles("files");
+		
+		//경로가 없으면 디렉토리 생성
 		File file = new File(save_path);
+		if(file.exists() == false) {
+			file.mkdirs();
+		}
+		
+		Map<String,String> result = new HashMap<>();
 		for(int i = 0; i < files.size(); i++) {
+			//파일명이 같을 수도 있기 때문에
+			//랜덤36문자_받아온파일이름
+			//으로 파일 저장
 			UUID random = UUID.randomUUID();
 			String fileName = random.toString()+"_"+files.get(i).getOriginalFilename();
 			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
 			file = new File(save_path+fileName);
 			files.get(i).transferTo(file);
+			
+			//db에 있는 파일명과 경로를 불러와서 result 반환
+			//result.put(key, value);
+			
 		}
 		
 		
-		return "리다이렉트";
 	}
+	
+	
+	
 	
 	
 	@GetMapping("/detailTest")
