@@ -1,4 +1,4 @@
-t<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -77,8 +77,6 @@ t<%@ page language="java" contentType="text/html; charset=UTF-8"
 
     <div class="row" style="margin-bottom: 50px; margin-top: 30px;">
         <div class="col-md-10 col-md-offset-1 eSite-login-form line-div">
-            <div class="col-md-3 col-md-offset-3 high-row"><img src="/images/btn_facebook_login.gif"></div>
-            <div class="col-md-3 high-row"><img src="/images/btn_google_login.gif"></div>
             <div class="col-md-3 col-md-offset-3 low-row"><img src="/images/btn_kakao_login.gif"></div>
             <div class="col-md-3 low-row"><img src="/images/btn_naver_login.gif"></div>
         </div>
