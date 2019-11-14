@@ -146,15 +146,13 @@ public class MemberController {
     @GetMapping("/kakaoLogin")
     public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra, Model model,
     		HttpSession session, HttpServletResponse res) throws Exception {
-    	log.info("kakao Code : " + code);	
-    	String accessToken = kakao.getAccessToken(code);
-    	log.info("kakao accessToken : " + accessToken);
-    	
+	
+    	String accessToken = kakao.getAccessToken(code);    	
     	MemberVO vo = kakao.getUserInfo(accessToken);
+    	
     	log.info("kakao getUserInfo : " + vo);
     	
     	vo = memberService.kakaoLogin(vo);
-    	System.out.println(vo.toString());
     	model.addAttribute("user", vo);
     	return "/index";
     }
