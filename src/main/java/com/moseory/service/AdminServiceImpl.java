@@ -16,7 +16,6 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public void product_regist(ProductVO productVO) {
-		System.out.println("서비스에 들어온 pVO" + productVO);
 		adminDao.product_regist(productVO);
 	}
 
@@ -28,6 +27,16 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public void product_detail_regist(ProductDetailVO productdetailVO) {
 		adminDao.product_detail_regist(productdetailVO);
+	}
+
+	@Override
+	public String getHighCate(int high_code) {
+		return adminDao.getHighCate(high_code);
+	}
+
+	@Override
+	public String getLowCate(int low_code) {
+		return adminDao.getLowCate(low_code);
 	}
 
 }	

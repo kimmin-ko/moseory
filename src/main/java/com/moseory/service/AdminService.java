@@ -13,4 +13,8 @@ public interface AdminService {
 
     void product_detail_regist(ProductDetailVO productdetailVO);
 
+	String getHighCate(int high_code);
+
+	String getLowCate(int low_code);
+
 }

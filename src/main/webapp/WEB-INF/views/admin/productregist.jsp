@@ -58,8 +58,8 @@
 	function regist() {
 		
 		detailInfo();
-		fileUpload();
 		$("#registForm").submit();
+		/* fileUpload(); */
 	}
 	
 	function detailInfo() {
@@ -119,27 +119,7 @@
 	})();
 	
 	//=================================================
-	function fileUpload() {
-		
-		var formData = new FormData();
-		for(var i = 0; i < $('#getImage')[0].files.length; i++){
-			console.log("i = " + i);
-			console.log($('#getImage')[0].files[i]);
-			var files = $('#getImage')[0].files[i];
-			formData.append('files',files);
-		}
-		
- 		var fileRequest = $.ajax({
-			url : "/admin/productregist",
-			type : "post",
-			data : formData,
-			contentType : false,
-			processData : false,
-			success: function(result){
-				console.log("성공??");
-			}
-		}); 
-	}
+	
 	
 </script>
 <!-- <script>

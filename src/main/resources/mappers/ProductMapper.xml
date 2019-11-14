@@ -248,6 +248,14 @@
 	</select>
 	
 
+	<select id="getHighCate" parameterType="int" resultType = "String">
+		select name from tbl_high_cate
+			where code = #{code}
+	</select>
+	<select id="getLowCate" parameterType="int" resultType="String">
+		select name from tbl_low_cate
+			where code = #{code}
+	</select>
 	
 </mapper>
 
