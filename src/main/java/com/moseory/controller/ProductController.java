@@ -1,18 +1,23 @@
 package com.moseory.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +41,6 @@ public class ProductController {
 	
 	@GetMapping("/productList")
 	public String productList(@RequestParam int high_code, Model model) {
-		System.out.println(high_code);
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
 		for(ProductVO pVO : productVO) System.out.println(pVO);
@@ -53,31 +57,28 @@ public class ProductController {
 		List<ProductDetailVO> productDetailVO = productService.getDetailView(code);
 		
 		/* 색상 조회 */
-		String color = productDetailVO.get(0).getProduct_color();
+		String color = "";
+		if(productDetailVO.size() > 0) 
+		    color = productDetailVO.get(0).getProduct_color();
+		
 		List<String> productColor = null;
 		// 상품의 색상이 있을 경우
 		if(color != null) { 
 		    // 상품 색상 중복 없이 조회
 		    productColor = productService.getProductColor(code);
 		}
-		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		model.addAttribute("productColorList", productColor);
-		
-		log.info("is product color : " + color);
-		log.info("is product productColor : " + productColor);
+		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		
 		/* 사이즈 조회 */
 		String size = productDetailVO.get(0).getProduct_size();
-		List<String> productSize = null;
+		List<ProductDetailVO> productSize = null;
 		// 사이즈가 있고, 색상이 없을 경우에는 상품 정보 페이지에 사이즈 뿌려줌
 		if(size != null && color == null) {
 		    productSize = productService.getProductSize(code, color);
 		}
-		model.addAttribute("size", size); // 해당 상품의 사이즈 option 표시 여부 수단
 		model.addAttribute("productSizeList", productSize);
-		
-		log.info("is product size : " + size);
-		log.info("is product productSize : " + productSize);
+		model.addAttribute("size", size); // 해당 상품의 사이즈 option 표시 여부 수단
 		
 		model.addAttribute("productDetailList", productDetailVO);
 		model.addAttribute("product", productVO);
@@ -90,11 +91,6 @@ public class ProductController {
 		int qnaCount = productService.getQnaCount(code);
 		model.addAttribute("qnaCount", qnaCount);
 		
-		// Review 리스트
-		ReviewCri reviewCri = new ReviewCri(code, "N");
-		List<ReviewVO> reviewList = productService.getReview(reviewCri);
-		model.addAttribute("reviewList", reviewList);
-		
 		// QnA 리스트
 		List<QnAVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
@@ -102,38 +98,84 @@ public class ProductController {
 		return "product/productInfo";
 	}
 	
-	@PostMapping("/increaseRecommend/{review_no}")
-	public ResponseEntity<Integer> increaseRecommend(@PathVariable("review_no") int review_no) {
+	@GetMapping("/getProductDetailNo")
+	public @ResponseBody ResponseEntity<Integer> getProductDetailNo(
+		@RequestParam(required = false) Map<String, Object> param) {
 	    
-	    if(review_no < 1) {
-		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    int no = productService.getProductDetailNo(param);
+	    
+	    return no != 0 ? new ResponseEntity<>(no, HttpStatus.OK)
+		    	   : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
+	public ResponseEntity<Integer> increaseRecommend(
+		@PathVariable("review_no") int review_no, @PathVariable("user_id") String user_id, 
+		HttpServletRequest req, HttpServletResponse res) {
+	    boolean isCookie = false;
+	    
+	    Cookie[] cookies = req.getCookies();
+	    
+	    Cookie like_cookie = null;
+	    
+	    if(cookies != null) {
+		for(int i = 0; i < cookies.length; i++) {
+        		
+        		if(cookies[i].getName().equals("like_" + user_id + "_" + review_no)) {
+        		    isCookie = true;
+        		    like_cookie = cookies[i];
+        		}
+    	    	}
 	    }
 	    
-	    productService.increaseRecommend(review_no);
+	    // cookie가 존재하지 않을 경우
+	    if(!isCookie) {
+		// 쿠키 생성
+		like_cookie = new Cookie("like_" + user_id + "_" + review_no, "exist_cookie");
+		like_cookie.setMaxAge(60 * 60 * 24 * 365);
+		like_cookie.setPath("/");
+
+		// 쿠키 저장
+		res.addCookie(like_cookie);
+
+		// 추천 수 증가
+		productService.increaseRecommend(review_no);
+	    } 
+	    // cookie가 존재할 경우
+	    else {
+		// 쿠키 삭제
+		like_cookie.setMaxAge(0);
+		like_cookie.setPath("/");
+		
+		// 쿠키 저장
+		res.addCookie(like_cookie);
+
+		// 추천 수 감소
+		productService.decreaseRecommend(review_no);
+	    }
 	    
 	    int review_recommend = productService.getOriginalReview(review_no).getRecommend();
 	    
 	    return new ResponseEntity<>(review_recommend, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code,
+	public ResponseEntity<List<ProductDetailVO>> getColor(@PathVariable("code") int code,
 			     @PathVariable("color") String color) {
-	    
-	    List<String> productSize = productService.getProductSize(code, color);
+	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
 	    
 	    return productSize != null 
 		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
 		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping(value = "/getReviewList/{product_code}/{type}",
+	@GetMapping(value = "/getReviewList/{product_code}/{type}/{limit}",
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public @ResponseBody ResponseEntity<List<ReviewVO>> getReviewList(
 		@PathVariable("product_code") int product_code,
-		@PathVariable("type") String type) {
-	    
-	    ReviewCri reviewCri = new ReviewCri(product_code, type);
+		@PathVariable("type") String type,
+		@PathVariable("limit") int limit) {
+	    ReviewCri reviewCri = new ReviewCri(product_code, type, limit);
 	    
 	    List<ReviewVO> reviewList = productService.getReview(reviewCri);
 	    

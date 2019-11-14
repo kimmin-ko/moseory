@@ -23,21 +23,28 @@
 
 <body>
 
-	<script type="text/javascript">
-    $(document).ready(function() {
-    
-        $(".check-all").click(function() {
-            $(".check-order").prop("checked", this.checked);
-        });
-    });
-    
-    function changeEmail() {
-        var select_email = $("#select_email").val();
-        $("#email").val(select_email);
-    }
-</script>
 
 	<%@ include file="../includes/sidebar.jsp"%>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var result = '<c:out value="${result}"/>';
+			checkModal(result);
+			
+			history.replaceState({},null,null);
+			
+			function checkModal(result){
+				if(result === '' || history.state){
+					return;
+				}
+				if(parseInt(result) >= 0){
+					$(".modal-body").html("게시글이 등록 되었습니다");
+				}
+				$("#myModal").modal("show");
+					
+			}
+		});
+	</script>
 
 	<div class="container" style="margin-left: 22%;">
 
@@ -71,7 +78,7 @@
 								<td>${list.NO}</td>
 								<!-- TITLE -->
 								<td>
-									<a href="/notice/noticeText?NO=${list.NO}">${list.TITLE }</a>
+									<a href="/notice/noticeGet?NO=${list.NO}">${list.TITLE }</a>
 								</td>
 								<!-- NAME -->
 								<td>모서리</td>
@@ -153,6 +160,28 @@
 
 
 	</div>
+	
+	<!--  Modal 추가 -->
+	<div class ="modal fade" id="myModal" tabindex ="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">게시글 확인</h4>
+				</div>
+				<div class="modal-body">처리가 완료 되었습니다</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					<button type="button" class="btn btn-primary">저장</button>
+				</div>
+			</div>
+			<!-- Modal-content -->
+		</div>
+		<!-- Modal-dialog -->
+	</div>
+	<!-- Modal -->
 
 </body>
 </html>

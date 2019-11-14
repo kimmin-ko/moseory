@@ -2,12 +2,8 @@
     text-align: center;
 }
 
-.eSite-login-form .high-row {
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
 .eSite-login-form .low-row {
+	margin-top: 20px;
     margin-bottom: 20px;
 }
 

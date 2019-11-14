@@ -30,7 +30,7 @@
 						<img src='<c:out value="${product.file_path }" />' class="weekly-img">
 						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out value='${product.code }' />"'>
 							<p><c:out value="${product.name }" /></p>
-							<p><c:out value="${product.price }" />원</p>
+							<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
 						</div>
 					</li>
 					</c:forEach>
@@ -59,7 +59,7 @@
 					<p>
 						<a href="#"><c:out value="${product.name }" /></a>
 					</p>
-					<p><c:out value="${product.price }" />원</p>
+					<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
 				</div>
 				</c:forEach>
 			</div>

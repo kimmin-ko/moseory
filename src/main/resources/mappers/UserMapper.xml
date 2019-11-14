@@ -24,6 +24,7 @@
 		<result column="join_date" property="join_date" />
 	</resultMap>
 	
+	<!-- 회원가입 -->
 	<select id="getMember" resultMap="memberResultMap">
 	SELECT
 		id, password, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
@@ -34,6 +35,7 @@
 		id = #{id}
 	</select>
 	
+	<!-- 회원정보 수정 -->
 	<update id="updateMember">
 	UPDATE
     	tbl_member 
@@ -44,11 +46,167 @@
 	    id = #{id}
 	</update>
 	
+	<!-- Test 회원 정보 삭제 -->
 	<delete id="deleteMember">
 	DELETE FROM
 		tbl_member
 	WHERE
 		id = #{id}
+	</delete>
+	
+	<resultMap type="WishListVO" id="wishListMap">
+		<result column="id" property="member_id" />
+		<collection property="products" resultMap="productMap" />
+	</resultMap>
+	
+	<!-- List<ProductVO>를 처리하기 위한 productMap -->
+	<resultMap type="ProductVO" id="productMap">
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="price" column="price" />
+		<result property="wish_count" column="wish_count" />
+		<result property="file_path" column="file_path" />
+	</resultMap>
+	
+	<!-- 관심상품 등록 -->
+	<insert id="addWishList">
+	INSERT INTO
+		tbl_wish_list (member_id, product_code)
+	VALUES
+		(#{member_id}, #{product_code})
+	</insert>
+	
+	<!-- 등록된 상품 wish_count 증가 -->
+	<update id="increaseWishCount">
+	UPDATE
+	    tbl_product
+	SET
+	    wish_count = wish_count + 1
+	WHERE
+	    code = #{product_code}
+	</update>
+	
+	<!-- 관심상품 삭제 -->
+	<delete id="deleteWishList">
+	DELETE FROM
+		tbl_wish_list
+	WHERE
+		member_id = #{member_id} and product_code = #{product_code}
+	</delete>
+	
+	<!-- 삭제된 상품 wish_count 감소 -->
+	<update id="decreaseWishCount">
+	UPDATE
+	    tbl_product
+	SET
+	    wish_count = wish_count - 1
+	WHERE
+	    code = #{product_code}
+	</update>
+	
+	<!-- 관심상품 리스트 -->
+	<select id="getWishList" resultMap="wishListMap">
+	SELECT
+	    m.id, p.code, p.name, p.price, p.wish_count, p.file_path
+	FROM
+	    tbl_wish_list wl, tbl_member m, tbl_product p
+	WHERE
+	    wl.member_id = m.id
+	    AND wl.product_code = p.code
+	    AND wl.member_id = #{member_id}
+	</select>
+	
+	<!-- 관심상품 중복 체크 -->
+	<select id="checkWishList" resultType="int">
+	SELECT
+    	count(*)
+	FROM
+	    tbl_wish_list
+	WHERE
+	    member_id = #{member_id}
+	    AND product_code = #{product_code}
+    </select>
+    
+    <!-- 장바구니 추가 -->
+    <insert id="addToCart">
+    INSERT INTO
+	    tbl_cart (no, member_id, product_detail_no, quantity)
+	VALUES
+	    (seq_cart_no.nextval, #{member_id}, #{product_detail_no}, #{quantity})
+    </insert>
+    
+    <!-- 장바구니 중복 확인 -->
+    <select id="isExistProductInCart" resultType="int">
+    SELECT
+		count(*) 
+	FROM
+		tbl_cart
+	WHERE
+		member_id = #{member_id}
+		AND product_detail_no = #{product_detail_no}
+    </select>
+    
+    <!-- 사용자의 장바구니 정보 조회 -->
+    <select id="getCartList" resultType="CartVO">
+	SELECT
+	    c.no, c.member_id, c.quantity, pd.no as product_detail_no, pd.product_color, pd.product_size,
+    p.code as product_code, p.name as product_name, p.price as product_price, p.file_path as product_file_path
+	FROM
+	    tbl_cart c 
+	    JOIN tbl_product_detail pd 
+	    ON c.product_detail_no = pd.no
+	    JOIN tbl_product p
+	    ON pd.product_code = p.code
+	WHERE
+	    member_id = #{member_id}
+	ORDER BY
+	    p.name, c.no desc
+    </select>
+    
+    <!-- 사용자의 장바구니 목록 개수 -->
+    <select id="getCartCount" resultType="int">
+    SELECT
+	    count(*)
+	FROM
+	    tbl_cart
+	WHERE
+	    member_id = #{member_id}
+    </select>
+	
+	<!-- 장바구니 목록 수량 변경 -->
+	<update id="updateCartQuantity">
+	UPDATE
+		tbl_cart
+	SET
+		quantity = #{quantity}
+	WHERE
+		no = #{no}
+	</update>
+	
+	<!-- 변경한 목록의 수량 조회 -->
+	<select id="getCartQuantity" resultType="int">
+	SELECT
+		quantity
+	FROM
+		tbl_cart
+	WHERE
+		no = #{no}
+	</select>
+	
+	<!-- 해당 장바구니 목록 삭제 -->
+	<delete id="deleteCartList">
+	DELETE FROM
+	    tbl_cart
+	WHERE
+	    no = #{no}
+	</delete>
+	
+	<!-- 장바구니 비우기 -->
+	<delete id="deleteCartAll">
+	DELETE FROM
+		tbl_cart
+	WHERE
+		member_id = #{member_id}
 	</delete>
 	
 </mapper>

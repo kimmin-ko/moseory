@@ -23,6 +23,9 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
+	
 	<beans:bean id="loginInterceptor" class="com.moseory.interceptor.LoginInterceptor"/>
 	<interceptors>
 		<interceptor>
@@ -30,7 +33,7 @@
 			<beans:ref bean="loginInterceptor"></beans:ref>
 		</interceptor>
 	</interceptors>
-
+	
 	<beans:bean id="authInterceptor" class="com.moseory.interceptor.AuthInterceptor"/>
 	<interceptors>
 		<interceptor>

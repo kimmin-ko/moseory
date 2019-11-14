@@ -162,3 +162,32 @@
     text-align: right;
 }
 /* 상품 옵션 선택 및 추가 End */
+
+#sortReview li:hover {
+	cursor: pointer;
+	color: #B5B3AD;
+}
+
+#sortReview li:active {
+	cursor: pointer;
+	color: #B5B3AD;
+	font-weight: bold;
+}
+
+#sortReview li.on {
+	font-weight: bold;
+	color: #FCBF1B;
+}
+
+/* 리뷰 더보기 버튼 */
+.more-review {
+	margin-top: 30px;
+	text-align: center;
+}
+
+
+
+
+
+
+

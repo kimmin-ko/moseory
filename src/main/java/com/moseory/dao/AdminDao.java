@@ -1,7 +1,5 @@
 package com.moseory.dao;
 
-import java.util.List;
-
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -12,6 +10,10 @@ public interface AdminDao {
 	int setCode(String name);
 
 	void product_detail_regist(ProductDetailVO productdetailVO);
+
+	String getHighCate(int high_code);
+
+	String getLowCate(int low_code);
 
 
 }

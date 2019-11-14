@@ -26,5 +26,13 @@ public class AdminDaoImpl implements AdminDao{
 	public void product_detail_regist(ProductDetailVO productdetailVO) {
 		sqlSession.insert("product.product_detail_regist", productdetailVO);
 	}
+	@Override
+	public String getHighCate(int high_code) {
+		return sqlSession.selectOne("product.getHighCate", high_code);
+	}
+	@Override
+	public String getLowCate(int low_code) {
+		return sqlSession.selectOne("product.getLowCate", low_code);
+	}
 
 }

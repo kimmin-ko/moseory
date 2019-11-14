@@ -14,6 +14,9 @@ import com.moseory.domain.QnAVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
 
@@ -43,11 +46,16 @@ public class ProductDaoImpl implements ProductDao{
 
 	// 상품 색상의 사이즈를 조회
 	@Override
-	public List<String> getProductSize(int product_code, String product_color) {
+	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("product_code", product_code);
 	    map.put("product_color", product_color);
 	    return sqlSession.selectList("product.getProductSize", map);
+	}
+	
+	@Override
+	public int getProductDetailNo(Map<String, Object> param) {
+	    return sqlSession.selectOne("product.getProductDetailNo", param);
 	}
 
 	@Override
@@ -77,11 +85,15 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public void modifyRecommend(int review_no) {
-	    sqlSession.update("product.modifyRecommend", review_no);
+	public void increaseRecommend(int review_no) {
+	    sqlSession.update("product.increaseRecommend", review_no);
 	}
-	
-	
+
+	@Override
+	public void decreaseRecommend(int review_no) {
+	    sqlSession.update("product.decreaseRecommend", review_no);
+	}
+
 	
 
 }

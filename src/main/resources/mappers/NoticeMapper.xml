@@ -20,10 +20,8 @@
 	</insert>
 	
 	<!-- 게시글 상세 보기 조회 -->
-	<select id ="view" parameterType="int" resultType= "com.moseory.domain.NoticeVO">
-		SELECT NO,TITLE,CONTENT,REG_DATE,HIT
-		FROM TBL_NOTICE
-		WHERE NO = #{NO}
+	<select id ="select" parameterType="int" resultType= "com.moseory.domain.NoticeVO">
+		SELECT * FROM TBL_NOTICE WHERE NO = #{NO}
 	</select>
 	
 	<!--  게시글 조회수 증가 처리 -->
@@ -34,10 +32,10 @@
 	
 	<!--  게시글 수정 처리 -->
 	<update id = "update">
-		update tbl_notice set
-		title = #{title},
-		content = #{content},
-		where NO =#{NO}
+		update tbl_notice 
+		set TITLE = #{TITLE},
+		CONTENT = #{CONTENT}
+		where NO = #{NO}
 	</update>
 	
 	<!-- 게시글 삭제 처리 -->
