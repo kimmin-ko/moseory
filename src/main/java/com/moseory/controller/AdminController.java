@@ -140,15 +140,9 @@ public class AdminController {
 	}
     }
 
-//	int code = adminService.getIntCode(productVO);
-//	System.out.println("int�� ���� �ڵ� = " + code);
-////	productVO = adminService.getCode(productVO);
-////	System.out.println("�ڵ� = " + productVO.getCode());
-//	List<ProductVO> list = adminService.getListCode(productVO);
-//	for(ProductVO pVO : list) {
-//		System.out.println("list�� ���� �ڵ� = " + pVO);
-//	}
-//	productdetailVO.setProduct_code(productVO.getCode());
-//	adminService.pdetail_regist(productdetailVO);
+    @GetMapping("/manage")
+    public void manage() {
+    	
+    }
 
 }

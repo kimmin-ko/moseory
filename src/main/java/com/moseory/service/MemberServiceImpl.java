@@ -96,4 +96,30 @@ public class MemberServiceImpl implements MemberService {
 	    return 3;
 	}
     }
+
+	@Override
+	public MemberVO kakaoLogin(MemberVO vo) {
+		
+		/*
+		 * 카카오 연동을 통해 들어온 user가 member Table에 들어가있는지 Check 후
+		 * 없으면 신규회원, 
+		 * 있으면 정보를 VO에 담는다.
+		 * */
+		
+		int count =0;
+		String kakaoID ="";
+		kakaoID = "K_"+vo.getId();
+		vo.setId(kakaoID);
+		count = memberDao.getCountMember(vo.getId());
+		
+		if(1 > count) {
+			//신규가입
+			memberDao.insertKakaoMember(vo);
+		}else {
+			//기존회원 정보
+			vo = memberDao.selectKakaoMember(vo);
+		}
+		
+		return vo;
+	}
 }

@@ -62,6 +62,9 @@ public class MemberController {
     	if(vo == null) {
     		model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
     		return "member/login";
+    	}else if(vo.getPassword().equals("") || vo.getPassword() == null){
+    		model.addAttribute("msg", "비밀번호를 입력해주세요");
+    		return "member/login";
     	}else {
     		model.addAttribute("user", vo);
     		return "index";
@@ -151,7 +154,9 @@ public class MemberController {
     	
     	MemberVO vo = kakao.getUserInfo(accessToken);
     	log.info("kakao getUserInfo : " + vo);
-
+    	
+    	vo = memberService.kakaoLogin(vo);
+    	System.out.println(vo.toString());
     	model.addAttribute("user", vo);
     	return "/index";
     }

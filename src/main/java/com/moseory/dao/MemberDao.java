@@ -23,4 +23,9 @@ public interface MemberDao {
 
     public int pwChange(Map<String, Object>param);
     
+    public void insertKakaoMember(MemberVO vo);
+    
+    public MemberVO selectKakaoMember(MemberVO vo);
+    
+    
 }

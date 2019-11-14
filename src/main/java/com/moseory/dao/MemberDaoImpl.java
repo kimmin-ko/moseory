@@ -63,4 +63,14 @@ public class MemberDaoImpl implements MemberDao {
 		return sqlSession.update(namespace+".pwChange", param);
 	}
 
+	@Override
+	public void insertKakaoMember(MemberVO vo) {
+		sqlSession.insert(namespace+".insertKakaoMember", vo);
+	}
+
+	@Override
+	public MemberVO selectKakaoMember(MemberVO vo) {
+		return sqlSession.selectOne(namespace+".selectKakaoMember", vo);
+	}
+
 }
