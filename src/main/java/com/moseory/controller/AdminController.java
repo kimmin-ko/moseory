@@ -99,51 +99,7 @@ public class AdminController {
 		return "redirect:/index";
 	}
 
-	
-	@GetMapping("/imageUpload")
-	public String uploadTest() {
-		return "admin/imageUpload";
-	}
-	
-	
-	
-	
-	@RequestMapping(value = "/imageUpload", method = RequestMethod.POST)
-	public void upload(MultipartHttpServletRequest multipartRequest) throws IllegalStateException, IOException {
 		
-		//파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/bottom/jacket/2/";
-		List<MultipartFile> files = multipartRequest.getFiles("files");
-		
-		//경로가 없으면 디렉토리 생성
-		File file = new File(save_path);
-		if(file.exists() == false) {
-			file.mkdirs();
-		}
-		
-		Map<String,String> result = new HashMap<>();
-		for(int i = 0; i < files.size(); i++) {
-			//파일명이 같을 수도 있기 때문에
-			//랜덤36문자_받아온파일이름
-			//으로 파일 저장
-			UUID random = UUID.randomUUID();
-			String fileName = random.toString()+"_"+files.get(i).getOriginalFilename();
-			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
-			file = new File(save_path+fileName);
-			files.get(i).transferTo(file);
-			
-			//db에 있는 파일명과 경로를 불러와서 result 반환
-			//result.put(key, value);
-			
-		}
-		
-		
-	}
-	
-	
-	
-	
-	
 	@GetMapping("/detailTest")
 	public String testProductInfo() {
 		
