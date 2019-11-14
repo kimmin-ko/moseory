@@ -8,7 +8,7 @@
     <title>모서리</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="/css/manage.css">
 </head>
 <body>
     
@@ -33,7 +33,7 @@
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">카테고리</a></h6>
+						<h6><a href="/admin/category">카테고리</a></h6>
 						<p>
 							카테고리를 추가, 변경, 삭제<br>
 							할 수 있는 공간입니다.
@@ -98,7 +98,6 @@
 			</table>
 		</div>
 		<!-- Manage-body End -->
-		
     </div>  
     <!-- Manage End -->
 

@@ -108,7 +108,11 @@ public class AdminController {
     public void manage() {
     	
     }
-
+	
+	@GetMapping("/category")
+    public void category() {
+    	
+    }
    
 
 
