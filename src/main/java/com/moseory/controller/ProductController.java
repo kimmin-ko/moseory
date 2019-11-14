@@ -57,7 +57,10 @@ public class ProductController {
 		List<ProductDetailVO> productDetailVO = productService.getDetailView(code);
 		
 		/* 색상 조회 */
-		String color = productDetailVO.get(0).getProduct_color();
+		String color = "";
+		if(productDetailVO.size() > 0) 
+		    color = productDetailVO.get(0).getProduct_color();
+		
 		List<String> productColor = null;
 		// 상품의 색상이 있을 경우
 		if(color != null) { 

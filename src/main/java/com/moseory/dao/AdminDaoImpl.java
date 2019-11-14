@@ -16,7 +16,7 @@ public class AdminDaoImpl implements AdminDao{
 	
 	@Override
 	public void product_regist(ProductVO productVO) {
-		System.out.println("dao들어온 pVO" + productVO);
+//		System.out.println("dao들어온 pVO" + productVO);
 		sqlSession.insert("product.regist", productVO);
 	}
 	@Override

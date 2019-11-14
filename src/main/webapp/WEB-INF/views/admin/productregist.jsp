@@ -58,8 +58,10 @@
 	function regist() {
 		
 		detailInfo();
-		fileUpload();
+		
+		$("#registForm").attr("encoding", "application/x-www-form-urlencoded");
 		$("#registForm").submit();
+		
 	}
 	
 	function detailInfo() {
@@ -117,46 +119,7 @@
 		} // sendPro
 		return {sendPro : sendPro};
 	})();
-	
-	//=================================================
-	function fileUpload() {
-		
-		var formData = new FormData();
-		for(var i = 0; i < $('#getImage')[0].files.length; i++){
-			console.log("i = " + i);
-			console.log($('#getImage')[0].files[i]);
-			var files = $('#getImage')[0].files[i];
-			formData.append('files',files);
-		}
-		
- 		var fileRequest = $.ajax({
-			url : "/admin/productregist",
-			type : "post",
-			data : formData,
-			contentType : false,
-			processData : false,
-			success: function(result){
-				console.log("성공??");
-			}
-		}); 
-	}
-	
 </script>
-<!-- <script>
-
-	function imageUpload() {
-		
-		fileUpload();
-		$("#fileBtn").submit();
-	}
-	function fileUpload() {
-		var fileRequest = $.ajax(){
-			url : "";
-		}
-	}
-
-</script>
- -->
 <script>
 	$(document).ready(function(){
 		var copyArea = $('.detailInfo').children().clone();
@@ -188,8 +151,8 @@
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
        		<form id="registForm" action = "/admin/productregist" method = "post" enctype="multipart/form-data">
-	        <input type = "hidden" name = "file_path" value = "this is null">
-	        <input type = "hidden" name = "file_name" value = "this is null">
+		        <input type = "hidden" name = "file_path" value = "this is null">
+		        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
 	                <tr>
 	                    <th>상품명 <img src="/images/ico_required.gif"></th>
@@ -267,9 +230,6 @@
 	                	<th>코멘트</th>
 	                	<td>
 							<textarea class = "form-control" name = "product_comment" cols="20" rows="10"></textarea>	                	
-							<script> 
-								// CKEDITOR.replace('product_comment');
-							</script>
 	                	</td>
 	                </tr>
 	            	<tr>
@@ -281,8 +241,8 @@
 	            	</tr>
 	            </table>
 	            <div class = "regist_btn_area text-center">
-					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()">
-					<input type = "button"  value = "취소" class ="btn btn-default btn-md">
+					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()" >
+					<input type = "button" value = "취소" class = "btn btn-default btn-md" >
 				</div>
 				
 			</form>
