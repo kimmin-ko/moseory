@@ -30,12 +30,12 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("user") == null) {
-			log.info("authinterceptor -> preHandle null");
+//			log.info("authinterceptor -> preHandle null");
 			saveDestination(request);
 			response.sendRedirect("/member/login");
 			return false;
 		}
-		System.out.println("authinterceptor -> preHandle not null");
+//		System.out.println("authinterceptor -> preHandle not null");
 		return true;
 	}
 }

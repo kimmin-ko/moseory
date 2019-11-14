@@ -27,19 +27,10 @@
 	<!-- HikariCP를 사용하기 위한 설정 -->
  	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-
-		<!-- <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
-		<property name="username" value="hong" />
-		<property name="password" value="h8159" /> -->
-		
-
-		<!--  서버 데이터 베이스  -->
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@13.209.4.52:1521:xe" />
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
-		
 	</bean>
-	
 	
 	<!--   HikariCP를 이용하는 DataSource -->
  	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
