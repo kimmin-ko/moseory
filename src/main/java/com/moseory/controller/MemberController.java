@@ -58,11 +58,14 @@ public class MemberController {
     	MemberVO vo = memberService.loginProc(param);
     	
     	if(vo == null) {
-    		model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-    		return "member/login";
-    	}else if(vo.getPassword().equals("") || vo.getPassword() == null){
-    		model.addAttribute("msg", "비밀번호를 입력해주세요");
-    		return "member/login";
+    		if(vo.getPassword().equals("") || vo.getPassword() == null) {
+    			model.addAttribute("msg", "비밀번호를 입력해주세요");
+        		return "member/login";
+    		}else {
+				model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+				return "member/login";
+    		}
+    		
     	}else {
     		model.addAttribute("user", vo);
     		return "index";
