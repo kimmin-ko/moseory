@@ -22,41 +22,6 @@
 
 <%@ include file="../includes/sidebar.jsp" %>
 
-<!-- <script type="text/javascript" src="/ckeditor/ckeditor/ckeditor.js"></script> -->
-<!-- <script>
-	var uploadFile = HttpContext.Current.Request.Files;
-	
-	var currentUploadFile = uploadFile[0];
-	if (currentUploadFile != null && currentUploadFile.ContentLength > 0){
-		var uploadFileName = Path.GetFileName(currentUploadFile.FileName);
-	 
-		 var baseDomainAddress = "toughman.pe.kr";
-		 var fileUploadFolder = "d:\\www\editor_upload\\";
-		 var fileUploadFolderWebPath = baseDomainAddress + "/editor_upload" ;
-		 
-		 if (Directory.Exists(fileUploadFolder) == false){
-		 	Directory.CreateDirectory(fileUploadFolder);
-		 }
-	 
-		 var fileUploadAllowExtension = "jpg,png,jpeg";
-		 
-		 var uniqueFileNameFullPath = GetUniqueFileName(fileUploadFolder, uploadFileName);
-		 
-		 var fileExtension = uniqueFileNameFullPath.Substring(uniqueFileNameFullPath.LastIndexOf(".") + 1).ToLower();
-		 
-		 var allowFileExtension = fileUploadAllowExtension.Split(',');
-		 
-	 	if (allowFileExtension.Contains(fileExtension) == true){
-			currentUploadFile.SaveAs(uniqueFileNameFullPath);
-			var webPath = fileUploadFolderWebPath + Path.GetFileName(uniqueFileNameFullPath);
-			
-			Response.Write("<script type='text/javascript'>\nwindow.parent.CKEDITOR.tools.callFunction(1, '" + webPath + "', '');\n</script>");
-		}
-		else {
-			Response.Write("<script type='text/javascript'>\nalert('허용되지 않은 파일 유형입니다.');\n</script>");
-		 }
-	}
-</script> -->
 <script>
 	
 	function highCategory(e){
@@ -89,30 +54,11 @@
 	
 </script>
 <script>
-/* $(document).ready(function(){ 
-    $('.addStock').hide();
-    var check = $(".size1").prop("checked");
-    $(".size").change(function(){
-	    var numberOfChecked1 = $('input:checkbox:checked').length;
-	    console.log(numberOfChecked1);
-        if($(this).is(":checked")){
-            console.log("트루,,,");
-            $('.addStock').show();
-        }else{
-            console.log("거짓,,,");
-            $('.addStock').hide();
-        }
-        $('input[name="product_stock"]').each(function(i) {
-        	
-        	console.log($(this).val());
-		});
-    });
-}); */
 	
 	function regist() {
 		
 		detailInfo();
-		
+		fileUpload();
 		$("#registForm").submit();
 	}
 	
@@ -122,37 +68,32 @@
 		var colorArray = [];
 		var sizeArray = [];
 		var stockArray = [];
-		var numberOfChecked = $('input:checkbox:checked').length;
-
+		var numberOfChecked = $('input[name="product_size"]:checked').length;
+		
 		for(var i = 0; i < numberOfChecked; i++) {
 			$('select[name="product_color"]').each(function(i){
 				colorArray.push($(this).val());
 			});
 		}
+		
 		$('input[name="product_size"]:checked').each(function(i){
 			sizeArray.push($(this).val());
+			$('input[name="product_stock"]').each(function(i) {
+				if($(this).val() != ""){
+					stockArray.push($(this).val());
+				}
+			});
 		});
 		
-		
-		$('input[name="product_stock"]').each(function(i) {
-			
-			if($(this).val() != ""){
-				stockArray.push($(this).val());
-			}
-		});
-
 		var stockLength = stockArray.length;
 		var sizeLength = sizeArray.length;
 		
 		if(stockLength != sizeLength){
 			alert("사이즈와 수량을 확인해주세요");
 		}
-		
-		
 		console.log(colorArray);
 		console.log(sizeArray);
 		console.log(stockArray);
-		
 		
 		for(var i = 0; i < numberOfChecked; i++) {
 			productDetail = {
@@ -162,14 +103,10 @@
 			}
 			sendDetail.sendPro(productDetail);
 		}
-
 	}
 	
-	
 	var sendDetail = (function() {
-		
 		function sendPro(productDetail) {
-	
 			$.ajax({
 				type : "post",
 				url : "/admin/productInfo",
@@ -177,14 +114,58 @@
 				async : false,
 				contentType : "application/json; charset=utf-8"
 			});
-	
 		} // sendPro
-		
 		return {sendPro : sendPro};
 	})();
+	
+	//=================================================
+	function fileUpload() {
+		
+		var formData = new FormData();
+		for(var i = 0; i < $('#getImage')[0].files.length; i++){
+			console.log("i = " + i);
+			console.log($('#getImage')[0].files[i]);
+			var files = $('#getImage')[0].files[i];
+			formData.append('files',files);
+		}
+		
+ 		var fileRequest = $.ajax({
+			url : "/admin/productregist",
+			type : "post",
+			data : formData,
+			contentType : false,
+			processData : false,
+			success: function(result){
+				console.log("성공??");
+			}
+		}); 
+	}
+	
 </script>
+<!-- <script>
 
-<div class="container joinForm-container" style="margin-left:22%">
+	function imageUpload() {
+		
+		fileUpload();
+		$("#fileBtn").submit();
+	}
+	function fileUpload() {
+		var fileRequest = $.ajax(){
+			url : "";
+		}
+	}
+
+</script>
+ -->
+<script>
+	$(document).ready(function(){
+		var copyArea = $('.detailInfo').children().clone();
+		$('#addAreaBtn').click(function(){
+			$('.newArea').append(copyArea);
+		});
+	})
+</script>
+ <div class="container joinForm-container" style="margin-left:22%">
 
     <!-- Join Form Start -->
     <div class="row joinLabel-row" style="margin-top: 80px;">
@@ -206,7 +187,7 @@
 
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-       		<form id="registForm" action = "/admin/productregist" method = "post">
+       		<form id="registForm" action = "/admin/productregist" method = "post" enctype="multipart/form-data">
 	        <input type = "hidden" name = "file_path" value = "this is null">
 	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
@@ -260,21 +241,20 @@
 								<div class = "addSize">
 					                <input type="checkbox" class ="size" name="product_size" value="xs">XS
     					            <input type = "text" name = "product_stock" class= "product_stock">개<br>
-					                <!-- <div class = "addStock">
-					                </div> -->
 					                <input type="checkbox" class ="size" name="product_size" value="s">S
 					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
-					                
 					                <input type="checkbox" class ="size" name="product_size" value="m" id = "sizeArea">M
 					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
 					                <input type="checkbox" class ="size" name="product_size" value="l">L
 					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
 					                <input type="checkbox" class ="size" name="product_size" value="xl">XL
 					                <input type = "text" name = "product_stock" class= "product_stock">개<br>
-					            
 					            </div>	       
+	  	              			<button type = "button" id = "addAreaBtn">추가</button>
 							</div>      		
-  	              			<button type = "button">추가</button>
+  	              			<div class = "newArea">
+  	              			
+  	              			</div>
 	                	</td>
 	                </tr>
 	                <!-- 
@@ -286,13 +266,19 @@
 	                <tr>
 	                	<th>코멘트</th>
 	                	<td>
-							<textarea class = "form-control" name = "product_comment" id = "product_comment" cols="20" rows="15"></textarea>	                	
+							<textarea class = "form-control" name = "product_comment" cols="20" rows="10"></textarea>	                	
 							<script> 
 								// CKEDITOR.replace('product_comment');
 							</script>
 	                	</td>
 	                </tr>
-	            
+	            	<tr>
+	            		<th>이미지</th>
+	            		<td>
+	            			<input type = "file" id = "getImage" name = "files" multiple>
+	            			<div class = "imageArea"></div>
+	            		</td>
+	            	</tr>
 	            </table>
 	            <div class = "regist_btn_area text-center">
 					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()">
