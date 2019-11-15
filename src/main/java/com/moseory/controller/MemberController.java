@@ -115,8 +115,6 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@ModelAttribute("member") MemberVO vo) {
 	
-	log.info("get birth : " + vo.getBirth());
-	
 	memberService.registerMember(vo);
 	
 	// 회원 가입 응답 페이지에서 새로고침 시 데이터 등록이 중복되지 않도록 redirect를 이용

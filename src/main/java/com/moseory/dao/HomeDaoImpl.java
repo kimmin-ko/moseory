@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.HighCate;
 import com.moseory.domain.ProductVO;
 
 import lombok.Setter;
@@ -26,6 +27,11 @@ public class HomeDaoImpl implements HomeDao {
     @Override
     public List<ProductVO> getProductNew() {
 	return sqlSession.selectList(namespace+".getProductNew");
+    }
+
+    @Override
+    public List<HighCate> getHighCate() {
+	return sqlSession.selectList(namespace+".getHighCate");
     }
     
 }

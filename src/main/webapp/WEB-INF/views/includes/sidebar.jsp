@@ -66,7 +66,9 @@
 	
 	<div class="row ma-bo-5">
 		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=1">OUTER</a>&nbsp;<small class="cate-sm">아우터</small>
+			<a href="${pageContext.request.contextPath }/product/productList?high_code=1">
+				<c:out value="${outer.name }" />
+			</a>&nbsp;<small class="cate-sm">아우터</small>
 		</div>
 	</div>
 	<div class="row ma-bo-5">

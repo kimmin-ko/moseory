@@ -37,6 +37,13 @@
    	]]>
 	</select>
 	
+	<select id="getHighCate" resultType="HighCateVO">
+	SELECT
+		code, name
+	FROM
+		tbl_high_cate
+	</select>
+	
 </mapper>
 
 

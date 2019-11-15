@@ -37,8 +37,7 @@
 	<update id="update">
 		update tbl_notice
 		set TITLE = #{TITLE},
-		CONTENT =
-		#{CONTENT}
+		CONTENT = #{CONTENT}
 		where NO = #{NO}
 	</update>
 

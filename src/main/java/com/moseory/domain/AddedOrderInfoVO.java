@@ -16,6 +16,7 @@ public class AddedOrderInfoVO {
     private int price;
     
     // product detail 정보
+    private int product_detail_no;
     private String product_color;
     private String product_size;
     

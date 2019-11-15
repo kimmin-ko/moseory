@@ -169,6 +169,7 @@ public class UserController {
 	
 	model.addAttribute("total_product_price", total_prodcut_price);
 	
+	
     }
     
     // 장바구니 페이지
