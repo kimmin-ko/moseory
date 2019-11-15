@@ -30,6 +30,7 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/member/loginProc"/>
+			<mapping path="/member/kakaoLogin"/>
 			<beans:ref bean="loginInterceptor"></beans:ref>
 		</interceptor>
 	</interceptors>

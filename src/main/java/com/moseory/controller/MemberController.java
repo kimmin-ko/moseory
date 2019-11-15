@@ -58,8 +58,14 @@ public class MemberController {
     	MemberVO vo = memberService.loginProc(param);
     	
     	if(vo == null) {
-    		model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-    		return "member/login";
+    		if(vo.getPassword().equals("") || vo.getPassword() == null) {
+    			model.addAttribute("msg", "비밀번호를 입력해주세요");
+        		return "member/login";
+    		}else {
+				model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+				return "member/login";
+    		}
+    		
     	}else {
     		model.addAttribute("user", vo);
     		return "index";
@@ -141,13 +147,13 @@ public class MemberController {
     @GetMapping("/kakaoLogin")
     public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra, Model model,
     		HttpSession session, HttpServletResponse res) throws Exception {
-    	log.info("kakao Code : " + code);	
-    	String accessToken = kakao.getAccessToken(code);
-    	log.info("kakao accessToken : " + accessToken);
-    	
+	
+    	String accessToken = kakao.getAccessToken(code);    	
     	MemberVO vo = kakao.getUserInfo(accessToken);
+    	
     	log.info("kakao getUserInfo : " + vo);
-
+    	
+    	vo = memberService.kakaoLogin(vo);
     	model.addAttribute("user", vo);
     	return "/index";
     }
