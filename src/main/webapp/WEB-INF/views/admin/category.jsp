@@ -57,6 +57,7 @@
 					</tbody>
 				</table>
 			</div>
+		</form>
 		<!-- Category-body End -->
 			<div class="col-md-10 col-md-offset-1" style="text-align : center; margin-bottom: 80px;">
 				<button type="button" class="btn btn-default btn-sm" 
@@ -64,7 +65,6 @@
 	            <button type="submit" class="btn btn-default btn-sm" name="addBtn">추가</button>
 	            <button type="button" class="btn btn-default btn-sm" name="saveBtn">저장</button>
 	        </div>
-		</form>
     </div>  
     <!-- Category End -->
 
