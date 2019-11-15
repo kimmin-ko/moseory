@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -121,6 +124,18 @@ public class AdminController {
     	model.addAttribute("parentCategoryList", category);
 		return "admin/category";
     }
+	
+	@PostMapping("/saveParentsCategory")
+	public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+			, HttpServletRequest req, HttpServletResponse res) {
+		
+		System.out.println(code.toString());
+		System.out.println(name.toString());
+		
+		adminService.saveParentsCategory(code, name);
+		
+		return "redirect:/admin/category";
+	}
    
 
 

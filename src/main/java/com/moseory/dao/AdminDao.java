@@ -20,5 +20,7 @@ public interface AdminDao {
 
 	//상위 카테고리 목록 
 	public List<HighCateVO> getPrantCategory();
-
+	
+	public void saveParentsCategory(HighCateVO vo);
+	
 }
