@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -119,8 +122,29 @@ public class AdminController {
 		category = adminService.getPrantCategory();
 		
     	model.addAttribute("parentCategoryList", category);
+    	
+    	String msg = req.getParameter("msg") == null ? "" : req.getParameter("msg"); 
+    	model.addAttribute("msg", msg);    		 
+    	
+    	
 		return "admin/category";
     }
+	
+	@PostMapping("/saveParentsCategory")
+	public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+			, HttpServletRequest req, HttpServletResponse res, Model model) {
+		
+		System.out.println(code.toString());
+		System.out.println(name.toString());
+		int status = 0;
+		status = adminService.saveParentsCategory(code, name);
+		if(status == 0) {
+			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+		}else {
+			model.addAttribute("msg", "저장되었습니다.");
+		}
+		return "redirect:/admin/category";
+	}
    
 
 

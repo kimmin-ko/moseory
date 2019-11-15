@@ -41,5 +41,11 @@ public class AdminDaoImpl implements AdminDao{
 	public List<HighCateVO> getPrantCategory() {
 		return sqlSession.selectList("AdminMapper.getPrantCategory");
 	}
+	@Override
+	public void saveParentsCategory(HighCateVO vo) {
+		System.out.println(vo.toString());
+		sqlSession.insert("AdminMapper.saveParentsCategory", vo);
+		
+	}
 
 }

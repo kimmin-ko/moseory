@@ -17,4 +17,16 @@
 		  tbl_high_cate	
 	</select>
 	
+	<insert id="saveParentsCategory"> 
+		MERGE INTO tbl_high_cate
+            USING DUAL
+            ON (code = #{code})
+            WHEN MATCHED THEN
+                      UPDATE SET
+                            name = #{name}
+            WHEN NOT MATCHED THEN
+                      INSERT (code, name) 
+                                 VALUES (#{code}, #{name})
+	</insert>
+	
 </mapper>
