@@ -66,10 +66,11 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-    
+    	
         $(".check-all").click(function() {
             $(".check-order").prop("checked", this.checked);
         });
+        
     });
     
     function changeEmail() {
@@ -173,7 +174,16 @@
                         <!-- 적립금 -->
                         <td><fmt:formatNumber value="${product_saving }" pattern="#,###" /></td>
                         <!-- 배송비 -->
-                        <td><span class="delevery-charge"></span></td>
+                        <td>
+	                    	<span class="delevery-charge">
+	                    	<c:if test="${total_product_price >= 50000 || total_product_price == 0 }">
+	                    		무료
+	                    	</c:if>
+	                    	<c:if test="${total_product_price < 50000 && total_product_price != 0 }">
+	                    		3,000원
+	                    	</c:if>
+	                    	</span>
+                        </td>
                         <!-- 주문금액 -->
                         <td>
                             <span class="final-prod-price"><fmt:formatNumber value="${order_price }" pattern="#,###" />원</span>
@@ -188,11 +198,27 @@
                         </td>
                         <td colspan="5" style="text-align: right;">
                             <b>상품구매금액</b>
-                            <span class="total-prod-price" style="font-weight: bold;">189,000</span>
+                            <span class="total-prod-price" style="font-weight: bold;">
+                            	<fmt:formatNumber value="${total_product_price }" pattern="#,###" />
+                            </span>
                                 + 배송비 
-                                <span class="delivery-charge">3,000</span>
+                                <span class="delivery-charge">
+                                	<c:if test="${total_product_price >= 50000 || total_product_price == 0 }">
+			                    		무료
+			                    	</c:if>
+			                    	<c:if test="${total_product_price < 50000 && total_product_price != 0 }">
+			                    		3,000원
+			                    	</c:if>
+                                </span>
                                 = 주문금액 : 
-                            <span class="total-order-price">192,000원</span>
+                            <span class="total-order-price">
+                            	<c:if test="${total_product_price >= 50000 || total_product_price == 0 }">
+                            		<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
+		                    	</c:if>
+		                    	<c:if test="${total_product_price < 50000 && total_product_price != 0 }">
+                            		<fmt:formatNumber value="${total_product_price + 3000}" pattern="#,###" />원
+		                    	</c:if>
+                            </span>
                         </td>
                     </tr>
                 </tfoot>
