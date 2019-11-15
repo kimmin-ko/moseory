@@ -99,11 +99,11 @@
                     <col style="width: 100px;">
                     <col style="width: 180px;">
                     <col style="width: 70px;">
+                    <col style="width: 70px;">
                     <col style="width: 40px;">
-                    <col style="width: 60px;">
                     <col style="width: 70px;">
                     <col style="width: 60px;">
-                    <col style="width: 80px;">
+                    <col style="width: 70px;">
                 </colgroup>
                 <thead>
                     <tr>
@@ -114,59 +114,72 @@
                         <td>이미지</td>
                         <td>상품 정보</td>
                         <td>판매가</td>
+                        <td>회원 할인</td>
                         <td>수량</td>
                         <td>적립금</td>
-                        <td>배송 구분</td>
                         <td>배송비</td>
-                        <td>합계</td>
+                        <td>주문금액</td>
                     </tr>
                 </thead>
                 <tbody>
+	                <c:forEach var="addedOrderInfo" items="${addedOrderInfoList }">
+		                <c:set var="code" value="${addedOrderInfo.code }" />
+		                <c:set var="file_path" value="${addedOrderInfo.file_path }" />
+		                <c:set var="name" value="${addedOrderInfo.name }" />
+		                <c:set var="product_color" value="${addedOrderInfo.product_color }" />
+		                <c:set var="product_size" value="${addedOrderInfo.product_size }" />
+		                <c:set var="price" value="${addedOrderInfo.price }" />
+		                <c:set var="quantity" value="${addedOrderInfo.quantity }" />
+		                <c:set var="discount" value="${member.level.discount }" />
+		                <c:set var="saving" value="${member.level.saving }" />
+		                <c:set var="product_discount" value="${(price / 100) * discount * quantity }" />
+		                <c:set var="product_saving" value="${(price / 100) * saving * quantity }" />
+		                <c:set var="order_price" value="${(price * quantity) - product_discount }" />
                     <tr>
                         <!-- 상품 체크 박스 -->
                         <td><input type="checkbox" class="check-order"></td>
                         <!-- 상품 이미지 -->
-                        <td><img class="order-img" src="/images/1.jpg"></td>
+                        <td>
+                        	<a href="/product/productInfo?code=${code }">
+                        	<img class="order-img" src='<c:out value="${file_path }" />'></a>
+                        </td>
                         <!-- 상품 정보 -->
                         <td class="prod-info">
-                            <span class="prod-name">포니 헨리넥 셔츠</span><br><br>
-                            <span class="prod-option">[옵션: 네이비]</span>
+                            <span class="prod-name">
+                            	<a href="/product/productInfo?code=${code }">
+                            	<c:out value="${name }" /></a>
+                            </span><br><br>
+                            <span class="prod-option">
+                            	[옵션: 
+                            	<c:if test="${product_color ne null }">
+                            		<c:out value="${product_color }" />
+                            	</c:if>
+                            	<c:if test="${product_size ne null }">
+                            		<c:out value="${product_size }" />
+                            	</c:if>
+                            	]
+                            </span>
                         </td>
                         <!-- 판매가 -->
                         <td>
-                            <span class="prod-price">37,000원</span>
+                            <span class="prod-price"><fmt:formatNumber value="${price }" pattern="#,###" />원</span>
+                        </td>
+                        <!-- 회원 할인 -->
+                        <td>
+                        	<span>-<fmt:formatNumber value="${product_discount }" pattern="#,###" /></span>
                         </td>
                         <!-- 상품 수량 -->
-                        <td><span>1</span></td>
+                        <td><span><c:out value="${quantity }" /></span></td>
                         <!-- 적립금 -->
-                        <td>-</td>
-                        <!-- 배송 구분 -->
-                        <td>기본배송</td>
+                        <td><fmt:formatNumber value="${product_saving }" pattern="#,###" /></td>
                         <!-- 배송비 -->
-                        <td>[조건]</td>
-                        <!-- 합계 -->
+                        <td><span class="delevery-charge"></span></td>
+                        <!-- 주문금액 -->
                         <td>
-                            <span class="final-prod-price">37,000원</span>
+                            <span class="final-prod-price"><fmt:formatNumber value="${order_price }" pattern="#,###" />원</span>
                         </td>
                     </tr>
-                    <tr>
-                        <td><input type="checkbox" class="check-order"></td>
-                        <td><img class="order-img" src="/images/8.jpg"></td>
-                        <td class="prod-info">
-                            <span class="prod-name">레이널 레더 플립플랍</span><br><br>
-                            <span class="prod-option">[옵션: 블랙/250]</span>
-                        </td>
-                        <td>
-                            <span class="prod-price">76,000원</span>
-                        </td>
-                        <td><span>2</span></td>
-                        <td>-</td>
-                        <td>기본배송</td>
-                        <td>[조건]</td>
-                        <td>
-                            <span class="final-prod-price">152,000원</span>
-                        </td>
-                    </tr>
+                    </c:forEach>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -178,7 +191,7 @@
                             <span class="total-prod-price" style="font-weight: bold;">189,000</span>
                                 + 배송비 
                                 <span class="delivery-charge">3,000</span>
-                                = 합계 : 
+                                = 주문금액 : 
                             <span class="total-order-price">192,000원</span>
                         </td>
                     </tr>

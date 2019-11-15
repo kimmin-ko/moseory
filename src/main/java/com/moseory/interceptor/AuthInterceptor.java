@@ -38,4 +38,19 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 //		System.out.println("authinterceptor -> preHandle not null");
 		return true;
 	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

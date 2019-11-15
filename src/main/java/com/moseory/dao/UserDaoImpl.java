@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
@@ -112,6 +113,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteCartAll(String member_id) {
 	sqlSession.delete(namespace+".deleteCartAll", member_id);
+    }
+
+    @Override
+    public AddedOrderInfoVO getAddedOrderInfo(int product_detail_no) {
+	return sqlSession.selectOne(namespace+".getAddedOrderInfo", product_detail_no);
     }
 
 }

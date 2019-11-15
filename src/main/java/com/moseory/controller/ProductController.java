@@ -57,7 +57,7 @@ public class ProductController {
 		List<ProductDetailVO> productDetailVO = productService.getDetailView(code);
 		
 		/* 색상 조회 */
-		String color = "";
+		String color = null;
 		if(productDetailVO.size() > 0) 
 		    color = productDetailVO.get(0).getProduct_color();
 		
@@ -71,7 +71,10 @@ public class ProductController {
 		model.addAttribute("color", color); // 해당 상품의 색상 option 표시 여부 수단
 		
 		/* 사이즈 조회 */
-		String size = productDetailVO.get(0).getProduct_size();
+		String size = null;
+		if(productDetailVO.size() > 0)
+		    size = productDetailVO.get(0).getProduct_size();
+		
 		List<ProductDetailVO> productSize = null;
 		// 사이즈가 있고, 색상이 없을 경우에는 상품 정보 페이지에 사이즈 뿌려줌
 		if(size != null && color == null) {

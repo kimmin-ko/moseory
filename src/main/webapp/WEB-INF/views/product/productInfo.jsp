@@ -31,7 +31,6 @@
             </ul>
         </div>
         
-            
         <div class="col-md-5" class="prod-detail-info">
             <div class="ft-size-12">
             	<c:out value="${product.name }" /><br>
@@ -91,18 +90,49 @@
             	    return num.format();
             	}; // String.format()
             	
-            	function addToCart() {
-            		var member_id = "${user.id}";
-            		
+            	function order() {
+            		// 로그인 정보가 없을 경우
             		if(user == null || user == '') {
             			alert("로그인 후 이용해주세요.");
             			return;
             		}
             		
+            		// 선택한 옵션이 없을 경우
             		if(total_quantity == 0) {
             			alert("옵션을 선택해주세요.");
             			return;
             		}
+            		
+            		// 선택된 각 옵션의 수량을 담을 변수 선언
+            		var quantityList = [];
+            		for(var i=0; i<duplCheckArr.length; i++) {
+            			// input의 id가 quantity pdNo인 텍스트의 값을 가져와서 배열에 담아준다
+            			quantityList.push($("#quantity"+duplCheckArr[i]).val());
+            		}
+            		
+            		console.log(duplCheckArr);
+            		console.log(quantityList);
+            		
+            		// 선택된 옵션의 번호 배열을 넘겨준다
+            		location.href="/user/order?product_detail_no_list=" + duplCheckArr + "&quantity_list=" + quantityList;
+            		
+            	} // end order
+            	
+            	function addToCart() {
+            		var member_id = "${user.id}";
+            		
+            		// 로그인 정보가 없을 경우
+            		if(user == null || user == '') {
+            			alert("로그인 후 이용해주세요.");
+            			return;
+            		}
+            		
+            		// 선택한 옵션이 없을 경우
+            		if(total_quantity == 0) {
+            			alert("옵션을 선택해주세요.");
+            			return;
+            		}
+            		
             		// 장바구니에 정상적인 추가 또는 중복 확인 결과를 담을 변수
             		var r = false;
             		for(var i = 0; i < duplCheckArr.length; i++) {
@@ -151,6 +181,15 @@
         				}
 
         				for(var i = 0, len = reviewList.length || 0; i < len; i++) {
+        					
+        					if(reviewList[i].product_detail.product_color == null)
+        						reviewList[i].product_detail.product_color = '';
+        					else
+        						reviewList[i].product_detail.product_color += '&nbsp';
+        					
+        					if(reviewList[i].product_detail.product_size == null)
+        						reviewList[i].product_detail.product_size = '';
+        					
         					var year = reviewList[i].reg_date.year;
         					var month = reviewList[i].reg_date.monthValue;
         					var day = reviewList[i].reg_date.dayOfMonth + 1;
@@ -169,7 +208,7 @@
         					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
         					str += "		<div class='col-md-11 review-body-prod-name'>";
         					str += "			${product.name }<br>";
-        					str += "			[옵션 : " + reviewList[i].product_detail.product_color + "&nbsp;";
+        					str += "			[옵션 : " + reviewList[i].product_detail.product_color;
         					str += "			" + reviewList[i].product_detail.product_size + "]";
         					str += "		</div>";
         					str += "		<div class='col-md-12 review-title'>";
@@ -285,9 +324,6 @@
             		} else if (!color && size) { // 컬러 false && 사이즈 true
             			color = '';
             		}
-            		
-            		console.log("color : " + color);
-            		console.log("originSize : " + originSize);
             		
             		// 중복체크 및 디테일 번호 저장
             		var pdNo = 0; 
@@ -498,7 +534,7 @@
 			
 			<!-- 구매, 장바구니 추가, 관심 상품 추가 버튼 -->
             <div class="col-md-4">
-                <button type="button" class="btn btn-default btn-lg btn-buy">BUY NOW</button>
+                <button type="button" class="btn btn-default btn-lg btn-buy" onclick="order()">BUY NOW</button>
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-default btn-lg" onclick="addToCart()">ADD TO CART</button>

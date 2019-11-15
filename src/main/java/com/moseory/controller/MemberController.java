@@ -118,8 +118,6 @@ public class MemberController {
 	return "redirect:joinOk";
     }
     
-    
-    
     // 회원가입 시 아이디 중복  체크
     @GetMapping("/checkDuplId/{id}")
     @ResponseBody

@@ -1,5 +1,6 @@
 package com.moseory.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
@@ -122,12 +124,33 @@ public class UserController {
     
     // 주문 페이지
     @GetMapping("/order")
-    public void order(Model model, HttpServletRequest req) {
+    public void order(Model model, 
+	    	      HttpServletRequest req,
+	    	      @RequestParam List<Integer> product_detail_no_list,
+	    	      @RequestParam List<Integer> quantity_list) {
+	
+	// 로그인 되어있는 회원의 정보
 	Map<String, Object> memberMap = getUserJson(req);
 	
 	model.addAttribute("member", memberMap.get("member"));
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
 	model.addAttribute("levelJson", memberMap.get("levelJson"));
+	
+	// 주문 목록에 추가된 상품 리스트
+	List<AddedOrderInfoVO> addedOrderInfoList = new ArrayList<AddedOrderInfoVO>();
+	
+	// 디테일 번호와 수량을 같이 전달해줘서 같은 VO에 저장함
+	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
+	
+	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
+	
+	// 총 주문 금액을 model에 담아서 전달
+	int total_order_price = 0;
+	for(AddedOrderInfoVO vo : addedOrderInfoList) {
+	    total_order_price += vo.getPrice();
+	}
+	model.addAttribute("total_order_price", total_order_price);
+	
     }
     
     // 장바구니 페이지
