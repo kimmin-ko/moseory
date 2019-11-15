@@ -19,8 +19,9 @@ public class NoticeServiceTest {
 	@Inject
 	private NoticeDaoImpl dao;
 
+
 	@Test
 	public void testGetListWithPaging() {
-		service.listWithPaging(new Criteria(2,10)).forEach(NoticeVO -> log.info(NoticeVO));
+		service.getListWithPaging(new Criteria(2,10)).forEach(NoticeVO -> log.info(NoticeVO));
 	}
 }

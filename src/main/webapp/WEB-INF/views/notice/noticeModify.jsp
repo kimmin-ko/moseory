@@ -18,10 +18,24 @@
 	<%@ include file="../includes/sidebar.jsp"%>
 	
 	<script>
-		var formObj =
+	$(document).ready(function(){
+		var formObj = $("form");
+		$('button').on("click",function(e){
+			e.preventDefault();
+			var oper = $(this).data("oper");
+			
+			if(oper === 'remove'){
+				formObj.attr("action","/notice/noticeDelete");
+			}else if(oper === 'list'){
+				formObj.attr("action","/notice/noticeList").attr("method","get");
+				formObj.empty();
+			}
+			formObj.submit();
+		});
+	});
 	</script>
 
-	<form name="writeform" method="post">
+	<form role ="form" action ="/notice/noticeModify" method="post">
 	<div class="container" style="margin-left: 22%;"width:100%>
 
 
@@ -95,11 +109,10 @@
 
 							<tr align="center">
 								<td>&nbsp;</td>
-								<td colspan="2"><input type=submit value="등록"
-									class="btn btn-dark"> <input type=button value="취소"
-									class="btn btn-dark" OnClick="javascript:history.back(-1)">
-									<button type="submit" class="btn btn-dark">수정완료</button>
-									<button type="submit" id="delete"  class="btn btn-dark">삭제하기</button>
+								<td colspan="2">
+									<button type="submit" data-oper ='modify' class='btn btn-dark'>수정 완료</button>
+									<button type="submit" data-oper ='remove' class='btn btn-dark'>삭제</button>
+									<button type="submit" data-oper ='list' class='btn btn-dark'>목록</button>
 								<td>&nbsp;</td>
 							</tr>
 							
@@ -108,6 +121,8 @@
 					</td>
 				</tr>
 		</table>
+		<input type = 'hidden' name = 'pageNum' value ='<c:out value = "${cri.pageNum }"/>'>
+		<input type = 'hidden' name = 'amount' value ='<c:out value = "${cri.amount }"/>'>
 
 	</div>
 	</form>

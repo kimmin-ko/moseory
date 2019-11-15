@@ -16,22 +16,29 @@
 
 <body>
 	<%@ include file="../includes/sidebar.jsp"%>
-	<!-- <script>
-		var formObj = $("#readForm");
-		
-		$("#delete_btn").click(function(){
-			formObj.attr("action","/notice/noticeDelete");
-			formObj.attr("method","get");
-			formObj.submit();
-		});
-		
-	</script> -->
 	
-	<form name="readForm">
+	<script type ="text/javascript">
+		$(document).ready(function(){
+			var operForm = $("#operForm");
+			$("button[data-oper ='modify']").on("click",function(e){
+				operForm.attr("action","/notice/noticeModify").submit();
+			});
+			
+			$("button[data-oper='list']").on("click",function(e){
+				operForm.find("#NO").remove();
+				operForm.attr("action","/notice/noticeList");
+				operForm.submit();
+			});
+			
+		});
+	
+	</script>
+	
+	
 	<div class="container" style="margin-left: 22%;"width:100% role="form">
 
 		<table width="100%">
-				<input type="hidden" name="member_id" value="${user.id}" readonly="readonly">
+				
 				<tr>
 					<td>
 						<table class="table table-striped" margin-top:"50px"-->
@@ -46,15 +53,14 @@
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center">제목</td>
-								<td><input type="text" name="TITLE" size="100"
-									maxlength="100" readonly="readonly" value="${board.TITLE}"> <!--  값 입력하기  --></td>
+								<td><p> ${board.TITLE}</p>
 								<td>&nbsp;</td>
 							</tr>
 
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center"></td>
-								<td><textarea name="CONTENT" cols="100" rows="13" readonly="readonly" >
+								<td><textarea name="CONTENT" cols="100" rows="13" disabled >
 								${board.CONTENT}
 									
 								</textarea></td>
@@ -77,14 +83,14 @@
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center">UCC URL</td>
-								<td><input name="title2" size="50" maxlength="50" readonly="readonly"></td>
+								<td><input name="title2" size="50" maxlength="50" disabled></td>
 							</tr>
 
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center">비밀번호</td>
 								<td><input type="password" name="password" size="50"
-									maxlength="50" readonly="readonly"></td>
+									maxlength="50" disabled></td>
 							</tr>
 
 							<tr>
@@ -92,18 +98,25 @@
 								<td align="center">비밀글설정</td>
 								<td><input type="checkbox" name="chk_info1" value="공개글"
 									checked="checked" disabled>공개글 <input type="checkbox"
-									name="chk_info2" value="비밀글" readonly="readonly">비밀글</td>
+									name="chk_info2" value="비밀글" disabled>비밀글</td>
 							</tr>
 
 							<tr align="center">
 								
 								<td>&nbsp;</td>
-								<td colspan="2"><input type=submit value="등록"
-									class="btn btn-dark"> <input type=button value="취소"
-									class="btn btn-dark" OnClick="javascript:history.back(-1)">
-									<input type="button" class="btn btn-dark" value="수정하기" onclick="location.href='/notice/noticeModify?NO=${board.NO}'">
-									<!--  form안에 hidden을 만들어서 , hidden안에 게시판 번호를 넘겨서 delete를 구현한다  inputtype에 게시판번호-->
-									<button type="button" class="btn btn-dark" id="delete_btn" method="post" onclick="location.href='/notice/noticeDelete?NO=${board.NO}'">삭제하기</button>
+								<td colspan="2">
+									<button data-oper ='modify' class='btn btn-dark'>수정</button>
+									<button data-oper ='list' class='btn btn-dark'>목록</button>
+									
+									<form id='operForm' action="/notice/noticeModify" method="get">
+									<input type='hidden' name='NO'
+										value='<c:out value = "${board.NO }"/>'> <input
+										type='hidden' name='pageNum'
+										value='<c:out value = "${cri.pageNum }"/>'> <input
+										type='hidden' name='amount'
+										value='<c:out value = "${cri.amount }"/>'>
+									</form> 
+							
 								<td>&nbsp;</td>
 								
 							</tr>
@@ -113,7 +126,8 @@
 				</tr>
 		</table>
 	</div>
-	</form>
+	
+
 	<%@ include file="../includes/footer.jsp"%>
 
 
