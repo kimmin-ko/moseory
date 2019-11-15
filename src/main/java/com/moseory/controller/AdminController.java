@@ -122,18 +122,27 @@ public class AdminController {
 		category = adminService.getPrantCategory();
 		
     	model.addAttribute("parentCategoryList", category);
+    	
+    	String msg = req.getParameter("msg") == null ? "" : req.getParameter("msg"); 
+    	model.addAttribute("msg", msg);    		 
+    	
+    	
 		return "admin/category";
     }
 	
 	@PostMapping("/saveParentsCategory")
 	public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
-			, HttpServletRequest req, HttpServletResponse res) {
+			, HttpServletRequest req, HttpServletResponse res, Model model) {
 		
 		System.out.println(code.toString());
 		System.out.println(name.toString());
-		
-		adminService.saveParentsCategory(code, name);
-		
+		int status = 0;
+		status = adminService.saveParentsCategory(code, name);
+		if(status == 0) {
+			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+		}else {
+			model.addAttribute("msg", "저장되었습니다.");
+		}
 		return "redirect:/admin/category";
 	}
    

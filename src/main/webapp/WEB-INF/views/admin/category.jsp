@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/category.css">
 </head>
+<script type="text/javascript">
+var message = "${msg}";
+if(message != ""){
+	alert(message);
+}
+</script>
 <body>
     
 <%@ include file="../includes/sidebar.jsp" %>
