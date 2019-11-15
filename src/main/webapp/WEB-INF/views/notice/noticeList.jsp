@@ -43,6 +43,23 @@
 				$("#myModal").modal("show");
 					
 			}
+			
+			var actionForm = $("#actionForm");		
+			
+			$(".paginate_button a").on("click",function(e){
+				e.preventDefault();
+				console.log("click");
+				actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+				actionForm.submit();
+			});
+			
+			//게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
+			$(".move").on("click",function(e){
+				e.preventDefault();
+				actionForm.append("<input type ='hidden' name='NO' value ='"+$(this).attr("href")+"'>");
+				actionForm.attr("action","/notice/noticeGet");
+				actionForm.submit();
+			})
 		});
 	</script>
 
@@ -78,7 +95,7 @@
 								<td>${list.NO}</td>
 								<!-- TITLE -->
 								<td>
-									<a href="/notice/noticeGet?NO=${list.NO}">${list.TITLE }</a>
+									<a class ='move' href ='<c:out value="${list.NO}"/>'><c:out value ="${list.TITLE }"/></a>
 								</td>
 								<!-- NAME -->
 								<td>모서리</td>
@@ -90,31 +107,7 @@
 						</c:forEach>	
 					</tbody>
 					
-					<tr>
-						<!-- NO -->
-						<td>2</td>
-						<!-- TITLE -->
-						<td><a href="/notice/noticeView">회원 등급제에 관하여 설명 드릴게요!</a></td>
-						<!-- NAME -->
-						<td>모서리</td>
-						<!-- DATE -->
-						<td>2019-10-14 12:52:29</td>
-						<!-- HIT -->
-						<td>5589</td>
-					</tr>
-					
-					<tr>
-						<!-- NO -->
-						<td>1</td>
-						<!-- TITLE -->
-						<td><a href="/notice/noticeView">모서리를 오픈하며...</a></td>
-						<!-- NAME -->
-						<td>모서리</td>
-						<!-- DATE -->
-						<td>2019-10-14 12:50:29</td>
-						<!-- HIT -->
-						<td>7798</td>
-					</tr>
+				
 
 					</tbody>
 				</table>
@@ -124,15 +117,18 @@
 				style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">
-						<li><a href="#" aria-label="Previous"> <span
-								aria-hidden="true">&laquo;</span>
-						</a></li>
-						<li class="active"><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#" aria-label="Next"> <span
-								aria-hidden="true">&raquo;</span>
-						</a></li>
+						<c:if test ="${pageMaker.prev}">
+							<li class ="button_previous"><a href="${pageMaker.startPage-1 }">이전</a></li>
+						</c:if>
+						
+						<c:forEach var="num" begin ="${pageMaker.startPage }" end = "${pageMaker.endPage }">
+							<li class ="paginate_button ${pageMaker.cri.pageNum == num ?  "active":"" }"><a href="${num }">${num }</a></li>
+						</c:forEach>
+						
+						<c:if test ="${pageMaker.next }">
+							<li class ="button_next"><a href="${pageMaekr.endPage+1 }">다음</a></li>
+						</c:if>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -156,6 +152,10 @@
 		</div>
 		<!-- row -->
 		<!-- Notice End -->
+		<form id ="actionForm" action ="/notice/noticeList" method ="get">
+			<input type='hidden' name='pageNum' value ="${pageMaker.cri.pageNum }">
+			<input type='hidden' name='amount' value ="${pageMaker.cri.amount }">
+		</form>
 
 
 

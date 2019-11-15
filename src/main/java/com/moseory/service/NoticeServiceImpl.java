@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import com.moseory.dao.NoticeDao;
+import com.moseory.domain.Criteria;
 import com.moseory.domain.NoticeVO;
 
 import lombok.extern.log4j.Log4j;
@@ -42,10 +43,15 @@ public class NoticeServiceImpl implements NoticeService  {
 		dao.update(vo);
 	}
 
+	/*
+	 * @Override public List<NoticeVO> noticeList() { log.info("read Notice List");
+	 * return dao.noticeList(); }
+	 */
+	
 	@Override
-	public List<NoticeVO> noticeList() {
-		log.info("read Notice List");
-		return dao.noticeList();
+	public List<NoticeVO> getListWithPaging(Criteria cri){
+		log.info("get List with paging" + cri);
+		return dao.getListWithPaging(cri);
 	}
 	
 }

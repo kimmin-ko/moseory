@@ -3,45 +3,63 @@
   PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.moseory.mapper.NoticeMapper"> 
-<!-- mapper 의 이름 -->
+<mapper namespace="com.moseory.mapper.NoticeMapper">
+	<!-- mapper 의 이름 -->
 
 	<!-- 게시글 전체 목록 조회 -->
-	<select id = "list" resultType = "com.moseory.domain.NoticeVO">
-		SELECT NO,TITLE,CONTENT,REG_DATE,HIT
+	<select id="list" resultType="com.moseory.domain.NoticeVO">
+		SELECT
+		NO,TITLE,CONTENT,REG_DATE,HIT
 		FROM TBL_NOTICE
-		ORDER BY NO DESC,reg_date DESC
+		ORDER BY NO DESC,reg_date
+		DESC
 	</select>
-	
+
 	<!-- 게시판 글 작성 -->
-	<insert id = "insert">
+	<insert id="insert">
 		INSERT INTO TBL_NOTICE(NO,TITLE,CONTENT)
-		VALUES(SEQ_NOTICE_NO.nextval,#{TITLE},#{CONTENT})			
+		VALUES(SEQ_NOTICE_NO.nextval,#{TITLE},#{CONTENT})
 	</insert>
-	
+
 	<!-- 게시글 상세 보기 조회 -->
-	<select id ="select" parameterType="int" resultType= "com.moseory.domain.NoticeVO">
+	<select id="select" parameterType="int"
+		resultType="com.moseory.domain.NoticeVO">
 		SELECT * FROM TBL_NOTICE WHERE NO = #{NO}
 	</select>
-	
-	<!--  게시글 조회수 증가 처리 -->
+
+	<!-- 게시글 조회수 증가 처리 -->
 	<update id="hit">
 		update tbl_notice set hit = hit + 1
 		where NO = #{NO}
 	</update>
-	
-	<!--  게시글 수정 처리 -->
-	<update id = "update">
-		update tbl_notice 
+
+	<!-- 게시글 수정 처리 -->
+	<update id="update">
+		update tbl_notice
 		set TITLE = #{TITLE},
-		CONTENT = #{CONTENT}
+		CONTENT =
+		#{CONTENT}
 		where NO = #{NO}
 	</update>
-	
+
 	<!-- 게시글 삭제 처리 -->
-	<delete id ="delete">
+	<delete id="delete">
 		delete from tbl_notice
 		where NO =#{NO}
 	</delete>
-	
+
+	<!-- 게시글 페이징 처리하기 -->
+	<select id="getListWithPaging" resultType="com.moseory.domain.NoticeVO">
+		<![CDATA[
+			select 
+				NO,TITLE,CONTENT,REG_DATE,HIT
+			from (
+				select /*+INDEX_DESC(tbl_notice pk_tbl_notice) */
+				rownum rn, NO,TITLE,CONTENT,REG_DATE,HIT from tbl_notice
+			where rownum <= #{pageNum} * #{amount}
+			)
+			where rn>(#{pageNum}-1) * #{amount}
+			]]>
+	</select>
+
 </mapper>
