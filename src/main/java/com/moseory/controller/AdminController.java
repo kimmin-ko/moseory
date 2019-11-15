@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -110,8 +112,14 @@ public class AdminController {
     }
 	
 	@GetMapping("/category")
-    public void category() {
-    	
+    public String category(HttpServletRequest req, Model model) {
+		
+		List<HighCateVO> category = new ArrayList<HighCateVO>();
+		
+		category = adminService.getPrantCategory();
+		
+    	model.addAttribute("parentCategoryList", category);
+		return "admin/category";
     }
    
 

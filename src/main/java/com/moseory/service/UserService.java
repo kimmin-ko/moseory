@@ -3,6 +3,7 @@ package com.moseory.service;
 import java.util.List;
 import java.util.Map;
 
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
@@ -38,4 +39,6 @@ public interface UserService {
     public void deleteCartList(List<Integer> noList);
     
     public void deleteCartAll(String member_id);
+    
+    public List<AddedOrderInfoVO> getAddedOrderInfoList(List<Integer> product_detail_no, List<Integer> quantity);
 }

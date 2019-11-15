@@ -3,6 +3,7 @@ package com.moseory.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
@@ -42,4 +43,7 @@ public interface UserDao {
     public void deleteCartList(int no);
     
     public void deleteCartAll(String member_id);
+    
+    public AddedOrderInfoVO getAddedOrderInfo(int product_detail_no);
+    
 }

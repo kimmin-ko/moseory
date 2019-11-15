@@ -1,5 +1,6 @@
 package com.moseory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.moseory.dao.UserDao;
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.WishListVO;
@@ -111,6 +113,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteCartAll(String member_id) {
 	userDao.deleteCartAll(member_id);
+    }
+
+    @Override
+    public List<AddedOrderInfoVO> getAddedOrderInfoList(List<Integer> pdNoList, List<Integer> quantityList) {
+	List<AddedOrderInfoVO> orderList = new ArrayList<AddedOrderInfoVO>();
+	
+	AddedOrderInfoVO vo = null;
+	
+	// 주문 목록 정보에 수량도 같이 저장해준다
+	for(int i = 0; i < pdNoList.size(); i++) {
+	    vo = userDao.getAddedOrderInfo(pdNoList.get(i));
+	    vo.setQuantity(quantityList.get(i));
+	    orderList.add(vo);
+	}
+	
+	return orderList;
     }
 
 }

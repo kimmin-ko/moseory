@@ -1,10 +1,13 @@
 
 package com.moseory.service;
 
-import org.springframework.beans.factory.annotation.Autowired; 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.moseory.dao.AdminDao; 
+import com.moseory.dao.AdminDao;
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -37,6 +40,11 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public String getLowCate(int low_code) {
 		return adminDao.getLowCate(low_code);
+	}
+
+	@Override
+	public List<HighCateVO> getPrantCategory() {
+		return adminDao.getPrantCategory();
 	}
 
 }	
