@@ -10,9 +10,6 @@ public interface NoticeDao {
 	// 게시글 작성하기
 	public void create(NoticeVO vo);
 	
-	// 전체 게시글 리스트 조회하기
-	public List<NoticeVO> noticeList();
-	
 	// 게시글 번호로 조회하기
 	public NoticeVO read(int No);
 	
@@ -25,6 +22,10 @@ public interface NoticeDao {
 	// 게시글 조회하기
 	public List<NoticeVO> getListWithPaging(Criteria cri);
 	
+	//게시글 총 수 구하기
+	public int totalCount(Criteria cri);
+	
+	void viewCount(int num);
 	
 
 }
