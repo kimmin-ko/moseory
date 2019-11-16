@@ -37,7 +37,7 @@ public class AdminController {
 	private AdminService adminService;
 
 	@GetMapping("/productregist")
-	public String productRegist() {
+	public String productRegist() { 
 
 		return "admin/productregist";
 	}
@@ -48,10 +48,7 @@ public class AdminController {
 	public void testProductInfo(@RequestBody Map<String,Object> detailInfo) {
 		System.out.println(detailInfo);
 		log.info("detailInfo = " + detailInfo);
-//	public void productInfo(@RequestBody ProductDetailVO productDetail) {
-//		detailInfo.add(productDetail);
-//		
-//		log.info("productDetail : " + productDetail);
+
 	}
 
 	@PostMapping("/productregist")
@@ -61,7 +58,6 @@ public class AdminController {
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
 		String low_cate = adminService.getLowCate(productVO.getLow_code());
 //		파일 이름 불러와서 폴더경로 + 파일이름
-//		String save_path = "/moseory/src/main/webapp/resources/images/bottom/jacket/2/";
 		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
