@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
@@ -206,6 +205,7 @@
                             <input type="text" name="birth1" id="birth1" maxlength="4" value='<c:out value="${birth[0] }" />' style="width: 80px;" />년
 	                        <input type="text" name="birth2" id="birth2" maxlength="2" value='<c:out value="${birth[1] }" />' style="width: 50px;" />월
 	                        <input type="text" name="birth3" id="birth3" maxlength="2" value='<c:out value="${birth[2] }" />' style="width: 50px;" />일
+	                        &nbsp; <small>예) 2000년 01월 01일</small>
 	                    </td>
 	                </tr>
 	            </table>
@@ -332,6 +332,8 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
+            } else if(birth.length != 10) {
+            	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");
                 $("#tel2").focus();

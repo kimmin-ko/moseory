@@ -95,4 +95,9 @@
 	height: 20px;
 	font-weight: bold;
 }
+
+.all-prod-order {
+	background-color: black;
+	color: white;
+}
 /* cart css end */
