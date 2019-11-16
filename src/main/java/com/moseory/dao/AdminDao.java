@@ -1,6 +1,9 @@
 package com.moseory.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductDetailVO;
@@ -22,5 +25,6 @@ public interface AdminDao {
 	public List<HighCateVO> getPrantCategory();
 	
 	public void saveParentsCategory(HighCateVO vo);
-	
+
+	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes);
 }

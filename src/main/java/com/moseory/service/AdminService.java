@@ -26,6 +26,6 @@ public interface AdminService {
 	
 	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname);
 	
-	public int deleteParentsCategory(ArrayList<String> codes);
+	public int deleteParentsCategory(ArrayList<Integer> codes);
 	
 }

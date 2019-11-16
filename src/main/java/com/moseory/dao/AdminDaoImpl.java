@@ -1,8 +1,10 @@
 package com.moseory.dao;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -43,9 +45,12 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public void saveParentsCategory(HighCateVO vo) {
-		System.out.println(vo.toString());
 		sqlSession.insert("AdminMapper.saveParentsCategory", vo);
 		
+	}
+	@Override
+	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes) {
+		return sqlSession.delete("AdminMapper.deleteParentsCategory", codes);
 	}
 
 }

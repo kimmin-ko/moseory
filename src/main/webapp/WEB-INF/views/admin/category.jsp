@@ -116,16 +116,22 @@ function EventFunction(){
 	$("button[name='deleteBtn']").click(function(){
 		
 		var _d = new Array();
+		var deleteTrs = 0;
 		
 		$('input:checkbox[name="row-idx"]').each(function(index, item){
 			if(this.checked){
-				_d.push($(this).val());
+				if($(this).val() != "" && $(this).val() != null){
+					_d.push($(this).val());
+				}
 				$(this).parents("tr").remove();
+				deleteTrs ++;
 			}
 		});
 		
-		if(_d.length == 0){
+		if(_d.length == 0 && deleteTrs == 0){
 			alert("선택된 카테고리가 없습니다.");
+			return false;
+		}else if(_d.length == 0 && deleteTrs > 0){
 			return false;
 		}
 		
@@ -145,12 +151,10 @@ function EventFunction(){
 				}
 			});
 		}
-		
-		
-		
 		$("input[name=row-idx-all]").prop("checked",false);
 	});
 	
+	//저장버튼 클릭시
 	$("button[name='saveBtn']").click(function(){
 		var form = $("#form");
 		form.submit();

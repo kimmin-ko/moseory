@@ -141,12 +141,11 @@ public class AdminController {
 	}
    
 	@PostMapping("/deleteParentsCategory")
-	public @ResponseBody int deleteParentsCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<String> codes){
+	public @ResponseBody int deleteParentsCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
 		int result = 0;
 		for(int i =0; i < codes.size(); i++) {
 			log.info(" code : " + codes.get(i) + " Category Delete Request");
 		}
-//		result = configureService.deleteProduct(ids);
 		result = adminService.deleteParentsCategory(codes);
 		return result;
 	}
