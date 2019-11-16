@@ -9,8 +9,6 @@ public interface NoticeService {
 	
 	public void create(NoticeVO vo);
 	
-	/* public List<NoticeVO> noticeList(); */
-	
 	public NoticeVO read(int b_no);
 	
 	public void delete(int b_no);
@@ -18,5 +16,9 @@ public interface NoticeService {
 	public void update(NoticeVO vo);
 	
 	public List<NoticeVO> getListWithPaging(Criteria cri);
+	
+	public int totalCount(Criteria cri);
+	
+	
 	
 }

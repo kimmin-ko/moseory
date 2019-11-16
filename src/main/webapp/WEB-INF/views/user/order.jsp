@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +12,7 @@
 <link rel="stylesheet" href="/css/order.css">
 </head>
 <body>
-	<script
-		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		function openZipSearch() {
 			new daum.Postcode(
@@ -92,13 +92,69 @@
 						reload_quantity.push($("#quantity"+this.value).text());
 					}
 				});
-				console.log("reload_no : " + reload_no);
-				console.log("reload_quantity : " + reload_quantity);
 				
 				location.href = "/user/order?product_detail_no_list=" + reload_no + "&quantity_list=" + reload_quantity;
 			});
+			
+			// 페이지 로딩 시 배송지 정보 회원정보와 동일로 초기화
+			changeDvryInfo("member");
+			
+			$("input[name=select-addr]").on("change", function() {
+				var checkedValue = $("input[name=select-addr]:checked").val();
+				// 회원 정보와 동일 체크
+				if(checkedValue == 'member') {
+					changeDvryInfo(checkedValue);
+				} else { // 새로운 배송지 체크
+					changeDvryInfo(checkedValue);
+				}
+			}); // radio onchange
 
-		});
+		}); // end document
+		
+		// 배송지 정보를 바꿔줌
+		function changeDvryInfo(checkedValue) {
+			switch (checkedValue) {
+			case "member" :
+				$("input[name=name]").val('<c:out value="${member.name}" />');
+				$("input[name=zipcode]").val('<c:out value="${member.zipcode}" />');
+				$("input[name=address1]").val('<c:out value="${member.address1}" />');
+				$("input[name=address2]").val('<c:out value="${member.address2}" />');
+				
+				var tel = "${member.tel}".split('-');
+				$("select[name=tel1]").val(tel[0]);
+				$("input[name=tel2]").val(tel[1]);
+				$("input[name=tel3]").val(tel[2]);
+				
+				var phone = "${member.phone}".split('-');
+				$("select[name=phone1]").val(phone[0]);
+				$("input[name=phone2]").val(phone[1]);
+				$("input[name=phone3]").val(phone[2]);
+				
+				var email = "${member.email}".split('@');
+				$("input[name=email1]").val(email[0]);
+				$("input[name=email2]").val(email[1]);
+				
+				break;
+			case "new" :  
+				$("input[name=name]").val('');
+				$("input[name=zipcode]").val('');
+				$("input[name=address1]").val('');
+				$("input[name=address2]").val('');
+				
+				$("select[name=tel1] option:eq(0)").prop("selected", true);
+				$("input[name=tel2]").val('');
+				$("input[name=tel3]").val('');
+				
+				$("select[name=phone1] option:eq(0)").prop("selected", true);
+				$("input[name=phone2]").val('');
+				$("input[name=phone3]").val('');
+				
+				$("input[name=email1]").val('');
+				$("input[name=email2]").val('');
+				
+				break;
+			}
+		}
 
 		function changeEmail() {
 			var select_email = $("#select_email").val();
@@ -177,16 +233,18 @@
 										class="order-img" src='<c:out value="${file_path }" />'></a>
 								</td>
 								<!-- 상품 정보 -->
-								<td class="prod-info"><span class="prod-name"> <a
-										href="/product/productInfo?code=${code }"> <c:out
-												value="${name }" /></a>
-								</span><br> <br> <span class="prod-option"> [옵션: <c:if
-											test="${product_color ne null }">
+								<td class="prod-info">
+									<span class="prod-name"> <a href="/product/productInfo?code=${code }"> <c:out value="${name }" /></a>
+									</span><br> <br> <span class="prod-option">
+										[옵션: 
+										<c:if test="${product_color ne null }">
 											<c:out value="${product_color }" />
 										</c:if> <c:if test="${product_size ne null }">
 											<c:out value="${product_size }" />
-										</c:if> ]
-								</span></td>
+										</c:if>
+										]
+									</span>
+								</td>
 								<!-- 판매가 -->
 								<td><span class="prod-price"><fmt:formatNumber
 											value="${price }" pattern="#,###" />원</span></td>
@@ -202,10 +260,10 @@
 								<td><span class="delevery-charge"> <c:if
 											test="${total_product_price >= 50000 || total_product_price == 0 }">
 	                    		무료
-	                    	</c:if> <c:if
+	                    		</c:if> <c:if
 											test="${total_product_price < 50000 && total_product_price != 0 }">
 	                    		3,000원
-	                    	</c:if>
+	                    		</c:if>
 								</span></td>
 								<!-- 주문금액 -->
 								<td><span class="final-prod-price"><fmt:formatNumber
@@ -266,36 +324,36 @@
 					<tr>
 						<th>배송지 선택</th>
 						<td>
-							<input type="radio" id="member-address" name="select-addr" checked="checked" />회원 정보와 동일
+							<input type="radio" id="member-address" name="select-addr" value="member" checked="checked" />회원 정보와 동일
 							&nbsp;&nbsp;&nbsp;&nbsp; 
-							<input type="radio" id="new-address" name="select-addr" />새로운 배송지
+							<input type="radio" id="new-address" name="select-addr" value="new" />새로운 배송지
 						</td>
 					</tr>
 					<tr>
 						<th>받으시는분 <img src="/images/ico_required.gif"></th>
-						<td><input type="text" name="name" value='<c:out value="${member.name }" />' /></td>
+						<td><input type="text" name="name"></td>
 					</tr>
 					<tr>
 						<th>주소<img src="/images/ico_required.gif"></th>
 						<td>
-							<input type="text" id="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;">
+							<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;">
 							<input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-							<input type="text" id="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;"><br>
-							<input type="text" id="address2" placeholder="상세주소">
+							<input type="text" id="address1" name="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;"><br>
+							<input type="text" id="address2" name="address2" placeholder="상세주소">
 							<input type="text" id="extraAddress" placeholder="참고항목">
 						</td>
 					</tr>
 					<tr>
 						<th>일반전화</th>
 						<td><select name="tel1" style="width: 70px; height: 23px;">
-								<option>02</option>
-								<option>031</option>
-								<option>032</option>
-								<option>033</option>
-								<option>041</option>
-								<option>042</option>
-								<option>043</option>
-								<option>044</option>
+								<option value="02">02</option>
+								<option value="031">031</option>
+								<option value="032">032</option>
+								<option value="033">033</option>
+								<option value="041">041</option>
+								<option value="042">042</option>
+								<option value="043">043</option>
+								<option value="044">044</option>
 						</select> - <input type="text" name="tel2" style="width: 100px;" /> - 
 						<input type="text" name="tel3" style="width: 100px;" /></td>
 					</tr>
@@ -342,16 +400,20 @@
 				<table class="table table-bordered payment-schedule-table">
 					<thead>
 						<tr>
-							<th>총 주문 금액</th>
+							<th>판매 가격</th>
 							<th>총 할인 + 부가 결재 금액</th>
 							<th>총 결제 예정 금액</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>189,000원</td>
-							<td>3,000원</td>
-							<td style="color: #CE1F14;">192,000,원</td>
+							<td>
+								189,000원
+							</td>
+							<td>
+								3,000원
+							</td>
+							<td style="color: #CE1F14;">192,000원</td>
 						</tr>
 					</tbody>
 				</table>

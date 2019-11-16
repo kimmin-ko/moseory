@@ -26,11 +26,6 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 
 	@Override
-	public List<NoticeVO> noticeList() {
-		return sqlSession.selectList(namespace + ".list");
-	}
-
-	@Override
 	public NoticeVO read(int No) {
 		return sqlSession.selectOne(namespace + ".select", No);
 	}
@@ -48,6 +43,16 @@ public class NoticeDaoImpl implements NoticeDao {
 	@Override
 	public List<NoticeVO> getListWithPaging(Criteria cri){
 		return sqlSession.selectList(namespace+".getListWithPaging",cri);
+	}
+	
+	@Override
+	public int totalCount(Criteria cri) {
+		return sqlSession.selectOne(namespace +".totalCount");
+	}
+	
+	@Override
+	public void viewCount(int num) {
+		sqlSession.update(namespace+".hit",num);
 	}
 
 }

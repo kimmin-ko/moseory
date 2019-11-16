@@ -11,20 +11,20 @@ import lombok.NoArgsConstructor;
 //데이터를 저장하는 클래스
 public class NoticeVO {
 	
-	private int NO;
+	private int no;
 	
-	private int MEMBER_NO;
+	private int member_id;
 	
-	private String TITLE;
+	private String title;
 	
-	private String CONTENT;
+	private String content;
 	
-	private Date REG_DATE;
+	private Date reg_date;
 	
-	private int HIT;
+	private int hit;
 	
-	private String FILE_PATH;
+	private String file_path;
 	
-	private String FILE_NAME;
+	private String file_name;
 	
 }

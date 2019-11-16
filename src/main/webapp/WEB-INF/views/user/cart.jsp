@@ -14,6 +14,32 @@
 
 <%@ include file="../includes/sidebar.jsp" %>
 
+<script>
+$(document).ready(function() {
+	
+	var noArr = [];
+	var quantityArr = [];
+	
+	// cartLsit에 담겨있는 각각의 cart의 no와 quantity를 가져와서 배열에 저장한다
+	<c:forEach items="${cartList}" var="cart">
+		noArr.push("${cart.product_detail_no}");
+		quantityArr.push("${cart.quantity}");
+	</c:forEach>
+	
+	// 주문 버튼을 누르게 되면 저장되어있는 배열을 이용해 order를 호출한다
+	// 상품 주문
+	$(".all-prod-order").on("click", function() {
+		if(noArr.length == 0) {
+			alert("주문할 상품이 없습니다.");
+			return;
+		}
+			
+		location.href="/user/order?product_detail_no_list=" + noArr + "&quantity_list=" + quantityArr;
+	});
+	
+}); 
+</script>
+
 <!-- CartForm Start -->
 <div class="container" style="margin-left:22%;">
 
@@ -232,9 +258,7 @@
         </div>
 
         <div class="col-md-10 col-md-offset-1" style="text-align : center; margin-bottom: 80px;">
-            <button type="button" class="btn btn-default btn-sm" 
-            	style="background-color: black; color: white;" onclick="location.href='/user/order'">전체상품주문</button>
-            <button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/order'">선택상품주문</button>
+            <button type="button" class="btn btn-default btn-sm all-prod-order">상품주문</button>
             <button type="button" class="btn btn-default btn-sm" onclick="location.href='/index'">쇼핑계속</button>
         </div>
 
