@@ -1,6 +1,7 @@
 package com.moseory.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,6 @@ import com.moseory.domain.Criteria;
 import com.moseory.domain.NoticeVO;
 import com.moseory.domain.PageDTO;
 import com.moseory.service.NoticeService;
-
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -23,7 +22,7 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/notice/*")
 public class NoticeController {
 
-	@Setter(onMethod_ = @Autowired)
+	@Inject
 	NoticeService service;
 
 	@GetMapping("/noticeText")
@@ -31,10 +30,7 @@ public class NoticeController {
 		log.info("write the text");
 	}
 
-	/*
-	 * @GetMapping("/noticeView") public String noticeView() { return
-	 * "/notice/noticeView"; }
-	 */
+
 
 	@PostMapping("/noticeText")
 	public String writeText(NoticeVO vo, RedirectAttributes rttr) throws Exception {
@@ -52,9 +48,6 @@ public class NoticeController {
 	}
 
 	@PostMapping("/noticeModify")
-	public String noticeModify(@ModelAttribute NoticeVO vo, @ModelAttribute("cri") Criteria cri,
-			RedirectAttributes rttr) {
-		log.info("modify" + vo);
 	public String noticeModify(@ModelAttribute NoticeVO vo, @ModelAttribute("cri") Criteria cri,RedirectAttributes rttr) {
 		log.info("modify : " + vo);
 		service.update(vo);
