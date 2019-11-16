@@ -58,8 +58,14 @@ public class MemberController {
     	MemberVO vo = memberService.loginProc(param);
     	
     	if(vo == null) {
-    		model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-    		return "member/login";
+    		if(vo.getPassword().equals("") || vo.getPassword() == null) {
+    			model.addAttribute("msg", "비밀번호를 입력해주세요");
+        		return "member/login";
+    		}else {
+				model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+				return "member/login";
+    		}
+    		
     	}else {
     		model.addAttribute("user", vo);
     		return "index";
@@ -109,16 +115,12 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@ModelAttribute("member") MemberVO vo) {
 	
-	log.info("get birth : " + vo.getBirth());
-	
 	memberService.registerMember(vo);
 	
 	// 회원 가입 응답 페이지에서 새로고침 시 데이터 등록이 중복되지 않도록 redirect를 이용
 	// 시스템(session, DB)에 변화가 생기지 않는 단순조회(리스트, 검색)의 경우 forward 이용
 	return "redirect:joinOk";
     }
-    
-    
     
     // 회원가입 시 아이디 중복  체크
     @GetMapping("/checkDuplId/{id}")
@@ -143,13 +145,13 @@ public class MemberController {
     @GetMapping("/kakaoLogin")
     public String kakaoLogin(@RequestParam("code") String code, RedirectAttributes ra, Model model,
     		HttpSession session, HttpServletResponse res) throws Exception {
-    	log.info("kakao Code : " + code);	
-    	String accessToken = kakao.getAccessToken(code);
-    	log.info("kakao accessToken : " + accessToken);
-    	
+	
+    	String accessToken = kakao.getAccessToken(code);    	
     	MemberVO vo = kakao.getUserInfo(accessToken);
+    	
     	log.info("kakao getUserInfo : " + vo);
-
+    	
+    	vo = memberService.kakaoLogin(vo);
     	model.addAttribute("user", vo);
     	return "/index";
     }

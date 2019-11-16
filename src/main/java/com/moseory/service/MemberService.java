@@ -25,4 +25,7 @@ public interface MemberService {
     //PW찾기
     public int findPwProc(Map<String, Object> param);
     
+    //kakao Login
+    public MemberVO kakaoLogin(MemberVO vo);
+    
 }

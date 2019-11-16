@@ -196,6 +196,7 @@
                             <input type="text" name="birth1" id="birth1" maxlength="4" style="width: 80px;" />년
 	                        <input type="text" name="birth2" id="birth2" maxlength="2" style="width: 50px;" />월
 	                        <input type="text" name="birth3" id="birth3" maxlength="2" style="width: 50px;" />일
+	                        &nbsp; <small>예) 2000년 01월 01일</small>
 	                    </td>
 	                </tr>
 	            </table>
@@ -276,7 +277,6 @@
             // 아이디 중복 확인
             checkDuplService.check(id, function(data){
                 checkDupl = data;
-                console.log("checkDupl : " + checkDupl);
 
                 if(checkDupl != "") { // 아이디가 중복일 경우
                     $("#id_check_text").text(id + '는 이미 사용중인 아이디입니다.');
@@ -339,7 +339,7 @@
             if(birth1 && birth2 && birth3) {
                 birth = birth1 + '-' + birth2 + '-' + birth3;
             }
-
+            
             // 일반전화가 비어있을 경우 tel = ""
             if(!tel2 && !tel3) {
                 tel = "";
@@ -397,6 +397,8 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
+            } else if(birth.length != 10) {
+            	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");
                 $("#tel2").focus();

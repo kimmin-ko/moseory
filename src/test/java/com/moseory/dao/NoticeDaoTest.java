@@ -1,5 +1,7 @@
 package com.moseory.dao;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.NoticeVO;
 
 import lombok.Setter;
@@ -29,13 +32,15 @@ public class NoticeDaoTest {
 	public void testGetList() { 
 		dao.noticeList().forEach(board -> log.info(board)); 
 	}
-
+	
 
 	@Test
-	public void testRead() {
-		NoticeVO board2 = dao.read(5);
-		log.info(board2);
-
+	public void testGetListWithPaging() {
+		Criteria cri = new Criteria();
+		cri.setPageNum(3);
+		cri.setAmount(10);
+		List<NoticeVO> list = dao.getListWithPaging(cri);
+		list.forEach(board -> log.info(board.getNO()));
 	}
 	
 	

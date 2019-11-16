@@ -103,4 +103,20 @@
 		WHERE id = #{ID}
 	</update>
     
+    <insert id="insertKakaoMember">
+	INSERT INTO 
+		tbl_member (id, name, email)
+	VALUES 
+		(#{id}, #{name}, #{email})
+	</insert>
+    
+    
+    <select id="selectKakaoMember"  resultMap="memberResultMap">
+    	SELECT 
+		  id, pwd_confirm_q, pwd_confirm_a, name, zipcode, address1, address2, tel, phone, email, birth, lev, point, total
+		FROM 
+		  tbl_member
+		WHERE 1 = 1 
+		  AND id = #{id}
+    </select>
 </mapper>

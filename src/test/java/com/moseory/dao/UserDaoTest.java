@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
@@ -175,6 +176,15 @@ public class UserDaoTest {
 	userDao.deleteCartAll(member_id);
 	
 	log.info(userDao.getCartCount(member_id));
+    }
+    
+    @Test
+    public void testGetAddedOrderInfo() {
+	
+	AddedOrderInfoVO vo = new AddedOrderInfoVO();
+	vo = userDao.getAddedOrderInfo(1);
+	
+	log.info(vo.toString());
     }
     
 }

@@ -2,6 +2,9 @@
 package com.moseory.service;
 
 
+import java.util.List;
+
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -17,4 +20,9 @@ public interface AdminService {
 
 	String getLowCate(int low_code);
 
+	//상위 카테고리 목록
+	public List<HighCateVO> getPrantCategory();
+	
+	public int saveParentsCategory(List<Integer> code, List<String> name);
+	
 }

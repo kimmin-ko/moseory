@@ -1,6 +1,8 @@
 package com.moseory.dao;
 
 import java.util.List;
+
+import com.moseory.domain.Criteria;
 import com.moseory.domain.NoticeVO;
 
 public interface NoticeDao {
@@ -19,6 +21,10 @@ public interface NoticeDao {
 	
 	// 게시글 삭제하기
 	public void delete(int No);
+	
+	// 게시글 조회하기
+	public List<NoticeVO> getListWithPaging(Criteria cri);
+	
 	
 
 }
