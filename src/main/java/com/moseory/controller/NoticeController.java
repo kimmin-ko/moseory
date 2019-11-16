@@ -55,6 +55,8 @@ public class NoticeController {
 	public String noticeModify(@ModelAttribute NoticeVO vo, @ModelAttribute("cri") Criteria cri,
 			RedirectAttributes rttr) {
 		log.info("modify" + vo);
+	public String noticeModify(@ModelAttribute NoticeVO vo, @ModelAttribute("cri") Criteria cri,RedirectAttributes rttr) {
+		log.info("modify : " + vo);
 		service.update(vo);
 		rttr.addFlashAttribute("pageNum", cri.getPageNum());
 		rttr.addFlashAttribute("amount", cri.getAmount());

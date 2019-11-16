@@ -8,7 +8,9 @@
 
 
 <!-- jquery js -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	crossorigin="anonymous"></script>
 <!-- bootstrap js -->
 <script src="/js/bootstrap.js"></script>
 </head>
@@ -21,32 +23,43 @@
 		$('#addAreaBtn').click(function(e){
 			$('.newArea').append(html+html2);
 		});
-		
-		var size = $('input[name="product_size"]:checked');
-		console.log("size = " + size);
-/* 		$('input[name="product_size"]:checked').each(function(i){
-			sizeArray.push($(this).val());
-			$('input[name="product_stock"]').each(function(i) {
-				if($(this).val() != ""){
-					stockArray.push($(this).val());
-				}
-			});
- */			
-	/* 	}); */
 	})
-function regist() {
-	
+</script>
+<script>
+/* function regist() {
 	detailInfo();
 	$("#registForm").submit();
-	/* fileUpload(); */
 }
-	function detailInfo() {
+function detailInfo(){
+	var detailMap = null;
+	var color_key = [];
+	var sizeArray = [];
+	var stockArray = [];
+	var numberOfChecked = $('input[name="product_size"]:checked').length;
+	
+	
+	
+}
+	 */
+
+</script>
+<script>
+	function regist() {
+		detailInfo();
+		$("#registForm").submit();
+	}
+		function detailInfo() {
 		var productDetail = null;
 		
+		var colors = [];
 		var colorArray = [];
 		var sizeArray = [];
 		var stockArray = [];
+		
 		var numberOfChecked = $('input[name="product_size"]:checked').length;
+		
+		
+		
 		
 		for(var i = 0; i < numberOfChecked; i++) {
 			$('select[name="product_color"]').each(function(i){
@@ -61,14 +74,15 @@ function regist() {
 					stockArray.push($(this).val());
 				}
 			});
+			
 		});
 		
+
+
 		var stockLength = stockArray.length;
 		var sizeLength = sizeArray.length;
 		
-		if(stockLength != sizeLength){
-			alert("사이즈와 수량을 확인해주세요");
-		}
+		console.log(colors);
 		console.log(colorArray);
 		console.log(sizeArray);
 		console.log(stockArray);
@@ -121,13 +135,19 @@ function regist() {
 					                <input type="checkbox" class ="size" value="xl">XL
 					                <input type = "text" class= "product_stock">개<br>
 					            </div>	       
+	  	              			<button type = "button" id = "addAreaBtn">추가</button>
 							</div>      		
   	              			<div class = "newArea">
   	              			
   	              			</div>
-  	              			<button type = "button" id = "addAreaBtn">추가</button>
 	                	</td>
 	                </tr>
+	                <!-- 
+	                	1. 색상을 하나 선택하면
+	                	2. 체크박스로 사이즈 다중 선택
+	                	3. 체크가 되면 박스 옆에 text생기면서 재고 입력
+	                	4. 색상 추가 버튼
+	                 -->
 	            </table>
 	            <div class = "regist_btn_area text-center">
 					<input type = "button" value = "등록" class = "btn btn-primary btn-md" onclick="regist()">

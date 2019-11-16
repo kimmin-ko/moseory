@@ -32,6 +32,9 @@
 		content =
 		#{content}
 		where no = #{no}
+		set TITLE = #{TITLE},
+		CONTENT = #{CONTENT}
+		where NO = #{NO}
 	</update>
 
 	<!-- 게시글 삭제 처리 -->

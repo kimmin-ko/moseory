@@ -86,8 +86,6 @@ public class UserController {
     public String modify(Model model, HttpServletRequest req) {
 	Map<String, Object> memberMap = getUserJson(req);
 	
-	log.info("수정된 회원 정보 : " + ((MemberVO)memberMap.get("member")).getPwd_confirm_a());
-	
 	model.addAttribute("member", memberMap.get("member"));
 	// member 객체를 자바스크립트에서 사용하기 위해 JSON으로 전달
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
@@ -132,7 +130,9 @@ public class UserController {
 	// 로그인 되어있는 회원의 정보
 	Map<String, Object> memberMap = getUserJson(req);
 	
-	model.addAttribute("member", memberMap.get("member"));
+	MemberVO member = (MemberVO) memberMap.get("member");
+	
+	model.addAttribute("member", member);
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
 	model.addAttribute("levelJson", memberMap.get("levelJson"));
 	
@@ -145,11 +145,30 @@ public class UserController {
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
 	
 	// 총 주문 금액을 model에 담아서 전달
-	int total_order_price = 0;
-	for(AddedOrderInfoVO vo : addedOrderInfoList) {
-	    total_order_price += vo.getPrice();
+	
+	// 총 상품 구매 금액
+	int total_prodcut_price = 0;
+	// 회원의 할인율 : ex) 1%, 2% ..
+	int discount = member.getLevel().getDiscount();
+	// 장바구니의 담겨있는 상품들의 총 할인금액
+	int product_discount = 0;
+	
+	// 장바구니 목록 상품들의 가격을 모두 더한 후에 할인금액을 제외 
+	for(int i = 0; i < addedOrderInfoList.size(); i++) {
+	    // 상품의 가격
+	    int price = addedOrderInfoList.get(i).getPrice();
+	    // 상품의 수량
+	    int quantity = addedOrderInfoList.get(i).getQuantity();
+	    // 할인 금액의 총합
+	    product_discount += (price / 100) * discount * quantity;
+	    // 상품 금액의 총합
+	    total_prodcut_price += (price * quantity);
 	}
-	model.addAttribute("total_order_price", total_order_price);
+	// 상품금액 - 할인금액 = 주문금액
+	total_prodcut_price -= product_discount;
+	
+	model.addAttribute("total_product_price", total_prodcut_price);
+	
 	
     }
     
@@ -204,8 +223,6 @@ public class UserController {
 	    	 consumes = "application/json; charset=utf-8")
     public @ResponseBody ResponseEntity<String> addToCart(
 	    @RequestBody Map<String, Object> param) {
-	
-	log.info("cart  : " + param.toString());
 	
 	int count = userService.addToCart(param);
 	
