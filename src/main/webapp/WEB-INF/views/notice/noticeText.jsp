@@ -15,27 +15,12 @@
 </head>
 
 <body>
-	<!-- <script type="text/javascript">
-		$(document).ready(function() {
-
-			$(".check-all").click(function() {
-				$(".check-order").prop("checked", this.checked);
-			});
-		});
-
-		function changeEmail() {
-			var select_email = $("#select_email").val();
-			$("#email").val(select_email);
-		}
-	</script> -->
 	<%@ include file="../includes/sidebar.jsp"%>
 
 	<div class="container" style="margin-left: 22%;"width:100%>
 
 		<table width="100%">
 			<form name="writeform" method="post">
-				<input type="text" name="member_id" value="${user.id}"> 
-				<input type="hidden" name="member_id" value="${user.id}">
 				<tr>
 					<td>
 						<table class="table table-striped" margin-top:"50px"-->
@@ -50,7 +35,7 @@
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center">제목</td>
-								<td><input type="text" name="TITLE" size="100"
+								<td><input type="text" name="title" size="100"
 									maxlength="100" value=> <!--  값 입력하기  --></td>
 								<td>&nbsp;</td>
 							</tr>
@@ -58,7 +43,7 @@
 							<tr>
 								<td>&nbsp;</td>
 								<td align="center"></td>
-								<td><textarea name="CONTENT" cols="100" rows="13">
+								<td><textarea name="content" cols="100" rows="13">
 						
 									
 								</textarea></td>
