@@ -40,7 +40,8 @@ if(message != ""){
 					<colgroup>
 						<col width="10%" />
 						<col width="15%" />
-						<col width="70%" />
+						<col width="35%" />
+						<col width="35%" />
 					</colgroup>
 					<thead>
 				        <tr>
@@ -49,14 +50,16 @@ if(message != ""){
 				          	</label></th>
 				          <th>Code</th>
 				          <th>Name</th>
+				          <th>explanation</th>
 				        </tr>
 			    	</thead>
 					<tbody>
 						<c:forEach var="model" items="${parentCategoryList}" varStatus="status">
 							<tr>
-								<td><label><input type="checkbox"  name="row-idx" value="" style="top: 9px;" /></label></td>
+								<td><label><input type="checkbox"  name="row-idx" value="${model.code}" style="top: 9px;" /></label></td>
 								<td><input type="text" class="form-control" name="code" value="${model.code}"></td>
 								<td><input type="text" class="form-control" name="name" value="${model.name}"></td>
+								<td><input type="text" class="form-control" name="kname" value="${model.kname}"></td>
 								<td><span class="glyphicon glyphicon-zoom-in" aria-hidden="true" style="top: 9px;"></span></td>
 							</tr>
 						</c:forEach>
@@ -104,6 +107,7 @@ function EventFunction(){
 		addHTML += 	  "<td><label><input type='checkbox'  name='row-idx' value='' style='top: 9px;' /></label></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='code' value=''></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='name' value=''></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='kname' value=''></td>";
 		addHTML += "</tr>";
 		LastTr.append(addHTML);
 	});	
@@ -111,8 +115,11 @@ function EventFunction(){
 	//삭제하기 버튼 클릭
 	$("button[name='deleteBtn']").click(function(){
 		
+		var _d = new Array();
+		
 		$('input:checkbox[name="row-idx"]').each(function(index, item){
 			if(this.checked){
+				_d.push($(this).val());
 				$(this).parents("tr").remove();
 			}
 		});
@@ -121,6 +128,25 @@ function EventFunction(){
 			alert("선택된 카테고리가 없습니다.");
 			return false;
 		}
+		
+		if(confirm("카테고리 삭제 시 관련 상품도 삭제가 됩니다. 정말 삭제하시겠습니까?")){
+			$.ajax({
+				url : "/admin/deleteParentsCategory",
+				method : "post",
+				traditional : true,
+				data : {"codes" : _d},
+				success : function(result){
+					if(result > 0){
+						alert("삭제되었습니다.");						
+					}else{
+						alert("시스템 에러");
+					}
+					document.location.reload();
+				}
+			});
+		}
+		
+		
 		
 		$("input[name=row-idx-all]").prop("checked",false);
 	});

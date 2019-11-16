@@ -2,6 +2,7 @@
 package com.moseory.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.moseory.domain.HighCateVO;
@@ -23,6 +24,8 @@ public interface AdminService {
 	//상위 카테고리 목록
 	public List<HighCateVO> getPrantCategory();
 	
-	public int saveParentsCategory(List<Integer> code, List<String> name);
+	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname);
+	
+	public int deleteParentsCategory(ArrayList<String> codes);
 	
 }
