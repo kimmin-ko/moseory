@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -24,7 +25,12 @@ public interface AdminDao {
 	//상위 카테고리 목록 
 	public List<HighCateVO> getPrantCategory();
 	
+	//상위 카테고리 저장
 	public void saveParentsCategory(HighCateVO vo);
 
+	//상위 카테고리 삭제
 	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes);
+	
+	//하위 카테고리 목록
+	public List<LowCateVO> getChildCategory(int highCode);
 }

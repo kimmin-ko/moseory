@@ -28,7 +28,7 @@ if(message != ""){
 
 		 <!-- Category-header Start -->
         <div class="col-md-10 col-md-offset-1 category-header text-center">
-            <p>HIGH CATEGORY</p>
+            <p>LOW CATEGORY</p>
 		</div>
 		<!-- Category-header End -->
 
@@ -40,27 +40,26 @@ if(message != ""){
 					<colgroup>
 						<col width="10%" />
 						<col width="15%" />
-						<col width="35%" />
-						<col width="35%" />
+						<col width="15%" />
+						<col width="55%" />
 					</colgroup>
 					<thead>
 				        <tr>
 				          <th><label>
 				          		<input type="checkbox" name="row-idx-all" id="row-idx-all" />
 				          	</label></th>
-				          <th>Code</th>
+				          <th>High_Code</th>
+				          <th>Low_Code</th>
 				          <th>Name</th>
-				          <th>explanation</th>
 				        </tr>
 			    	</thead>
 					<tbody>
-						<c:forEach var="model" items="${parentCategoryList}" varStatus="status">
+						<c:forEach var="model" items="${childCategoryList}" varStatus="status">
 							<tr>
 								<td><label><input type="checkbox"  name="row-idx" value="${model.code}" style="top: 9px;" /></label></td>
+								<td><input type="text" class="form-control" name="highCode" value="${model.high_code}" readOnly></td>
 								<td><input type="text" class="form-control" name="code" value="${model.code}"></td>
 								<td><input type="text" class="form-control" name="name" value="${model.name}"></td>
-								<td><input type="text" class="form-control" name="kname" value="${model.kname}"></td>
-								<td><a href="/admin/lowCategory?highCode=${model.code}"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true" style="top: 9px;"></span></a></td>
 							</tr>
 						</c:forEach>
 					</tbody>

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -150,6 +151,20 @@ public class AdminController {
 		return result;
 	}
 
+	@GetMapping("/lowCategory")
+    public String lowCategory(@RequestParam("highCode") int highCode, HttpServletRequest req, Model model) {
+		
+    	
+		List<LowCateVO> lowCategory = new ArrayList<LowCateVO>();
+		
+		lowCategory= adminService.getChildCategory(highCode);
+		System.out.println(lowCategory);
+    	model.addAttribute("childCategoryList", lowCategory);
+    	
+		return "admin/lowCategory";
+    }
+	
+	
 
 //	private static List<ProductDetailVO> testDetailInfo = new ArrayList<ProductDetailVO>();
 //	private Map<String, Object> mapTest = new HashMap<>();

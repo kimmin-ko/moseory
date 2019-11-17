@@ -8,6 +8,13 @@
 	<resultMap type="HighCateVO" id="highCateVo">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
+		<result column="kname" property="kname" />
+	</resultMap>
+	
+	<resultMap type="LowCateVO" id="lowCateVo">
+		<result column="code" property="code" />
+		<result column="high_code" property="high_code" />
+		<result column="name" property="name" />
 	</resultMap>
 	
 	<select id="getPrantCategory" resultMap="highCateVo">
@@ -37,5 +44,16 @@
             ${codes}
         </foreach>
 	</delete>
+	
+		
+	<select id="getChildCategory" resultMap="lowCateVo">
+		SELECT 
+		  code, high_code, name
+		FROM 
+		  tbl_low_cate
+		WHERE 
+		  high_code = #{highCode}  
+		ORDER BY code ASC	
+	</select>
 	
 </mapper>

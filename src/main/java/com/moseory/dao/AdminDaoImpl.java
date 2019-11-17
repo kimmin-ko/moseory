@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -51,6 +52,10 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes) {
 		return sqlSession.delete("AdminMapper.deleteParentsCategory", codes);
+	}
+	@Override
+	public List<LowCateVO> getChildCategory(int highCode) {
+		return sqlSession.selectList("AdminMapper.getChildCategory", highCode);
 	}
 
 }

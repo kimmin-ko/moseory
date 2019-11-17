@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -27,5 +28,7 @@ public interface AdminService {
 	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname);
 	
 	public int deleteParentsCategory(ArrayList<Integer> codes);
+	
+	public List<LowCateVO> getChildCategory(int highCode);
 	
 }

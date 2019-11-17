@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.moseory.dao.AdminDao;
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -85,6 +86,11 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		return status;
+	}
+
+	@Override
+	public List<LowCateVO> getChildCategory(int highCode) {
+		return adminDao.getChildCategory(highCode);
 	}
 
 }	
