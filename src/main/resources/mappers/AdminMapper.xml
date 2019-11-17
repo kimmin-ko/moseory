@@ -56,4 +56,17 @@
 		ORDER BY code ASC	
 	</select>
 	
+	<insert id="saveChildCategory"> 
+		MERGE INTO tbl_low_cate
+            USING DUAL
+            ON (code = #{code})
+            WHEN MATCHED THEN
+                      UPDATE SET
+                            name = #{name}
+            WHEN NOT MATCHED THEN
+                      INSERT (code, name, high_code) 
+                                 VALUES (#{code}, #{name}, #{high_code} )
+	</insert>
+	
+	
 </mapper>

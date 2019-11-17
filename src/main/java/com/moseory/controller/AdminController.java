@@ -164,6 +164,19 @@ public class AdminController {
 		return "admin/lowCategory";
     }
 	
+	@PostMapping("/saveChildCategory")
+	public String saveChildCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+			, @RequestParam("highCode") List<Integer> highCode , HttpServletRequest req, HttpServletResponse res, Model model) {
+		
+		int status = 0;
+		status = adminService.saveChildCategory(code, name, highCode);
+		if(status == 0) {
+			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+		}else {
+			model.addAttribute("msg", "저장되었습니다.");
+		}
+		return "redirect:/admin/category";
+	}
 	
 
 //	private static List<ProductDetailVO> testDetailInfo = new ArrayList<ProductDetailVO>();

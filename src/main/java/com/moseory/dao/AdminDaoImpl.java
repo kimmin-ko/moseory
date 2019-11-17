@@ -57,5 +57,10 @@ public class AdminDaoImpl implements AdminDao{
 	public List<LowCateVO> getChildCategory(int highCode) {
 		return sqlSession.selectList("AdminMapper.getChildCategory", highCode);
 	}
+	@Override
+	public void saveChildCategory(LowCateVO vo) {
+		sqlSession.insert("AdminMapper.saveChildCategory", vo);
+		
+	}
 
 }

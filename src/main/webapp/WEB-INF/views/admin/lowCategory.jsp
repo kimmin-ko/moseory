@@ -34,7 +34,7 @@ if(message != ""){
 
 		<!-- Category-body Start -->
 		
-		<form id="form" method="post" action="saveParentsCategory">		
+		<form id="form" method="post" action="saveChildCategory">		
 			<div class="col-md-6 col-md-offset-3 category-body">
 				<table class="table table-striped" id="cateTable">
 					<colgroup>
@@ -102,11 +102,13 @@ function EventFunction(){
 	$("button[name='addBtn']").click(function(){
 		var LastTr = $("#cateTable > tbody:last-child");
 		var addHTML = "";
+		var highCode = $("input[name=highCode]").val();
+		
 		addHTML += "<tr>";
 		addHTML += 	  "<td><label><input type='checkbox'  name='row-idx' value='' style='top: 9px;' /></label></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='highCode' value="+highCode+" readOnly ></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='code' value=''></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='name' value=''></td>";
-		addHTML += 	  "<td><input type='text' class='form-control' name='kname' value=''></td>";
 		addHTML += "</tr>";
 		LastTr.append(addHTML);
 	});	

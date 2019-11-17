@@ -33,4 +33,8 @@ public interface AdminDao {
 	
 	//하위 카테고리 목록
 	public List<LowCateVO> getChildCategory(int highCode);
+	
+	//하위 카테고리 저장
+	public void saveChildCategory(LowCateVO vo);
+	
 }

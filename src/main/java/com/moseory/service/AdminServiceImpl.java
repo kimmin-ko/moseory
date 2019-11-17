@@ -93,4 +93,27 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getChildCategory(highCode);
 	}
 
+	@Override
+	public int saveChildCategory(List<Integer> code, List<String> name, List<Integer> highCode) {
+		// return : 0 err 
+		// return : 1  정상
+		int status = 0;
+		LowCateVO vo = new LowCateVO();;
+		
+		if(code.size() == name.size()) {
+			
+			for(int i=0; i<code.size();i++) {
+				vo.setCode(code.get(i));
+				vo.setName(name.get(i));
+				vo.setHigh_code(highCode.get(i));
+				adminDao.saveChildCategory(vo);
+			}
+			
+			status = 1;
+		}else {
+			status = 0;
+		}
+		return status;
+	}
+
 }	
