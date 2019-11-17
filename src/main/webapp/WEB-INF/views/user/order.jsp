@@ -71,95 +71,211 @@
 	<%@ include file="../includes/sidebar.jsp"%>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
-
-			$(".check-all").click(function() {
-				$(".check-order").prop("checked", this.checked);
-			});
-
-			// 삭제 버튼 클릭 시 체크 된 상품 삭제
-			$(".btn-checked-delete").on("click", function() {
-				if($(".check-order:checked").length == 0) {
-					alert("선택하신 상품이 없습니다.");
-					return;
-				}
-				// 체크 되지 않은 목록의 값을 저장하여 /user/order 재호출
-				var reload_no = [];
-				var reload_quantity = [];
-				$(".check-order").each(function() {
-					if (!this.checked) {
-						reload_no.push(this.value);
-						reload_quantity.push($("#quantity"+this.value).text());
+	// #,### formatNumber
+	Number.prototype.format = function(){
+	    if(this==0) return 0;
+	 
+	    var reg = /(^[+-]?\d+)(\d{3})/;
+	    var n = (this + '');
+	 
+	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+	 
+	    return n;
+	};
+	
+	String.prototype.format = function(){
+	    var num = parseFloat(this);
+	    if( isNaN(num) ) return "0";
+	 
+	    return num.format();
+	};
+	
+	$(document).ready(
+			
+			function() {
+				// 회원이 보유중인 적립금
+				var member_point = ${member.point};
+				// 회원 등급 할인 (모든 상품의 할인을 더한 값)				
+				var total_discount = 0;
+				// 회원 등급 적립 ( 모든 상품의 적립금을 더한 값)
+				var total_saving = 0;
+				// 할인 합계
+				var sum_discount = 0;
+				// 배송비
+				var delevery_charge = 0;
+				// 오리지널 주문 금액
+				var origin_prod_price = ${origin_product_price};
+				
+				// 모든 상품의 할인금액을 더해줌
+				<c:forEach var="addedOrderInfo" items="${addedOrderInfoList }">
+					var discount = ${(addedOrderInfo.price / 100) * member.level.discount * addedOrderInfo.quantity};
+					total_discount += discount;
+					
+					var saving = ${(addedOrderInfo.price / 100) * member.level.saving * addedOrderInfo.quantity};
+					total_saving += saving;
+				</c:forEach>
+				
+				// 배송비
+				<c:if test="${origin_product_price >= 50000 || origin_product_price == 0 }">
+					$(".delevery_charge").text("무료");
+				</c:if>
+				<c:if test="${origin_product_price < 50000 && origin_product_price != 0 }">
+					$(".delevery_charge").text("3,000원");
+					delevery_charge = 3000;
+				</c:if>
+				
+				// 최종 결제 금액 (total_discount와 delevery_charge보다 뒤에 선언)
+				var final_order_price = origin_prod_price + delevery_charge - total_discount;
+				
+				// 회원 등급 할인, 합계 할인 초기화
+				$(".total_discount, .sum_discount").text('-' + total_discount.format());
+				// 총 적립금 초기화
+				$(".total_saving").text(total_saving.format());
+				// 최종 결제 금액 초기화
+				$(".final_order_price").text(final_order_price.format());
+				
+				// 회원 레벨
+				$(".member_lev_grade").text("${member.level.level}");
+				$(".member_lev").text("${member.level}");
+				
+				// 보유중인 포인트
+				$(".member_point").text("${member.point}".format());
+				
+				// 보유 적립금 변경시
+				$(".input_point").on("input change paste keyup", function() {
+					var point = Number($(this).val());
+					
+					// 보유중인 적립금을 초과하여 입력 시 0으로
+					if(point > member_point) {
+						alert("보유하신 적립금을 초과하였습니다.");
+						$(this).val(0);
+						point = 0;
+					}
+					console.log("final_order_price : " + final_order_price);
+					// 최종 결제 금액을 초과하여 입력 시 맥시멈 값으로
+					if(point > final_order_price) {
+						$(this).val(final_order_price);
+						point = final_order_price;
+					}
+					
+					// 합계 할인
+					sum_discount = total_discount + point;
+					var input_final_order_price = origin_prod_price + delevery_charge - sum_discount;
+					
+					if(point == 0) $(".use_point").text('0');
+					else $(".use_point").text('-' + point.format());
+					
+					$(".sum_discount").text('-' + sum_discount.format());
+					$(".final_order_price").text(input_final_order_price.format());
+					
+				});
+				
+				// 최대 사용 체크
+				$(".maximum_point").on("change", function() {
+					if($(this).is(":checked")) {
+						$(".input_point").val("${member.point}");
+						$(".input_point").trigger("input");
+					} else {
+						$(".input_point").val(0);
+						$(".input_point").trigger("input");
 					}
 				});
 				
-				location.href = "/user/order?product_detail_no_list=" + reload_no + "&quantity_list=" + reload_quantity;
-			});
-			
-			// 페이지 로딩 시 배송지 정보 회원정보와 동일로 초기화
-			changeDvryInfo("member");
-			
-			$("input[name=select-addr]").on("change", function() {
-				var checkedValue = $("input[name=select-addr]:checked").val();
-				// 회원 정보와 동일 체크
-				if(checkedValue == 'member') {
-					changeDvryInfo(checkedValue);
-				} else { // 새로운 배송지 체크
-					changeDvryInfo(checkedValue);
-				}
-			}); // radio onchange
+				console.log("위에");
+				
+				// 최상위 체크박스 클릭 시 모든 CheckBox Checked
+				$(".check-all").click(function() {
+					$(".check-order").prop("checked", this.checked);
+				});
 
-		}); // end document
-		
-		// 배송지 정보를 바꿔줌
-		function changeDvryInfo(checkedValue) {
-			switch (checkedValue) {
-			case "member" :
-				$("input[name=name]").val('<c:out value="${member.name}" />');
-				$("input[name=zipcode]").val('<c:out value="${member.zipcode}" />');
-				$("input[name=address1]").val('<c:out value="${member.address1}" />');
-				$("input[name=address2]").val('<c:out value="${member.address2}" />');
-				
-				var tel = "${member.tel}".split('-');
-				$("select[name=tel1]").val(tel[0]);
-				$("input[name=tel2]").val(tel[1]);
-				$("input[name=tel3]").val(tel[2]);
-				
-				var phone = "${member.phone}".split('-');
-				$("select[name=phone1]").val(phone[0]);
-				$("input[name=phone2]").val(phone[1]);
-				$("input[name=phone3]").val(phone[2]);
-				
-				var email = "${member.email}".split('@');
-				$("input[name=email1]").val(email[0]);
-				$("input[name=email2]").val(email[1]);
-				
-				break;
-			case "new" :  
-				$("input[name=name]").val('');
-				$("input[name=zipcode]").val('');
-				$("input[name=address1]").val('');
-				$("input[name=address2]").val('');
-				
-				$("select[name=tel1] option:eq(0)").prop("selected", true);
-				$("input[name=tel2]").val('');
-				$("input[name=tel3]").val('');
-				
-				$("select[name=phone1] option:eq(0)").prop("selected", true);
-				$("input[name=phone2]").val('');
-				$("input[name=phone3]").val('');
-				
-				$("input[name=email1]").val('');
-				$("input[name=email2]").val('');
-				
-				break;
-			}
-		}
+				// 삭제 버튼 클릭 시 체크 된 상품 삭제
+				$(".btn-checked-delete").on(
+						"click",
+						function() {
+							if ($(".check-order:checked").length == 0) {
+								alert("선택하신 상품이 없습니다.");
+								return;
+							}
+							// 체크 되지 않은 목록의 값을 저장하여 /user/order 재호출
+							var reload_no = [];
+							var reload_quantity = [];
+							$(".check-order").each(
+									function() {
+										if (!this.checked) {
+											reload_no.push(this.value);
+											reload_quantity.push($(
+													"#quantity" + this.value)
+													.text());
+										}
+									});
 
-		function changeEmail() {
-			var select_email = $("#select_email").val();
-			$("#email").val(select_email);
+							location.href = "/user/order?product_detail_no_list=" + reload_no + "&quantity_list=" + reload_quantity;
+						});
+
+				// 페이지 로딩 시 배송지 정보 회원정보와 동일로 초기화
+				changeDvryInfo("member");
+
+				$("input[name=select-addr]").on("change", function() {
+					var checkedValue = $("input[name=select-addr]:checked").val();
+					// 회원 정보와 동일 체크
+					if (checkedValue == 'member') {
+						changeDvryInfo(checkedValue);
+					} else { // 새로운 배송지 체크
+						changeDvryInfo(checkedValue);
+					}
+				}); // radio onchange
+
+			}); // end document
+
+	// 배송지 정보를 바꿔줌
+	function changeDvryInfo(checkedValue) {
+		switch (checkedValue) {
+		case "member":
+			$("input[name=name]").val('<c:out value="${member.name}" />');
+			$("input[name=zipcode]").val('<c:out value="${member.zipcode}" />');
+			$("input[name=address1]").val('<c:out value="${member.address1}" />');
+			$("input[name=address2]").val('<c:out value="${member.address2}" />');
+
+			var tel = "${member.tel}".split('-');
+			$("select[name=tel1]").val(tel[0]);
+			$("input[name=tel2]").val(tel[1]);
+			$("input[name=tel3]").val(tel[2]);
+
+			var phone = "${member.phone}".split('-');
+			$("select[name=phone1]").val(phone[0]);
+			$("input[name=phone2]").val(phone[1]);
+			$("input[name=phone3]").val(phone[2]);
+
+			var email = "${member.email}".split('@');
+			$("input[name=email1]").val(email[0]);
+			$("input[name=email2]").val(email[1]);
+
+			break;
+		case "new":
+			$("input[name=name]").val('');
+			$("input[name=zipcode]").val('');
+			$("input[name=address1]").val('');
+			$("input[name=address2]").val('');
+
+			$("select[name=tel1] option:eq(0)").prop("selected", true);
+			$("input[name=tel2]").val('');
+			$("input[name=tel3]").val('');
+
+			$("select[name=phone1] option:eq(0)").prop("selected", true);
+			$("input[name=phone2]").val('');
+			$("input[name=phone3]").val('');
+
+			$("input[name=email1]").val('');
+			$("input[name=email2]").val('');
+
+			break;
 		}
+	}
+
+	function changeEmail() {
+		var select_email = $("#select_email").val();
+		$("#email").val(select_email);
+	}
 	</script>
 
 	<div class="container" style="margin-left: 22%;">
@@ -224,7 +340,7 @@
 								value="${(price / 100) * saving * quantity }" />
 							<c:set var="order_price"
 								value="${(price * quantity) - product_discount }" />
-							<tr>
+							<tr> 
 								<!-- 상품 체크 박스 -->
 								<td><input type="checkbox" class="check-order"
 									value='<c:out value="${no }" />'></td>
@@ -248,9 +364,8 @@
 								<!-- 판매가 -->
 								<td><span class="prod-price"><fmt:formatNumber
 											value="${price }" pattern="#,###" />원</span></td>
-								<!-- 회원 할인 -->
-								<td><span>-<fmt:formatNumber
-											value="${product_discount }" pattern="#,###" /></span></td>
+								<!-- 회원 할인 중 -->
+								<td><span class="prod_discount">-<fmt:formatNumber value="${product_discount }" pattern="#,###" /></span></td>
 								<!-- 상품 수량 -->
 								<td><span id="quantity${no }"><c:out value="${quantity }" /></span></td>
 								<!-- 적립금 -->
@@ -258,10 +373,10 @@
 										pattern="#,###" /></td>
 								<!-- 배송비 -->
 								<td><span class="delevery-charge"> <c:if
-											test="${total_product_price >= 50000 || total_product_price == 0 }">
+											test="${origin_product_price >= 50000 || origin_product_price == 0 }">
 	                    		무료
 	                    		</c:if> <c:if
-											test="${total_product_price < 50000 && total_product_price != 0 }">
+											test="${origin_product_price < 50000 && origin_product_price != 0 }">
 	                    		3,000원
 	                    		</c:if>
 								</span></td>
@@ -278,18 +393,18 @@
 								class="total-prod-price" style="font-weight: bold;"> <fmt:formatNumber
 										value="${total_product_price }" pattern="#,###" />
 							</span> + 배송비 <span class="delivery-charge"> <c:if
-										test="${total_product_price >= 50000 || total_product_price == 0 }">
+										test="${origin_product_price >= 50000 || origin_product_price == 0 }">
 			                    		무료
 			                    	</c:if> <c:if
-										test="${total_product_price < 50000 && total_product_price != 0 }">
+										test="${origin_product_price < 50000 && origin_product_price != 0 }">
 			                    		3,000원
 			                    	</c:if>
 							</span> = 주문금액 : <span class="total-order-price"> <c:if
-										test="${total_product_price >= 50000 || total_product_price == 0 }">
+										test="${origin_product_price >= 50000 || origin_product_price == 0 }">
 										<fmt:formatNumber value="${total_product_price }"
 											pattern="#,###" />원
 		                    	</c:if> <c:if
-										test="${total_product_price < 50000 && total_product_price != 0 }">
+										test="${origin_product_price < 50000 && origin_product_price != 0 }">
 										<fmt:formatNumber value="${total_product_price + 3000}"
 											pattern="#,###" />원
 		                    	</c:if>
@@ -307,7 +422,7 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1"
 				style="padding: 0; font-size: 12px;">
-				<hr style="border: 0.5px solid black;">
+				<hr style="border: 0.3px solid #717171;">
 				<div class="col-md-6" style="padding: 0;">
 					<span style="font-weight: bold;">배송정보</span>
 				</div>
@@ -338,7 +453,7 @@
 						<td>
 							<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;">
 							<input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-							<input type="text" id="address1" name="address1" placeholder="주소" style="width: 196px; margin-bottom: 5px;"><br>
+							<input type="text" id="address1" name="address1" placeholder="주소" style="width: 335px; margin-bottom: 5px;"><br>
 							<input type="text" id="address2" name="address2" placeholder="상세주소">
 							<input type="text" id="extraAddress" placeholder="참고항목">
 						</td>
@@ -394,60 +509,73 @@
 		</div>
 
 		<div class="row" style="margin-bottom: 100px;">
-			<div class="col-md-10 col-md-offset-1" style="padding: 0;"
-				style="margin-bottom: 30px;">
-				<p style="font-size: 12px; font-weight: bold;">결제 예정 금액</p>
-				<table class="table table-bordered payment-schedule-table">
-					<thead>
-						<tr>
-							<th>판매 가격</th>
-							<th>총 할인 + 부가 결재 금액</th>
-							<th>총 결제 예정 금액</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								189,000원
-							</td>
-							<td>
-								3,000원
-							</td>
-							<td style="color: #CE1F14;">192,000원</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<div class="col-md-10 col-md-offset-1" style="padding: 0;">
-				<table class="table table-bordered payment-schedule-table-2">
-					<tr>
-						<td>총 할인 금액</td>
-						<td>0원</td>
-					</tr>
-					<tr>
-						<td>총 부가 결재 금액</td>
-						<td>0원</td>
-					</tr>
-					<tr>
-						<td>적립금</td>
-						<td>
-							<ul>
-								<li><input type="text" />원 (총 사용가능 적립금 : 1,000원)</li>
-								<li>- 적립금은 최소 0 이상일 때 결제가 가능합니다.</li>
-								<li>- 최대 사용금액은 제한이 없습니다.</li>
-								<li>- 1회 구매시 적립금 최대 사용금액은 1,000입니다.</li>
-								<li>- 적립금으로만 결제할 경우, 결제금액이 0으로 보여지는 것은 정상이며 [결제하기] 버튼을 누르면
-									주문이 완료됩니다.</li>
-							</ul>
-						</td>
-					</tr>
-				</table>
-			</div>
+			
+	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
+	            <p id="final-order-title">최종 결제 금액</p>
+	        </div>
+	        <div class="col-md-10 col-md-offset-1" style="padding: 0; margin-bottom: 50px;">
+	            <!-- left -->
+	            <div class="col-md-9 cell_info">
+	                <ul>
+	                    <li>회원 등급 할인</li>
+	                    <li>
+	                        <strong><span class="total_discount"></span>원</strong>
+	                        <span class="add-explan">(LV.
+	                        <span class="member_lev_grade"></span>&nbsp;
+	                        <span class="member_lev"></span> 등급)</span>
+	                    </li>
+	                </ul>
+	                <ul>
+	                    <li>보유 적립금 사용</li>
+	                    <li>
+	                        <input type="text" class="input_point" name="point" value="0">원&nbsp;
+	                        <input type="checkbox" class="maximum_point">
+	                        <strong>최대 사용</strong>
+	                        (사용 가능 적립금 <span class="member_point"></span>원)
+	                    </li>
+	                </ul>
+	                <ul>
+	                    <li>할인 합계</li>
+	                    <li><span class="add-explan">모든 할인 내역을 합산한 금액입니다.</span></li>
+	                </ul>
+	                <ul>
+	                    <li>배송비</li>
+	                    <li><span class="delevery_charge"></span> 
+	                    <span class="add-explan">(50,000원 이상 구매시 무료)</span></li>
+	                </ul>
+	            </div>
+	            <!-- right -->
+	            <div class="col-md-3 cell_info_right">
+	                <ul>
+	                    <li>회원 등급 할인</li>
+	                    <li><span class="total_discount">0</span>원</li>
+	                </ul>
+	                <ul>
+	                    <li>보유 적립금 사용</li>
+	                    <li><span class="use_point">0</span>원</li>
+	                </ul>
+	                <ul>
+	                    <li>할인 합계</li>
+	                    <li><span class="sum_discount">0</span>원</li>
+	                </ul>
+	                <ul>
+	                    <li>배송비</li>
+	                    <li><span class="delevery_charge"></span></li>
+	                </ul>
+	                <ul>
+	                    <li>총 적립금</li>
+	                    <li><span class="total_saving"></span>원</li>
+	                </ul>
+	                <ul>
+	                    <li>최종 결제 금액</li>
+	                    <li><span class="final_order_price"></span>원</li>
+	                </ul>
+	            </div>
+	
+	        </div>
 
 			<div class="col-md-10 col-md-offset-1" style="text-align: center;">
-				<button type="button" class="btn btn-default"
-					style="background-color: black; color: white;">결제하기</button>
+				<button type="button" class="btn btn-default btn-payment">결제하기</button>
 			</div>
 		</div>
 		<!-- Order Form End -->

@@ -121,11 +121,30 @@
 </div>
 
 <script type="text/javascript">
+	// #,### formatNumber
+	Number.prototype.format = function(){
+	    if(this==0) return 0;
+	 
+	    var reg = /(^[+-]?\d+)(\d{3})/;
+	    var n = (this + '');
+	 
+	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+	 
+	    return n;
+	};
+	
+	String.prototype.format = function(){
+	    var num = parseFloat(this);
+	    if( isNaN(num) ) return "0";
+	 
+	    return num.format();
+	};
+	
 	$(document).ready(function() {
 		var memberJson = ${memberJson};
 	
-		$("#point").text(memberJson.point + '원');
-		$("#order").text(memberJson.total + '원');
+		$("#point").text(memberJson.point.format() + '원');
+		$("#order").text(memberJson.total.format() + '원');
 	});
 
 </script>
