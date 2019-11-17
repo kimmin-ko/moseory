@@ -12,9 +12,10 @@
 	
 	<select id="getPrantCategory" resultMap="highCateVo">
 		SELECT 
-		  code, name
+		  code, name, kname
 		FROM 
-		  tbl_high_cate	
+		  tbl_high_cate
+		ORDER BY code ASC	
 	</select>
 	
 	<insert id="saveParentsCategory"> 
@@ -23,10 +24,18 @@
             ON (code = #{code})
             WHEN MATCHED THEN
                       UPDATE SET
-                            name = #{name}
+                            name = #{name},
+                            kname = #{kname}
             WHEN NOT MATCHED THEN
-                      INSERT (code, name) 
-                                 VALUES (#{code}, #{name})
+                      INSERT (code, name, kname) 
+                                 VALUES (#{code}, #{name}, #{kname} )
 	</insert>
+	
+	<delete id="deleteParentsCategory" parameterType="java.util.ArrayList">
+		DELETE FROM tbl_high_cate WHERE code IN
+		<foreach collection="list" item="codes" index="index" open="(" close=")" separator=",">
+            ${codes}
+        </foreach>
+	</delete>
 	
 </mapper>

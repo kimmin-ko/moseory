@@ -10,5 +10,6 @@ public class HighCateVO {
 	
 	private int code;
 	private String name;
+	private String kname;
 	
 }

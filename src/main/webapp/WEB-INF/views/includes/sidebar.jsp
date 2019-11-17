@@ -64,48 +64,15 @@
 		</div>
 	</div>
 	
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=1">
-				<c:out value="${outer.name }" />
-			</a>&nbsp;<small class="cate-sm">아우터</small>
+	<c:forEach var="cate" items="${highCateList}" varStatus="status">
+		<div class="row ma-bo-5">
+			<div class="col-md-10 col-md-offset-2">
+				<a href="${pageContext.request.contextPath }/product/productList?high_code=${cate.code}">
+					${cate.name }
+				</a>&nbsp;<small class="cate-sm">${cate.kname}</small>
+			</div>
 		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=2">TOP</a>&nbsp;<small class="cate-sm">상의</small>
-		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=3">SHIRTS</a>&nbsp;<small class="cate-sm">셔츠</small>
-		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=4">BOTTOM</a>&nbsp;<small class="cate-sm">하의</small>
-		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=5">BAG</a>&nbsp;<small class="cate-sm">가방</small>
-		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=6">SHOES</a>&nbsp;<small class="cate-sm">신발</small>
-		</div>
-	</div>
-	<div class="row ma-bo-5">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="${pageContext.request.contextPath }/product/productList?high_code=7">ACC</a>&nbsp;<small class="cate-sm">액세서리</small>
-		</div>
-	</div>
-	<div class="row ma-bo-50">
-		<div class="col-md-10 col-md-offset-2">
-			<a href="#">SALE</a>&nbsp;<small class="cate-sm">세일</small>
-		</div>
-	</div>
+	</c:forEach>
 
 	<div class="row ma-bo-50">
 		<div class="col-md-10 col-md-offset-2 form-inline">
