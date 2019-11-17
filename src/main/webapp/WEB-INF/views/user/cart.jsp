@@ -158,10 +158,10 @@ $(document).ready(function() {
                         <!-- 배송비 -->
                         <td>
                         	<span class="delivery-charge">
-                        		<c:if test="${total_product_price > 50000 }">
+                        		<c:if test="${origin_product_price > 50000 }">
                         			무료
                         		</c:if>
-                        		<c:if test="${total_product_price <=50000 }">
+                        		<c:if test="${origin_product_price <=50000 }">
                         			3,000원
                         		</c:if>
                         	</span>
@@ -193,19 +193,19 @@ $(document).ready(function() {
                             <span class="total-prod-price"><fmt:formatNumber value="${total_product_price }" pattern="#,###" /></span>
                              + 배송비 
                             <span class="delivery-charge">
-                            	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                            	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
                         			무료
                         		</c:if>
-                        		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                        		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
                         			3,000
                         		</c:if>
                             </span>
                              = 합계 : 
                             <span class="total-order-price">
-                            	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                            	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
                         			<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
                         		</c:if>
-                        		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                        		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
                         			<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
                         		</c:if>
                             </span>
@@ -238,18 +238,18 @@ $(document).ready(function() {
                 <tr>
                     <td><fmt:formatNumber value="${total_product_price }" pattern="#,###" />원</td>
                     <td>
-                    	<c:if test="${total_product_price > 50000 || total_product_price == 0 }">
+                    	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
                    			무료
                    		</c:if>
-                   		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                   		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
                    			+3,000원
                    		</c:if>
                     </td>
                     <td style="color: #CE1F14;">
-                    	<c:if test="${total_product_price > 50000|| total_product_price == 0 }">
+                    	<c:if test="${origin_product_price > 50000|| origin_product_price == 0 }">
                   			=<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
                   		</c:if>
-                  		<c:if test="${total_product_price <=50000 && total_product_price != 0 }">
+                  		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
                   			=<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
                   		</c:if>
                     </td>
