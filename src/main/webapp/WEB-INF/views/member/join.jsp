@@ -345,7 +345,7 @@
                 tel = "";
             }
 
-            // 일반전화가 비어있을 경우 phone = ""
+            // 휴대전화가 비어있을 경우 phone = ""
             if(!phone2 && !phone3) {
                 phone = "";
             }
@@ -406,9 +406,9 @@
                 alert("휴대전화를 다시 확인해주세요.");
                 $("#phone2").focus();
             } else if(!$("#agree1").is(":checked")) { // 이용 약관 동의 언체크
-                alert("이용약관에 동의하세요.");
+                alert("이용약관 동의는 필수 입력값 입니다.");
             } else if(!$("#agree2").is(":checked")) { // 개인정보 동의 언체크
-            	alert("개인 정보 수집 및 이용에 동의하세요.")
+            	alert("개인 정보 수집 및 이용 동의는 필수 입력값 입니다.")
             } else { // 입력값에 문제 없을 경우 서브밋
             	$("#joinform").submit();
             }
@@ -445,7 +445,7 @@
 
     // 생년월일 유효성 검사
     function checkBirth(birth1, birth2, birth3) {
-        var pattern1 = /[^0-9]/;
+        var pattern1 = /[^0-9]/; // 숫자 제외 포함 여부
 
         if(pattern1.test(birth1) || pattern1.test(birth2) || pattern1.test(birth3)) {
             return true;
