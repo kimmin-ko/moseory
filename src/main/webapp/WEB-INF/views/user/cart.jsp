@@ -152,6 +152,8 @@ $(document).ready(function() {
                             <input type="text" name="qty" class="qtyVal" value='<c:out value="${quantity }" />'>
                             <!-- + 와 - 태그를 붙이기 위해 개행하지 않음 -->
                             <p class="btn-inc"><a href="javascript:void(0)">&nbsp;+&nbsp;&nbsp;</a></p><p class="btn-dec"><a href="javascript:void(0)">&nbsp;-&nbsp;&nbsp;</a></p>
+                            <!-- 수량을 제한하기 위해 해당 상품의 재고를 가져와서 저장한다 -->
+                            <input type="hidden" name="stock" value='<c:out value="${cart.product_stock }" />'>
                             <!-- this를 인자로 보내서 형제 노드인 input 태그를 찾아 수량을 가져온다. -->
                             <button type="button" class="modifyQtyBtn" onclick="changeQuantity(${cart.no}, this)">수정</button>
                         </td>

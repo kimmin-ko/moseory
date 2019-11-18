@@ -110,9 +110,6 @@
             			quantityList.push($("#quantity"+duplCheckArr[i]).val());
             		}
             		
-            		console.log(duplCheckArr);
-            		console.log(quantityList);
-            		
             		// 선택된 옵션의 번호 배열을 넘겨준다
             		location.href="/user/order?product_detail_no_list=" + duplCheckArr + "&quantity_list=" + quantityList;
             		
@@ -313,6 +310,8 @@
             		// (품절)일 경우 알림창 띄워준 후 종료
             		if(String(color).includes('품절') || String(size).includes('품절')) {
             			alert("해당 상품은 품절되었습니다.");
+            			$("#select-color").find("option:eq(0)").prop("selected", true);
+            			$("#select-size").find("option:eq(0)").prop("selected", true);
             			return;
             		}
             		
@@ -335,13 +334,12 @@
             		
             		if(flag) { // 중복일 경우
             			alert("이미 선택되어 있는 옵션입니다.");
+            			$("#select-color").find("option:eq(0)").prop("selected", true);
             			$("#select-size").find("option:eq(0)").prop("selected", true);
             			return;
             		}
             		
             		duplCheckArr.push(pdNo);
-            		
-            		console.log("추가 후 듀플 : " + duplCheckArr);
             		
             		// tr 추가
             		$(".add-pro-table > tbody:last").append(''
@@ -352,7 +350,7 @@
                         + 	'</td>'
                         + 	'<td>'
                         + 		'<p class="add-pro-quantity">'
-                        + 			'<input type="number" id="quantity' + pdNo + '" min="1" max="99" value="1" oninput="changeCount(this)">&nbsp'
+                        + 			'<input type="number" id="quantity' + pdNo + '" min="1" max="99" value="1" oninput="changeCount(this, \'' + pdNo + '\')">&nbsp'
                         + 			'<img src="http://img.echosting.cafe24.com/design/skin/default/product/btn_price_delete.gif"'
                         +					'onclick="removeOrderProd(\'' + color + '\', \'' + originSize + '\', this)">'
                         + 		'</p>'
@@ -369,11 +367,19 @@
             	} // addOrderProd
             	
             	// 주문 개수 변경
-            	function changeCount(countInput) {
+            	function changeCount(countInput, pdNo) {
             		var count = $(countInput).val();
             		var price = "${product.price}";
             		var total = (price * count).format();
-
+					
+            		productJs.getProductStock(pdNo, function(stock) {
+            			if(count > stock) {
+	            			alert("재고가 부족합니다.");
+	            			$(countInput).val(stock);
+	            			count = stock;
+            			}
+            		});
+            		
             		if(count === '0' || count === '') {
             			alert("최소 주문수량은 1개 입니다.");
             			$(countInput).val(1);
@@ -431,8 +437,6 @@
             		duplCheckArr = jQuery.grep(duplCheckArr, function(value) {
                         return value != pdNo;
                     });
-            		
-            		console.log("삭제 후 듀플 : " + duplCheckArr);
             		
             	} // removeOrderProd
             	

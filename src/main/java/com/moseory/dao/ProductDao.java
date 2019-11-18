@@ -26,6 +26,8 @@ public interface ProductDao {
 	
 	int getProductDetailNo(Map<String, Object> param);
 	
+	int getProductStock(int product_detail_no);
+	
 	int getReviewCount(int product_code);
 
 	int getQnaCount(int product_code);

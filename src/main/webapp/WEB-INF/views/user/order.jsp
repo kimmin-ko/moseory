@@ -278,7 +278,7 @@
 				// 할인 합계
 				var sum_discount = 0;
 				// 배송비
-				var delevery_charge = 0;
+				var delivery_charge = 0;
 				// 오리지널 주문 금액
 				var origin_prod_price = ${origin_product_price};
 				
@@ -296,15 +296,15 @@
 				
 				// 배송비
 				<c:if test="${origin_product_price >= 50000 || origin_product_price == 0 }">
-					$(".delevery_charge").text("무료");
+					$(".delivery_charge").text("무료");
 				</c:if>
 				<c:if test="${origin_product_price < 50000 && origin_product_price != 0 }">
-					$(".delevery_charge").text("3,000원");
-					delevery_charge = 3000;
+					$(".delivery_charge").text("3,000원");
+					delivery_charge = 3000;
 				</c:if>
 				
-				// 최종 결제 금액 (total_discount와 delevery_charge보다 뒤에 선언)
-				var final_order_price = origin_prod_price + delevery_charge - total_discount;
+				// 최종 결제 금액 (total_discount와 delivery_charge보다 뒤에 선언)
+				var final_order_price = origin_prod_price + delivery_charge - total_discount;
 				
 				// 회원 등급 할인, 합계 할인 초기화
 				$(".total_discount, .sum_discount").text('-' + total_discount.format());
@@ -339,7 +339,7 @@
 					
 					// 합계 할인
 					sum_discount = total_discount + point;
-					var input_final_order_price = origin_prod_price + delevery_charge - sum_discount;
+					var input_final_order_price = origin_prod_price + delivery_charge - sum_discount;
 					
 					if(point == 0) $(".use_point").text('0');
 					else $(".use_point").text('-' + point.format());
@@ -595,7 +595,7 @@
 								<td><fmt:formatNumber value="${product_saving }"
 										pattern="#,###" /></td>
 								<!-- 배송비 -->
-								<td><span class="delevery-charge"> <c:if
+								<td><span class="delivery-charge"> <c:if
 											test="${origin_product_price >= 50000 || origin_product_price == 0 }">
 	                    		무료
 	                    		</c:if> <c:if
@@ -765,7 +765,7 @@
 	                </ul>
 	                <ul>
 	                    <li>배송비</li>
-	                    <li><span class="delevery_charge"></span> 
+	                    <li><span class="delivery_charge"></span> 
 	                    <span class="add-explan">(50,000원 이상 구매시 무료)</span></li>
 	                </ul>
 	            </div>
@@ -785,7 +785,7 @@
 	                </ul>
 	                <ul>
 	                    <li>배송비</li>
-	                    <li><span class="delevery_charge"></span></li>
+	                    <li><span class="delivery_charge"></span></li>
 	                </ul>
 	                <ul>
 	                    <li>총 적립금</li>

@@ -112,6 +112,16 @@
 		</if>
 	</select>
 	
+	<!-- 해당 상품 디테일의 재고 조회 -->
+	<select id="getProductStock" resultType="int">
+	SELECT
+		product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		no = #{product_detail_no}
+	</select>
+	
 	<!-- 해당 상품의 리뷰 개수 조회 -->
 	<select id="getReviewCount" resultType="int">
 	SELECT
