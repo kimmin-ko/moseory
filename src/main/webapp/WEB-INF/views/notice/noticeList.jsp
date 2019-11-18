@@ -56,7 +56,7 @@
 			//게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
 			$(".move").on("click",function(e){
 				e.preventDefault();
-				actionForm.append("<input type ='hidden' name='NO' value ='"+$(this).attr("href")+"'>");
+				actionForm.append("<input type ='hidden' name='no' value ='"+$(this).attr("href")+"'>");
 				actionForm.attr("action","/notice/noticeGet");
 				actionForm.submit();
 			})
@@ -92,17 +92,17 @@
 						<c:forEach items="${list}" var="list">
 							<tr>
 								<!-- NO -->
-								<td>${list.NO}</td>
+								<td>${list.no}</td>
 								<!-- TITLE -->
 								<td>
-									<a class ='move' href ='<c:out value="${list.NO}"/>'><c:out value ="${list.TITLE }"/></a>
+									<a class ='move' href ='<c:out value="${list.no}"/>'><c:out value ="${list.title }"/></a>
 								</td>
 								<!-- NAME -->
 								<td>모서리</td>
 								<!-- DATE -->
-								<td>${list.REG_DATE}</td>
+								<td>${list.reg_date}</td>
 								<!-- HIT -->
-								<td>${list.HIT}</td>
+								<td>${list.hit}</td>
 							</tr>
 						</c:forEach>	
 					</tbody>
@@ -118,17 +118,17 @@
 				<nav>
 					<ul class="pagination">
 						<c:if test ="${pageMaker.prev}">
-							<li class ="button_previous"><a href="${pageMaker.startPage-1 }">이전</a></li>
+							<li class ="paginate_button previous"><a href="${pageMaker.startPage-1 }">이전</a></li>
 						</c:if>
 						
 						<c:forEach var="num" begin ="${pageMaker.startPage }" end = "${pageMaker.endPage }">
-							<li class ="paginate_button ${pageMaker.cri.pageNum == num ?  "active":"" }"><a href="${num }">${num }</a></li>
+							<li class ="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a href="${num }">${num }</a></li>
 						</c:forEach>
 						
 						<c:if test ="${pageMaker.next }">
-							<li class ="button_next"><a href="${pageMaekr.endPage+1 }">다음</a></li>
+							<li class ="paginate_button next"><a href="${pageMaker.endPage+1 }">다음</a></li>
 						</c:if>
-						</li>
+						
 					</ul>
 				</nav>
 			</div>
@@ -150,6 +150,7 @@
 			</div>
 
 		</div>
+		
 		<!-- row -->
 		<!-- Notice End -->
 		<form id ="actionForm" action ="/notice/noticeList" method ="get">

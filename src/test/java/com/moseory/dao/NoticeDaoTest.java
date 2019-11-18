@@ -27,11 +27,6 @@ public class NoticeDaoTest {
 
 	private NoticeVO board1;
 
-
-	@Test 
-	public void testGetList() { 
-		dao.noticeList().forEach(board -> log.info(board)); 
-	}
 	
 
 	@Test
@@ -40,7 +35,7 @@ public class NoticeDaoTest {
 		cri.setPageNum(3);
 		cri.setAmount(10);
 		List<NoticeVO> list = dao.getListWithPaging(cri);
-		list.forEach(board -> log.info(board.getNO()));
+		list.forEach(board -> log.info(board.getNo()));
 	}
 	
 	

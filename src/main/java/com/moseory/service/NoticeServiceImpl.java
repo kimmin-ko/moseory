@@ -28,6 +28,7 @@ public class NoticeServiceImpl implements NoticeService  {
 	@Override
 	public NoticeVO read(int b_no) {
 		log.info("read Notice board" + b_no);
+		dao.viewCount(b_no);
 		return dao.read(b_no);
 	}
 	
@@ -43,15 +44,17 @@ public class NoticeServiceImpl implements NoticeService  {
 		dao.update(vo);
 	}
 
-	/*
-	 * @Override public List<NoticeVO> noticeList() { log.info("read Notice List");
-	 * return dao.noticeList(); }
-	 */
 	
 	@Override
 	public List<NoticeVO> getListWithPaging(Criteria cri){
 		log.info("get List with paging" + cri);
 		return dao.getListWithPaging(cri);
+	}
+	
+	@Override
+	public int totalCount(Criteria cri) {
+		log.info("get total count");
+		return dao.totalCount(cri);
 	}
 	
 }

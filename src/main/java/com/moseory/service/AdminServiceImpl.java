@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.moseory.dao.AdminDao;
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -49,7 +50,7 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public int saveParentsCategory(List<Integer> code, List<String> name) {
+	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname) {
 
 		// return : 0 err 
 		// return : 1  정상
@@ -61,6 +62,7 @@ public class AdminServiceImpl implements AdminService{
 			for(int i=0; i<code.size();i++) {
 				vo.setCode(code.get(i));
 				vo.setName(name.get(i));
+				vo.setKname(kname.get(i));
 				adminDao.saveParentsCategory(vo);
 			}
 			
@@ -81,4 +83,61 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getProductCount();
 	}
 
+	public int deleteParentsCategory(ArrayList<Integer> codes) {
+
+		int status = 0;
+		
+		try {
+			status = adminDao.deleteParentsCategory(codes);
+		}catch(Exception e) {
+			e.printStackTrace();
+			status = 0;
+		}
+		
+		return status;
+	}
+
+	@Override
+	public List<LowCateVO> getChildCategory(int highCode) {
+		return adminDao.getChildCategory(highCode);
+	}
+
+	@Override
+	public int saveChildCategory(List<Integer> code, List<String> name, List<Integer> highCode) {
+		// return : 0 err 
+		// return : 1  정상
+		int status = 0;
+		LowCateVO vo = new LowCateVO();;
+		
+		if(code.size() == name.size()) {
+			
+			for(int i=0; i<code.size();i++) {
+				vo.setCode(code.get(i));
+				vo.setName(name.get(i));
+				vo.setHigh_code(highCode.get(i));
+				adminDao.saveChildCategory(vo);
+			}
+			
+			status = 1;
+		}else {
+			status = 0;
+		}
+		return status;
+	}
+
+	@Override
+	public int deleteChildCategory(ArrayList<Integer> codes) {
+
+		int status = 0;
+		
+		try {
+			status = adminDao.deleteChildCategory(codes);
+		}catch(Exception e) {
+			e.printStackTrace();
+			status = 0;
+		}
+		
+		return status;
+	}
+	
 }	

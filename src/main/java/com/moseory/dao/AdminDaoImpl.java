@@ -1,14 +1,17 @@
 package com.moseory.dao;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -44,9 +47,23 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public void saveParentsCategory(HighCateVO vo) {
-		System.out.println(vo.toString());
 		sqlSession.insert("AdminMapper.saveParentsCategory", vo);
-		
+	}
+	@Override
+	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes) {
+		return sqlSession.delete("AdminMapper.deleteParentsCategory", codes);
+	}
+	@Override
+	public List<LowCateVO> getChildCategory(int highCode) {
+		return sqlSession.selectList("AdminMapper.getChildCategory", highCode);
+	}
+	@Override
+	public void saveChildCategory(LowCateVO vo) {
+		sqlSession.insert("AdminMapper.saveChildCategory", vo);		
+	}
+	@Override
+	public int deleteChildCategory(@Param(value = "codes") ArrayList<Integer> codes) {
+		return sqlSession.delete("AdminMapper.deleteChildCategory", codes);
 	}
 	@Override
 	public List<ProductVO> getProductList(int start, int finish) {

@@ -12,6 +12,7 @@
 	
 	<typeAliases>
 		<typeAlias alias="MemberVO" type="com.moseory.domain.MemberVO" />
+		<typeAlias alias="NoticeVO" type="com.moseory.domain.NoticeVO" />
 		<typeAlias alias="ReviewVO" type="com.moseory.domain.ReviewVO" />
 		<typeAlias alias="QnAVO" type="com.moseory.domain.QnAVO" />
 		<typeAlias alias="WishListVO" type="com.moseory.domain.WishListVO" />
@@ -20,6 +21,7 @@
 		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO" />
 		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO" />
 		<typeAlias alias="HighCateVO" type="com.moseory.domain.HighCateVO" />
+		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
 		
 		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
 	</typeAliases>

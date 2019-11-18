@@ -39,9 +39,10 @@
 	
 	<select id="getHighCate" resultType="HighCateVO">
 	SELECT
-		code, name
+		code, name, kname
 	FROM
 		tbl_high_cate
+	ORDER BY code ASC
 	</select>
 	
 </mapper>

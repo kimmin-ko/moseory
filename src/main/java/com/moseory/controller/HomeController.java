@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.moseory.domain.HighCate;
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.HomeService;
 
@@ -35,9 +35,9 @@ public class HomeController {
 	    model.addAttribute("productNew", productNew);
 	    
 	    // HighCate를 가져옴
-	    List<HighCate> highCateList = homeService.readHighCate();
+	    List<HighCateVO> highCateList = homeService.readHighCate();
 	    
-	    application.setAttribute("outer", highCateList.get(0));
+	    application.setAttribute("highCateList", highCateList);
 	}
 	
 }
