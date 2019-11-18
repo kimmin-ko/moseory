@@ -37,4 +37,6 @@ public interface AdminService {
 	//하위 카테고리 저장
 	public int saveChildCategory(List<Integer> code, List<String> name, List<Integer> highCode);
 	
+	//상위 카테고리 삭제
+	public int deleteChildCategory(ArrayList<Integer> codes);
 }

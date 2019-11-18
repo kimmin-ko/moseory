@@ -145,7 +145,7 @@ public class AdminController {
 	public @ResponseBody int deleteParentsCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
 		int result = 0;
 		for(int i =0; i < codes.size(); i++) {
-			log.info(" code : " + codes.get(i) + " Category Delete Request");
+			log.info(" code : " + codes.get(i) + " deleteParentsCategory  List :");
 		}
 		result = adminService.deleteParentsCategory(codes);
 		return result;
@@ -158,9 +158,8 @@ public class AdminController {
 		List<LowCateVO> lowCategory = new ArrayList<LowCateVO>();
 		
 		lowCategory= adminService.getChildCategory(highCode);
-		System.out.println(lowCategory);
+		model.addAttribute("preHighCode", highCode);
     	model.addAttribute("childCategoryList", lowCategory);
-    	
 		return "admin/lowCategory";
     }
 	
@@ -176,6 +175,16 @@ public class AdminController {
 			model.addAttribute("msg", "저장되었습니다.");
 		}
 		return "redirect:/admin/category";
+	}
+	
+	@PostMapping("/deleteChildCategory")
+	public @ResponseBody int deleteChildCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
+		int result = 0;
+		for(int i =0; i < codes.size(); i++) {
+			log.info(" code : " + codes.get(i) + " deleteChildCategory List : ");
+		}
+		result = adminService.deleteChildCategory(codes);
+		return result;
 	}
 	
 

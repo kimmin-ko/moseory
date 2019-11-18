@@ -47,7 +47,6 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public void saveParentsCategory(HighCateVO vo) {
 		sqlSession.insert("AdminMapper.saveParentsCategory", vo);
-		
 	}
 	@Override
 	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes) {
@@ -59,8 +58,11 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public void saveChildCategory(LowCateVO vo) {
-		sqlSession.insert("AdminMapper.saveChildCategory", vo);
-		
+		sqlSession.insert("AdminMapper.saveChildCategory", vo);		
+	}
+	@Override
+	public int deleteChildCategory(@Param(value = "codes") ArrayList<Integer> codes) {
+		return sqlSession.delete("AdminMapper.deleteChildCategory", codes);
 	}
 
 }

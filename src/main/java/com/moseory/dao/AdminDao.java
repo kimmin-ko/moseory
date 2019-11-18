@@ -37,4 +37,7 @@ public interface AdminDao {
 	//하위 카테고리 저장
 	public void saveChildCategory(LowCateVO vo);
 	
+	//하위 카테고리 삭제
+	public int deleteChildCategory(@Param(value = "codes") ArrayList<Integer> codes);
+	
 }

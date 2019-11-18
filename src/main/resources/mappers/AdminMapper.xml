@@ -68,5 +68,11 @@
                                  VALUES (#{code}, #{name}, #{high_code} )
 	</insert>
 	
+	<delete id="deleteChildCategory" parameterType="java.util.ArrayList">
+		DELETE FROM tbl_low_cate WHERE code IN
+		<foreach collection="list" item="codes" index="index" open="(" close=")" separator=",">
+            ${codes}
+        </foreach>
+	</delete>
 	
 </mapper>

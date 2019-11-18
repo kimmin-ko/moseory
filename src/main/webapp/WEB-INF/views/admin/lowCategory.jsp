@@ -16,6 +16,7 @@ var message = "${msg}";
 if(message != ""){
 	alert(message);
 }
+var preHighCode = "${preHighCode}";
 </script>
 <body>
     
@@ -58,8 +59,8 @@ if(message != ""){
 							<tr>
 								<td><label><input type="checkbox"  name="row-idx" value="${model.code}" style="top: 9px;" /></label></td>
 								<td><input type="text" class="form-control" name="highCode" value="${model.high_code}" readOnly></td>
-								<td><input type="text" class="form-control" name="code" value="${model.code}"></td>
-								<td><input type="text" class="form-control" name="name" value="${model.name}"></td>
+								<td><input type="text" class="form-control" name="code" value="${model.code}" readOnly></td>
+								<td><input type="text" class="form-control" name="name" value="${model.name}" maxlength="25"></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -70,8 +71,9 @@ if(message != ""){
 			<div class="col-md-10 col-md-offset-1" style="text-align : center; margin-bottom: 80px;">
 				<button type="button" class="btn btn-default btn-sm" 
 	            	style="background-color: black; color: white;" name="deleteBtn">선택 목록 삭제</button>
-	            <button type="submit" class="btn btn-default btn-sm" name="addBtn">추가</button>
+	            <button type="button" class="btn btn-default btn-sm" name="addBtn">추가</button>
 	            <button type="button" class="btn btn-default btn-sm" name="saveBtn">저장</button>
+	            <button type="button" class="btn btn-default btn-sm" name="backBtn">뒤로가기</button>
 	        </div>
     </div>  
     <!-- Category End -->
@@ -102,13 +104,14 @@ function EventFunction(){
 	$("button[name='addBtn']").click(function(){
 		var LastTr = $("#cateTable > tbody:last-child");
 		var addHTML = "";
-		var highCode = $("input[name=highCode]").val();
+		
+		var numberCheck='this.value=this.value.replace(/[^0-9]/g,"")';
 		
 		addHTML += "<tr>";
 		addHTML += 	  "<td><label><input type='checkbox'  name='row-idx' value='' style='top: 9px;' /></label></td>";
-		addHTML += 	  "<td><input type='text' class='form-control' name='highCode' value="+highCode+" readOnly ></td>";
-		addHTML += 	  "<td><input type='text' class='form-control' name='code' value=''></td>";
-		addHTML += 	  "<td><input type='text' class='form-control' name='name' value=''></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='highCode' value="+preHighCode+" readOnly ></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='code' value='' onkeyup="+numberCheck+" maxlength='3'"></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='name' value='' maxlength='25'></td>";
 		addHTML += "</tr>";
 		LastTr.append(addHTML);
 	});	
@@ -138,7 +141,7 @@ function EventFunction(){
 		
 		if(confirm("카테고리 삭제 시 관련 상품도 삭제가 됩니다. 정말 삭제하시겠습니까?")){
 			$.ajax({
-				url : "/admin/deleteParentsCategory",
+				url : "/admin/deleteChildCategory",
 				method : "post",
 				traditional : true,
 				data : {"codes" : _d},
@@ -148,7 +151,7 @@ function EventFunction(){
 					}else{
 						alert("시스템 에러");
 					}
-					document.location.reload();
+					document.location.href = "/admin/category";
 				}
 			});
 		}
@@ -158,13 +161,37 @@ function EventFunction(){
 	//저장버튼 클릭시
 	$("button[name='saveBtn']").click(function(){
 		var form = $("#form");
-		form.submit();
+		var flag = true;
+		$('input[name="code"]').each(function(index, item){			
+			if($(this).val() == null || $(this).val() == ""){
+				$(this).focus();
+				flag = false;
+			}
+		});
+		$('input[name="name"]').each(function(index, item){			
+			if($(this).val() == null || $(this).val() == ""){
+				$(this).focus();
+				flag = false;
+			}
+		});
+		
+		if(flag == true){
+			form.submit();			
+		}else{
+			alert("빈 칸을 채워주세요.");
+		}
 	});
-
+	
+	//뒤로가기
+	$("button[name='backBtn']").click(function(){
+		window.location.href="/admin/category"
+	});
+	
 }
 
 $(document).ready(function(){
 	EventFunction();
+
 })
 
 

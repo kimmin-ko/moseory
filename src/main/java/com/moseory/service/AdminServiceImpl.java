@@ -116,4 +116,19 @@ public class AdminServiceImpl implements AdminService{
 		return status;
 	}
 
+	@Override
+	public int deleteChildCategory(ArrayList<Integer> codes) {
+
+		int status = 0;
+		
+		try {
+			status = adminDao.deleteChildCategory(codes);
+		}catch(Exception e) {
+			e.printStackTrace();
+			status = 0;
+		}
+		
+		return status;
+	}
+	
 }	
