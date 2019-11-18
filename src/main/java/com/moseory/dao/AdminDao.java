@@ -22,5 +22,9 @@ public interface AdminDao {
 	public List<HighCateVO> getPrantCategory();
 	
 	public void saveParentsCategory(HighCateVO vo);
+
+	List<ProductVO> getProductList(int start, int finish);
+
+	int getProductCount();
 	
 }

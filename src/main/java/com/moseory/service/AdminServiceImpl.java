@@ -71,4 +71,14 @@ public class AdminServiceImpl implements AdminService{
 		return status;
 	}
 
+	@Override
+	public List<ProductVO> getProductList(int start, int finish) {
+		return adminDao.getProductList(start, finish);
+	}
+
+	@Override
+	public int getProductCount() {
+		return adminDao.getProductCount();
+	}
+
 }	

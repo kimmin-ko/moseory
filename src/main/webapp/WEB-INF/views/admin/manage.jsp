@@ -55,7 +55,7 @@
 						<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">상품 관리</a></h6>
+						<h6><a href="${pageContext.request.contextPath }/admin/productlist">상품 관리</a></h6>
 						<p>
 							상품을 모아보고 <br>
 							관리하는 공간입니다.

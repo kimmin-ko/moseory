@@ -1,5 +1,7 @@
 package com.moseory.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
+import com.moseory.util.PagingUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -38,7 +41,7 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-
+	
 	@GetMapping("/productregist")
 	public String productRegist() { 
 
@@ -143,18 +146,23 @@ public class AdminController {
 	}
    
 
-
-//	private static List<ProductDetailVO> testDetailInfo = new ArrayList<ProductDetailVO>();
-//	private Map<String, Object> mapTest = new HashMap<>();
-//	@PostMapping(value = "/detailTest", consumes = "application/json")
-//	public void testProductInfo(@RequestBody Map<String,Object> detailInfo) {
-//		System.out.println(detailInfo);
-//		log.info("detailInfo = " + detailInfo);
-//	public void testProductInfo(@RequestBody ProductDetailVO productDetail) {
-//		testDetailInfo.add(productDetail);
+	@GetMapping("/productlist")
+	public String productList(@RequestParam(defaultValue = "1") int curPage, Model model) {
+		int totalCnt = adminService.getProductCount();
+		PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
+		List <ProductVO> productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
+		List <String> highCates = new ArrayList<String>();
+		List <String> lowCates = new ArrayList<String>();
 		
-//		log.info("productDetail : " + productDetail);
-//	}
+		for(int i = 0; i < productList.size(); i++) {
+			highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
+			lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
+		}
+		model.addAttribute("productList", productList);
+		model.addAttribute("paging",pagingUtil);
+		model.addAttribute("highCates", highCates);
+		model.addAttribute("lowCates", lowCates);
+		return "admin/productlist";
+	}
 	
-
 }

@@ -24,5 +24,10 @@ public interface AdminService {
 	public List<HighCateVO> getPrantCategory();
 	
 	public int saveParentsCategory(List<Integer> code, List<String> name);
+
+	List<ProductVO> getProductList(int start, int finish);
+
+	int getProductCount();
+	
 	
 }

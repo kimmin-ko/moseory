@@ -1,58 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
-		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-		
-	<!-- java 파일의 annotation을 인식 -->
-	<context:annotation-config />
-	
-	<!-- java class를 spring bean으로 등록 -->
-	<context:component-scan base-package="com.moseory.service" />
-	<context:component-scan base-package="com.moseory.dao" />
-	<context:component-scan base-package="com.moseory.util" />
-	
-	
-	<!-- HikariCP를 사용하기 위한 설정 -->
- 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@13.209.4.52:1521:xe" />
-		<property name="username" value="moseory" />
-		<property name="password" value="moseory" />
-	</bean>
-	
-	<!--   HikariCP를 이용하는 DataSource -->
- 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
-	</bean>
-	
-	<!--  mybatis mapping 및 jdbc template -->
- 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:/mybatis-config.xml" />
-		<property name="mapperLocations" value="classpath:/mappers/*Mapper.xml" />
-	</bean>
-	
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />	
-	</bean>
-	
-	<!-- Transaction을 이용하기 위한 Manager 정의 -->
- 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<tx:annotation-driven />
-	
+
+<beans xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+<!-- java 파일의 annotation을 인식 -->
+
+
+<context:annotation-config/>
+
+<!-- java class를 spring bean으로 등록 -->
+
+
+<context:component-scan base-package="com.moseory.service"/>
+
+<context:component-scan base-package="com.moseory.dao"/>
+
+<context:component-scan base-package="com.moseory.util"/>
+
+<!-- HikariCP를 사용하기 위한 설정 -->
+
+
+
+<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
+
+<property value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" name="driverClassName"/>
+
+<property value="jdbc:log4jdbc:oracle:thin:@13.209.4.52:1521:xe" name="jdbcUrl"/>
+
+<property value="moseory" name="username"/>
+
+<property value="moseory" name="password"/>
+
+</bean>
+
+<!-- HikariCP를 이용하는 DataSource -->
+
+
+
+<bean class="com.zaxxer.hikari.HikariDataSource" id="dataSource" destroy-method="close">
+
+<constructor-arg ref="hikariConfig"/>
+
+</bean>
+
+<!-- mybatis mapping 및 jdbc template -->
+
+
+
+<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+
+<property name="dataSource" ref="dataSource"/>
+
+<property value="classpath:/mybatis-config.xml" name="configLocation"/>
+
+<property value="classpath:/mappers/*Mapper.xml" name="mapperLocations"/>
+
+</bean>
+
+
+<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+
+<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+
+</bean>
+
+<!-- Transaction을 이용하기 위한 Manager 정의 -->
+
+
+
+<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+
+<property name="dataSource" ref="dataSource"/>
+
+</bean>
+
+<tx:annotation-driven/>
+
 </beans>

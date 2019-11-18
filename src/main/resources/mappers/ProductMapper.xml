@@ -255,8 +255,19 @@
 	<select id="getLowCate" parameterType="int" resultType="String">
 		select name from tbl_low_cate
 			where code = #{code}
+	</select>   
+	   
+	<!-- 상품 페이지별 조회 -->
+	<select id="getProductCount" resultType = "int">
+		select count(*) from tbl_product
 	</select>
 	
+	<!-- 상품 전체/검색된 리스트 카운트 -->
+	<select id="getProductList" parameterType="map" resultType="productVO">
+		select * from (
+			select A.*, rownum as rn from tbl_product A order by code) 
+		where rn between #{start} and #{finish}
+	</select>
 </mapper>
 
 
