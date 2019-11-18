@@ -3,6 +3,7 @@ package com.moseory.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
@@ -63,6 +64,21 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int deleteChildCategory(@Param(value = "codes") ArrayList<Integer> codes) {
 		return sqlSession.delete("AdminMapper.deleteChildCategory", codes);
+	}
+	@Override
+	public List<ProductVO> getProductList(int start, int finish) {
+		//1 페이지 = 1~ 10
+		//2 페이지 = 11~20
+		//3 페이지 = 21~30
+		//~~
+		System.out.println(start + "" +finish);
+		Map<String, Integer> param = Map.of("start", start, "finish", finish);
+		System.out.println(sqlSession.selectList("product.getProductList",param));
+		return sqlSession.selectList("product.getProductList",param);
+	}
+	@Override
+	public int getProductCount() {
+		return sqlSession.selectOne("product.getProductCount");
 	}
 
 }

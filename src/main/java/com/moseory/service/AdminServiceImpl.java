@@ -74,6 +74,15 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
+	public List<ProductVO> getProductList(int start, int finish) {
+		return adminDao.getProductList(start, finish);
+	}
+
+	@Override
+	public int getProductCount() {
+		return adminDao.getProductCount();
+	}
+
 	public int deleteParentsCategory(ArrayList<Integer> codes) {
 
 		int status = 0;

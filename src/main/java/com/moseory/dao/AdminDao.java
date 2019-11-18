@@ -28,6 +28,9 @@ public interface AdminDao {
 	//상위 카테고리 저장
 	public void saveParentsCategory(HighCateVO vo);
 
+	List<ProductVO> getProductList(int start, int finish);
+
+	int getProductCount();
 	//상위 카테고리 삭제
 	public int deleteParentsCategory(@Param(value = "codes") ArrayList<Integer> codes);
 	

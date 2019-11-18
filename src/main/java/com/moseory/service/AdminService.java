@@ -25,6 +25,12 @@ public interface AdminService {
 	//상위 카테고리 목록
 	public List<HighCateVO> getPrantCategory();
 	
+	public int saveParentsCategory(List<Integer> code, List<String> name);
+
+	List<ProductVO> getProductList(int start, int finish);
+
+	int getProductCount();
+	
 	//상위 카테고리 저장
 	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname);
 	
