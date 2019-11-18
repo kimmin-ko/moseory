@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -144,12 +145,48 @@ public class AdminController {
 	public @ResponseBody int deleteParentsCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
 		int result = 0;
 		for(int i =0; i < codes.size(); i++) {
-			log.info(" code : " + codes.get(i) + " Category Delete Request");
+			log.info(" code : " + codes.get(i) + " deleteParentsCategory  List :");
 		}
 		result = adminService.deleteParentsCategory(codes);
 		return result;
 	}
 
+	@GetMapping("/lowCategory")
+    public String lowCategory(@RequestParam("highCode") int highCode, HttpServletRequest req, Model model) {
+		
+    	
+		List<LowCateVO> lowCategory = new ArrayList<LowCateVO>();
+		
+		lowCategory= adminService.getChildCategory(highCode);
+		model.addAttribute("preHighCode", highCode);
+    	model.addAttribute("childCategoryList", lowCategory);
+		return "admin/lowCategory";
+    }
+	
+	@PostMapping("/saveChildCategory")
+	public String saveChildCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+			, @RequestParam("highCode") List<Integer> highCode , HttpServletRequest req, HttpServletResponse res, Model model) {
+		
+		int status = 0;
+		status = adminService.saveChildCategory(code, name, highCode);
+		if(status == 0) {
+			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+		}else {
+			model.addAttribute("msg", "저장되었습니다.");
+		}
+		return "redirect:/admin/category";
+	}
+	
+	@PostMapping("/deleteChildCategory")
+	public @ResponseBody int deleteChildCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
+		int result = 0;
+		for(int i =0; i < codes.size(); i++) {
+			log.info(" code : " + codes.get(i) + " deleteChildCategory List : ");
+		}
+		result = adminService.deleteChildCategory(codes);
+		return result;
+	}
+	
 
 //	private static List<ProductDetailVO> testDetailInfo = new ArrayList<ProductDetailVO>();
 //	private Map<String, Object> mapTest = new HashMap<>();

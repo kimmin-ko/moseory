@@ -21,6 +21,7 @@
 		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO" />
 		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO" />
 		<typeAlias alias="HighCateVO" type="com.moseory.domain.HighCateVO" />
+		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
 		
 		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
 	</typeAliases>

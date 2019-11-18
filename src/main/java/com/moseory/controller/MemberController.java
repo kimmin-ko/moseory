@@ -55,21 +55,22 @@ public class MemberController {
     @PostMapping("/loginProc")
     public String loginProc(@RequestParam Map<String, Object> param, HttpServletRequest req, HttpServletResponse res, Model model) {
     	log.info("Contorller loginProc param ["+ param.toString() +"]");
-    	MemberVO vo = memberService.loginProc(param);
     	
+    	if(req.getParameter("inputPassword") == null || req.getParameter("inputPassword").toString().equals("")) {
+			model.addAttribute("msg", "비밀번호를 입력해주세요");
+    		return "member/login";
+    	}
+    	
+    	MemberVO vo = memberService.loginProc(param);
+    	    	
     	if(vo == null) {
-    		if(vo.getPassword().equals("") || vo.getPassword() == null) {
-    			model.addAttribute("msg", "비밀번호를 입력해주세요");
-        		return "member/login";
-    		}else {
-				model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
-				return "member/login";
-    		}
-    		
+    		model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
+    		return "member/login";
     	}else {
     		model.addAttribute("user", vo);
     		return "index";
     	}
+    	
     }
 
     @GetMapping("/findId")
