@@ -13,19 +13,19 @@
 <link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/notice.css">
 <script src="/resources/ckeditor/ckeditor.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>모서리</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/notice.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모서리</title>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="/css/bootstrap.css">
+<link rel="stylesheet" href="/css/notice.css">
 </head>
 
 <body>
 
 
 	<%@ include file="../includes/sidebar.jsp"%>
-	
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var result = '<c:out value="${result}"/>';
@@ -87,16 +87,14 @@
 					</thead>
 
 					<tbody>
-					
 					<tbody>
 						<c:forEach items="${list}" var="list">
 							<tr>
 								<!-- NO -->
 								<td>${list.no}</td>
 								<!-- TITLE -->
-								<td>
-									<a class ='move' href ='<c:out value="${list.no}"/>'><c:out value ="${list.title }"/></a>
-								</td>
+								<td><a class='move' href='<c:out value="${list.no}"/>'><c:out
+											value="${list.title }" /></a></td>
 								<!-- NAME -->
 								<td>모서리</td>
 								<!-- DATE -->
@@ -104,10 +102,10 @@
 								<!-- HIT -->
 								<td>${list.hit}</td>
 							</tr>
-						</c:forEach>	
+						</c:forEach>
 					</tbody>
-					
-				
+
+
 
 					</tbody>
 				</table>
@@ -117,18 +115,22 @@
 				style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">
-						<c:if test ="${pageMaker.prev}">
-							<li class ="paginate_button previous"><a href="${pageMaker.startPage-1 }">이전</a></li>
+						<c:if test="${pageMaker.prev}">
+							<li class="paginate_button previous"><a
+								href="${pageMaker.startPage-1 }">이전</a></li>
 						</c:if>
-						
-						<c:forEach var="num" begin ="${pageMaker.startPage }" end = "${pageMaker.endPage }">
-							<li class ="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a href="${num }">${num }</a></li>
+
+						<c:forEach var="num" begin="${pageMaker.startPage }"
+							end="${pageMaker.endPage }">
+							<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a
+								href="${num }">${num }</a></li>
 						</c:forEach>
-						
-						<c:if test ="${pageMaker.next }">
-							<li class ="paginate_button next"><a href="${pageMaker.endPage+1 }">다음</a></li>
+
+						<c:if test="${pageMaker.next }">
+							<li class="paginate_button next"><a
+								href="${pageMaker.endPage+1 }">다음</a></li>
 						</c:if>
-						
+
 					</ul>
 				</nav>
 			</div>
@@ -150,26 +152,26 @@
 			</div>
 
 		</div>
-		
+
 		<!-- row -->
 		<!-- Notice End -->
-		<form id ="actionForm" action ="/notice/noticeList" method ="get">
-			<input type='hidden' name='pageNum' value ="${pageMaker.cri.pageNum }">
-			<input type='hidden' name='amount' value ="${pageMaker.cri.amount }">
+		<form id="actionForm" action="/notice/noticeList" method="get">
+			<input type='hidden' name='pageNum' value="${pageMaker.cri.pageNum }">
+			<input type='hidden' name='amount' value="${pageMaker.cri.amount }">
 		</form>
 
 
 
 	</div>
-	
+
 	<!--  Modal 추가 -->
-	<div class ="modal fade" id="myModal" tabindex ="-1" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
-					aria-hidden="true">&times;</button>
+						aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">게시글 확인</h4>
 				</div>
 				<div class="modal-body">처리가 완료 되었습니다</div>
