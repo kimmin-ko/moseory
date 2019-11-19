@@ -93,7 +93,7 @@ public class UserController {
 	
 	return "/user/modify";
     }
-    
+
     // 회원 정보 수정
     @PostMapping("/modifyProc")
     public String modify(@ModelAttribute MemberVO member, HttpSession session) {

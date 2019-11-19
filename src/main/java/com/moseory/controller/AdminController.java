@@ -37,138 +37,140 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/admin")
 public class AdminController {
 
-	@Autowired
-	private AdminService adminService;
+    @Autowired
+    private AdminService adminService;
 
-	@GetMapping("/productregist")
-	public String productRegist() { 
+    @GetMapping("/productregist")
+    public String productRegist() {
 
-		return "admin/productregist";
+	return "admin/productregist";
+    }
+
+    private static List<ProductDetailVO> detailInfo = new ArrayList<ProductDetailVO>();
+
+    @PostMapping(value = "/productInfo", consumes = "application/json")
+    public void productInfo(@RequestBody ProductDetailVO productDetailVO) {
+	detailInfo.add(productDetailVO);
+	log.info("detailInfo = " + detailInfo);
+    }
+
+    @PostMapping("/productregist")
+    public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request)
+	    throws IllegalStateException, IOException {
+	
+	
+	/* 파일 시작 */
+	String high_cate = adminService.getHighCate(productVO.getHigh_code());
+	String low_cate = adminService.getLowCate(productVO.getLow_code());
+//	파일 이름 불러와서 폴더경로 + 파일이름
+	String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
+	MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+	List<MultipartFile> files = multipartRequest.getFiles("files");
+	// 경로가 없으면 디렉토리 생성
+	File file = new File(save_path);
+	if (file.exists() == false) {
+	    file.mkdirs();
 	}
-
-	private static List<ProductDetailVO> detailInfo = new ArrayList<ProductDetailVO>();
-	private Map<String, Object> map = new HashMap<>();
-	@PostMapping(value = "/productInfo", consumes = "application/json")
-	public void testProductInfo(@RequestBody Map<String,Object> detailInfo) {
-		System.out.println(detailInfo);
-		log.info("detailInfo = " + detailInfo);
-
+	String file_name = "";
+	for (int i = 0; i < files.size(); i++) {
+	    // 파일명이 같을 수도 있기 때문에
+	    // 랜덤36문자_받아온파일이름
+	    // 으로 파일 저장
+	    UUID random = UUID.randomUUID();
+	    String fileName = random.toString() + "_" + files.get(i).getOriginalFilename();
+	    file_name = file_name + "@" + fileName;
+	    System.out.println("file_name = " + file_name);
+	    System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+	    file = new File(save_path + fileName);
+	    files.get(i).transferTo(file);
 	}
+	
+	productVO.setFile_name(file_name);
+	productVO.setFile_path(save_path);
+	
+	/* product DB */
+	adminService.product_regist(productVO);
+	int code = adminService.setCode(productVO.getName());
 
-	@PostMapping("/productregist")
-		public String productRegist(@ModelAttribute ProductVO productVO,
-				 HttpServletRequest request) throws IllegalStateException, IOException {
-		
-		String high_cate = adminService.getHighCate(productVO.getHigh_code());
-		String low_cate = adminService.getLowCate(productVO.getLow_code());
-//		파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		List<MultipartFile> files = multipartRequest.getFiles("files");
-		//경로가 없으면 디렉토리 생성
-		File file = new File(save_path);
-		if(file.exists() == false) {
-			file.mkdirs();
-		}
-		String file_name = "";
-		for(int i = 0; i < files.size(); i++) {
-			//파일명이 같을 수도 있기 때문에
-			//랜덤36문자_받아온파일이름
-			//으로 파일 저장
-			UUID random = UUID.randomUUID();
-			String fileName = random.toString()+"_"+files.get(i).getOriginalFilename();
-			file_name = file_name + "@" + fileName;
-			System.out.println("file_name = " + file_name);
-			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
-			file = new File(save_path+fileName);
-			files.get(i).transferTo(file);
-			
-		}
-		productVO.setFile_name(file_name);
-		productVO.setFile_path(save_path);
-		adminService.product_regist(productVO);
-		int code = adminService.setCode(productVO.getName());
-		
-		for(int i = 0; i < detailInfo.size(); i++) {
-			ProductDetailVO productdetailVO = detailInfo.get(i);
-			productdetailVO.setProduct_code(code);
-			adminService.product_detail_regist(productdetailVO);
-		}
-		detailInfo.clear();
-		
-		return "redirect:/index";
+	/* product_detail DB */
+	for (int i = 0; i < detailInfo.size(); i++) {
+	    ProductDetailVO productdetailVO = detailInfo.get(i);
+	    productdetailVO.setProduct_code(code);
+	    adminService.product_detail_regist(productdetailVO);
 	}
+	
+	detailInfo.clear();
 
-		
-	@GetMapping("/detailTest")
-	public String testProductInfo() {
-		
-		return "admin/detailTest";
-	}
+	return "redirect:/index";
+    }
 
-	@GetMapping("/manage")
+    @GetMapping("/detailTest")
+    public String testProductInfo() {
+
+	return "admin/detailTest";
+    }
+
+    @GetMapping("/manage")
     public void manage() {
-    	
-    }
-	
-	@GetMapping("/category")
-    public String category(HttpServletRequest req, Model model) {
-		
-		List<HighCateVO> category = new ArrayList<HighCateVO>();
-		
-		category = adminService.getPrantCategory();
-		
-    	model.addAttribute("parentCategoryList", category);
-    	
-    	String msg = req.getParameter("msg") == null ? "" : req.getParameter("msg"); 
-    	model.addAttribute("msg", msg);    		 
-    	
-    	
-		return "admin/category";
-    }
-	
-	@PostMapping("/saveParentsCategory")
-	   public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
-	         , @RequestParam("kname") List<String> kname , HttpServletRequest req, HttpServletResponse res, Model model) {
-	      
-	      int status = 0;
-	      status = adminService.saveParentsCategory(code, name, kname);
-	      if(status == 0) {
-	         model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
-	      }else {
-	         model.addAttribute("msg", "저장되었습니다.");
-	      }
-	      return "redirect:/admin/category";
-	   }
-   
 
-	@GetMapping("/productlist")
-	public String productList(@RequestParam(defaultValue = "1") int curPage, 
-			@RequestParam(defaultValue = "name") String searchType,
-			@RequestParam(defaultValue = "") String keyword,
-			Model model) {
-		int totalCnt = adminService.getProductCount();
-		PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
-		System.out.println(searchType);
-		System.out.println(keyword);
-		List <ProductVO> productList;
-		if(keyword == "") {
-			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
-		}else {
-			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
-		}
-		
-		List <String> highCates = new ArrayList<String>();
-		List <String> lowCates = new ArrayList<String>();
-		for(int i = 0; i < productList.size(); i++) {
-			highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
-			lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
-		}
-		model.addAttribute("productList", productList);
-		model.addAttribute("paging",pagingUtil);
-		model.addAttribute("highCates", highCates);
-		model.addAttribute("lowCates", lowCates);
-		return "admin/productlist"; 
+    }
+
+    @GetMapping("/category")
+    public String category(HttpServletRequest req, Model model) {
+
+	List<HighCateVO> category = new ArrayList<HighCateVO>();
+
+	category = adminService.getPrantCategory();
+
+	model.addAttribute("parentCategoryList", category);
+
+	String msg = req.getParameter("msg") == null ? "" : req.getParameter("msg");
+	model.addAttribute("msg", msg);
+
+	return "admin/category";
+    }
+
+    @PostMapping("/saveParentsCategory")
+    public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name,
+	    @RequestParam("kname") List<String> kname, HttpServletRequest req, HttpServletResponse res, Model model) {
+
+	int status = 0;
+	status = adminService.saveParentsCategory(code, name, kname);
+	if (status == 0) {
+	    model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+	} else {
+	    model.addAttribute("msg", "저장되었습니다.");
 	}
-	
+	return "redirect:/admin/category";
+    }
+
+    @GetMapping("/productlist")
+    public String productList(@RequestParam(defaultValue = "1") int curPage,
+	    @RequestParam(defaultValue = "name") String searchType, @RequestParam(defaultValue = "") String keyword,
+	    Model model) {
+	int totalCnt = adminService.getProductCount();
+	PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
+	System.out.println(searchType);
+	System.out.println(keyword);
+	List<ProductVO> productList;
+	if (keyword == "") {
+	    productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
+	} else {
+	    productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType,
+		    keyword);
+	}
+
+	List<String> highCates = new ArrayList<String>();
+	List<String> lowCates = new ArrayList<String>();
+	for (int i = 0; i < productList.size(); i++) {
+	    highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
+	    lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
+	}
+	model.addAttribute("productList", productList);
+	model.addAttribute("paging", pagingUtil);
+	model.addAttribute("highCates", highCates);
+	model.addAttribute("lowCates", lowCates);
+	return "admin/productlist";
+    }
+
 }

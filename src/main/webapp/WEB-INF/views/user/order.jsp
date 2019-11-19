@@ -306,6 +306,9 @@
 				// 최종 결제 금액 (total_discount와 delivery_charge보다 뒤에 선언)
 				var final_order_price = origin_prod_price + delivery_charge - total_discount;
 				
+				// 결제 페이지로 넘겨줄 금액 초기화
+				amount = final_order_price;
+				
 				// 회원 등급 할인, 합계 할인 초기화
 				$(".total_discount, .sum_discount").text('-' + total_discount.format());
 				// 총 적립금 초기화

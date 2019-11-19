@@ -1,0 +1,41 @@
+.prod_reg_label {
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.prod_reg_body {
+    margin-bottom: 100px;
+}
+
+table {
+    font-size: 12px;
+}
+
+table th {
+    margin-left: 15px;
+    width: 15%;
+}
+
+.product_color {
+    width: 135px;
+}
+
+.product_stock {
+    width: 80px;
+}
+
+.product_size {
+    width: 50px;
+    height: 24px;
+}
+
+.area_colorAndSize,
+.area_color,
+.area_size {
+    margin-bottom: 10px;
+}
+
+.area_size_in_color {
+    margin-left: 20px;
+}
