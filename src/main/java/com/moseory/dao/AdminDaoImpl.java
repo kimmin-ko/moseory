@@ -80,8 +80,12 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
-		Map<String, Object> param = Map.of("start", start, "finish", finish, "searchType", searchType, "keyword", keyword);
-
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start", start);
+		param.put("finish", finish);
+		param.put("searchType", searchType);
+		param.put("keyword", keyword);
+		
 		return sqlSession.selectList("product.getListOnSearch", param);
 	}
 
