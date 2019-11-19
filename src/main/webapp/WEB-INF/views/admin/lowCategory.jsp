@@ -110,7 +110,7 @@ function EventFunction(){
 		addHTML += "<tr>";
 		addHTML += 	  "<td><label><input type='checkbox'  name='row-idx' value='' style='top: 9px;' /></label></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='highCode' value="+preHighCode+" readOnly ></td>";
-		addHTML += 	  "<td><input type='text' class='form-control' name='code' value='' onkeyup="+numberCheck+" maxlength='3'"></td>";
+		addHTML += 	  "<td><input type='text' class='form-control' name='code' value='' onkeyup="+numberCheck+" maxlength='3'></td>";
 		addHTML += 	  "<td><input type='text' class='form-control' name='name' value='' maxlength='25'></td>";
 		addHTML += "</tr>";
 		LastTr.append(addHTML);
@@ -140,6 +140,11 @@ function EventFunction(){
 		}
 		
 		if(confirm("카테고리 삭제 시 관련 상품도 삭제가 됩니다. 정말 삭제하시겠습니까?")){
+			$('input:checkbox[name="row-idx"]').each(function(index, item){
+				if(this.checked){
+					$(this).parents("tr").remove();
+				}
+			});
 			$.ajax({
 				url : "/admin/deleteChildCategory",
 				method : "post",
