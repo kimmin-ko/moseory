@@ -203,7 +203,6 @@ public class AdminController {
 //   }
    
 
-}
 
 	@GetMapping("/productlist")
 	public String productList(@RequestParam(defaultValue = "1") int curPage, 
