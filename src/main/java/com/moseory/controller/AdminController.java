@@ -3,9 +3,7 @@ package com.moseory.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -140,37 +139,82 @@ public class AdminController {
 	    model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
 	} else {
 	    model.addAttribute("msg", "저장되었습니다.");
-	}
-	return "redirect:/admin/category";
+      }
+      return "redirect:/admin/category";
+   }
+   
+   @PostMapping("/deleteParentsCategory")
+   public @ResponseBody int deleteParentsCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
+      int result = 0;
+      for(int i =0; i < codes.size(); i++) {
+         log.info(" code : " + codes.get(i) + " deleteParentsCategory  List :");
+      }
+      result = adminService.deleteParentsCategory(codes);
+      return result;
     }
 
-    @GetMapping("/productlist")
-    public String productList(@RequestParam(defaultValue = "1") int curPage,
-	    @RequestParam(defaultValue = "name") String searchType, @RequestParam(defaultValue = "") String keyword,
-	    Model model) {
-	int totalCnt = adminService.getProductCount();
-	PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
-	System.out.println(searchType);
-	System.out.println(keyword);
-	List<ProductVO> productList;
-	if (keyword == "") {
-	    productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
-	} else {
-	    productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType,
-		    keyword);
+	@GetMapping("/lowCategory")
+    public String lowCategory(@RequestParam("highCode") int highCode, HttpServletRequest req, Model model) {
+      
+       
+      List<LowCateVO> lowCategory = new ArrayList<LowCateVO>();
+      
+      lowCategory= adminService.getChildCategory(highCode);
+      model.addAttribute("preHighCode", highCode);
+       model.addAttribute("childCategoryList", lowCategory);
+      return "admin/lowCategory";
+   }
+   
+   @PostMapping("/saveChildCategory")
+   public String saveChildCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+         , @RequestParam("highCode") List<Integer> highCode , HttpServletRequest req, HttpServletResponse res, Model model) {
+      
+      int status = 0;
+      status = adminService.saveChildCategory(code, name, highCode);
+      if(status == 0) {
+         model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+      }else {
+         model.addAttribute("msg", "저장되었습니다.");
+      }
+      return "redirect:/admin/category";
+   }
+   
+   @PostMapping("/deleteChildCategory")
+   public @ResponseBody int deleteChildCategory( HttpServletRequest req , HttpServletResponse res , @RequestParam(value="codes") ArrayList<Integer> codes){
+      int result = 0;
+      for(int i =0; i < codes.size(); i++) {
+         log.info(" code : " + codes.get(i) + " deleteChildCategory List : ");
+      }
+      result = adminService.deleteChildCategory(codes);
+      return result;
+   }
+   
+	@GetMapping("/productlist")
+	public String productList(@RequestParam(defaultValue = "1") int curPage, 
+			@RequestParam(defaultValue = "name") String searchType,
+			@RequestParam(defaultValue = "") String keyword,
+			Model model) {
+		int totalCnt = adminService.getProductCount();
+		PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
+		System.out.println(searchType);
+		System.out.println(keyword);
+		List <ProductVO> productList;
+		if(keyword == "") {
+			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
+		}else {
+			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+		}
+		
+		List <String> highCates = new ArrayList<String>();
+		List <String> lowCates = new ArrayList<String>();
+		for(int i = 0; i < productList.size(); i++) {
+			highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
+			lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
+		}
+		model.addAttribute("productList", productList);
+		model.addAttribute("paging",pagingUtil);
+		model.addAttribute("highCates", highCates);
+		model.addAttribute("lowCates", lowCates);
+		return "admin/productlist"; 
 	}
-
-	List<String> highCates = new ArrayList<String>();
-	List<String> lowCates = new ArrayList<String>();
-	for (int i = 0; i < productList.size(); i++) {
-	    highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
-	    lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
-	}
-	model.addAttribute("productList", productList);
-	model.addAttribute("paging", pagingUtil);
-	model.addAttribute("highCates", highCates);
-	model.addAttribute("lowCates", lowCates);
-	return "admin/productlist";
-    }
-
 }
