@@ -257,15 +257,33 @@
 			where code = #{code}
 	</select>   
 	   
-	<!-- 상품 페이지별 조회 -->
+	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">
 		select count(*) from tbl_product
 	</select>
 	
-	<!-- 상품 전체/검색된 리스트 카운트 -->
+	<!-- 상품 전체/검색된 리스트 -->
 	<select id="getProductList" parameterType="map" resultType="productVO">
 		select * from (
 			select A.*, rownum as rn from tbl_product A order by code) 
+		where rn between #{start} and #{finish}
+	</select>
+	
+	
+	<!-- 		
+	select * from (
+		select rownum rn, A.* from (
+			select * from productboard where ${searchType} like '%'||#{keyword}||'%' order by no desc
+		)A
+	) 
+	where rn between #{start} and #{finish}
+	 -->
+	<!-- 상품 검색된 리스트 -->
+	<select id="getListOnSearch" parameterType="map" resultType="productVO">
+		select * from (
+			select A.*, rownum as rn from tbl_product A
+				where ${searchType} like '%'||#{keyword}||'%'
+			order by code)
 		where rn between #{start} and #{finish}
 	</select>
 </mapper>
