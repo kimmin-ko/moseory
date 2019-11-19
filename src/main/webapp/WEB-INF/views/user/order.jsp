@@ -148,7 +148,7 @@
 				// 주문 상품명
 				var name = '';
 				// 주문 금액
-				var amount = 150;
+				var amount = 0;
 				// 구매자 이메일
 				var buyer_email = '${member.email}';
 				// 구매자 이름
@@ -348,7 +348,7 @@
 					$(".final_order_price").text(input_final_order_price.format());
 					
 					// 최종 결제 금액 (상용시 해제)
-					// amount = input_final_order_price;
+					amount = input_final_order_price;
 				});
 				
 				// 최대 사용 체크

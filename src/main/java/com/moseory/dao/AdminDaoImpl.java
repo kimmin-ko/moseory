@@ -19,6 +19,7 @@ import com.moseory.domain.ProductVO;
 @Repository("adminDao")
 public class AdminDaoImpl implements AdminDao{
 
+
    @Autowired
    private SqlSession sqlSession;
    

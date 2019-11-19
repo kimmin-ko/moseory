@@ -56,14 +56,14 @@
 <script>
 $(document).ready(function(){
 	var html = "<div id='detailInfo'><select name = 'product_color'><option value = '화이트'>WHITE</option><option value = '블랙'>BALCK</option><option value = '레드'>RED</option><option value = '그레이'>GRAY</option></select></div>";
-	var html2 = "<div class = 'addSize'><input type='checkbox' class ='size' value='xs'>XS<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='s'>S<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='m' id = 'sizeArea'>M<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='l'>L<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='xl'>XL<input type = 'text' class= 'product_stock'>개<br></div>"
+	var html2 = "<div class = 'addSize'><input type='checkbox' class ='size' value='xs'>XS<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='s'>S<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='m' id = 'sizeArea'>M<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='l'>L<input type = 'text' class= 'product_stock'>개<br><input type='checkbox' class ='size' value='xl'>XL<input type = 'text' class= 'product_stock'>개<br></div>";
 	$('#addAreaBtn').click(function(e){
 		$('.newArea').append(html+html2);
 	});
 })
 	function regist() {
 		
-		/* detailInfo(); */
+		detailInfo();
 		$("#registForm").submit();
 		/* fileUpload(); */
 	}

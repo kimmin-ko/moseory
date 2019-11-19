@@ -140,11 +140,6 @@ public class AdminServiceImpl implements AdminService{
 		return status;
 	}
 
-	@Override
-	public int saveParentsCategory(List<Integer> code, List<String> name) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
