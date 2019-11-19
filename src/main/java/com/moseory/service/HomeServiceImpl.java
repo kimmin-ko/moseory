@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.moseory.dao.HomeDao;
-import com.moseory.domain.HighCate;
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductVO;
 
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<HighCate> readHighCate() {
+    public List<HighCateVO> readHighCate() {
 	return homeDao.getHighCate();
     }
 

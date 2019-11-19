@@ -152,8 +152,6 @@ $(document).ready(function(){
     <div class="row" style="margin-bottom: 50px;">
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
        		<form id="registForm" action = "/admin/productregist" method = "post" enctype="multipart/form-data">
-	        <input type = "hidden" name = "file_path" value = "this is null">
-	        <input type = "hidden" name = "file_name" value = "this is null">
 	            <table class="table table-bordered">
 	                <tr>
 	                    <th>상품명 <img src="/images/ico_required.gif"></th>

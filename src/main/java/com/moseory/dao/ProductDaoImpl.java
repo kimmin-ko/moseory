@@ -57,6 +57,11 @@ public class ProductDaoImpl implements ProductDao{
 	public int getProductDetailNo(Map<String, Object> param) {
 	    return sqlSession.selectOne("product.getProductDetailNo", param);
 	}
+	
+	@Override
+	public int getProductStock(int product_detail_no) {
+	    return sqlSession.selectOne("product.getProductStock", product_detail_no);
+	}
 
 	@Override
 	public int getReviewCount(int product_code) {
@@ -93,6 +98,7 @@ public class ProductDaoImpl implements ProductDao{
 	public void decreaseRecommend(int review_no) {
 	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
+
 
 	
 

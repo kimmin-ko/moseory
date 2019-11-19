@@ -85,3 +85,107 @@
 .payment-schedule-table-2 ul {
     list-style: none;
 }
+
+/* 결제 예정 금액 Start*/
+#final-order-title {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.cell_info,
+.cell_info_right {
+    border:solid 0.3px #CCCCCC;
+    padding-top: 10px;
+}
+
+.cell_info_right {
+    background-color: #ECECEC;
+    font-weight: bold;
+}
+
+.cell_info ul:not(:last-child),
+.cell_info_right ul:not(:last-child) {
+    border-bottom: solid 0.3px #CCCCCC;
+}
+
+.cell_info ul,
+.cell_info_right ul {
+    padding: 0 0 10px 0;
+}
+
+.cell_info ul li,
+.cell_info_right ul li {
+    font-size: 12px;
+    list-style: none;
+    display: inline-block;
+}
+
+.cell_info ul li:first-child {
+    width: 20%;
+}
+
+.cell_info_right ul li:first-child {
+    width: 60%;
+}
+
+.input_point {
+    width: 65px;
+}
+
+.member_point {
+    color: #E8B511;
+}
+
+.add-explan {
+    font-size: 11px;
+    color: #717171;
+}
+
+.final_order_price {
+    font-size: 14px;
+}
+/* 결제 예정 금액 End*/
+
+/* 결제 정보 Start */
+.payment_info {
+    padding: 0;
+    border: solid 0.3px #CCCCCC;
+}
+
+.payment_info ul {
+    text-align: left;
+    padding: 10px 0 10px 10px;
+    margin: 0;
+    border-bottom: solid 0.3px #CCCCCC;
+}
+
+.payment_info ul li {
+    font-size: 12px;
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.payment_info ul:first-child li:not(:first-child) {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.payment_info ul li:first-child {
+    width: 12%;
+}
+
+.li_payment_guide {
+    width: 87%;
+}
+
+.btn_payment {
+    margin: 10px 0 10px 0;
+    background-color: black;
+    color: white;
+}
+
+.method_explan {
+	color: #B6B6B6;
+}
+/* 결제 정보 End */

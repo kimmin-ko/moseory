@@ -131,7 +131,7 @@ public class UserController {
 	Map<String, Object> memberMap = getUserJson(req);
 	
 	MemberVO member = (MemberVO) memberMap.get("member");
-	
+
 	model.addAttribute("member", member);
 	model.addAttribute("memberJson", memberMap.get("memberJson"));
 	model.addAttribute("levelJson", memberMap.get("levelJson"));
@@ -164,6 +164,9 @@ public class UserController {
 	    // 상품 금액의 총합
 	    total_prodcut_price += (price * quantity);
 	}
+	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
+	model.addAttribute("origin_product_price", total_prodcut_price);
+	
 	// 상품금액 - 할인금액 = 주문금액
 	total_prodcut_price -= product_discount;
 	
@@ -206,6 +209,9 @@ public class UserController {
 	    // 상품 금액의 총합
 	    total_prodcut_price += (price * quantity);
 	}
+	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
+	model.addAttribute("origin_product_price", total_prodcut_price);
+		
 	// 상품금액 - 할인금액 = 주문금액
 	total_prodcut_price -= product_discount;
 	
@@ -228,8 +234,7 @@ public class UserController {
 	
 	// count = 0 : 장바구니에 정상적으로 추가
 	// count = 1 : 장바구니에 해당 상품 존재 
-	return count == 0 ? new ResponseEntity<>("success"
-		+ "", HttpStatus.OK)
+	return count == 0 ? new ResponseEntity<>("success" , HttpStatus.OK)
 			  : new ResponseEntity<>("duplication", HttpStatus.OK);
     }
     

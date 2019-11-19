@@ -69,7 +69,7 @@ var productJs = (function() {
 			url : '/user/addToCart',
 			data : JSON.stringify(cart),
 			contentType : 'application/json; charset=utf-8',
-			dataTyle : 'text',
+			dataType : 'text',
 			async : false,
 			success : function(data) {
 				if(callback)
@@ -79,11 +79,25 @@ var productJs = (function() {
 		
 	} // addToCart
 	
+	function getProductStock(pdNo, callback) {
+		
+		$.ajax({
+			type : 'get',
+			url : '/product/getProductStock?product_detail_no=' + pdNo,
+			success : function(data) {
+				if(callback)
+					callback(data);
+			}
+		}); // end ajax
+		
+	} // end getProductStock
+	
 	return {
 		getReviewList : getReviewList,
 		addWishList : addWishList,
 		getProductDetailNo : getProductDetailNo,
-		addToCart : addToCart
+		addToCart : addToCart,
+		getProductStock : getProductStock
 	}
 	
 })();

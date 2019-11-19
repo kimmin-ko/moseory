@@ -8,13 +8,21 @@
 	<resultMap type="HighCateVO" id="highCateVo">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
+		<result column="kname" property="kname" />
+	</resultMap>
+	
+	<resultMap type="LowCateVO" id="lowCateVo">
+		<result column="code" property="code" />
+		<result column="high_code" property="high_code" />
+		<result column="name" property="name" />
 	</resultMap>
 	
 	<select id="getPrantCategory" resultMap="highCateVo">
 		SELECT 
-		  code, name
+		  code, name, kname
 		FROM 
-		  tbl_high_cate	
+		  tbl_high_cate
+		ORDER BY code ASC	
 	</select>
 	
 	<insert id="saveParentsCategory"> 
@@ -23,10 +31,48 @@
             ON (code = #{code})
             WHEN MATCHED THEN
                       UPDATE SET
+                            name = #{name},
+                            kname = #{kname}
+            WHEN NOT MATCHED THEN
+                      INSERT (code, name, kname) 
+                                 VALUES (#{code}, #{name}, #{kname} )
+	</insert>
+	
+	<delete id="deleteParentsCategory" parameterType="java.util.ArrayList">
+		DELETE FROM tbl_high_cate WHERE code IN
+		<foreach collection="list" item="codes" index="index" open="(" close=")" separator=",">
+            ${codes}
+        </foreach>
+	</delete>
+	
+		
+	<select id="getChildCategory" resultMap="lowCateVo">
+		SELECT 
+		  code, high_code, name
+		FROM 
+		  tbl_low_cate
+		WHERE 
+		  high_code = #{highCode}  
+		ORDER BY code ASC	
+	</select>
+	
+	<insert id="saveChildCategory"> 
+		MERGE INTO tbl_low_cate
+            USING DUAL
+            ON (code = #{code})
+            WHEN MATCHED THEN
+                      UPDATE SET
                             name = #{name}
             WHEN NOT MATCHED THEN
-                      INSERT (code, name) 
-                                 VALUES (#{code}, #{name})
+                      INSERT (code, name, high_code) 
+                                 VALUES (#{code}, #{name}, #{high_code} )
 	</insert>
+	
+	<delete id="deleteChildCategory" parameterType="java.util.ArrayList">
+		DELETE FROM tbl_low_cate WHERE code IN
+		<foreach collection="list" item="codes" index="index" open="(" close=")" separator=",">
+            ${codes}
+        </foreach>
+	</delete>
 	
 </mapper>
