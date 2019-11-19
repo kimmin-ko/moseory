@@ -125,7 +125,6 @@ function EventFunction(){
 				if($(this).val() != "" && $(this).val() != null){
 					_d.push($(this).val());
 				}
-				$(this).parents("tr").remove();
 				deleteTrs ++;
 			}
 		});
@@ -138,6 +137,11 @@ function EventFunction(){
 		}
 		
 		if(confirm("카테고리 삭제 시 관련 상품도 삭제가 됩니다. 정말 삭제하시겠습니까?")){
+			$('input:checkbox[name="row-idx"]').each(function(index, item){
+				if(this.checked){
+					$(this).parents("tr").remove();
+				}
+			});
 			$.ajax({
 				url : "/admin/deleteParentsCategory",
 				method : "post",

@@ -139,5 +139,11 @@ public class AdminServiceImpl implements AdminService{
 		
 		return status;
 	}
+
+
+	@Override
+	public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
+		return adminDao.getProductList(start, finish, searchType, keyword);
+	}
 	
 }	
