@@ -43,4 +43,6 @@ public interface AdminService {
 	
 	//상위 카테고리 삭제
 	public int deleteChildCategory(ArrayList<Integer> codes);
+
+	List<ProductVO> getProductList(int start, int finish, String searchType, String keyword);
 }

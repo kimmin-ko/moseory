@@ -24,18 +24,20 @@
 <body>
 
 	<%@ include file="../includes/sidebar.jsp"%>
+	<script>
 	
+	</script>
 	<div class="container" style="margin-left: 22%;">
 	
 		<!-- Notice Start -->
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1 noticeLabel-row">
-				<p>NOTICE</p>
+				<h2>Product List</h2>
 			</div>
 		</div>
 		<!-- row -->
 
-		<div class="row" style="margin-bottom: 50px;">
+		<div class="row" >
 			<div class="col-md-10 col-md-offset-1">
 				<table class="table notice-board table-hover">
 					<thead>
@@ -50,19 +52,36 @@
 					</thead>
 					<tbody>
 						<c:forEach var = "products" items="${productList}" varStatus="status">
-							<tr>
+							<tr onclick = "window.location='${pageContext.request.contextPath}/product/productInfo?code=${products.code }'">
 								<td>${products.code }	</td>
-								<td>${products.name }	</td>
+								<td>${products.name }</td>
 								<td>색깔	</td>
 								<td>${products.price }	</td>
 								<td>${highCates[status.index] }/${lowCates[status.index] }</td>
 								<td>${products.wish_count }	</td>
 							</tr>
+							
 						</c:forEach>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<form method = "get" action = "${pageContext.request.contextPath }/admin/productlist">
+			<div class="col-md-10 col-md-offset-1">
+				<span class="form-inline search-area">
+					<select class="form-control" name = "searchType" style="width: 130px">
+						<option value="name">상품명</option>
+						<option value="high_code">상위카테고리</option>
+						<option value="low_code">하위카테고리</option>
+					</select>
+					<input type="text" name = "keyword" class="form-control" style="width: 180px;" required />
+					<button class="btn btn-default submit">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div>
+		</form>
+		
 		<div class="col-md-10 col-md-offset-1 pagination-div"
 				style="margin-bottom: 30px;">
 				<nav>
