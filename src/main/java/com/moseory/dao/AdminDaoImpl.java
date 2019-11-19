@@ -83,5 +83,6 @@ public class AdminDaoImpl implements AdminDao{
 	public int getProductCount() {
 		return sqlSession.selectOne("product.getProductCount");
 	}
+	
 
 }
