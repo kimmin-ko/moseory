@@ -68,12 +68,6 @@ public class AdminDaoImpl implements AdminDao{
 	}
 	@Override
 	public List<ProductVO> getProductList(int start, int finish) {
-		Map<String, Integer> param = Map.of("start", start, "finish", finish);
-		//1 페이지 = 1~ 10
-		//2 페이지 = 11~20
-		//3 페이지 = 21~30
-		//~~
-		System.out.println(start + "" +finish);
 		Map<String, Integer> param = new HashMap<String, Integer>();
 		param.put("start", start);
 		param.put("finish", finish);

@@ -24,10 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
-import com.moseory.domain.MemberVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
+import com.moseory.util.PagingUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -127,20 +128,18 @@ public class AdminController {
     }
 	
 	@PostMapping("/saveParentsCategory")
-	public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
-			, HttpServletRequest req, HttpServletResponse res, Model model) {
-		
-		System.out.println(code.toString());
-		System.out.println(name.toString());
-		int status = 0;
-		status = adminService.saveParentsCategory(code, name);
-		if(status == 0) {
-			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
-		}else {
-			model.addAttribute("msg", "저장되었습니다.");
-		}
-		return "redirect:/admin/category";
-	}
+	   public String saveParentsCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
+	         , @RequestParam("kname") List<String> kname , HttpServletRequest req, HttpServletResponse res, Model model) {
+	      
+	      int status = 0;
+	      status = adminService.saveParentsCategory(code, name, kname);
+	      if(status == 0) {
+	         model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
+	      }else {
+	         model.addAttribute("msg", "저장되었습니다.");
+	      }
+	      return "redirect:/admin/category";
+	   }
    
 
 	@GetMapping("/productlist")
@@ -155,26 +154,6 @@ public class AdminController {
 		List <ProductVO> productList;
 		if(keyword == "") {
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
-	@GetMapping("/lowCategory")
-    public String lowCategory(@RequestParam("highCode") int highCode, HttpServletRequest req, Model model) {
-		
-    	
-		List<LowCateVO> lowCategory = new ArrayList<LowCateVO>();
-		
-		lowCategory= adminService.getChildCategory(highCode);
-		model.addAttribute("preHighCode", highCode);
-    	model.addAttribute("childCategoryList", lowCategory);
-		return "admin/lowCategory";
-    }
-	
-	@PostMapping("/saveChildCategory")
-	public String saveChildCategory(@RequestParam("code") List<Integer> code, @RequestParam("name") List<String> name
-			, @RequestParam("highCode") List<Integer> highCode , HttpServletRequest req, HttpServletResponse res, Model model) {
-		
-		int status = 0;
-		status = adminService.saveChildCategory(code, name, highCode);
-		if(status == 0) {
-			model.addAttribute("msg", "저장 중 오류가 발생하였습니다.");
 		}else {
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
 		}
