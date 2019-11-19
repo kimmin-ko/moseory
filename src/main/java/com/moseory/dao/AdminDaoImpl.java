@@ -2,6 +2,7 @@ package com.moseory.dao;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +73,9 @@ public class AdminDaoImpl implements AdminDao{
 		//3 페이지 = 21~30
 		//~~
 		System.out.println(start + "" +finish);
-		Map<String, Integer> param = Map.of("start", start, "finish", finish);
+		Map<String, Integer> param = new HashMap<String, Integer>();
+		param.put("start", start);
+		param.put("finish", finish);
 		System.out.println(sqlSession.selectList("product.getProductList",param));
 		return sqlSession.selectList("product.getProductList",param);
 	}
