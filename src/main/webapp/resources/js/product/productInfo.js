@@ -84,6 +84,7 @@ var productJs = (function() {
 		$.ajax({
 			type : 'get',
 			url : '/product/getProductStock?product_detail_no=' + pdNo,
+			async : false,
 			success : function(data) {
 				if(callback)
 					callback(data);

@@ -348,7 +348,7 @@
 					$(".final_order_price").text(input_final_order_price.format());
 					
 					// 최종 결제 금액 (상용시 해제)
-					// amount = input_final_order_price;
+					//amount = input_final_order_price;
 				});
 				
 				// 최대 사용 체크
