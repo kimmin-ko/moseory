@@ -110,6 +110,18 @@ public class ProductController {
 	    return no != 0 ? new ResponseEntity<>(no, HttpStatus.OK)
 		    	   : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping("/getProductStock")
+	public @ResponseBody ResponseEntity<Integer> getProductStock(@RequestParam int product_detail_no) {
+	    
+	    int stock = 0;
+	    
+	    if(product_detail_no > 0)
+		stock = productService.getProductStock(product_detail_no);
+	    
+	    return stock != 0 ? new ResponseEntity<>(stock, HttpStatus.OK)
+		    	      : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
 	public ResponseEntity<Integer> increaseRecommend(

@@ -10,7 +10,13 @@ $(document).ready(function() {
 	// + 버튼을 누르면 수량을 1 증가시킨다.
 	$(".btn-inc").on("click", function() {
 		var incQty = Number($(this).prev().val()) + 1;
-
+		var stock = $(this).nextAll("input[name=stock]").val();
+		
+		if(incQty > stock) {
+			alert("재고가 부족합니다.");
+			incQty = stock;
+		}
+			
 		$(this).prev().val(incQty);
 	});
 
@@ -93,9 +99,6 @@ function deleteCartAll(member_id) {
 		}).submit();
 	}
 } // end deleteCartAll
-
-
-
 
 
 

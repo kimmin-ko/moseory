@@ -23,6 +23,7 @@ public class CartVO {
     // product detail 정보
     private String product_color;
     private String product_size;
+    private int product_stock;
     
     public CartVO(String memeber_id, int product_detail_no) {
 	this.member_id = memeber_id;

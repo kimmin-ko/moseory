@@ -48,6 +48,11 @@ public class ProductServiceImpl implements ProductService{
 	public int getProductDetailNo(Map<String, Object> param) {
 	    return productDao.getProductDetailNo(param);
 	}
+	
+	@Override
+	public int getProductStock(int product_detail_no) {
+	    return productDao.getProductStock(product_detail_no);
+	}
 
 	@Override
 	public int getReviewCount(int product_code) {
@@ -83,6 +88,8 @@ public class ProductServiceImpl implements ProductService{
 	public void decreaseRecommend(int review_no) {
 	    productDao.decreaseRecommend(review_no);
 	}
+
+	
 
 	
 	

@@ -149,8 +149,8 @@
     <!-- 사용자의 장바구니 정보 조회 -->
     <select id="getCartList" resultType="CartVO">
 	SELECT
-	    c.no, c.member_id, c.quantity, pd.no as product_detail_no, pd.product_color, pd.product_size,
-    p.code as product_code, p.name as product_name, p.price as product_price, p.file_path as product_file_path
+	    c.no, c.member_id, c.quantity, pd.no as product_detail_no, pd.product_color, pd.product_size, pd.product_stock,
+    	p.code as product_code, p.name as product_name, p.price as product_price, p.file_path as product_file_path
 	FROM
 	    tbl_cart c 
 	    JOIN tbl_product_detail pd 
