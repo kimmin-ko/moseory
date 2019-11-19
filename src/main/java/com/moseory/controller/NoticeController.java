@@ -22,8 +22,11 @@ import lombok.extern.log4j.Log4j;
 @RequestMapping("/notice/*")
 public class NoticeController {
 
-	@Inject
-	NoticeService service;
+	private final NoticeService service;
+	
+	public NoticeController(NoticeService service) {
+		this.service = service;
+	}
 
 	@GetMapping("/noticeText")
 	public void getnoticeText() {
@@ -51,10 +54,11 @@ public class NoticeController {
 	public String noticeModify(@ModelAttribute NoticeVO vo, @ModelAttribute("cri") Criteria cri,RedirectAttributes rttr) {
 		log.info("modify : " + vo);
 		service.update(vo);
-		rttr.addFlashAttribute("pageNum", cri.getPageNum());
-		rttr.addFlashAttribute("amount", cri.getAmount());
+		log.info(cri.getPageNum());
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		log.info("--------------------------------");
-		return "redirect:/notice/noticeList";
+		return "redirect:/notice/noticeList/";
 
 	}
 
@@ -62,8 +66,8 @@ public class NoticeController {
 	public String remove(@RequestParam("no") int bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		log.info("modify" + bno);
 		service.delete(bno);
-		rttr.addFlashAttribute("pageNum", cri.getPageNum());
-		rttr.addFlashAttribute("amount", cri.getAmount());
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		return "redirect:/notice/noticeList";
 	}
 
