@@ -16,7 +16,9 @@ public interface ProductDao {
 
 	List<ProductVO> highCateList(int high_code);
 
-	ProductVO getView(int code);
+	ProductVO getProduct(int code);
+	
+	ProductDetailVO getProductDetail(int product_detail_no);
 
 	List<ProductDetailVO> getDetailView(int product_code);
 	

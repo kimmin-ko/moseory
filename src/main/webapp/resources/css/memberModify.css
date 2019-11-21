@@ -46,3 +46,13 @@ table th {
     margin-left: 15px;
     width: 15%;
 }
+
+#zipcode {
+	width: 100px;
+	margin-bottom: 5px;
+}
+
+#address1 {
+	width: 319px;
+	margin-bottom: 5px;
+}

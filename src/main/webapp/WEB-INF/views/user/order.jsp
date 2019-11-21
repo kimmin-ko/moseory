@@ -17,127 +17,12 @@
 	
 	<!-- 다음 주소 API -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script>
-		function openZipSearch() {
-			new daum.Postcode(
-					{
-						oncomplete : function(data) {
-							// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-							// 각 주소의 노출 규칙에 따라 주소를 조합한다.
-							// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-							var addr = ''; // 주소 변수
-							var extraAddr = ''; // 참고항목 변수
-
-							//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-							if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
-								addr = data.roadAddress;
-							} else { // 사용자가 지번 주소를 선택했을 경우(J)
-								addr = data.jibunAddress;
-							}
-
-							// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
-							if (data.userSelectedType === 'R') {
-								// 법정동명이 있을 경우 추가한다. (법정리는 제외)
-								// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-								if (data.bname !== ''
-										&& /[동|로|가]$/g.test(data.bname)) {
-									extraAddr += data.bname;
-								}
-								// 건물명이 있고, 공동주택일 경우 추가한다.
-								if (data.buildingName !== ''
-										&& data.apartment === 'Y') {
-									extraAddr += (extraAddr !== '' ? ', '
-											+ data.buildingName
-											: data.buildingName);
-								}
-								// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-								if (extraAddr !== '') {
-									extraAddr = ' (' + extraAddr + ')';
-								}
-								// 조합된 참고항목을 해당 필드에 넣는다.
-								document.getElementById("extraAddress").value = extraAddr;
-
-							} else {
-								document.getElementById("extraAddress").value = '';
-							}
-
-							// 우편번호와 주소 정보를 해당 필드에 넣는다.
-							document.getElementById('zipcode').value = data.zonecode;
-							document.getElementById("address1").value = addr;
-							// 커서를 상세주소 필드로 이동한다.
-							document.getElementById("address2").focus();
-						}
-					}).open();
-		}
-	</script>
+	<script src="/js/address/daum_address.js"></script>
 
 	<%@ include file="../includes/sidebar.jsp"%>
-
+	
+	<script src="/js/user/order.js"></script>
 	<script type="text/javascript">
-	// #,### formatNumber
-	Number.prototype.format = function(){
-	    if(this==0) return 0;
-	 
-	    var reg = /(^[+-]?\d+)(\d{3})/;
-	    var n = (this + '');
-	 
-	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
-	 
-	    return n;
-	};
-	
-	String.prototype.format = function(){
-	    var num = parseFloat(this);
-	    if( isNaN(num) ) return "0";
-	 
-	    return num.format();
-	};
-	
-	// 수령인 유효성 검사
-	function checkRecipient(recipient) {
-		var pattern1 = /\s/; // 공백 여부
-    	var pattern2 = /[[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 여부
-    	var pattern3 = /[0-9]/;
-		
-		if(pattern1.test(recipient) || pattern2.test(recipient) || pattern3.test(recipient)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	// 휴대전화 유효성 검사
-	function checkTel(tel1, tel2) {
-		var pattern = /[^0-9]/; // 숫자 외에 문자 여부
-		
-		if(pattern.test(tel1) || pattern.test(tel2)) {
-			return true;			
-		} else {
-			// 번호가 숫자일 때 tel1은 3 또는 4글자. tel2는 4글자 이어야한다.
-			if((tel1.length == 3 || tel1.length == 4) && tel2.length == 4
-					|| tel1.length == 0 || tel2.length == 0) 
-				return false;
-			else 
-				return true;
-		}
-	}
-	
-	// 이메일 유효성 검사
-	function checkEmail(email1, email2) {
-		var pattern1 = /\s/; // 공백 여부
-		var pattern2 = /[A-Z]/; // 대문자 여부
-    	var pattern3 = /[[~!@#$%^&*()_+|<>?:{}]/; // 특수문자 여부
-    	var pattern4 = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 여부
-    	
-    	if(pattern1.test(email1) || pattern2.test(email1) || pattern3.test(email1) || pattern4.test(email1)
-    		|| pattern1.test(email2) || pattern2.test(email2) || pattern3.test(email2) || pattern4.test(email2) || !email2.includes(".")) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-	}
-	
 	$(document).ready(
 			function() {
 				// 아임포트 window.IMP 초기화
@@ -168,14 +53,19 @@
 					var address1 = $("input[name=address1]").val();
 					var address2 = $("input[name=address2]").val();
 					
+					var tel = '';
 					var tel1 = $("input[name=tel2]").val();
 					var tel2 = $("input[name=tel3]").val();
 					
+					var phone = '';
 					var phone1 = $("input[name=phone2]").val();
 					var phone2 = $("input[name=phone3]").val();
 					
-					var email1 =$("input[name=email1]").val();
-					var email2 =$("input[name=email2]").val();
+					var email1 = $("input[name=email1]").val();
+					var email2 = $("input[name=email2]").val();
+					
+					var message = $("textarea[name=delivery_message]").val();
+					console.log("message : " + message);
 					
 					if(!recipient) { // 수령인 비어있을 경우
 						alert("수령인 항목은 필수 입력값 입니다.");
@@ -213,14 +103,24 @@
 						alert("구매진행 항목에 동의는 필수 입력값 입니다.");
 						$("#pay_agreement").focus();
 						return;
+					} else if(tel1 || tel2) {
+						tel = $("select[name=tel1]").val() + '-' + tel1 + '-' + tel2;
 					}
+					
+					phone = $("select[name=phone1]").val() + '-' + phone1 + '-' + phone2;
 					
 					// 최종 주문 금액이 0원인 경우
 					if(amount == 0) {
 						var c = confirm("결제 금액이 0원입니다. 결제 하시겠습니까?");
 						
-						if(c) location.href="/index";
-						else return;
+						if(c) {
+							// 주문 완료 시 실행
+							pay_method = 'point';
+							addOrder();
+							return;
+						} else {
+							return;
+						}
 					}
 					
 					IMP.request_pay({
@@ -237,21 +137,39 @@
 					}, function(rsp) {
 					    if ( rsp.success ) {
 					        var msg = '결제가 완료되었습니다.';
-//					        msg += '고유ID : ' + rsp.imp_uid;
-//					        msg += '상점 거래ID : ' + rsp.merchant_uid;
-//					        msg += '결제 금액 : ' + rsp.paid_amount;
-//					        msg += '카드 승인번호 : ' + rsp.apply_num;
 							
 							// 주문 완료 처리
-							
+							addOrder();
 					    } else {
-					        var msg = '결제에 실패하였습니다.';
-					        msg += '에러내용 : ' + rsp.error_msg;
+					        var msg = '결제에 실패하였습니다.\n';
+					        msg += rsp.error_msg;
 					    }
 					    alert(msg);
 					}); // end request_pay
 					
 				}); // end payment_btn onclick
+				
+				function addOrder() {
+					var form = $('<form></form>');
+					form.attr('method', 'post');
+					form.attr('action', '/user/addOrder');
+					form.appendTo('body');
+					
+					var member_id = $('<input type="hidden" name="member_id" value="${member.id}">');
+					
+					form.append(member_id);
+					/* form.append('delivery_charge', delivery_charge);
+					form.append('recipient_name', name);
+					form.append('recipient_zipcode', zipcode);
+					form.append('recipient_address1', address1);
+					form.append('recipient_address2', address2);
+					form.append('recipient_tel', tel);
+					form.append('recipient_phone', phone);
+					form.append('message', message);
+					form.append('pay_method', pay_method); */
+					
+					form.submit();
+				}
 				
 				// 페이지 로드 시 결제 수단 설명 출력 
 				$("input[name=pay_method]").each(function() {
@@ -280,7 +198,9 @@
 				// 배송비
 				var delivery_charge = 0;
 				// 오리지널 주문 금액
-				var origin_prod_price = ${origin_product_price};
+				var origin_prod_price = 0;
+				// 최종 주문 금액
+				var total_prod_price = 0;
 				
 				// 모든 상품의 할인금액을 더해줌
 				<c:forEach var="addedOrderInfo" items="${addedOrderInfoList }">
@@ -290,18 +210,26 @@
 					var saving = ${(addedOrderInfo.price / 100) * member.level.saving * addedOrderInfo.quantity};
 					total_saving += saving;
 					
+					origin_prod_price += ${addedOrderInfo.price * addedOrderInfo.quantity};
+						
 					// 결제 정보 저장
 					name = '${addedOrderInfo.name}';
 				</c:forEach>
 				
+				total_prod_price = origin_prod_price - total_discount;
+				
+				$(".total-prod-price").html("<strong>" + total_prod_price.format() + "원</strong>");
+				
 				// 배송비
-				<c:if test="${origin_product_price >= 50000 || origin_product_price == 0 }">
+				if(origin_prod_price >= 50000 || origin_prod_price == 0) {
 					$(".delivery_charge").text("무료");
-				</c:if>
-				<c:if test="${origin_product_price < 50000 && origin_product_price != 0 }">
+					$(".total-order-price").text(total_prod_price.format());
+					$(".total-order-price").text((total_prod_price).format() + "원");
+				} else if(origin_prod_price < 50000 && origin_prod_price != 0) {
 					$(".delivery_charge").text("3,000원");
 					delivery_charge = 3000;
-				</c:if>
+					$(".total-order-price").text((total_prod_price + delivery_charge).format() + "원");
+				}
 				
 				// 최종 결제 금액 (total_discount와 delivery_charge보다 뒤에 선언)
 				var final_order_price = origin_prod_price + delivery_charge - total_discount;
@@ -406,15 +334,14 @@
 				}); // radio onchange
 
 			}); // end document
-
-	// 배송지 정보를 바꿔줌
+			
 	function changeDvryInfo(checkedValue) {
 		switch (checkedValue) {
 		case "member":
-			$("input[name=name]").val('<c:out value="${member.name}" />');
-			$("input[name=zipcode]").val('<c:out value="${member.zipcode}" />');
-			$("input[name=address1]").val('<c:out value="${member.address1}" />');
-			$("input[name=address2]").val('<c:out value="${member.address2}" />');
+			$("input[name=name]").val('${member.name}');
+			$("input[name=zipcode]").val('${member.zipcode}');
+			$("input[name=address1]").val('${member.address1}');
+			$("input[name=address2]").val('${member.address2}');
 
 			var tel = "${member.tel}".split('-');
 			$("select[name=tel1]").val(tel[0]);
@@ -450,57 +377,6 @@
 
 			break;
 		}
-	}
-
-	function changeEmail() {
-		var select_email = $("#select_email").val();
-		$("#email").val(select_email);
-	}
-	
-	function changePaymentMethod(value) {
-		var pay_method_guide = "";
-		
-		switch (value) {
-			case 'card' : 
-				pay_method_guide += "<strong>안전결제(ISP)? (국민카드/BC카드/우리카드)</strong><br>";
-				pay_method_guide += "<span class='method_explan'>온라인 쇼핑시 주민등록번호, 비밀번호 등의 주요 개인정보를 입력하지 않고 고객님이 사전에 미리 설정한 안전결제(ISP) 비밀번호만 입력, ";
-				pay_method_guide += "결제하도록 하여 개인정보 유출 및 카드 도용을 방지하는 서비스입니다.</span><br><br>";
-				pay_method_guide += "<strong>안심 클릭 결제? (삼성/외환/롯데/현대/신한/시티/하나/NH/수협/전북/광주/산업은행/제주은행)</strong><br>";
-				pay_method_guide += "<span class='method_explan'>온라인 쇼핑시 주민등록번호, 비밀번호 등의 주요 개인 정보를 입력하지 않고 고객님이 사전에 미리 설정한 전자 상거래용 안심 클릭 ";
-				pay_method_guide += "비밀번호를 입력하여 카드 사용자 본인 여부를 확인함으로써 온라인상에서의 카드 도용을 방지하는 서비스입니다.</span>";
-				break;
-			case 'trans' : 
-				pay_method_guide += "<strong>계좌이체 안내</strong><br>";
-				pay_method_guide += "<span class='method_explan'>계좌이체는 ATM이나 은행 홈페이지에 접속하지 않고 무신사 홈페이지 내에서 즉시 결제, 출금되는 결제 방식입니다. ";
-				pay_method_guide += "현재 약 20여 개의 은행이 가능하며 현금영수증 발행은 결제 시 즉시 발급받으실 수 있습니다.</span>";
-				break;
-			case 'vbank' : 
-				pay_method_guide += "<strong>가상 계좌 안내</strong><br>";
-				pay_method_guide += "<span class='method_explan'>가상계좌는 주문 시 고객님께 발급되는 일회성 계좌번호 이므로 입금자명이 다르더라도 입금 확인이 가능합니다. ";
-				pay_method_guide += "단, 선택하신 은행을 통해 결제 금액을 1원 단위까지 정확히 맞추셔야 합니다. 가상 계좌의 입금 유효 기간은 주문 후 2일 이내이며, ";
-				pay_method_guide += "기간 초과 시 계좌번호는 소멸되어 입금되지 않습니다. 구매 가능 수량이 1개로 제한된 상품은 주문 취소 시, ";
-				pay_method_guide += "24시간 내 가상 계좌를 통한 재주문이 불가 합니다. 인터넷뱅킹, 텔레뱅킹, ATM/CD기계, 은행 창구 등에서 입금할 수 있습니다.<br>";
-				pay_method_guide += "ATM 기기는 100원 단위 입금이 되지 않으므로 통장 및 카드로 계좌이체 해주셔야 합니다. ";
-				pay_method_guide += "은행 창구에서도 1원 단위 입금이 가능합니다. 자세한 내용은 FAQ를 확인하여 주시기 바랍니다.</span>";
-				break;
-			case 'phone' : 
-				pay_method_guide += "<strong>휴대폰 결제(수수료) 안내</strong><br>";
-				pay_method_guide += "<span class='method_explan'>휴대폰 결제는 통신사와 결제 대행사의 정책/ 높은 수수료/늦은 정산 주기로 인해 50만 원 이하 상품만 가능하며 ";
-				pay_method_guide += "결제하실 금액의 5%가 결제 수수료로 추가됩니다.<br>";
-				pay_method_guide += "예) 판매 금액 50,000원 상품을 휴대폰 결제할 경우 52,500원이 결제됩니다. 환불 시에는 수수료를 포함한 결제 금액이 환불됩니다.<br><br>";
-				pay_method_guide += "※ 저렴한 구매를 원하실 경우 타 결제 수단(신용카드, 가상 계좌, 계좌이체)를 이용하시기 바랍니다.<br>";
-				pay_method_guide += "※ 부분환불/결제 월이 지난 경우, 계좌로 환불됩니다.</span>";
-				break;
-			case 'payco' : 
-				pay_method_guide += "<strong>PAYCO 간편결제 안내</strong><br>";
-				pay_method_guide += "<span class='method_explan'>PAYCO는 온/오프라인 쇼핑은 물론 송금, 멤버십 적립까지 가능한 통합 서비스입니다.<br>";
-				pay_method_guide += "휴대폰과 카드 명의자가 동일해야 결제 가능하며, 결제금액 제한은 없습니다.<br>";
-				pay_method_guide += "-지원카드 : 모든 국내 신용/체크카드<br>";
-				pay_method_guide += "-첫 구매 시(1만원 이상) 2,000원 즉시 할인 쿠폰 지급</span>";
-				break;
-		}
-		
-		$(".payment_guide").html(pay_method_guide);
 	}
 	</script>
 
@@ -553,19 +429,15 @@
 							<c:set var="code" value="${addedOrderInfo.code }" />
 							<c:set var="file_path" value="${addedOrderInfo.file_path }" />
 							<c:set var="name" value="${addedOrderInfo.name }" />
-							<c:set var="product_color"
-								value="${addedOrderInfo.product_color }" />
+							<c:set var="product_color" value="${addedOrderInfo.product_color }" />
 							<c:set var="product_size" value="${addedOrderInfo.product_size }" />
 							<c:set var="price" value="${addedOrderInfo.price }" />
 							<c:set var="quantity" value="${addedOrderInfo.quantity }" />
 							<c:set var="discount" value="${member.level.discount }" />
 							<c:set var="saving" value="${member.level.saving }" />
-							<c:set var="product_discount"
-								value="${(price / 100) * discount * quantity }" />
-							<c:set var="product_saving"
-								value="${(price / 100) * saving * quantity }" />
-							<c:set var="order_price"
-								value="${(price * quantity) - product_discount }" />
+							<c:set var="product_discount" value="${(price / 100) * discount * quantity }" />
+							<c:set var="product_saving" value="${(price / 100) * saving * quantity }" />
+							<c:set var="order_price" value="${(price * quantity) - product_discount }" />
 							<tr> 
 								<!-- 상품 체크 박스 -->
 								<td><input type="checkbox" class="check-order"
@@ -598,50 +470,30 @@
 								<td><fmt:formatNumber value="${product_saving }"
 										pattern="#,###" /></td>
 								<!-- 배송비 -->
-								<td><span class="delivery-charge"> <c:if
-											test="${origin_product_price >= 50000 || origin_product_price == 0 }">
-	                    		무료
-	                    		</c:if> <c:if
-											test="${origin_product_price < 50000 && origin_product_price != 0 }">
-	                    		3,000원
-	                    		</c:if>
-								</span></td>
+								<td><span class="delivery_charge"></span></td>
 								<!-- 주문금액 -->
-								<td><span class="final-prod-price"><fmt:formatNumber
-											value="${order_price }" pattern="#,###" />원</span></td>
+								<td><span class="final-prod-price"><fmt:formatNumber value="${order_price }" pattern="#,###" />원</span></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 					<tfoot>
 						<tr>
 							<td colspan="4" style="text-align: left;">[기본배송]</td>
-							<td colspan="5" style="text-align: right;"><b>상품구매금액</b> <span
-								class="total-prod-price" style="font-weight: bold;"> <fmt:formatNumber
-										value="${total_product_price }" pattern="#,###" />
-							</span> + 배송비 <span class="delivery-charge"> <c:if
-										test="${origin_product_price >= 50000 || origin_product_price == 0 }">
-			                    		무료
-			                    	</c:if> <c:if
-										test="${origin_product_price < 50000 && origin_product_price != 0 }">
-			                    		3,000원
-			                    	</c:if>
-							</span> = 주문금액 : <span class="total-order-price"> <c:if
-										test="${origin_product_price >= 50000 || origin_product_price == 0 }">
-										<fmt:formatNumber value="${total_product_price }"
-											pattern="#,###" />원
-		                    	</c:if> <c:if
-										test="${origin_product_price < 50000 && origin_product_price != 0 }">
-										<fmt:formatNumber value="${total_product_price + 3000}"
-											pattern="#,###" />원
-		                    	</c:if>
-							</span></td>
+							<td colspan="5" style="text-align: right;">
+								<b>상품구매금액</b>
+								<span class="total-prod-price" style="font-weight: bold;"></span>
+								 + 배송비
+								<span class="delivery_charge"></span>
+								 = 주문금액 : 
+								<span class="total-order-price">
+								</span>
+							</td>
 						</tr>
 					</tfoot>
 				</table>
 				<!-- prod-order-list table -->
 
-				<button type="button"
-					class="btn btn-default btn-sm btn-checked-delete">선택상품삭제</button>
+				<button type="button" class="btn btn-default btn-sm btn-checked-delete">선택상품삭제</button>
 			</div>
 		</div>
 
@@ -679,9 +531,9 @@
 					<tr>
 						<th>주소<img src="/images/ico_required.gif"></th>
 						<td>
-							<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" style="width: 100px; margin-bottom: 5px;" readonly="readonly">
+							<input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly="readonly">
 							<input type="button" onclick="openZipSearch()" value="우편번호 찾기"><br>
-							<input type="text" id="address1" name="address1" placeholder="주소" style="width: 335px; margin-bottom: 5px;" readonly="readonly"><br>
+							<input type="text" id="address1" name="address1" placeholder="주소" readonly="readonly"><br>
 							<input type="text" id="address2" name="address2" placeholder="상세주소">
 							<input type="text" id="extraAddress" placeholder="참고항목">
 						</td>
@@ -714,9 +566,9 @@
 					</tr>
 					<tr>
 						<th>이메일 <img src="/images/ico_required.gif"></th>
-						<td><input type="text" name="email1" /> @ <input type="text"
-							id="email" name="email2" /> <select id="select_email"
-							style="height: 23px;" onchange="changeEmail()">
+						<td><input type="text" name="email1" /> @ 
+						<input type="text" id="email" name="email2" /> 
+						<select id="select_email" style="height: 23px;" onchange="changeEmail()">
 								<option value="">-- 이메일 선택 --</option>
 								<option>naver.com</option>
 								<option>daum.net</option>
@@ -728,7 +580,7 @@
 					</tr>
 					<tr>
 						<th>배송메세지</th>
-						<td><textarea name="delivery-message"
+						<td><textarea name="delivery_message"	
 								style="width: 700px; height: 70px;"></textarea></td>
 					</tr>
 				</table>

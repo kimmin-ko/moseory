@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -35,6 +38,9 @@ public class UserDaoTest {
 
     @Setter(onMethod_ = @Autowired)
     private UserDao userDao;
+    
+    @Setter(onMethod_ = @Autowired)
+    private ProductDao productDao;
     
     private MemberVO member1;
     
@@ -187,10 +193,94 @@ public class UserDaoTest {
 	log.info(vo.toString());
     }
     
+    @Test
+    public void testAddOrder() {
+	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+	int random = (int)(Math.random() * 8999999) + 1000000;
+	String order_code = now + random;
+	
+	// 주문 등록
+	OrderVO vo = new OrderVO();
+	vo.setCode(order_code);
+	vo.setMember_id("admin11");
+	vo.setDelivery_charge(0);
+	vo.setRecipient_name("김민");
+	vo.setRecipient_zipcode(153534);
+	vo.setRecipient_address1("경기도 부천시");
+	vo.setRecipient_address2("1층 카페");
+	vo.setRecipient_tel(null);
+	vo.setRecipient_phone("010-8455-9966");
+	vo.setRecipient_email("admin11@naver.com");
+	vo.setMessage("배송메세지입니다.");
+	vo.setPay_method("card");
+	
+	userDao.addOrder(vo);
+	
+	log.info("OrderVO : " + userDao.getOrder(vo.getCode()).toString());
+	
+	/* order_code, 
+	 * product_code, 
+	 * product_detail_no, 
+	 * quantity, 
+	 * amount, 
+	 * discount, 
+	 * point */
+	List<Map<String, Integer>> details_list = new ArrayList<Map<String, Integer>>();
+	
+	Map<String, Integer> param1 = new HashMap<String, Integer>();
+	param1.put("product_code", 102);
+	param1.put("product_detail_no", 32);
+	param1.put("quantity", 2);
+	param1.put("amount", 60500);
+	param1.put("discount", 1500);
+	param1.put("point", 1500);
+	
+	Map<String, Integer> param2 = new HashMap<String, Integer>();
+	param2.put("product_code", 102);
+	param2.put("product_detail_no", 31);
+	param2.put("quantity", 1);
+	param2.put("amount", 30250);
+	param2.put("discount", 750);
+	param2.put("point", 750);
+	
+	Map<String, Integer> param3 = new HashMap<String, Integer>();
+	param3.put("product_code", 103);
+	param3.put("product_detail_no", 23);
+	param3.put("quantity", 1);
+	param3.put("amount", 38000);
+	param3.put("discount", 1000);
+	param3.put("point", 1000);
+	
+	details_list.add(param1);
+	details_list.add(param2);
+	details_list.add(param3);
+	
+	int total_point = 0;
+	int total_amount = 0;
+	
+	for(int i = 0; i < details_list.size(); i++) {
+	    Map<String, Integer> details = details_list.get(i);
+	    
+	    // 적립금, 총 구매금액
+	    total_point += details.get("point");
+	    total_amount += details.get("amount");
+	    
+	    // 상품 판매량 증가
+	    userDao.updateOrderProduct(details.get("product_code"), details.get("quantity"));
+	    
+	    // 상품 재고 감소
+	    userDao.updateOrderProductDetail(details.get("product_detail_no"), details.get("quantity"));
+	    
+	    // 주문 상세 등록 (order_code는 String 타입이라 구분해주었음)
+	    userDao.addOrderDetail(order_code, details);
+	}
+	
+	// 회원 적립금, 총 구매금액 증가
+	userDao.updateOrderMember("admin11", total_point, total_amount);
+	
+    }
+    
 }
-
-
-
 
 
 

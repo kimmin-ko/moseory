@@ -46,13 +46,23 @@
 	</select>
 	
 	<!--상품 코드로 정보 조회 -->
-	<select id="getView" parameterType="int" resultType = "productVO">
+	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
 		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
 	FROM
 		tbl_product
 	WHERE
 		code = #{code}
+	</select>
+	
+	<!-- 상품 디테일 번호로 정보 조회 -->
+	<select id="getProductDetail" resultType="productdetailVO">
+	SELECT
+		no, product_code, product_color, product_size, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		no = #{product_detail_no}
 	</select>
 	
 	<!-- 상품 코드로 디테일 정보 조회 -->

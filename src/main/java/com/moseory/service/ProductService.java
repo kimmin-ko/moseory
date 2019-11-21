@@ -16,7 +16,7 @@ public interface ProductService {
 
 	List<ProductVO> highCateList(int high_code);
 
-	ProductVO getView(int code);
+	ProductVO getProduct(int code);
 
 	List<ProductDetailVO> getDetailView(int code);
 	

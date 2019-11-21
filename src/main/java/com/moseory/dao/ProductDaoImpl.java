@@ -29,8 +29,13 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public ProductVO getView(int code) {
-		return sqlSession.selectOne("product.getView", code);
+	public ProductVO getProduct(int code) {
+		return sqlSession.selectOne("product.getProduct", code);
+	}
+	
+	@Override
+	public ProductDetailVO getProductDetail(int product_detail_no) {
+	    return sqlSession.selectOne("product.getProductDetail", product_detail_no);
 	}
 
 	@Override
@@ -98,6 +103,8 @@ public class ProductDaoImpl implements ProductDao{
 	public void decreaseRecommend(int review_no) {
 	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
+
+	
 
 
 	

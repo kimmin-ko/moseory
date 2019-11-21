@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.UserService;
 
@@ -143,35 +145,33 @@ public class UserController {
 	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
 	
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
+    }
+    
+    // 주문 등록
+    @PostMapping("/addOrder")
+    public String addOrderPost(@RequestParam String member_id) {
+//	vo.setMember_id("admin11");
+//	vo.setDelivery_charge(0);
+//	vo.setRecipient_name("김민");
+//	vo.setRecipient_zipcode(153534);
+//	vo.setRecipient_address1("경기도 부천시");
+//	vo.setRecipient_address2("1층 카페");
+//	vo.setRecipient_tel(null);
+//	vo.setRecipient_phone("010-8455-9966");
+//	vo.setRecipient_email("admin11@naver.com");
+//	vo.setMessage("배송메세지입니다.");
+//	vo.setPay_method("card");
 	
-	// 총 주문 금액을 model에 담아서 전달
+	//log.info(vo.toString());
 	
-	// 총 상품 구매 금액
-	int total_prodcut_price = 0;
-	// 회원의 할인율 : ex) 1%, 2% ..
-	int discount = member.getLevel().getDiscount();
-	// 장바구니의 담겨있는 상품들의 총 할인금액
-	int product_discount = 0;
+	log.info(member_id);
 	
-	// 장바구니 목록 상품들의 가격을 모두 더한 후에 할인금액을 제외 
-	for(int i = 0; i < addedOrderInfoList.size(); i++) {
-	    // 상품의 가격
-	    int price = addedOrderInfoList.get(i).getPrice();
-	    // 상품의 수량
-	    int quantity = addedOrderInfoList.get(i).getQuantity();
-	    // 할인 금액의 총합
-	    product_discount += (price / 100) * discount * quantity;
-	    // 상품 금액의 총합
-	    total_prodcut_price += (price * quantity);
-	}
-	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
-	model.addAttribute("origin_product_price", total_prodcut_price);
-	
-	// 상품금액 - 할인금액 = 주문금액
-	total_prodcut_price -= product_discount;
-	
-	model.addAttribute("total_product_price", total_prodcut_price);
-	
+	return null;
+    }
+    
+    // 주문 완료 페이지
+    @GetMapping("/orderCompletion")
+    public void orderCompletion() {
 	
     }
     
@@ -190,37 +190,10 @@ public class UserController {
 	String member_id = member.getId();
 	
 	List<CartVO> cartList = userService.getCartList(member_id);
-	
-	// 총 상품 구매 금액
-	int total_prodcut_price = 0;
-	// 회원의 할인율 : ex) 1%, 2% ..
-	int discount = member.getLevel().getDiscount();
-	// 장바구니의 담겨있는 상품들의 총 할인금액
-	int product_discount = 0;
-	
-	// 장바구니 목록 상품들의 가격을 모두 더한 후에 할인금액을 제외 
-	for(int i = 0; i < cartList.size(); i++) {
-	    // 상품의 가격
-	    int price = cartList.get(i).getProduct_price();
-	    // 상품의 수량
-	    int quantity = cartList.get(i).getQuantity();
-	    // 할인 금액의 총합
-	    product_discount += (price / 100) * discount * quantity;
-	    // 상품 금액의 총합
-	    total_prodcut_price += (price * quantity);
-	}
-	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
-	model.addAttribute("origin_product_price", total_prodcut_price);
-		
-	// 상품금액 - 할인금액 = 주문금액
-	total_prodcut_price -= product_discount;
-	
-	model.addAttribute("total_product_price", total_prodcut_price);
 	model.addAttribute("cartList", cartList);
 	
 	// 회원의 아이디를 이용해서 장바구니 목록 개수 조회
 	int cartCount = userService.getCartCount(member_id);
-	
 	model.addAttribute("cartCount", cartCount);
     }
     

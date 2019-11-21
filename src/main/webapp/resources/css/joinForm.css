@@ -39,3 +39,13 @@ table th {
     font-size: 12px;
     color: gray;
 }
+
+#zipcode {
+	width: 100px;
+	margin-bottom: 5px;
+}
+
+#address1 {
+	width: 319px;
+	margin-bottom: 5px;
+}
