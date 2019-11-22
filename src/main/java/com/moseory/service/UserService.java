@@ -6,6 +6,7 @@ import java.util.Map;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
 public interface UserService {
@@ -41,4 +42,15 @@ public interface UserService {
     public void deleteCartAll(String member_id);
     
     public List<AddedOrderInfoVO> getAddedOrderInfoList(List<Integer> product_detail_no, List<Integer> quantity);
+    
+    public void addOrder(OrderVO vo, List<Map<String, Integer>> details_list);
 }
+
+
+
+
+
+
+
+
+

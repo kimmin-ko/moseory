@@ -25,8 +25,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ProductVO getView(int code) {
-		return productDao.getView(code);
+	public ProductVO getProduct(int code) {
+		return productDao.getProduct(code);
 	}
 
 	@Override

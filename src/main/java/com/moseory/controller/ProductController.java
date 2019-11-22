@@ -50,7 +50,7 @@ public class ProductController {
 	@GetMapping("/productInfo")
 	public String productInfo(@RequestParam int code, Model model) {
 		// 상품 조회
-		ProductVO productVO = productService.getView(code);
+		ProductVO productVO = productService.getProduct(code);
 		// 상품 디테일 조회
 		List<ProductDetailVO> productDetailVO = productService.getDetailView(code);
 		

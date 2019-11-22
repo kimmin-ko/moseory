@@ -18,10 +18,11 @@
 		<typeAlias alias="WishListVO" type="com.moseory.domain.WishListVO" />
 		<typeAlias alias="AddedOrderInfoVO" type="com.moseory.domain.AddedOrderInfoVO"/>
 		<typeAlias alias="CartVO" type="com.moseory.domain.CartVO" />
-		<typeAlias type="com.moseory.domain.ProductVO" alias="productVO" />
-		<typeAlias type="com.moseory.domain.ProductDetailVO" alias="productdetailVO" />
+		<typeAlias alias="productVO" type="com.moseory.domain.ProductVO" />
+		<typeAlias alias="productdetailVO" type="com.moseory.domain.ProductDetailVO" />
 		<typeAlias alias="HighCateVO" type="com.moseory.domain.HighCateVO" />
 		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
+		<typeAlias alias="OrderVO" type="com.moseory.domain.OrderVO"/>
 		
 		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
 	</typeAliases>

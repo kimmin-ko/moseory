@@ -219,6 +219,65 @@
 		pd.no = #{product_detail_no}
 	</select>
 	
+	<!-- ORDER -->
+	<!-- 회원의 적립금과 총구매금액 변경 -->
+	<update id="updateOrderMember">
+	UPDATE
+	    tbl_member
+	SET
+	    point = point + #{total_point}, total = total + #{total_amount}
+	WHERE
+	    id = #{member_id}
+	</update>
+	
+	<!-- 상품의 판매량 변경 -->
+	<update id="updateOrderProduct">
+	UPDATE
+	    tbl_product
+	SET
+	    sale_count = sale_count + #{quantity}
+	WHERE
+	    code = #{product_code}
+	</update>
+	
+	<!-- 상품 디테일의 재고 변경 -->
+	<update id="updateOrderProductDetail">
+	UPDATE
+	    tbl_product_detail
+	SET
+	    product_stock = product_stock - #{quantity}
+	WHERE
+	    no = #{product_detail_no}
+	</update>
+	
+	<!-- 주문 정보 입력 -->
+	<insert id="addOrder">
+	INSERT INTO
+	    tbl_order (code, member_id, delivery_charge, state, recipient_name, recipient_zipcode,  recipient_address1, 
+	              recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method)
+	VALUES (#{code}, #{member_id}, #{delivery_charge}, '입금 확인중', #{recipient_name}, #{recipient_zipcode},  #{recipient_address1}, 
+	       #{recipient_address2}, #{recipient_tel}, #{recipient_phone}, #{recipient_email}, #{message}, #{pay_method})
+	</insert>
+	
+	<!-- 주문 상세 테이블 -->
+	<insert id="addOrderDetail">
+	INSERT INTO
+	    tbl_order_detail (order_code, product_detail_no, amount, discount, point, quantity)
+	VALUES (#{order_code}, #{product_detail_no}, #{amount}, #{discount}, #{point}, #{quantity})
+	</insert>
+	
+	<!-- 주문 코드로 주문 정보 조회 -->
+	<select id="getOrder" resultType="OrderVO">
+	SELECT
+		*
+	FROM
+		tbl_order
+	WHERE
+		code = #{code}
+	</select>
+	
+	<!-- END ORDER -->
+	
 </mapper>
 
 

@@ -16,15 +16,46 @@
 
 <script>
 $(document).ready(function() {
-	
 	var noArr = [];
 	var quantityArr = [];
 	
-	// cartLsit에 담겨있는 각각의 cart의 no와 quantity를 가져와서 배열에 저장한다
+	// 회원 등급 할인 (모든 상품의 할인을 더한 값)				
+	var total_discount = 0;
+	// 배송비
+	var delivery_charge = 0;
+	// 오리지널 주문 금액
+	var origin_prod_price = 0;
+	// 최종 주문 금액
+	var total_prod_price = 0;
+	
 	<c:forEach items="${cartList}" var="cart">
+		// cartLsit에 담겨있는 각각의 cart의 no와 quantity를 가져와서 배열에 저장한다
 		noArr.push("${cart.product_detail_no}");
 		quantityArr.push("${cart.quantity}");
+		
+		var discount = ${(cart.product_price / 100) * member.level.discount * cart.quantity};
+		total_discount += discount;
+		
+		origin_prod_price += ${cart.product_price * cart.quantity };
 	</c:forEach>
+	
+	total_prod_price = origin_prod_price - total_discount;
+	
+	$(".total-prod-price").html("<strong>" + total_prod_price.format() + "원</strong>");
+	
+	// 배송비
+	if(origin_prod_price >= 50000 || origin_prod_price == 0) {
+		$(".delivery_charge").text("무료");
+		$(".total-order-price").text(total_prod_price.format());
+		$(".total-order-price").text((total_prod_price).format() + "원");
+	} else if(origin_prod_price < 50000 && origin_prod_price != 0) {
+		$(".delivery_charge").text("3,000원");
+		delivery_charge = 3000;
+		$(".total-order-price").text((total_prod_price + delivery_charge).format() + "원");
+	}
+	
+	// 최종 결제 금액 (total_discount와 delivery_charge보다 뒤에 선언)
+	var final_order_price = origin_prod_price + delivery_charge - total_discount;
 	
 	// 주문 버튼을 누르게 되면 저장되어있는 배열을 이용해 order를 호출한다
 	// 상품 주문
@@ -39,6 +70,7 @@ $(document).ready(function() {
 	
 }); 
 </script>
+<script type="text/javascript" src="/js/user/cart.js"></script>
 
 <!-- CartForm Start -->
 <div class="container" style="margin-left:22%;">
@@ -159,14 +191,7 @@ $(document).ready(function() {
                         </td>
                         <!-- 배송비 -->
                         <td>
-                        	<span class="delivery-charge">
-                        		<c:if test="${origin_product_price > 50000 }">
-                        			무료
-                        		</c:if>
-                        		<c:if test="${origin_product_price <=50000 }">
-                        			3,000원
-                        		</c:if>
-                        	</span>
+                        	<span class="delivery_charge"></span>
                         </td>
                         <!-- 주문금액 -->
                         <td>
@@ -191,26 +216,9 @@ $(document).ready(function() {
                             [기본배송]
                         </td>
                         <td colspan="5" style="text-align: right;">
-                            <b>상품구매금액</b>
-                            <span class="total-prod-price"><fmt:formatNumber value="${total_product_price }" pattern="#,###" /></span>
-                             + 배송비 
-                            <span class="delivery-charge">
-                            	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
-                        			무료
-                        		</c:if>
-                        		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
-                        			3,000
-                        		</c:if>
-                            </span>
-                             = 합계 : 
-                            <span class="total-order-price">
-                            	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
-                        			<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
-                        		</c:if>
-                        		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
-                        			<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
-                        		</c:if>
-                            </span>
+                            <b>상품구매금액</b><span class="total-prod-price"></span>
+                             + 배송비 <span class="delivery_charge"></span>
+                             = 합계 : <span class="total-order-price"></span>
                         </td>
                     </tr>
                 </tfoot>
@@ -238,23 +246,9 @@ $(document).ready(function() {
                     <th>결제 예정 금액</th>
                 </tr>
                 <tr>
-                    <td><fmt:formatNumber value="${total_product_price }" pattern="#,###" />원</td>
-                    <td>
-                    	<c:if test="${origin_product_price > 50000 || origin_product_price == 0 }">
-                   			무료
-                   		</c:if>
-                   		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
-                   			+3,000원
-                   		</c:if>
-                    </td>
-                    <td style="color: #CE1F14;">
-                    	<c:if test="${origin_product_price > 50000|| origin_product_price == 0 }">
-                  			=<fmt:formatNumber value="${total_product_price }" pattern="#,###" />원
-                  		</c:if>
-                  		<c:if test="${origin_product_price <=50000 && origin_product_price != 0 }">
-                  			=<fmt:formatNumber value="${total_product_price + 3000 }" pattern="#,###" />원
-                  		</c:if>
-                    </td>
+                    <td class="total-prod-price"></td>
+                    <td class="delivery_charge"></td>
+                    <td class="total-order-price" style="color: #CE1F14;"></td>
                 </tr>
             </table>
         </div>
@@ -296,8 +290,6 @@ $(document).ready(function() {
 	<%@ include file="../includes/footer.jsp" %>
 	
 </div>
-
-<script type="text/javascript" src="/js/user/cart.js"></script>
 
 </body>
 </html>

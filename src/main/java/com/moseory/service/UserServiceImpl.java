@@ -1,5 +1,7 @@
 package com.moseory.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,7 @@ import com.moseory.dao.UserDao;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -131,4 +134,35 @@ public class UserServiceImpl implements UserService {
 	return orderList;
     }
 
+    @Transactional
+    @Override
+    public void addOrder(OrderVO vo, List<Map<String, Integer>> details_list) {
+	// 주문 번호 생성
+	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+	int random = (int)(Math.random() * 8999999) + 1000000;
+	String order_code = now + random;
+	
+	vo.setCode(order_code);
+	
+    }
+    
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

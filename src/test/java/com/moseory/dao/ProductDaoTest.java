@@ -36,7 +36,7 @@ public class ProductDaoTest {
     
     @Test
     public void testGetProduct() {
-	ProductVO product = productDao.getView(2);
+	ProductVO product = productDao.getProduct(2);
 	
 	log.info(product);
 	
