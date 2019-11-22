@@ -209,15 +209,58 @@ public class AdminController {
 			@RequestParam(defaultValue = "name") String searchType,
 			@RequestParam(defaultValue = "") String keyword,
 			Model model) {
-		int totalCnt = adminService.getProductCount();
-		PagingUtil pagingUtil = new PagingUtil(totalCnt, curPage);
-		System.out.println(searchType);
-		System.out.println(keyword);
-		List <ProductVO> productList;
-		if(keyword == "") {
+		List <ProductVO> productList = new ArrayList<>();
+		
+		model.addAttribute("searchType",searchType);
+		model.addAttribute("keyword",keyword);
+
+		PagingUtil pagingUtil;
+		int totalCnt = 0;
+		
+		if(keyword.equals("") != false) {	//검색 안하면
+			totalCnt = adminService.getProductCount();
+			pagingUtil = new PagingUtil(totalCnt, curPage);
+			
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
-		}else {
-			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+			model.addAttribute("productList", productList);
+			model.addAttribute("paging",pagingUtil);
+		}
+		else {	//검색 하면
+			if(searchType.equals("name")) {
+				try {
+					totalCnt = adminService.getProductCount(searchType, keyword);
+					pagingUtil = new PagingUtil(totalCnt, curPage);
+					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					model.addAttribute("productList", productList);
+					model.addAttribute("paging",pagingUtil);
+				}catch(NullPointerException e) {
+				}
+				
+				
+			}
+			else if(searchType.equals("high_code")) {
+				try {
+					keyword = Integer.toString(adminService.getHighCateCode(keyword));
+					totalCnt = adminService.getProductCount(searchType, keyword);
+					pagingUtil = new PagingUtil(totalCnt, curPage);
+					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					model.addAttribute("productList", productList);
+					model.addAttribute("paging",pagingUtil);
+				}catch(NullPointerException e) {
+				}
+				
+			}
+			else if(searchType.equals("low_code")) {
+				try {
+					keyword = Integer.toString(adminService.getLowCateCode(keyword));
+					totalCnt = adminService.getProductCount(searchType, keyword);
+					pagingUtil = new PagingUtil(totalCnt, curPage);
+					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					model.addAttribute("productList", productList);
+					model.addAttribute("paging",pagingUtil);
+				}catch(NullPointerException e) {
+				}
+			}
 		}
 		
 		List <String> highCates = new ArrayList<String>();
@@ -226,10 +269,10 @@ public class AdminController {
 			highCates.add(adminService.getHighCate(productList.get(i).getHigh_code()));
 			lowCates.add(adminService.getLowCate(productList.get(i).getLow_code()));
 		}
-		model.addAttribute("productList", productList);
-		model.addAttribute("paging",pagingUtil);
 		model.addAttribute("highCates", highCates);
 		model.addAttribute("lowCates", lowCates);
+		
+		
 		return "admin/productlist"; 
 	}
 	

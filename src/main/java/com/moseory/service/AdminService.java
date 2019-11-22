@@ -28,7 +28,7 @@ public interface AdminService {
 	List<ProductVO> getProductList(int start, int finish);
 
 	int getProductCount();
-	
+	int getProductCount(String searchType, String keyword);
 	//상위 카테고리 저장
 	public int saveParentsCategory(List<Integer> code, List<String> name, List<String> kname);
 	
@@ -45,4 +45,10 @@ public interface AdminService {
 	public int deleteChildCategory(ArrayList<Integer> codes);
 
 	List<ProductVO> getProductList(int start, int finish, String searchType, String keyword);
+
+	int getHighCateCode(String keyword);
+
+	int getLowCateCode(String keyword);
+
+	
 }

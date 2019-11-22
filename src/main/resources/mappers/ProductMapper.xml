@@ -258,18 +258,14 @@
 	</select>
 	
 
-	<select id="getHighCate" parameterType="int" resultType = "String">
-		select name from tbl_high_cate
-			where code = #{code}
-	</select>
-	<select id="getLowCate" parameterType="int" resultType="String">
-		select name from tbl_low_cate
-			where code = #{code}
-	</select>   
 	   
 	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">
 		select count(*) from tbl_product
+	</select>
+	<!-- 상품 전체 리스트 카운트2 -->
+	<select id="getProductCount2" parameterType="map" resultType = "int">
+		select count(*) from tbl_product where ${searchType} = #{keyword}
 	</select>
 	
 	<!-- 상품 전체/검색된 리스트 -->
@@ -279,15 +275,6 @@
 		where rn between #{start} and #{finish}
 	</select>
 	
-	
-	<!-- 		
-	select * from (
-		select rownum rn, A.* from (
-			select * from productboard where ${searchType} like '%'||#{keyword}||'%' order by no desc
-		)A
-	) 
-	where rn between #{start} and #{finish}
-	 -->
 	<!-- 상품 검색된 리스트 -->
 	<select id="getListOnSearch" parameterType="map" resultType="productVO">
 		select * from (
@@ -296,6 +283,9 @@
 			order by code)
 		where rn between #{start} and #{finish}
 	</select>
+	
+	
+	
 </mapper>
 
 
