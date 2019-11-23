@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
@@ -28,6 +30,11 @@ public class ProductDaoImpl implements ProductDao{
 		return sqlSession.selectList("product.highCateList", high_code);
 	}
 
+	@Override
+	public List<ProductVO> highCateListDetail(Map<Object, Object> map) {
+		return sqlSession.selectList("product.highCateListDetail", map);
+	}
+	
 	@Override
 	public ProductVO getProduct(int code) {
 		return sqlSession.selectOne("product.getProduct", code);
@@ -102,6 +109,16 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public void decreaseRecommend(int review_no) {
 	    sqlSession.update("product.decreaseRecommend", review_no);
+	}
+
+	@Override
+	public HighCateVO getHighCate(int high_code) {
+		return sqlSession.selectOne("product.getHighCate", high_code);
+	}
+
+	@Override
+	public List<LowCateVO> getLowCate(int high_code) {
+		return sqlSession.selectList("product.getLowCate", high_code);
 	}
 
 	
