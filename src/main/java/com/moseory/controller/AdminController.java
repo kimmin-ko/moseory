@@ -260,4 +260,12 @@ public class AdminController {
 		
 		return "admin/productlist"; 
 	}
+	
+	@GetMapping("userManagement")
+	public String userManagement() {
+	
+//		adminService.getUser();
+		return "admin/userManagement"; 
+	}
+	
 }
