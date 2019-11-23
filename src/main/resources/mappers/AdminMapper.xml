@@ -75,4 +75,25 @@
         </foreach>
 	</delete>
 	
+	
+	
+	<select id="getHighCate" parameterType="int" resultType = "String">
+		select name from tbl_high_cate
+			where code = #{code}
+	</select>
+	<select id="getLowCate" parameterType="int" resultType="String">
+		select name from tbl_low_cate
+			where code = #{code}
+	</select>   
+	
+	<select id="getHighCateCode" parameterType="String" resultType = "int">
+		select code from tbl_high_cate
+			where name like '%'||#{keyword}||'%'
+				or kname like '%'||#{keyword}||'%'
+	</select>
+	<select id="getLowCateCode" parameterType="String" resultType = "int">
+		select code from tbl_low_cate
+			where name like '%'||#{keyword}||'%'
+	</select>
+	
 </mapper>

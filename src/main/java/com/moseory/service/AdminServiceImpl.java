@@ -82,7 +82,11 @@ public class AdminServiceImpl implements AdminService{
 	public int getProductCount() {
 		return adminDao.getProductCount();
 	}
-
+	@Override
+	public int getProductCount(String searchType, String keyword) {
+		return adminDao.getProductCount(searchType, keyword);
+	}
+	
 	public int deleteParentsCategory(ArrayList<Integer> codes) {
 
 		int status = 0;
@@ -145,5 +149,17 @@ public class AdminServiceImpl implements AdminService{
 	public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
 		return adminDao.getProductList(start, finish, searchType, keyword);
 	}
+
+	@Override
+	public int getHighCateCode(String searchType) {
+		return adminDao.getHighCateCode(searchType);
+	}
+
+	@Override
+	public int getLowCateCode(String keyword) {
+		return adminDao.getLowCateCode(keyword);
+	}
+
+	
 	
 }	

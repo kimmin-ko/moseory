@@ -43,7 +43,7 @@
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="/user/modify">회원 관리</a></h6>
+						<h6><a href="/admin/userManagement">회원 관리</a></h6>
 						<p>
 							가입하신 회원들을 모아보고<br>
 							관리하는 공간입니다.

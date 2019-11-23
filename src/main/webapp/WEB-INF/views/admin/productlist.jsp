@@ -70,11 +70,11 @@
 			<div class="col-md-10 col-md-offset-1">
 				<span class="form-inline search-area">
 					<select class="form-control" name = "searchType" style="width: 130px">
-						<option value="name">상품명</option>
-						<option value="high_code">상위카테고리</option>
-						<option value="low_code">하위카테고리</option>
+						<option <c:if test = "${searchType == 'name' }">selected</c:if> value="name">상품명</option>
+						<option <c:if test = "${searchType == 'high_code' }">selected</c:if> value="high_code">상위카테고리</option>
+						<option <c:if test = "${searchType == 'low_code' }">selected</c:if> value="low_code">하위카테고리</option>
 					</select>
-					<input type="text" name = "keyword" class="form-control" style="width: 180px;" required />
+					<input type="text" name = "keyword" value = "${keyword }" class="form-control" style="width: 180px;" required />
 					<button class="btn btn-default submit">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
@@ -98,7 +98,7 @@
 									<li class ="paginate_button active"><span>${pageNumber }</span></li>
 								</c:when>
 								<c:otherwise>
-									<li class ="paginate_button"><a href = "${pageContext.request.contextPath }/admin/productlist?curPage=${pageNumber}">${pageNumber }</a></li>
+									<li class ="paginate_button"><a href = "${pageContext.request.contextPath }/admin/productlist?curPage=${pageNumber}&searchType=${searchType}&keyword=${keyword}">${pageNumber }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
