@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -124,11 +125,10 @@ public class UserDaoImpl implements UserDao {
 
     /* ORDER (결제 완료) 시작 */
     @Override
-    public void updateOrderMember(String member_id, int total_point, int total_amount) {
+    public void updateOrderMember(String member_id, int used_point) {
 	Map<String, Object> param = new HashMap<String, Object>();
 	param.put("member_id", member_id);
-	param.put("total_point", total_point);
-	param.put("total_amount", total_amount);
+	param.put("used_point", used_point);
 	
 	sqlSession.update(namespace+".updateOrderMember", param);
     }
@@ -150,6 +150,15 @@ public class UserDaoImpl implements UserDao {
 	
 	sqlSession.update(namespace+".updateOrderProductDetail", param);
     }
+    
+    @Override
+    public void deleteOrderCart(int product_detail_no, String member_id) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("product_detail_no", product_detail_no);
+	param.put("member_id", member_id);
+	
+	sqlSession.delete(namespace+".deleteOrderCart", param);
+    }
 
     @Override
     public void addOrder(OrderVO vo) {
@@ -157,27 +166,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void addOrderDetail(String order_code, Map<String, Integer> details) {
-	Map<String, Object> param = new HashMap<String, Object>();
-	param.putAll(details);
-	param.put("order_code", order_code);
-	
-	sqlSession.insert(namespace+".addOrderDetail", param);
+    public void addOrderDetail(OrderDetailVO details) {
+	sqlSession.insert(namespace+".addOrderDetail", details);
     }
 
     @Override
     public OrderVO getOrder(String code) {
 	return sqlSession.selectOne(namespace+".getOrder", code);
     }
+
+    @Override
+    public List<OrderDetailVO> getOrderDetail(String order_code) {
+	return sqlSession.selectList(namespace+".getOrderDetail", order_code);
+    }
+
+    /* ORDER 끝 */
     
     
 
 }
-
-
-
-
-
 
 
 

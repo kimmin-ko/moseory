@@ -6,6 +6,7 @@ import java.util.Map;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -48,17 +49,21 @@ public interface UserDao {
     public AddedOrderInfoVO getAddedOrderInfo(int product_detail_no);
     
     /* 결제 완료 */
-    public void updateOrderMember(String member_id, int total_point, int total_amount);
+    public void updateOrderMember(String member_id, int used_point);
     
     public void updateOrderProduct(int product_code, int quantity);
     
     public void updateOrderProductDetail(int product_detail_no, int quantity);
     
+    public void deleteOrderCart(int product_detail_no, String member_id);
+    
     public void addOrder(OrderVO vo);
     
-    public void addOrderDetail(String order_code, Map<String, Integer> details);
+    public void addOrderDetail(OrderDetailVO details);
     
     public OrderVO getOrder(String code);
+    
+    public List<OrderDetailVO> getOrderDetail(String order_code);
 }
 
 

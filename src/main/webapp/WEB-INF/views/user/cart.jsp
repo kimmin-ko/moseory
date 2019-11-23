@@ -151,7 +151,7 @@ $(document).ready(function() {
                             	<c:if test="${cart.product_color ne null }"> 
                             		<!-- size가 있을 때 -->
                             		<c:if test="${cart.product_size ne null }"> 
-                            			<c:out value="${cart.product_color }" />/
+                            			<c:out value="${cart.product_color }" /> /
                             			<c:out value="${cart.product_size }" />
                             		</c:if>
                             		<!-- size가 없을 때 -->
