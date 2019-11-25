@@ -15,6 +15,8 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -183,6 +185,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<OrderDetailVO> getOrderDetails(String order_code) {
 	return userDao.getOrderDetail(order_code);
+    }
+
+    @Override
+    public List<OrderListVO> getOrderList(OrderListCri cri) {
+	return userDao.getOrderList(cri);
+    }
+
+    @Transactional
+    @Override
+    public void orderCancel(String order_code, String member_id) {
+	// 1. 주문 번호를 이용해 주문 취소에 필요한 정보를 조회
+	List<OrderDetailVO> orderDetailList = userDao.getOrderDetail(order_code);
+	
+	// 2. 해당 주문의 상태를 '주문 취소'로 변경
+	userDao.updateOrderStateToCancel(orderDetailList.get(0).getOrder_code());
+	
+	for(OrderDetailVO orderDetail : orderDetailList) {
+	    // 3. 해당 상품의 판매량을 주문 수량만큼 감소
+	    userDao.decreaseSaleCount(orderDetail.getProduct_code(), orderDetail.getQuantity());
+	    // 4. 해당 상품의 재고를 주문 수량만큼 증가
+	    userDao.increaseProductStock(orderDetail.getProduct_detail_no(), orderDetail.getQuantity());
+	    // 5. 회원이 주문에 사용한 적립금 반환
+	    userDao.increaseMemberPoint(member_id, orderDetail.getPoint());
+	}
     }
     
     
