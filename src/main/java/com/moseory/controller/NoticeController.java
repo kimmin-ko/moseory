@@ -54,6 +54,8 @@ public class NoticeController {
 		log.info(cri.getPageNum());
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		log.info("--------------------------------");
 		return "redirect:/notice/noticeList/";
 
@@ -65,9 +67,12 @@ public class NoticeController {
 		service.delete(bno);
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		return "redirect:/notice/noticeList";
 	}
-
+	
+	
 	@GetMapping("/noticeList")
 	public void List(Criteria cri, Model model) {
 		log.info("list:" + cri);

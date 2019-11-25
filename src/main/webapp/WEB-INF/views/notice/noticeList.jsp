@@ -27,40 +27,76 @@
 	<%@ include file="../includes/sidebar.jsp"%>
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-			var result = '<c:out value="${result}"/>';
-			checkModal(result);
-			
-			history.replaceState({},null,null);
-			
-			function checkModal(result){
-				if(result === '' || history.state){
-					return;
-				}
-				if(parseInt(result) >= 0){
-					$(".modal-body").html("게시글이 등록 되었습니다");
-				}
-				$("#myModal").modal("show");
-					
-			}
-			
-			var actionForm = $("#actionForm");		
-			
-			$(".paginate_button a").on("click",function(e){
-				e.preventDefault();
-				console.log("click");
-				actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-				actionForm.submit();
-			});
-			
-			//게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
-			$(".move").on("click",function(e){
-				e.preventDefault();
-				actionForm.append("<input type ='hidden' name='no' value ='"+$(this).attr("href")+"'>");
-				actionForm.attr("action","/notice/noticeGet");
-				actionForm.submit();
-			})
-		});
+	$(document).ready(
+        function() {
+            var result = '<c:out value="${result}"/>';
+            checkModal(result);
+
+            history.replaceState({}, null, null);
+
+            function checkModal(result) {
+                if (result === '' || history.state) {
+                    return;
+                }
+                if (parseInt(result) >= 0) {
+                    $(".modal-body").html("게시글이 등록 되었습니다");
+                }
+                $("#myModal").modal("show");
+
+            }
+
+            var actionForm = $("#actionForm");
+
+            $(".paginate_button a").on(
+                "click",
+                function(e) {
+                    e.preventDefault();
+                    console.log("click");
+                    actionForm
+                        .find("input[name='pageNum']")
+                        .val($(this).attr("href"));
+                    actionForm.submit();
+                });
+
+            //게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
+            $(".move")
+                .on(
+                    "click",
+                    function(e) {
+                        e.preventDefault();
+                        actionForm
+                            .append("<input type ='hidden' name='no' value ='" +
+                                $(this).attr(
+                                    "href") +
+                                "'>");
+                        actionForm.attr("action",
+                            "/notice/noticeGet");
+                        actionForm.submit();
+                    })
+
+            //$(".")
+
+            var searchForm = $("#search");
+
+            $("#search button").on("click",
+                    function(e) {
+                        if (!searchForm.find("option:selected").val()) {
+                            alert("검색 종류를 선택해 주세요");
+                            return false;
+                        }
+
+                        if (!searchForm.find("input[name='keyword']").val()) {
+                            alert("검색어를 입력하세요");
+                            return false;
+                        }
+
+                        searchForm.find("input[name='pageNum']").val("1");
+                        e.preventDefault();
+
+                        searchForm.submit();
+                    });
+	
+        });
 	</script>
 
 	<div class="container" style="margin-left: 22%;">
@@ -110,7 +146,36 @@
 					</tbody>
 				</table>
 			</div>
+			
+			<!-- 검색 처리 기능 -->
+			<div class="col-md-10 col-md-offset-1">
+				<form id='search' action="/notice/noticeList" method="get">
+					<select class="form-control" style="width: 130px" name="type">
+						<option value=""
+							<c:out value="${pageMaker.cri.type == null ?'selected':''}"/>>List</option>
+						<option value="T"
+							<c:out value="${pageMaker.cri.type == 'T' ?'selected':''}"/>>제목</option>
+						<option value="C"
+							<c:out value="${pageMaker.cri.type == 'C' ?'selected':''}"/>>내용</option>
+						<option value="TC"
+							<c:out value="${pageMaker.cri.type == 'TC' ?'selected':''}"/>>제목
+							+ 내용</option>
+					</select> <input type="text" class="form-control" name="keyword"
+						style="width: 180px;" value="${pageMaker.cri.keyword}" /> <input
+						type='hidden' name='pageNum' value="${pageMaker.cri.pageNum }">
+					<input type='hidden' name='amount' value="${pageMaker.cri.amount }"><button class="btn btn-default">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</button>
+					
+				</form>
+				<button type="button" class="btn btn-default"
+						onclick="location.href ='/notice/noticeText'">글쓰기</button>
+			</div>
+			
 
+
+
+			<!-- 페이징 처리 -->
 			<div class="col-md-10 col-md-offset-1 pagination-div"
 				style="margin-bottom: 30px;">
 				<nav>
@@ -131,35 +196,24 @@
 								href="${pageMaker.endPage+1 }">다음</a></li>
 						</c:if>
 
+
 					</ul>
 				</nav>
 			</div>
 
-			<div class="col-md-10 col-md-offset-1">
-				<span class="form-inline search-area"> 검색어 <select
-					class="form-control" style="width: 130px">
-						<option value="subject">제목</option>
-						<option value="content">내용</option>
-						<option value="subject_Content">제목 + 내용</option>
-				</select>
-					<div class="form-group">
-						<input type="text" class="form-control" style="width: 180px;" />
-						<button class="btn btn-default">
-							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-						</button>
-					</div>
-				</span>
-			</div>
+
 
 		</div>
 
 		<!-- row -->
 		<!-- Notice End -->
+		
 		<form id="actionForm" action="/notice/noticeList" method="get">
-			<input type='hidden' name='pageNum' value="${pageMaker.cri.pageNum }">
-			<input type='hidden' name='amount' value="${pageMaker.cri.amount }">
+			<input type="hidden" name='pageNum' value="${pageMaker.cri.pageNum }">
+			<input type="hidden" name='amount' value="${pageMaker.cri.amount }">
+			<input type="hidden" name="type" value="${pageMaker.cri.type}">
+			<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 		</form>
-
 
 
 	</div>

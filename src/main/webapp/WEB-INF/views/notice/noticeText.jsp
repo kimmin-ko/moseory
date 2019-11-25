@@ -15,7 +15,30 @@
 <body>
 
 	<%@ include file="../includes/sidebar.jsp"%>
-	
+	<script type="text/javascript">
+		//document.폼이름
+		function writeCheck()
+		{
+			var form = document.writeform;
+			var flag = true;
+			
+			if(form.title.value === ''){
+				alert("제목을 입력해 주세요");
+				form.title.focus();
+				flag = false;
+			}
+			if(form.content.value === ''){
+				alert("내용을 입력해 주세요");
+				form.content.focus();
+				flag = false;
+			}
+			
+			if(flag){
+				form.submit();
+			}
+			
+		}
+	</script>
 
 
 	<script src="/ckeditor/ckeditor.js"></script>
@@ -37,7 +60,7 @@
 							<td>&nbsp;</td>
 							<td align="center">제목</td>
 							<td><input type="text" name="title" size="100"
-								maxlength="100" required="required"> <!--  값 입력하기  --></td>
+								maxlength="100"> <!--  값 입력하기  --></td>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
@@ -51,8 +74,9 @@
 						</tr>
 						<tr align="center">
 							<td>&nbsp;</td>
-							<td colspan="2"><input type=submit value="등록"
-								class="btn btn-dark"> <input type=button value="취소"
+							<td colspan="2">
+							<input type=submit value="등록" class="btn btn-dark" OnClick="javascript:writeCheck()">
+								<input type=button value="취소"
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">
 							<td>&nbsp;</td>
 						</tr>
@@ -62,6 +86,7 @@
 		</div>
 		<%@ include file="../includes/footer.jsp"%>
 	</div>
+	
 	<script type="text/javascript">
 		var ckeditor_config = {
 			resize_enaleb : false,

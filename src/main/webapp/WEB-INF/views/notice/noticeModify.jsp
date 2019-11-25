@@ -16,7 +16,7 @@
 
 <body>
 	<%@ include file="../includes/sidebar.jsp"%>
-	
+
 	<script>
 	$(document).ready(function(){
 		var formObj = $("form");
@@ -31,46 +31,52 @@
 				formObj.attr("action","/notice/noticeList").attr("method","get");
 				var pageNumTag = $("input[name='pageNum']").clone();
 				var amountTag = $("input[name='amount']").clone();
-				
+				var keywordTag = $("input[name='keyword']").clone();
+				var typeTag - $("input[name='type']").clone();
 				formObj.empty();
 				formObj.append(pageNumTag);
 				formObj.append(amountTag);
+				formObj.append(keywordTag);
+				formObj.append(typeTag);
 			}
 			formObj.submit();
 		});
 	});
 	</script>
 
-	<form role ="form" action ="/notice/noticeModify" method="post">
-	<div class="container" style="margin-left: 22%; width:100%;">
-		
-		<input type=  "hidden" name=  "no"  value="${board.no}">
-		<input type = "hidden" name = "pageNum" value = "${cri.pageNum }">  <!--  '<c:out value = "${cri.pageNum }"/>' -->
-		<input type = "hidden" name = "amount" value = "${cri.amount }" > <!-- '<c:out value = "${cri.amount }"/>' -->
-				
-						<table class="table table-striped" margin-top: "50px";>
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">NOTICE</td>
-								<td>공지 사항 관련된 게시판 입니다</td>
-								<td>&nbsp;</td>
-							</tr>
 
+	<div class="container" style="margin-left: 22%;">
+		<form role="form" action="/notice/noticeModify" method="post">
 
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">제목</td>
-								<td><input type="text" name="title" size="100"
-									maxlength="100" value="${board.title}"> <!--  값 입력하기  --></td>
-								<td>&nbsp;</td>
-							</tr>
+			<input type="hidden" name="no" value="${board.no}"> <input
+				type="hidden" name="pageNum" value="${cri.pageNum }"> <input
+				type="hidden" name="amount" value="${cri.amount }">
+				<input type='hidden' name='keyword' value='<c:out value="${cri.keyword }"/>'>
+				<input type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
+			<div class="col-md-10 col-md-offset-1">
 
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center"></td>
-								<td><textarea name="content" cols="100" rows="13">
+				<table class="table table-striped notice-table">
+					<tr>
+						<td>&nbsp;</td>
+						<td align="center">NOTICE</td>
+						<td>공지 사항 관련된 게시판 입니다</td>
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr>
+						<td>&nbsp;</td>
+						<td align="center">제목</td>
+						<td><input type="text" name="title" size="100"
+							maxlength="100" value="${board.title}"> <!--  값 입력하기  --></td>
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr>
+						<td>&nbsp;</td>
+						<td align="center"></td>
+						<td><textarea name="content" cols="100" rows="13">
 								${board.content}
-									
+	
 								</textarea></td>
 
 								<script>
@@ -84,50 +90,26 @@
 									CKEDITOR
 											.replace("content", ckeditor_config);
 								</script>
-								
-								<td>&nbsp;</td>
-							</tr>
+
+						<td>&nbsp;</td>
+					</tr>
 
 
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">UCC URL</td>
-								<td><input name="title2" size="50" maxlength="50"
-									disabled></td>
-							</tr>
+					<tr align="center">
+						<td>&nbsp;</td>
+						<td colspan="2">
+							<button type="submit" data-oper='modify' class='btn btn-dark'>수정
+								완료</button>
+							<button type="submit" data-oper='remove' class='btn btn-dark'>삭제</button>
+							<button type="submit" data-oper='list' class='btn btn-dark'>목록</button>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</div>
+			</form>
+			<%@ include file="../includes/footer.jsp"%>
 
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">비밀번호</td>
-								<td><input type="password" name="password" size="50"
-									maxlength="50" disabled></td>
-							</tr>
-
-							<tr>
-								<td>&nbsp;</td>
-								<td align="center">비밀글설정</td>
-								<td><input type="checkbox" name="chk_info1" value="공개글"
-									checked="checked" disabled>공개글 <input type="checkbox"
-									name="chk_info2" value="비밀글" disabled>비밀글</td>
-							</tr>
-
-							<tr align="center">
-								<td>&nbsp;</td>
-								<td colspan="2">
-									<button type="submit" data-oper ='modify' class='btn btn-dark'>수정 완료</button>
-									<button type="submit" data-oper ='remove' class='btn btn-dark'>삭제</button>
-									<button type="submit" data-oper ='list' class='btn btn-dark'>목록</button>
-								<td>&nbsp;</td>
-							</tr>
-						</table>
+			</div>
 		
-
-
-		</div>
-	</form>
-	<%@ include file="../includes/footer.jsp"%>
-
-
-
 </body>
 </html>
