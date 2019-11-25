@@ -21,54 +21,24 @@
 		<div class="row ma-bo-50">
 			<div class="col-lg-10 col-lg-offset-1">
 				<ul class="prod-list">
-					<li>
-						<div class = "best_title">
-							<h2>
-								<span>BEST.1</span>
-							</h2>
-						</div>
-						<div class = "thumnail">
-							<a href = "#">
-								<img src="/images/1.jpg" class="weekly-img">
-							</a>
-						</div>
-						<div class = "desc">
-							<p>포니 헨리 넥 셔츠</p>
-							<p>37,000원</p>
-						</div>
-					</li>
-					<li>
-						<div class = "best_title">
-							<h2>
-								<span>BEST.2</span>
-							</h2>
-						</div>
-						<div class = "thumnail">
-							<a href = "#">
-								<img src="/images/1.jpg" class="weekly-img">
-							</a>
-						</div>
-						<div class = "desc">
-							<p>스프라이트 보트넥 티셔츠</p>
-							<p>29,000원</p>
-						</div>
-					</li>
-					<li>
-						<div class = "best_title">
-							<h2>
-								<span>BEST.3</span>
-							</h2>
-						</div>
-						<div class = "thumnail">
-							<a href = "#">
-								<img src="/images/1.jpg" class="weekly-img">
-							</a>
-						</div>
-						<div class = "desc">
-							<p>쿼츠 컷팅 데님 팬츠</p>
-							<p>39,000원</p>
-						</div>
-					</li>
+					<c:forEach var = "bests" items = "${bestProducts}" varStatus="status">
+						<li>
+							<div class = "best_title">
+								<h2>
+									<span>BEST. ${status.count}</span>
+								</h2>
+							</div>
+							<div class = "thumnail">
+								<a href = "${pageContext.request.contextPath }/product/productInfo?code=${bests.code }">
+									<img src="/images/1.jpg" class="weekly-img">
+								</a>
+							</div>
+							<div class = "desc">
+								<p>${bests.name }</p>
+								<p>${bests.price }</p>
+							</div>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>

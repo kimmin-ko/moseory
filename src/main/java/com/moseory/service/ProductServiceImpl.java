@@ -101,6 +101,13 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
+<<<<<<< HEAD
+	public List<ProductVO> getBestProduct(int high_code) {
+		return productDao.getBestProduct(high_code);
+	}
+
+	
+=======
 	public HighCateVO getHighCate(int high_code) {
 		return productDao.getHighCate(high_code);
 	}
@@ -110,6 +117,7 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getLowCate(high_code);
 	}
 
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 
 	
 	

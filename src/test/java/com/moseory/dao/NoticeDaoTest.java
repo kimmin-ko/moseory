@@ -38,6 +38,24 @@ public class NoticeDaoTest {
 		list.forEach(board -> log.info(board.getNo()));
 	}
 	
+	@Test
+	public void testDynamic1() {
+		Criteria cri = new Criteria();
+		cri.setPageNum(1);
+		cri.setKeyword("글");
+		cri.setType("t");
+		
+		log.info("=================");
+		List<NoticeVO> list = dao.getListWithPaging(cri);
+		for(NoticeVO noticeVO : list) {
+			log.info(noticeVO.getNo() +":" +noticeVO.getTitle());
+		}
+		
+		log.info("========================");
+		log.info("count : " + dao.totalCount(cri));
+		
+	}
+	
 	
 
 }

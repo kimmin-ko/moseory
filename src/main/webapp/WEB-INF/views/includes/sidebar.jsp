@@ -81,12 +81,6 @@ String.prototype.format = function() {
 			<a href="/user/myPage">MY PAGE</a>
 		</div>
 	</div>
-
-	<div class="row ma-bo-50">
-		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/admin/productregist">상품등록</a>
-		</div>
-	</div>
 	
 	<c:forEach var="cate" items="${highCateList}" varStatus="status">
 		<div class="row ma-bo-5">

@@ -136,13 +136,13 @@ function detailInfo() {
 
     } // end if
     
-} // end detailInfo()
+} // end detailInfo() 
 
 function sendPro(productDetail) {
     $.ajax({
         type : "post",
         url : "/admin/productInfo",
-        data : JSON.stringify(productDetail),
+        data : $.param(high_code),
         async : false,
         contentType : "application/json; charset=utf-8"
     });
@@ -156,32 +156,4 @@ function regist() {
     $("#registForm").submit();
 }
 
-function highCategory(e){
-    var outer = ["자켓","수트","코트","점퍼/짚업"];
-    var top = ["긴팔","가디건","니트","반팔","조끼"];
-    var shirts = ["베이직","체크/패턴","스트라이프"];
-    var bottom = ["슬랙스","데님","면바지","반바지"];
-    var bag = ["가방"];
-    var shoes = ["신발"];
-    var acc = ["악세사리"];
-
-    var target = document.getElementById("lowCategory");
-    
-    if (e.value == "1") var d = outer;
-    else if (e.value == "2") var d = top;
-    else if (e.value == "3") var d = shirts;
-    else if (e.value == "4") var d = bottom;
-    else if (e.value == "5") var d = bag;
-    else if (e.value == "6") var d = shoes;
-    else if (e.value == "7") var d = acc;
-    
-    target.options.length = 0;
-    
-    for(x in d){
-        var opt = document.createElement("option");
-        opt.value = e.value + x;	
-        opt.innerHTML = d[x];
-        target.appendChild(opt);
-    }
-}
 

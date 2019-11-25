@@ -67,7 +67,7 @@
 			</div>
 		</div>
 		<form method = "get" action = "${pageContext.request.contextPath }/admin/productlist">
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-10 col-md-offset-1" align = "center">
 				<span class="form-inline search-area">
 					<select class="form-control" name = "searchType" style="width: 130px">
 						<option <c:if test = "${searchType == 'name' }">selected</c:if> value="name">상품명</option>
@@ -79,11 +79,10 @@
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
 				</span>
+				<a class = "btn btn-default" href = "${pageContext.request.contextPath }/admin/productregist" >상품 등록</a>
 			</div>
 		</form>
-		
-		<div class="col-md-10 col-md-offset-1 pagination-div"
-				style="margin-bottom: 30px;">
+		<div class="col-md-10 col-md-offset-1 pagination-div" style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">
 						<c:if test="${paging.curBlock ne 1 }">

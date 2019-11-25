@@ -313,6 +313,16 @@
 	</select>
 	
 	
+<<<<<<< HEAD
+	<!-- best3 상품 조회 -->
+	<select id="getBestProduct" parameterType = "int" resultType = "productVO">
+		<![CDATA[		
+			select * from (select * from tbl_product 
+				where high_code = #{high_code}
+				order by wish_count desc, grade desc) 
+			where rownum <= 3
+		]]>	
+=======
 	<select id="getLowCate" parameterType="int" resultType="LowCateVO">
 		SELECT 
 		  code, high_code, name
@@ -320,8 +330,10 @@
 		  tbl_low_cate
 		WHERE 
 		  high_code = #{high_code}
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 	</select>
 	
+
 </mapper>
 
 
