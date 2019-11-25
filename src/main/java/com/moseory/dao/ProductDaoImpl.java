@@ -112,10 +112,9 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<ProductVO> getBestProduct(int high_code) {
 		return sqlSession.selectList("product.getBestProduct",high_code);
-=======
+	}
 	public HighCateVO getHighCate(int high_code) {
 		return sqlSession.selectOne("product.getHighCate", high_code);
 	}
@@ -123,9 +122,7 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public List<LowCateVO> getLowCate(int high_code) {
 		return sqlSession.selectList("product.getLowCate", high_code);
->>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 	}
-
 	
 
 
