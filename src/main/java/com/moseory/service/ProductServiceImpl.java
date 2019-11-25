@@ -89,6 +89,11 @@ public class ProductServiceImpl implements ProductService{
 	    productDao.decreaseRecommend(review_no);
 	}
 
+	@Override
+	public List<ProductVO> getBestProduct(int high_code) {
+		return productDao.getBestProduct(high_code);
+	}
+
 	
 
 	

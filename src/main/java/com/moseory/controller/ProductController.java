@@ -41,7 +41,12 @@ public class ProductController {
 	public String productList(@RequestParam int high_code, Model model) {
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
-		for(ProductVO pVO : productVO) System.out.println(pVO);
+//		for(ProductVO pVO : productVO) System.out.println(pVO);
+		
+		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
+		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		model.addAttribute("bestProducts", bestProducts);
+		
 		
 		return "product/productList";
 	}
@@ -194,6 +199,13 @@ public class ProductController {
 	    
 	    return new ResponseEntity<>(reviewList, HttpStatus.OK);
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

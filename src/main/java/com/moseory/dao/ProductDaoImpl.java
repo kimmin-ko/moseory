@@ -104,6 +104,11 @@ public class ProductDaoImpl implements ProductDao{
 	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
 
+	@Override
+	public List<ProductVO> getBestProduct(int high_code) {
+		return sqlSession.selectList("product.getBestProduct",high_code);
+	}
+
 	
 
 

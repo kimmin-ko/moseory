@@ -65,7 +65,7 @@
 						<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">통계</a></h6>
+						<h6><a href="${pageContext.request.contextPath }/admin/stats">통계</a></h6>
 						<p>
 							현재까지 매출 추이를<br>
 							확인할 수 있는 공간입니다.

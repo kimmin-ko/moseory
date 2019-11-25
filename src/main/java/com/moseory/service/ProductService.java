@@ -41,4 +41,6 @@ public interface ProductService {
 	void increaseRecommend(int review_no);
 	
 	void decreaseRecommend(int review_no);
+
+	List<ProductVO> getBestProduct(int high_code);
 }
