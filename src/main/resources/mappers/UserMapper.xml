@@ -225,7 +225,7 @@
 	UPDATE
 	    tbl_member
 	SET
-	    point = point + #{total_point}, total = total + #{total_amount}
+	    point = point - #{used_point}
 	WHERE
 	    id = #{member_id}
 	</update>
@@ -250,13 +250,22 @@
 	    no = #{product_detail_no}
 	</update>
 	
+	<!-- 주문한 상품 장바구니에서 삭제 -->
+	<delete id="deleteOrderCart">
+	DELETE FROM
+		tbl_cart 
+	WHERE 
+		product_detail_no = #{product_detail_no} 
+		AND member_id = #{member_id}
+	</delete>
+	
 	<!-- 주문 정보 입력 -->
 	<insert id="addOrder">
 	INSERT INTO
 	    tbl_order (code, member_id, delivery_charge, state, recipient_name, recipient_zipcode,  recipient_address1, 
-	              recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method)
+	              recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method, used_point)
 	VALUES (#{code}, #{member_id}, #{delivery_charge}, '입금 확인중', #{recipient_name}, #{recipient_zipcode},  #{recipient_address1}, 
-	       #{recipient_address2}, #{recipient_tel}, #{recipient_phone}, #{recipient_email}, #{message}, #{pay_method})
+	       #{recipient_address2}, #{recipient_tel}, #{recipient_phone}, #{recipient_email}, #{message}, #{pay_method}, #{used_point})
 	</insert>
 	
 	<!-- 주문 상세 테이블 -->
@@ -269,11 +278,25 @@
 	<!-- 주문 코드로 주문 정보 조회 -->
 	<select id="getOrder" resultType="OrderVO">
 	SELECT
-		*
+		code, member_id, order_date, delivery_charge, state, recipient_name, recipient_zipcode, recipient_address1,
+    	recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method, used_point
 	FROM
 		tbl_order
 	WHERE
 		code = #{code}
+	</select>
+	
+	<!-- 주문 코드로 주문 상세 정보 조회 -->
+	<select id="getOrderDetail" resultType="OrderDetailVO">
+	SELECT
+	    od.order_code, od.product_detail_no, od.amount, od.discount, od.point, od.quantity, p.code as product_code,
+	    p.price as product_price, p.file_path as product_file_path, p.name as product_name, pd.product_color, pd.product_size
+	FROM
+	    tbl_order_detail od, tbl_product p, tbl_product_detail pd
+	WHERE
+	    od.product_detail_no = pd.no
+	    AND pd.product_code = p.code
+	    AND order_code = #{order_code}
 	</select>
 	
 	<!-- END ORDER -->

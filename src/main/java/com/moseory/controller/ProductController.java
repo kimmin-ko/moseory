@@ -1,5 +1,6 @@
 package com.moseory.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
@@ -38,6 +41,7 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/productList")
+<<<<<<< HEAD
 	public String productList(@RequestParam int high_code, Model model) {
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
@@ -46,6 +50,29 @@ public class ProductController {
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
 		for(ProductVO bests : bestProducts)  System.out.println(bests);
 		model.addAttribute("bestProducts", bestProducts);
+=======
+	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
+		
+		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
+			List <ProductVO> productVO = productService.highCateList(high_code);
+			model.addAttribute("productVO",productVO);
+			for(ProductVO pVO : productVO) System.out.println(pVO);
+		}else {
+			String lowCode = req.getParameter("lowCode");
+			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
+			model.addAttribute("productVO",productVO);
+		}
+		
+		HighCateVO highCate = productService.getHighCate(high_code);
+		List <LowCateVO> lowCate = productService.getLowCate(high_code);
+		
+		model.addAttribute("highCate", highCate);
+		model.addAttribute("lowCate", lowCate);
+		model.addAttribute("high_code", high_code);
+		
+		
+		
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 		
 		
 		return "product/productList";

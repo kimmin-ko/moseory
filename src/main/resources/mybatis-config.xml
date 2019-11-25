@@ -23,6 +23,7 @@
 		<typeAlias alias="HighCateVO" type="com.moseory.domain.HighCateVO" />
 		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
 		<typeAlias alias="OrderVO" type="com.moseory.domain.OrderVO"/>
+		<typeAlias alias="OrderDetailVO" type="com.moseory.domain.OrderDetailVO"/>
 		
 		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
 	</typeAliases>

@@ -29,7 +29,11 @@
 
     <div class="row" style="margin-bottom: 50px; margin-top: 30px;">
         <div class="col-md-10 col-md-offset-1 eSite-login-form line-div">
-            <div class="col-md-3 col-md-offset-3 low-row"><img src="/images/btn_kakao_login.gif"></div>
+            <div class="col-md-3 col-md-offset-3 low-row">
+            	<a href="https://kauth.kakao.com/oauth/authorize?client_id=b419ae28c858db8583adbbee9c54f3bc&redirect_uri=http://localhost:9090/member/kakaoLogin&response_type=code">
+            		<img src="/images/btn_kakao_login.gif">
+            	</a>
+            </div>
             <div class="col-md-3 low-row"><img src="/images/btn_naver_login.gif"></div>
         </div>
     </div>

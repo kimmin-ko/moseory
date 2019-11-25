@@ -265,6 +265,7 @@ public class AdminController {
 		return "admin/productlist"; 
 	}
 	
+<<<<<<< HEAD
 	
 	@GetMapping("/stats")
 	public String stats() {
@@ -278,4 +279,13 @@ public class AdminController {
 	
 	
 	
+=======
+	@GetMapping("userManagement")
+	public String userManagement() {
+	
+//		adminService.getUser();
+		return "admin/userManagement"; 
+	}
+	
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 }

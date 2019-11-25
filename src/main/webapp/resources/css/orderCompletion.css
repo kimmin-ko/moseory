@@ -91,6 +91,7 @@
 /* 배송지 정보 시작 */
 .delivery_info_tbl {
     margin-bottom: 80px;
+    width: 80%;
 }
 
 .delivery_info_tbl tr .delivery_name {

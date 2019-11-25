@@ -47,10 +47,20 @@
 							
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
+			<!-- 상위 카테고리 -->
+			<h5>${highCate.name}</h5>	
 				<hr>
+			<h6>
+				<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}">전체</a>
+				<c:forEach var = "lowCate" items = "${lowCate}">
+					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&lowCode=${lowCate.code}">${lowCate.name}</a>
+				</c:forEach>
+			</h6>
+			<!-- 하위 카테고리 -->
+				
 			</div>
 		</div>
-
+		
 		<div class="row ma-to-30 ma-bo-20">
 			<div class="col-md-10 col-md-offset-1" style="font-weight: bold;">NEW
 				ARRIVAL</div>
