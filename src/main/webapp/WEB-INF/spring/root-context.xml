@@ -56,4 +56,7 @@
 	
 	<tx:annotation-driven />
 	
+	<!-- @DateTimeFormat() -->
+	<mvc:annotation-driven />
+	
 </beans>

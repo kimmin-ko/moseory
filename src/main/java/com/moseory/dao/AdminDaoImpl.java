@@ -1,6 +1,5 @@
 package com.moseory.dao;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +36,11 @@ public class AdminDaoImpl implements AdminDao{
    }
    @Override
    public String getHighCate(int high_code) {
-      return sqlSession.selectOne("product.getHighCate", high_code);
+      return sqlSession.selectOne("AdminMapper.getHighCate", high_code);
    }
    @Override
    public String getLowCate(int low_code) {
-      return sqlSession.selectOne("product.getLowCate", low_code);
+      return sqlSession.selectOne("AdminMapper.getLowCate", low_code);
    }
    @Override
    public List<HighCateVO> getPrantCategory() {
@@ -69,11 +68,6 @@ public class AdminDaoImpl implements AdminDao{
    }
    @Override
    public List<ProductVO> getProductList(int start, int finish) {
-      //1 페이지 = 1~ 10
-      //2 페이지 = 11~20
-      //3 페이지 = 21~30
-      //~~
-      System.out.println(start + "" +finish);
       Map<String, Integer> param = new HashMap<String, Integer>();
       param.put("start", start);
       param.put("finish", finish);
@@ -84,6 +78,14 @@ public class AdminDaoImpl implements AdminDao{
    public int getProductCount() {
       return sqlSession.selectOne("product.getProductCount");
    }
+	@Override
+	public int getProductCount(String searchType, String keyword) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("searchType", searchType);
+		param.put("keyword", keyword);
+		
+		return sqlSession.selectOne("product.getProductCount2", param);
+	}
    @Override
    public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
       Map<String, Object> param = new HashMap<String, Object>();
@@ -94,4 +96,13 @@ public class AdminDaoImpl implements AdminDao{
       
       return sqlSession.selectList("product.getListOnSearch", param);
    }
+	@Override
+	public int getHighCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getHighCateCode",keyword);
+	}
+	@Override
+	public int getLowCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getLowCateCode",keyword);
+	}
+
 }

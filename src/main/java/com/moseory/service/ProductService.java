@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
@@ -15,8 +17,10 @@ import com.moseory.domain.ReviewVO;
 public interface ProductService {
 
 	List<ProductVO> highCateList(int high_code);
+	
+	List<ProductVO> highCateListDetail(int high_code, String lowCode);
 
-	ProductVO getView(int code);
+	ProductVO getProduct(int code);
 
 	List<ProductDetailVO> getDetailView(int code);
 	
@@ -41,4 +45,13 @@ public interface ProductService {
 	void increaseRecommend(int review_no);
 	
 	void decreaseRecommend(int review_no);
+<<<<<<< HEAD
+
+	List<ProductVO> getBestProduct(int high_code);
+=======
+	
+	public HighCateVO getHighCate(int high_code);
+	
+	public List<LowCateVO> getLowCate(int high_code);
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 }

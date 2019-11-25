@@ -1,0 +1,127 @@
+.order_comple_lb {
+    margin-top: 100px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+/* Header Start */
+.order_comple_header {
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.order_comple_header p:first-child {
+    font-size: 23px;
+}
+
+.order_comple_header p:first-child span{
+    color: #EB7E20;
+}
+/* Header End */
+
+/* Body Start */
+.order_comple_body {
+    font-size: 12px;
+}
+
+.body_name {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* 주문 상품 시작 */
+.order_prod_tbl {
+    width: 100%;
+    margin-bottom: 80px;
+}
+
+.order_prod_tbl th {
+    text-align: center;
+}
+
+.order_prod_tbl tbody tr .order_prod_info {
+    text-align: left;
+}
+
+.order_prod_tbl tbody tr td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.order_prod_tbl tfoot tr ul {
+    padding: 0;
+}
+
+.order_prod_tbl tfoot tr ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+.order_prod_img {
+    width: 80px;
+    height: auto;
+}
+
+.order_prod_name {
+    font-weight: bold;
+}
+
+.order_prod_option {
+    color: #AEAEAE;
+}
+
+.name_li {
+    width: 50%;
+}
+
+.value_li {
+    font-weight: bold;
+}
+
+/* 결제 정보 시작 */
+.payment_info_tbl{
+ margin-bottom: 80px;
+}
+
+.payment_info_tbl tr .active {
+    font-weight: bold;
+    width: 20%;
+}
+
+/* 배송지 정보 시작 */
+.delivery_info_tbl {
+    margin-bottom: 80px;
+    width: 80%;
+}
+
+.delivery_info_tbl tr .delivery_name {
+    width: 20%;
+    font-weight: bold;
+}
+
+.order_mem_info {
+    width: 20%;
+    font-weight: bold;
+}
+
+.order_mem_info_ul {
+    padding: 0;
+}
+
+.order_mem_info_ul li {
+    list-style: none;
+}
+
+/* Body End */
+
+/* Footer Start */
+.order_comple_footer {
+    text-align: center;
+    margin-bottom: 150px;
+}
+
+.order_list_btn {
+    background-color: black;
+    color: white;
+}
+/* Fotter End */

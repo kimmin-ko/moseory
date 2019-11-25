@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
@@ -29,8 +31,18 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public ProductVO getView(int code) {
-		return sqlSession.selectOne("product.getView", code);
+	public List<ProductVO> highCateListDetail(Map<Object, Object> map) {
+		return sqlSession.selectList("product.highCateListDetail", map);
+	}
+	
+	@Override
+	public ProductVO getProduct(int code) {
+		return sqlSession.selectOne("product.getProduct", code);
+	}
+	
+	@Override
+	public ProductDetailVO getProductDetail(int product_detail_no) {
+	    return sqlSession.selectOne("product.getProductDetail", product_detail_no);
 	}
 
 	@Override
@@ -98,6 +110,23 @@ public class ProductDaoImpl implements ProductDao{
 	public void decreaseRecommend(int review_no) {
 	    sqlSession.update("product.decreaseRecommend", review_no);
 	}
+
+	@Override
+<<<<<<< HEAD
+	public List<ProductVO> getBestProduct(int high_code) {
+		return sqlSession.selectList("product.getBestProduct",high_code);
+=======
+	public HighCateVO getHighCate(int high_code) {
+		return sqlSession.selectOne("product.getHighCate", high_code);
+	}
+
+	@Override
+	public List<LowCateVO> getLowCate(int high_code) {
+		return sqlSession.selectList("product.getLowCate", high_code);
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
+	}
+
+	
 
 
 	

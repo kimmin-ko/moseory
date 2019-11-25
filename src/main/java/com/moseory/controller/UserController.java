@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderVO;
+import com.moseory.domain.ProductVO;
 import com.moseory.domain.WishListVO;
+import com.moseory.service.ProductService;
 import com.moseory.service.UserService;
 
 import lombok.Setter;
@@ -39,6 +45,9 @@ public class UserController {
     
     @Setter(onMethod_ = @Autowired)
     private UserService userService;
+    
+    @Setter(onMethod_ = @Autowired)
+    private ProductService productService;
     
     //로그아웃 기능
     @GetMapping("/logout")
@@ -68,6 +77,14 @@ public class UserController {
 	return map;
     }
     
+    // 회원의 정보고 수정된 후 세션 업데이트
+    private void updateMember(HttpSession session, String id) {
+	MemberVO member = userService.readMember(id);
+	
+	// 수정한 회원 정보를 세션에 업데이트
+	session.setAttribute("user", member);
+    }
+    
     // 마이페이지
     @GetMapping("/myPage")
     public String myPage(Model model, HttpServletRequest req) {
@@ -93,17 +110,14 @@ public class UserController {
 	
 	return "/user/modify";
     }
-    
+
     // 회원 정보 수정
     @PostMapping("/modifyProc")
     public String modify(@ModelAttribute MemberVO member, HttpSession session) {
 	
 	userService.modifyMember(member);
 	
-	member = userService.readMember(member.getId());
-	
-	// 수정한 회원 정보를 세션에 업데이트
-	session.setAttribute("user", member);
+	updateMember(session, member.getId());
 	
 	return "redirect:/user/modifyOk";
     }
@@ -143,36 +157,50 @@ public class UserController {
 	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
 	
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
+    }
+    
+    private List<OrderDetailVO> details_list = new ArrayList<OrderDetailVO>();
+    
+    // details 받아오기
+    @PostMapping("/addDetailsList")
+    public void addDetailsList(@RequestBody OrderDetailVO details) {
+	details_list.add(details);
+    }
+    
+    // 주문 등록
+    @PostMapping("/addOrder")
+    public String addOrderPost(@ModelAttribute OrderVO vo, HttpSession session, RedirectAttributes rttr) {
 	
-	// 총 주문 금액을 model에 담아서 전달
+	String order_code = userService.addOrder(vo, details_list);
 	
-	// 총 상품 구매 금액
-	int total_prodcut_price = 0;
-	// 회원의 할인율 : ex) 1%, 2% ..
-	int discount = member.getLevel().getDiscount();
-	// 장바구니의 담겨있는 상품들의 총 할인금액
-	int product_discount = 0;
+	// 회원이 적립금을 사용했으니 세션 최신화
+	updateMember(session, vo.getMember_id());
 	
-	// 장바구니 목록 상품들의 가격을 모두 더한 후에 할인금액을 제외 
-	for(int i = 0; i < addedOrderInfoList.size(); i++) {
-	    // 상품의 가격
-	    int price = addedOrderInfoList.get(i).getPrice();
-	    // 상품의 수량
-	    int quantity = addedOrderInfoList.get(i).getQuantity();
-	    // 할인 금액의 총합
-	    product_discount += (price / 100) * discount * quantity;
-	    // 상품 금액의 총합
-	    total_prodcut_price += (price * quantity);
+	// 주문 완료 페이지에 주문 번호를 넘겨준다
+	rttr.addAttribute("order_code", order_code);
+	
+	if(details_list != null)
+	    details_list.clear();
+	
+	return "redirect:/user/orderCompletion";
+    }
+    
+    // 주문 완료 페이지
+    @GetMapping("/orderCompletion")
+    public void orderCompletion(@RequestParam String order_code, Model model) {
+	// 주문 번호를 통해 페이지에 필요한 정보를 조회
+	OrderVO order = userService.getOrder(order_code);
+	log.info(order.getOrder_date());
+	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
+	
+	List<String> orderDetailListJson = new ArrayList<String>();
+	for(OrderDetailVO orderDetail : orderDetailList) {
+	    String orderDetailJson = new Gson().toJson(orderDetail);
+	    orderDetailListJson.add(orderDetailJson);
 	}
-	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
-	model.addAttribute("origin_product_price", total_prodcut_price);
 	
-	// 상품금액 - 할인금액 = 주문금액
-	total_prodcut_price -= product_discount;
-	
-	model.addAttribute("total_product_price", total_prodcut_price);
-	
-	
+	model.addAttribute("order", order);
+	model.addAttribute("orderDetailList", orderDetailListJson);
     }
     
     // 장바구니 페이지
@@ -190,37 +218,10 @@ public class UserController {
 	String member_id = member.getId();
 	
 	List<CartVO> cartList = userService.getCartList(member_id);
-	
-	// 총 상품 구매 금액
-	int total_prodcut_price = 0;
-	// 회원의 할인율 : ex) 1%, 2% ..
-	int discount = member.getLevel().getDiscount();
-	// 장바구니의 담겨있는 상품들의 총 할인금액
-	int product_discount = 0;
-	
-	// 장바구니 목록 상품들의 가격을 모두 더한 후에 할인금액을 제외 
-	for(int i = 0; i < cartList.size(); i++) {
-	    // 상품의 가격
-	    int price = cartList.get(i).getProduct_price();
-	    // 상품의 수량
-	    int quantity = cartList.get(i).getQuantity();
-	    // 할인 금액의 총합
-	    product_discount += (price / 100) * discount * quantity;
-	    // 상품 금액의 총합
-	    total_prodcut_price += (price * quantity);
-	}
-	// 할인금액을 빼기 전 오리지널 금액 ( 배송비 조건 )
-	model.addAttribute("origin_product_price", total_prodcut_price);
-		
-	// 상품금액 - 할인금액 = 주문금액
-	total_prodcut_price -= product_discount;
-	
-	model.addAttribute("total_product_price", total_prodcut_price);
 	model.addAttribute("cartList", cartList);
 	
 	// 회원의 아이디를 이용해서 장바구니 목록 개수 조회
 	int cartCount = userService.getCartCount(member_id);
-	
 	model.addAttribute("cartCount", cartCount);
     }
     

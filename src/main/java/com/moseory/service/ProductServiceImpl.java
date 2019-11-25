@@ -1,5 +1,6 @@
 package com.moseory.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.moseory.dao.ProductDao;
+import com.moseory.domain.HighCateVO;
+import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnAVO;
@@ -25,8 +28,16 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public ProductVO getView(int code) {
-		return productDao.getView(code);
+	public List<ProductVO> highCateListDetail(int high_code, String lowCode) {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("high_code", high_code);
+		map.put("lowCode", lowCode);
+		return productDao.highCateListDetail(map);
+	}
+	
+	@Override
+	public ProductVO getProduct(int code) {
+		return productDao.getProduct(code);
 	}
 
 	@Override
@@ -89,7 +100,24 @@ public class ProductServiceImpl implements ProductService{
 	    productDao.decreaseRecommend(review_no);
 	}
 
+	@Override
+<<<<<<< HEAD
+	public List<ProductVO> getBestProduct(int high_code) {
+		return productDao.getBestProduct(high_code);
+	}
+
 	
+=======
+	public HighCateVO getHighCate(int high_code) {
+		return productDao.getHighCate(high_code);
+	}
+
+	@Override
+	public List<LowCateVO> getLowCate(int high_code) {
+		return productDao.getLowCate(high_code);
+	}
+
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 
 	
 	

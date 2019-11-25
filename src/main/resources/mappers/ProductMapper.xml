@@ -29,13 +29,14 @@
 	
 	<!-- 상품디테일 등록 -->
 	<insert id="product_detail_regist" parameterType="productdetailVO">
-		insert into tbl_product_detail values(
-			seq_product_detail_no.nextval,
-			seq_product_code.currval,
+		INSERT INTO
+			tbl_product_detail 
+		VALUES
+			(seq_product_detail_no.nextval,
+			#{product_code},
 			#{product_color},
 			#{product_size},
-			#{product_stock}
-		)
+			#{product_stock})
 	</insert>
 	
 	<!-- 상위카테고리 상품리스트 -->
@@ -44,14 +45,32 @@
 			where high_code = #{high_code}
 	</select>
 	
+	<!-- 상위카테고리 상품리스트 세부목록-->
+	<select id="highCateListDetail" parameterType="map" resultType = "productVO">
+		select * from tbl_product
+			where high_code = #{high_code}
+			and low_code = #{lowCode} 
+			
+	</select>
+	
 	<!--상품 코드로 정보 조회 -->
-	<select id="getView" parameterType="int" resultType = "productVO">
+	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
 		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
 	FROM
 		tbl_product
 	WHERE
 		code = #{code}
+	</select>
+	
+	<!-- 상품 디테일 번호로 정보 조회 -->
+	<select id="getProductDetail" resultType="productdetailVO">
+	SELECT
+		no, product_code, product_color, product_size, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		no = #{product_detail_no}
 	</select>
 	
 	<!-- 상품 코드로 디테일 정보 조회 -->
@@ -258,18 +277,14 @@
 	</select>
 	
 
-	<select id="getHighCate" parameterType="int" resultType = "String">
-		select name from tbl_high_cate
-			where code = #{code}
-	</select>
-	<select id="getLowCate" parameterType="int" resultType="String">
-		select name from tbl_low_cate
-			where code = #{code}
-	</select>   
 	   
 	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">
 		select count(*) from tbl_product
+	</select>
+	<!-- 상품 전체 리스트 카운트2 -->
+	<select id="getProductCount2" parameterType="map" resultType = "int">
+		select count(*) from tbl_product where ${searchType} = #{keyword}
 	</select>
 	
 	<!-- 상품 전체/검색된 리스트 -->
@@ -279,15 +294,6 @@
 		where rn between #{start} and #{finish}
 	</select>
 	
-	
-	<!-- 		
-	select * from (
-		select rownum rn, A.* from (
-			select * from productboard where ${searchType} like '%'||#{keyword}||'%' order by no desc
-		)A
-	) 
-	where rn between #{start} and #{finish}
-	 -->
 	<!-- 상품 검색된 리스트 -->
 	<select id="getListOnSearch" parameterType="map" resultType="productVO">
 		select * from (
@@ -296,6 +302,38 @@
 			order by code)
 		where rn between #{start} and #{finish}
 	</select>
+	
+	<select id="getHighCate" parameterType="int" resultType="HighCateVO">
+		SELECT 
+		  code, name, kname
+		FROM 
+		  tbl_high_cate
+		WHERE 
+		  code = #{high_code}
+	</select>
+	
+	
+<<<<<<< HEAD
+	<!-- best3 상품 조회 -->
+	<select id="getBestProduct" parameterType = "int" resultType = "productVO">
+		<![CDATA[		
+			select * from (select * from tbl_product 
+				where high_code = #{high_code}
+				order by wish_count desc, grade desc) 
+			where rownum <= 3
+		]]>	
+=======
+	<select id="getLowCate" parameterType="int" resultType="LowCateVO">
+		SELECT 
+		  code, high_code, name
+		FROM 
+		  tbl_low_cate
+		WHERE 
+		  high_code = #{high_code}
+>>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
+	</select>
+	
+
 </mapper>
 
 

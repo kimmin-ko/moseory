@@ -12,6 +12,30 @@
 <!-- bootstrap js -->
 <script src="/js/bootstrap.js"></script>
 
+<script type="text/javascript">
+//#,### formatNumber
+Number.prototype.format = function() {
+	if (this == 0)
+		return 0;
+
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this + '');
+
+	while (reg.test(n))
+		n = n.replace(reg, '$1' + ',' + '$2');
+
+	return n;
+};
+
+String.prototype.format = function() {
+	var num = parseFloat(this);
+	if (isNaN(num))
+		return "0";
+
+	return num.format();
+};
+</script>
+
 <!-- Sidebar -->
 <div class="w3-sidebar w3-light-grey w3-bar-block container" style="width: 22%">
 
@@ -57,12 +81,6 @@
 			<a href="/user/myPage">MY PAGE</a>
 		</div>
 	</div>
-
-	<div class="row ma-bo-50">
-		<div class="col-md-3 col-md-offset-2 font-12">
-			<a href="/admin/productregist">상품등록</a>
-		</div>
-	</div>
 	
 	<c:forEach var="cate" items="${highCateList}" varStatus="status">
 		<div class="row ma-bo-5">
@@ -74,7 +92,7 @@
 		</div>
 	</c:forEach>
 
-	<div class="row ma-bo-50">
+	<div class="row ma-bo-50 ma-to-30">
 		<div class="col-md-10 col-md-offset-2 form-inline">
 			<div class="form-group">
 				<input type="text" class="form-control" placeholder="검색어"

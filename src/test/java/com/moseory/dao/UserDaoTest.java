@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,8 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.Level;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -35,6 +39,9 @@ public class UserDaoTest {
 
     @Setter(onMethod_ = @Autowired)
     private UserDao userDao;
+    
+    @Setter(onMethod_ = @Autowired)
+    private ProductDao productDao;
     
     private MemberVO member1;
     
@@ -187,10 +194,125 @@ public class UserDaoTest {
 	log.info(vo.toString());
     }
     
+    @Test
+    public void testAddOrder() {
+	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+	int random = (int)(Math.random() * 8999999) + 1000000;
+	String order_code = now + random;
+	
+	// 주문 등록
+	OrderVO vo = new OrderVO();
+	vo.setCode(order_code);
+	vo.setMember_id("admin11");
+	vo.setDelivery_charge(0);
+	vo.setRecipient_name("김민");
+	vo.setRecipient_zipcode(153534);
+	vo.setRecipient_address1("경기도 부천시");
+	vo.setRecipient_address2("1층 카페");
+	vo.setRecipient_tel(null);
+	vo.setRecipient_phone("010-8455-9966");
+	vo.setRecipient_email("admin11@naver.com");
+	vo.setMessage("배송메세지입니다.");
+	vo.setPay_method("card");
+	vo.setUsed_point(3000);
+	
+	userDao.addOrder(vo);
+	
+	log.info("OrderVO : " + userDao.getOrder(vo.getCode()).toString());
+	
+	/* order_code, 
+	 * product_code, 
+	 * product_detail_no, 
+	 * quantity, 
+	 * amount, 
+	 * discount, 
+	 * point */
+	List<OrderDetailVO> details_list = new ArrayList<OrderDetailVO>();
+	
+	OrderDetailVO[] param = new OrderDetailVO[3];
+	
+	param[0] = new OrderDetailVO();
+	param[0].setProduct_code(102);
+	param[0].setProduct_detail_no(32);
+	param[0].setQuantity(2);
+	param[0].setAmount(60500);
+	param[0].setDiscount(1500);
+	param[0].setPoint(1500);
+	
+	param[1] = new OrderDetailVO();
+	param[1].setProduct_code(102);
+	param[1].setProduct_detail_no(31);
+	param[1].setQuantity(1);
+	param[1].setAmount(30250);
+	param[1].setDiscount(750);
+	param[1].setPoint(750);
+	
+	param[2] = new OrderDetailVO();
+	param[2].setProduct_code(103);
+	param[2].setProduct_detail_no(23);
+	param[2].setQuantity(1);
+	param[2].setAmount(38000);
+	param[2].setDiscount(1000);
+	param[2].setPoint(1000);
+	
+	for(int i = 0; i < param.length; i++)
+	    details_list.add(param[i]);
+	
+	int used_point = vo.getUsed_point();
+	
+	for(int i = 0; i < details_list.size(); i++) {
+	    OrderDetailVO details = details_list.get(i);
+	    
+	    details.setOrder_code(order_code);
+	    
+	    // 상품 판매량 증가
+	    userDao.updateOrderProduct(details.getProduct_code(), details.getQuantity());
+	    
+	    // 상품 재고 감소
+	    userDao.updateOrderProductDetail(details.getProduct_detail_no(), details.getQuantity());
+	    
+	    // 주문 상세 등록 (order_code는 String 타입이라 구분해주었음)
+	    userDao.addOrderDetail(details);
+	} // end for
+	
+	// 회원의 사용한 적립금 감소
+	userDao.updateOrderMember("admin11", used_point);
+    }
+    
+    @Test
+    public void testGetOrder() {
+	String order_code = "201911221001277962271";
+	OrderVO vo = userDao.getOrder(order_code);
+	
+	log.info(vo.toString());
+	
+	List<OrderDetailVO> detail_list = userDao.getOrderDetail(order_code);
+	
+	detail_list.stream().forEach(x -> log.info(x.toString()));
+    }
+    
+    @Test
+    public void testStringToLocalDateTime() {
+	String order_code = "201911221001277962271";
+	OrderVO vo = userDao.getOrder(order_code);
+	
+	String order_date = vo.getOrder_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	
+	log.info("order_date : " + order_date);
+	
+	LocalDateTime d = LocalDateTime.parse(order_date, DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+	
+	String formatted_order_date = d.toString();
+	
+	log.info("formatted_order_date : " + formatted_order_date);
+	
+//	vo.setOrder_date(LocalDateTime.parse(formatted_order_date, formatter));
+	
+//	log.info(vo.getOrder_date());
+	
+    }
+     
 }
-
-
-
 
 
 

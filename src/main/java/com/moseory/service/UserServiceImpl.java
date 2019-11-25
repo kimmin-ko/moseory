@@ -1,5 +1,7 @@
 package com.moseory.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import com.moseory.dao.UserDao;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -131,4 +135,73 @@ public class UserServiceImpl implements UserService {
 	return orderList;
     }
 
+    @Transactional
+    @Override
+    public String addOrder(OrderVO vo, List<OrderDetailVO> details_list) {
+	// 주문 번호 생성
+	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+	int random = (int)(Math.random() * 8999999) + 1000000;
+	String order_code = now + random;
+	
+	vo.setCode(order_code);
+	
+	// 1. order 등록
+	userDao.addOrder(vo);
+	
+	int used_point = vo.getUsed_point();
+	
+	for(int i = 0; i < details_list.size(); i++) {
+	    OrderDetailVO details = details_list.get(i);
+	    
+	    // 디테일에 주문 번호 등록
+	    details.setOrder_code(order_code);
+	    
+	    // 2. 상품 판매량 증가
+	    userDao.updateOrderProduct(details.getProduct_code(), details.getQuantity());
+	    
+	    // 3. 상품 재고 감소
+	    userDao.updateOrderProductDetail(details.getProduct_detail_no(), details.getQuantity());
+	    
+	    // 4. 주문 상세 등록
+	    userDao.addOrderDetail(details);
+	    
+	    // 5. 주문한 상품 장바구니에서 삭제
+	    userDao.deleteOrderCart(details.getProduct_detail_no(), vo.getMember_id());
+	} // end for
+	
+	// 6. 회원의 사용한 적립금 감소
+	userDao.updateOrderMember(vo.getMember_id(), used_point);
+	
+	return order_code;
+    }
+
+    @Override
+    public OrderVO getOrder(String code) { 
+	return userDao.getOrder(code);
+    }
+
+    @Override
+    public List<OrderDetailVO> getOrderDetails(String order_code) {
+	return userDao.getOrderDetail(order_code);
+    }
+    
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
