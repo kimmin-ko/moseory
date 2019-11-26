@@ -33,7 +33,7 @@
 		var tbody = $('#order_prod_tbody');
 		orderDetailList.forEach(function(orderDetail) {
 			
-			total_prod_price += orderDetail.product_price;
+			total_prod_price += orderDetail.product_price * orderDetail.quantity;
 			total_discount += orderDetail.discount;
 			
 			// 색상과 사이즈가 존재하면 사이즈 앞에 / 붙임
@@ -204,8 +204,8 @@
 	        </div>
 	
 	        <div class="col-md-10 col-md-offset-1 order_comple_footer">
-	            <button type="button" class="btn btn-default order_list_btn">주문내역확인</button>
-	            <button type="button" class="btn btn-default">쇼핑계속하기</button>
+	            <button type="button" class="btn btn-default order_list_btn" onclick="location.href='/user/orderList'">주문내역확인</button>
+	            <button type="button" class="btn btn-default" onclick="location.href='/index'">쇼핑계속</button>
 	        </div>
 	
 	    </div>

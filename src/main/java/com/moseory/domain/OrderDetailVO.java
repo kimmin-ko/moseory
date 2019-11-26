@@ -23,6 +23,7 @@ public class OrderDetailVO {
     // product detail
     private String product_color;
     private String product_size;
+    private int product_stock;
     
 }
 

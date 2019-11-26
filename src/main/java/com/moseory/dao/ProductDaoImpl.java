@@ -117,6 +117,7 @@ public class ProductDaoImpl implements ProductDao{
 		return sqlSession.selectList("product.getBestProduct",high_code);
 	}
 
+
 	public HighCateVO getHighCate(int high_code) {
 		return sqlSession.selectOne("product.getHighCate", high_code);
 	}

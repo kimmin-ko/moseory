@@ -7,6 +7,8 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -49,6 +51,10 @@ public interface UserService {
     public OrderVO getOrder(String code);
     
     public List<OrderDetailVO> getOrderDetails(String order_code);
+    
+    public List<OrderListVO> getOrderList(OrderListCri cri);
+    
+    public void orderCancel(String order_code, String member_id);
 }
 
 

@@ -49,6 +49,7 @@ public class AdminController {
 		lowCates = adminService.getChildCategory(high_code);
 		return lowCates;
 	}
+	
 	@GetMapping("/productregist")
 	public String productRegist(Model model) {
 		List<HighCateVO> highCates = adminService.getPrantCategory();
@@ -273,8 +274,6 @@ public class AdminController {
 		return "admin/stats";
 	}
 	
-	
-
 
 	@GetMapping("userManagement")
 	public String userManagement() {
@@ -282,6 +281,5 @@ public class AdminController {
 //		adminService.getUser();
 		return "admin/userManagement"; 
 	}
-	
-
 }
+	

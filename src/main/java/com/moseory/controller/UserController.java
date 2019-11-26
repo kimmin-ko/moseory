@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,9 @@ import com.moseory.domain.CartVO;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
-import com.moseory.domain.ProductVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.ProductService;
 import com.moseory.service.UserService;
@@ -201,6 +201,34 @@ public class UserController {
 	
 	model.addAttribute("order", order);
 	model.addAttribute("orderDetailList", orderDetailListJson);
+    }
+    
+    // orderList 페이지
+    @GetMapping("/orderList")
+    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri cri) {
+	
+	MemberVO member = (MemberVO) session.getAttribute("user");
+	
+	
+	if(cri.getState() == null) /* 페이지 처음 호출 시 */
+	    // orderList 페이지 호출 시 전체 기간, 전체 상태로 초기화
+	    cri = new OrderListCri(member.getId(), null, null, "전체 상태");
+	else { /* 검색 조건으로 조회 시 */
+	    // 접속중인 id로 초기화
+	    cri.setMember_id(member.getId());
+	}
+	
+	List<OrderListVO> orderList = userService.getOrderList(cri);
+	
+	model.addAttribute("orderList", orderList);
+    }
+    
+    @PostMapping("/user/orderCancel")
+    public String orderCancel(@RequestParam String order_code, HttpSession session) {
+	MemberVO member = (MemberVO) session.getAttribute("user");
+	
+	userService.orderCancel(order_code, member.getId());
+	return "redirect:/user/orderList";
     }
     
     // 장바구니 페이지

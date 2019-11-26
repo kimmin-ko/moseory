@@ -26,11 +26,13 @@
 				alert("제목을 입력해 주세요");
 				form.title.focus();
 				flag = false;
+				
 			}
 			if(form.content.value === ''){
 				alert("내용을 입력해 주세요");
 				form.content.focus();
 				flag = false;
+				
 			}
 			
 			if(flag){
@@ -76,6 +78,7 @@
 							<td>&nbsp;</td>
 							<td colspan="2">
 							<input type=submit value="등록" class="btn btn-dark" OnClick="javascript:writeCheck()">
+							<input type="button" value="등록" class="btn btn-dark" OnClick="javascript:writeCheck()">
 								<input type=button value="취소"
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">
 							<td>&nbsp;</td>
