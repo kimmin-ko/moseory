@@ -1,6 +1,7 @@
 package com.moseory.dao;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +55,6 @@ public interface ProductDao {
 	public HighCateVO getHighCate(int high_code);
 	
 	public List<LowCateVO> getLowCate(int high_code);
+
+	List<ProductVO> getSearchList(Map<String, String> param);
 }

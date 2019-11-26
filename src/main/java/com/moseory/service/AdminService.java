@@ -3,10 +3,12 @@ package com.moseory.service;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -49,6 +51,9 @@ public interface AdminService {
 	int getHighCateCode(String keyword);
 
 	int getLowCateCode(String keyword);
+	
+	public List<MemberVO> getUser(HashMap<String,Object> map);
 
+	public MemberVO getUserDetail(String id);
 	
 }

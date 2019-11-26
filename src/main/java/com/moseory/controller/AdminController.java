@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -49,6 +51,7 @@ public class AdminController {
 		lowCates = adminService.getChildCategory(high_code);
 		return lowCates;
 	}
+	
 	@GetMapping("/productregist")
 	public String productRegist(Model model) {
 		List<HighCateVO> highCates = adminService.getPrantCategory();
@@ -75,6 +78,8 @@ public class AdminController {
 		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
+		List<MultipartFile> thumbnail = multipartRequest.getFiles("thumbnail");
+		
 		// 경로가 없으면 디렉토리 생성
 		File file = new File(save_path);
 		if (file.exists() == false) {
@@ -82,6 +87,7 @@ public class AdminController {
 		}
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
+			System.out.println(thumbnail.get(i).getName());
 			// 파일명이 같을 수도 있기 때문에
 			// 랜덤36문자_받아온파일이름
 			// 으로 파일 저장
@@ -265,20 +271,54 @@ public class AdminController {
 		return "admin/productlist"; 
 	}
 	
-	
 	@GetMapping("/stats")
 	public String stats() {
 		
 		return "admin/stats";
-	}
-	
-	
+	}	
 	
 	@GetMapping("userManagement")
-	public String userManagement() {
-	
-//		adminService.getUser();
+	public String userManagement(HttpServletRequest req, Model model
+			,@RequestParam(required = false, defaultValue = "all") String levelType
+			,@RequestParam(required = false, defaultValue = "") String searchType
+			,@RequestParam(required = false, defaultValue = "") String searchValue
+			,@RequestParam(required = false, defaultValue = "") String commType
+			,@RequestParam(required = false, defaultValue = "") String commValue
+			,@RequestParam(required = false, defaultValue = "") String searchEmail) {
+
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		
+		map.put("levelType", levelType);
+		map.put("searchType", searchType);
+		map.put("searchValue", searchValue);
+		map.put("commType", commType);
+		map.put("commValue", commValue);
+		map.put("searchEmail", searchEmail);
+		
+		list = adminService.getUser(map);
+		model.addAttribute("userList", list);
+		model.addAttribute("levelType", levelType);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("commType", commType);
+		model.addAttribute("commValue", commValue);
+		model.addAttribute("searchEmail", searchEmail);
+		
+		
 		return "admin/userManagement"; 
 	}
+
+	@GetMapping("getUserDetail")
+	public String getUserDetail(@RequestParam(required = true, defaultValue = "") String id, HttpServletRequest req, Model model) {
+		
+		MemberVO member = new MemberVO();
+		member = adminService.getUserDetail(id);
+		System.out.println(member.toString());
+		model.addAttribute("member", member);
+		return "admin/getUserDetail";
+	}
 	
+
 }
+	

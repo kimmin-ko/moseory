@@ -57,9 +57,12 @@ String.prototype.format = function() {
 			<div class="col-md-3 col-md-offset-2 font-12">
 				<a href="/user/logout">LOGOUT</a>
 			</div>
-			<div class="col-md-5 font-12">
-				<a href="/admin/manage">MANAGE</a>
-			</div>
+			
+			<c:if test="${user.auth == 1}">
+				<div class="col-md-5 font-12">
+					<a href="/admin/manage">MANAGE</a>
+				</div>
+			</c:if>
 		</c:if>
 		<c:if test="${empty user }">
 			<div class="col-md-5 font-12 joinus">
@@ -91,20 +94,20 @@ String.prototype.format = function() {
 			</div>
 		</div>
 	</c:forEach>
-
-	<div class="row ma-bo-50 ma-to-30">
-		<div class="col-md-10 col-md-offset-2 form-inline">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="검색어"
-					style="width: 120px;" />
-				<button class="btn btn-default">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-				</button>
+	<form method="get" action = "${pageContext.request.contextPath }/product/search">
+		<div class="row ma-bo-50 ma-to-30">
+			<div class="col-md-10 col-md-offset-2 form-inline">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="검색어" name = "keyword"
+						style="width: 120px;" required />
+					<button class="btn btn-default submit">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					</button>
+				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 	<!-- search div -->
-
 	<div class="row ma-bo-50">
 		<div class="col-md-10 col-md-offset-2 font-12">
 			<a href="/notice/noticeList">NOTICE</a>&nbsp; <a href="#">Q&A</a>&nbsp; <a href="#">REVIEW</a>

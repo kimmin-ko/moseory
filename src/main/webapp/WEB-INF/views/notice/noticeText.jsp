@@ -26,11 +26,13 @@
 				alert("제목을 입력해 주세요");
 				form.title.focus();
 				flag = false;
+				
 			}
 			if(form.content.value === ''){
 				alert("내용을 입력해 주세요");
 				form.content.focus();
 				flag = false;
+				
 			}
 			console.log(flag);
 			if(flag){
