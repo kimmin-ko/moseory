@@ -322,7 +322,7 @@
 				order by wish_count desc, grade desc) 
 			where rownum <= 3
 		]]>	
-		</select>
+		
 
 	</select>
 
