@@ -313,7 +313,6 @@
 	</select>
 	
 	
-<<<<<<< HEAD
 	<!-- best3 상품 조회 -->
 	<select id="getBestProduct" parameterType = "int" resultType = "productVO">
 		<![CDATA[		
@@ -322,7 +321,7 @@
 				order by wish_count desc, grade desc) 
 			where rownum <= 3
 		]]>	
-=======
+	</select>
 	<select id="getLowCate" parameterType="int" resultType="LowCateVO">
 		SELECT 
 		  code, high_code, name
@@ -330,9 +329,16 @@
 		  tbl_low_cate
 		WHERE 
 		  high_code = #{high_code}
->>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 	</select>
 	
+	
+	<select id="getSearchList" parameterType="map" resultType="productVO">
+		select * from (
+			select * from tbl_product
+				where ${searchType} like '%'||#{searchType}||'%'
+					order by ${orderby} desc
+		)
+	</select>
 
 </mapper>
 

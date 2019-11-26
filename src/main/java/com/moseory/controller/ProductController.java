@@ -41,7 +41,6 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/productList")
-<<<<<<< HEAD
 	public String productList(@RequestParam int high_code, Model model) {
 		List <ProductVO> productVO = productService.highCateList(high_code);
 		model.addAttribute("productVO",productVO);
@@ -50,7 +49,10 @@ public class ProductController {
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
 		for(ProductVO bests : bestProducts)  System.out.println(bests);
 		model.addAttribute("bestProducts", bestProducts);
-=======
+		
+		return "product/productList";
+
+	}
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
@@ -72,7 +74,6 @@ public class ProductController {
 		
 		
 		
->>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
 		
 		
 		return "product/productList";
@@ -229,7 +230,31 @@ public class ProductController {
 	
 	
 	
+	@GetMapping("/search")
+	public String search(@RequestParam(defaultValue = "") String searchType,
+			@RequestParam String keyword,
+			@RequestParam(defaultValue = "") String exceptkeyword,
+			@RequestParam(defaultValue = "") String lowestprice,
+			@RequestParam(defaultValue = "") String highestprice,
+			@RequestParam(defaultValue = "") String orderby) {
+		Map<String, String> param = new HashMap<>();
+		param.put("searchType", searchType);
+		param.put("keyword", keyword);
+		param.put("exceptkeyword", exceptkeyword);
+		param.put("lowestprice", lowestprice);
+		param.put("highestprice", highestprice);
+		param.put("orderby", orderby);
+		
+		
+		List <ProductVO> list = productService.getSearchList(param);
+		return "product/search";
+	}
 	
+	@PostMapping("/search")
+	public String search() {
+		
+		return "product/search";
+	}
 	
 	
 	

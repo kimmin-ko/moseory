@@ -45,13 +45,12 @@ public interface ProductService {
 	void increaseRecommend(int review_no);
 	
 	void decreaseRecommend(int review_no);
-<<<<<<< HEAD
 
 	List<ProductVO> getBestProduct(int high_code);
-=======
 	
 	public HighCateVO getHighCate(int high_code);
 	
 	public List<LowCateVO> getLowCate(int high_code);
->>>>>>> d10db167a839034d76131026fbc5b97c28b8450b
+
+	List<ProductVO> getSearchList(Map<String, String> param);
 }
