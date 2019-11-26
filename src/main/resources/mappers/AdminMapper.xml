@@ -17,6 +17,26 @@
 		<result column="name" property="name" />
 	</resultMap>
 	
+	<resultMap type="MemberVO" id="memberResultMap">
+		<result column="rownum" property="rownum" />
+		<result column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="pwd_confirm_q" property="pwd_confirm_q" />
+		<result column="pwd_confirm_a" property="pwd_confirm_a" />
+		<result column="name" property="name" />
+		<result column="zipcode" property="zipcode" />
+		<result column="address1" property="address1" />
+		<result column="address2" property="address2" />
+		<result column="tel" property="tel" />
+		<result column="phone" property="phone" />
+		<result column="email" property="email" />
+		<result column="birth" property="birth" />
+		<result column="lev" property="level" typeHandler="LevelEnumTypeHandler" />
+		<result column="point" property="point" />
+		<result column="total" property="total" />
+		<result column="join_date" property="join_date" />
+	</resultMap>
+	
 	<select id="getPrantCategory" resultMap="highCateVo">
 		SELECT 
 		  code, name, kname
@@ -75,12 +95,11 @@
         </foreach>
 	</delete>
 	
-	
-	
 	<select id="getHighCate" parameterType="int" resultType = "String">
 		select name from tbl_high_cate
 			where code = #{code}
 	</select>
+	
 	<select id="getLowCate" parameterType="int" resultType="String">
 		select name from tbl_low_cate
 			where code = #{code}
@@ -91,9 +110,61 @@
 			where name like '%'||#{keyword}||'%'
 				or kname like '%'||#{keyword}||'%'
 	</select>
+	
 	<select id="getLowCateCode" parameterType="String" resultType = "int">
 		select code from tbl_low_cate
 			where name like '%'||#{keyword}||'%'
+	</select>
+	
+	<select id="getUser" parameterType="map" resultMap="memberResultMap">
+		SELECT 
+		 rownum, id, name,	phone, email, lev 
+		FROM
+		  tbl_member
+		WHERE 1 = 1
+		<if test='searchValue != "" and searchType == "id"'>
+		  AND id = #{searchValue}
+		</if>
+		<if test='searchValue != "" and searchType == "name"'>
+		  AND name = #{searchValue}
+		</if>
+		<if test='commValue != "" and commType == "tel"'>
+		  AND tel = #{commValue}
+		</if>
+		<if test='commValue != "" and commType == "phone"'>
+		  AND phone = #{commValue}
+		</if>
+		<if test='searchEmail != ""'>
+		  AND email = #{searchEmail}
+		</if>
+		<if test='levelType != "all"'>
+		  AND lev = #{levelType}
+		</if>
+		ORDER BY join_date, rownum desc
+	</select>
+	
+	<select id="getUserDetail" parameterType="String" resultMap="memberResultMap">
+		SELECT
+		  id, 
+		  password, 
+		  pwd_confirm_q, 
+		  pwd_confirm_a, 
+		  name,
+		  zipcode,
+		  address1,
+		  address2, 
+		  tel,
+		  phone,
+		  email, 
+		  birth, 
+		  lev, 
+		  point, 
+		  total, 
+		  join_date
+	    FROM
+		  tbl_member
+	    WHERE
+		  id = #{id}
 	</select>
 	
 </mapper>

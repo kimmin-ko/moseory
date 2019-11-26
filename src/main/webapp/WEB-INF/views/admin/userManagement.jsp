@@ -33,44 +33,46 @@ if(message != ""){
 		<!-- UserManagement-header End -->
 		<div class="col-md-10 col-md-offset-1 userManagement-searchBox">
 	        <h6>검색 옵션</h6>
-			<div class="col-md-10 col-md-offset-1 userManagement-searchBar">
-	            <table>
-	            	<tr>
-	            		<td><select name="searchType"  class="form-control">
-	            			<option value="id">ID</option>
-	            			<option value="name">Name</option>
-	            		</select></td>
-	            		<td style="padding-right:100px;"><input type="text" name="searchValue" class="form-control"></td>
-	            		<td>
-	            			<h6>LEVEL</h6> 
-	            		</td>
-	            		<td style="padding-left:10px;">
-	            			<select name="gradeType"  class="form-control">
-	            				<option value="all">전체</option>
-		            			<option value="5">VVIP</option>
-		            			<option value="4">VIP</option>
-		            			<option value="3">GOLD</option>
-		            			<option value="2">SILVER</option>
-		            			<option value="1">BRONZE</option>
-	            			</select>
-	            		</td>
-	            	</tr>
-	            	<tr>
-						<td><select name="commType"  class="form-control">
-	            			<option value="phone">Phone</option>
-	            			<option value="tel">Tel</option>
-	            		</select></td>
-	            		<td style="padding-right:100px;"><input type="text" name="searchValue" class="form-control"></td>
-	            		<td>
-	            			<h6>EMAIL</h6>
-	            		</td>
-	            		<td style="padding-left:10px;">
-	            			<input type="text" name="email" class="form-control" value="">
-	            		</td>
-	            	</tr>
-	            </table>
-				<button type="button" class="btn btn-default btn-sm" style="float:right; margin-bottom:10px;"name="searchBtn">검색</button>
-			</div>
+	        <form method="get" action="userManagement">
+				<div class="col-md-10 col-md-offset-1 userManagement-searchBar">
+		            <table>
+		            	<tr>
+		            		<td><select name="searchType"  class="form-control">
+		            			<option value="id">ID</option>
+		            			<option value="name">Name</option>
+		            		</select></td>
+		            		<td style="padding-right:100px;"><input type="text" name="searchValue" value="${searchValue}" class="form-control"></td>
+		            		<td>
+		            			<h6>LEVEL</h6> 
+		            		</td>
+		            		<td style="padding-left:10px;">
+		            			<select name="levelType"  class="form-control">
+		            				<option value="all">전체</option>
+			            			<option value="5" <c:if test="${levelType == '5'}">selected</c:if> >VVIP</option>
+			            			<option value="4" <c:if test="${levelType == '4'}">selected</c:if> >VIP</option>
+			            			<option value="3" <c:if test="${levelType == '3'}">selected</c:if> >GOLD</option>
+			            			<option value="2" <c:if test="${levelType == '2'}">selected</c:if> >SILVER</option>
+			            			<option value="1" <c:if test="${levelType == '1'}">selected</c:if> >BRONZE</option>
+		            			</select>
+		            		</td>
+		            	</tr>
+		            	<tr>
+							<td><select name="commType"  class="form-control">
+		            			<option value="phone" <c:if test="${commType == 'phone'}">selected</c:if> >Phone</option>
+		            			<option value="tel" <c:if test="${commType == 'tel'}">selected</c:if>>Tel</option>
+		            		</select></td>
+		            		<td style="padding-right:100px;"><input type="text" name="commValue" value="${commValue }" class="form-control"></td>
+		            		<td>
+		            			<h6>EMAIL</h6>
+		            		</td>
+		            		<td style="padding-left:10px;">
+		            			<input type="text" name="searchEmail" class="form-control" value="${searchEmail }">
+		            		</td>
+		            	</tr>
+		            </table>
+					<button type="submit" class="btn btn-default btn-sm" style="float:right; margin-bottom:10px;"name="searchBtn">검색</button>
+				</div>
+	        </form>
 		</div>
 		<!-- UserManagement-body Start -->
 		
@@ -96,30 +98,16 @@ if(message != ""){
 				        </tr>
 			    	</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>m3252</td>
-							<td>문승찬</td>
-							<td>010-4586-3362</td>
-							<td>m3252@naver.com</td>
-							<td>브론즈</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>m3252</td>
-							<td>문승찬</td>
-							<td>010-4586-3362</td>
-							<td>m3252@naver.com</td>
-							<td>브론즈</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>m3252</td>
-							<td>문승찬</td>
-							<td>010-4586-3362</td>
-							<td>m3252@naver.com</td>
-							<td>브론즈</td>
-						</tr>
+						<c:forEach var="model" items="${userList}" varStatus="status">
+							<tr onclick="javascript:ref('${model.id}');">
+								<td>${model.rownum}</td>
+								<td>${model.id}</td>
+								<td>${model.name}</td>
+								<td>${model.phone}</td>
+								<td>${model.email}</td>
+								<td>${model.level}</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -133,7 +121,12 @@ if(message != ""){
 </div>
 </body>
 <script>
+function ref(userId){
+	document.location.href="/admin/getUserDetail?id="+userId;
+}
 
+$(document).ready(function(){
 
+})
 </script>
 </html>

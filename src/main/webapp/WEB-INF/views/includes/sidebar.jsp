@@ -57,9 +57,12 @@ String.prototype.format = function() {
 			<div class="col-md-3 col-md-offset-2 font-12">
 				<a href="/user/logout">LOGOUT</a>
 			</div>
-			<div class="col-md-5 font-12">
-				<a href="/admin/manage">MANAGE</a>
-			</div>
+			
+			<c:if test="${user.auth == 1}">
+				<div class="col-md-5 font-12">
+					<a href="/admin/manage">MANAGE</a>
+				</div>
+			</c:if>
 		</c:if>
 		<c:if test="${empty user }">
 			<div class="col-md-5 font-12 joinus">

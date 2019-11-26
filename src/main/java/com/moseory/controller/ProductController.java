@@ -63,10 +63,6 @@ public class ProductController {
 		model.addAttribute("lowCate", lowCate);
 		model.addAttribute("high_code", high_code);
 		
-		
-		
-		
-		
 		return "product/productList";
 	}
 	
