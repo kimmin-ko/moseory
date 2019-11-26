@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -103,6 +104,14 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int getLowCateCode(String keyword) {
 		return  sqlSession.selectOne("AdminMapper.getLowCateCode",keyword);
+	}
+	@Override
+	public List<MemberVO> getUser(HashMap<String, Object> map) {
+		return sqlSession.selectList("AdminMapper.getUser", map);
+	}
+	@Override
+	public MemberVO getUserDetail(String id) {
+		return sqlSession.selectOne("AdminMapper.getUserDetail", id);
 	}
 
 }

@@ -2,6 +2,7 @@
 package com.moseory.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.moseory.dao.AdminDao;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -158,6 +160,16 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getLowCateCode(String keyword) {
 		return adminDao.getLowCateCode(keyword);
+	}
+
+	@Override
+	public List<MemberVO> getUser(HashMap<String, Object> map) {
+		return adminDao.getUser(map);
+	}
+
+	@Override
+	public MemberVO getUserDetail(String id) {
+		return adminDao.getUserDetail(id);
 	}
 
 	
