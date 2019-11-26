@@ -76,6 +76,8 @@ public class AdminController {
 		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
+		List<MultipartFile> thumbnail = multipartRequest.getFiles("thumbnail");
+		
 		// 경로가 없으면 디렉토리 생성
 		File file = new File(save_path);
 		if (file.exists() == false) {
@@ -83,6 +85,7 @@ public class AdminController {
 		}
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
+			System.out.println(thumbnail.get(i).getName());
 			// 파일명이 같을 수도 있기 때문에
 			// 랜덤36문자_받아온파일이름
 			// 으로 파일 저장
@@ -266,15 +269,12 @@ public class AdminController {
 		return "admin/productlist"; 
 	}
 	
-
-	
 	@GetMapping("/stats")
 	public String stats() {
 		
 		return "admin/stats";
-	}
+	}	
 	
-
 	@GetMapping("userManagement")
 	public String userManagement() {
 	

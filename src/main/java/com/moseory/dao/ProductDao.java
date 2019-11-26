@@ -50,12 +50,11 @@ public interface ProductDao {
 	
 	void decreaseRecommend(int review_no);
 
-
 	List<ProductVO> getBestProduct(int high_code);
-
 	
 	public HighCateVO getHighCate(int high_code);
 	
 	public List<LowCateVO> getLowCate(int high_code);
 
+	List<ProductVO> getSearchList(Map<String, String> param);
 }

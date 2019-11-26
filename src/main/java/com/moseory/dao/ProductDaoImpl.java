@@ -89,7 +89,6 @@ public class ProductDaoImpl implements ProductDao{
 	public List<ReviewVO> getReview(ReviewCri reviewCri) {
 	    return sqlSession.selectList("product.getReview", reviewCri);
 	}
-
 	
 	@Override
 	public ReviewVO getOriginalReview(int review_no) {
@@ -112,12 +111,11 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-
 	public List<ProductVO> getBestProduct(int high_code) {
 		return sqlSession.selectList("product.getBestProduct",high_code);
 	}
 
-
+	
 	public HighCateVO getHighCate(int high_code) {
 		return sqlSession.selectOne("product.getHighCate", high_code);
 	}
@@ -128,9 +126,11 @@ public class ProductDaoImpl implements ProductDao{
 
 	}
 
+	@Override
+	public List<ProductVO> getSearchList(Map<String, String> param) {
+		return sqlSession.selectList("product.getSearchList",param);
+	}
 	
-
-
 	
 
 }

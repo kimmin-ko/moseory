@@ -33,10 +33,10 @@
 								$('#lowCategory').children().eq(i).remove();
 								$('#lowCategory').append("<option>하위카테고리가 없습니다</option>");
 							}else{
-								for(var i =0; i < data.length; i++){
+								 for(var i =0; i < data.length; i++){
 									$('#lowCategory').children().eq(i).remove();
 									$('#lowCategory').append("<option>" + data[i].name + "</option>");
-								}
+								} 
 							}
 							
 						}

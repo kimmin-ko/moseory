@@ -277,8 +277,6 @@
 		q.no desc
 	</select>
 	
-
-	   
 	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">
 		select count(*) from tbl_product
@@ -326,7 +324,6 @@
 
 	</select>
 
-
 	<select id="getLowCate" parameterType="int" resultType="LowCateVO">
 		SELECT 
 		  code, high_code, name
@@ -337,6 +334,14 @@
 
 	</select>
 	
+	
+	<select id="getSearchList" parameterType="map" resultType="productVO">
+		select * from (
+			select * from tbl_product
+				where ${searchType} like '%'||#{searchType}||'%'
+					order by ${orderby} desc
+		)
+	</select>
 
 </mapper>
 
