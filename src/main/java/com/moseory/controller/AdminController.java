@@ -278,9 +278,6 @@ public class AdminController {
 	}	
 	
 	@GetMapping("userManagement")
-	public String userManagement() {
-	
-//		adminService.getUser();
 	public String userManagement(HttpServletRequest req, Model model
 			,@RequestParam(required = false, defaultValue = "all") String levelType
 			,@RequestParam(required = false, defaultValue = "") String searchType
