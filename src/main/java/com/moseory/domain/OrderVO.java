@@ -2,6 +2,8 @@ package com.moseory.domain;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -9,6 +11,7 @@ public class OrderVO {
     
     private String code; // 주문번호
     private String member_id; // 회원아이디
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime order_date; // 주문 등록 날짜
     private int delivery_charge; // 배송비
     private String state; // 주문 상태

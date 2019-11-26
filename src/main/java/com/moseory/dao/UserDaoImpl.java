@@ -1,6 +1,5 @@
 package com.moseory.dao;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,8 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -178,6 +179,43 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<OrderDetailVO> getOrderDetail(String order_code) {
 	return sqlSession.selectList(namespace+".getOrderDetail", order_code);
+    }
+
+    @Override
+    public List<OrderListVO> getOrderList(OrderListCri cri) {
+	return sqlSession.selectList(namespace+".getOrderList", cri);
+    }
+
+    @Override
+    public void updateOrderStateToCancel(String order_code) {
+	sqlSession.update(namespace+".updateOrderStateToCancel", order_code);
+    }
+
+    @Override
+    public void decreaseSaleCount(int product_code, int quantity) {
+	Map<String, Integer> param = new HashMap<String, Integer>();
+	param.put("product_code", product_code);
+	param.put("quantity", quantity);
+	
+	sqlSession.update(namespace+".decreaseSaleCount", param);
+    }
+
+    @Override
+    public void increaseProductStock(int product_detail_no, int quantity) {
+	Map<String, Integer> param = new HashMap<String, Integer>();
+	param.put("product_detail_no", product_detail_no);
+	param.put("quantity", quantity);
+	
+	sqlSession.update(namespace+".increaseProductStock", param);
+    }
+
+    @Override
+    public void increaseMemberPoint(String member_id, int used_point) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("member_id", member_id);
+	param.put("used_point", used_point);
+	
+	sqlSession.update(namespace+".increaseMemberPoint", param);
     }
 
     /* ORDER 끝 */

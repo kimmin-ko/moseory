@@ -128,7 +128,6 @@ public class ProductDaoImpl implements ProductDao{
 	public List<ProductVO> getSearchList(Map<String, String> param) {
 		return sqlSession.selectList("product.getSearchList",param);
 	}
-
 	
 
 

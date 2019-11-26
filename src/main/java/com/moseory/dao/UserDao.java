@@ -7,6 +7,8 @@ import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
 
@@ -64,6 +66,20 @@ public interface UserDao {
     public OrderVO getOrder(String code);
     
     public List<OrderDetailVO> getOrderDetail(String order_code);
+    
+    /* 주문 목록 */
+    public List<OrderListVO> getOrderList(OrderListCri cri);
+    
+    /* 주문 취소 */
+    public void updateOrderStateToCancel(String order_code);
+    
+    public void decreaseSaleCount(int product_code, int quantity);
+    
+    public void increaseProductStock(int product_detail_no, int quantity);
+    
+    public void increaseMemberPoint(String member_id, int used_point); 
+    
+    
 }
 
 

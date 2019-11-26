@@ -47,7 +47,7 @@
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">주문조회</a></h6>
+						<h6><a href="/user/orderList">주문조회</a></h6>
 						<p>
 							고객님의 주문내역을 확인하실 수 있습니다. <br>
 							비회원의 경우, 주문번호와 비밀번호로 주문조회 가능

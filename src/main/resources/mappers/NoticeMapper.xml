@@ -13,14 +13,14 @@
 	</insert>
 
 	<!-- 게시글 상세 보기 조회 -->
-	<select id="select" parameterType="int"
-		resultType="NoticeVO">
-		select * from tbl_notice where no = #{no}
+	<select id="select" parameterType="int" resultType="NoticeVO">
+		select * from
+		tbl_notice where no = #{no}
 	</select>
 
 	<!-- 게시글 조회수 증가 처리 -->
 	<update id="hit">
-		update tbl_notice  
+		update tbl_notice
 		set hit = hit + 1
 		where no = #{no}
 	</update>
@@ -40,6 +40,24 @@
 		where no =#{no}
 	</delete>
 
+	<!-- sql의 일부를 별도로 보관하고 필요한 경우에 include -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like '%'||#{keyword}||'%'
+						</when>
+						<when test="type == 'C'.toString()">
+							content like '%'||#{keyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
 	<!-- 게시글 페이징 처리하기 -->
 	<select id="getListWithPaging" resultType="NoticeVO">
 		<![CDATA[
@@ -47,16 +65,25 @@
 				no,title,content,reg_date,hit
 			from (
 				select /*+INDEX_DESC(tbl_notice pk_tbl_notice) */
-				rownum rn, no,title,content,reg_date,hit from tbl_notice
-			where rownum <= #{pageNum} * #{amount}
-			)
-			where rn>(#{pageNum}-1) * #{amount}
+				rownum rn, no,title,content,reg_date,hit 
+				from tbl_notice
+			where 
+			
+			]]>
+			<include refid = "criteria"></include>
+			<![CDATA[
+				rownum <=#{pageNum} * #{amount}
+				)
+			where rn > (#{pageNum}-1) * #{amount}
 			]]>
 	</select>
-	
-	<!--  게시글 총 개수 구하기 -->
-	<select id ="totalCount" resultType ="int">
-		select count(*) from tbl_notice where no>0
+
+	<!-- 게시글 총 개수 구하기 -->
+	<select id="totalCount" resultType="int">
+		select count(*) from
+		tbl_notice where 
+		<include refid = "criteria"></include>
+		no>0
 	</select>
 
 </mapper>

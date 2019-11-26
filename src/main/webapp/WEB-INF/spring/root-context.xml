@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -30,6 +31,7 @@
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
 	</bean>
+		
 	
 	<!--   HikariCP를 이용하는 DataSource -->
  	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
