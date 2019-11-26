@@ -41,18 +41,6 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping("/productList")
-	public String productList(@RequestParam int high_code, Model model) {
-		List <ProductVO> productVO = productService.highCateList(high_code);
-		model.addAttribute("productVO",productVO);
-//		for(ProductVO pVO : productVO) System.out.println(pVO);
-		
-		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
-		for(ProductVO bests : bestProducts)  System.out.println(bests);
-		model.addAttribute("bestProducts", bestProducts);
-		
-		return "product/productList";
-
-	}
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
@@ -68,6 +56,9 @@ public class ProductController {
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
+		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
+		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		model.addAttribute("bestProducts", bestProducts);
 		model.addAttribute("highCate", highCate);
 		model.addAttribute("lowCate", lowCate);
 		model.addAttribute("high_code", high_code);
