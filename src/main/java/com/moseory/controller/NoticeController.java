@@ -1,7 +1,5 @@
 package com.moseory.controller;
 
-import javax.inject.Inject;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.moseory.domain.Criteria;
 import com.moseory.domain.NoticeVO;
 import com.moseory.domain.PageDTO;
@@ -57,6 +54,8 @@ public class NoticeController {
 		log.info(cri.getPageNum());
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		log.info("--------------------------------");
 		return "redirect:/notice/noticeList/";
 
@@ -68,9 +67,12 @@ public class NoticeController {
 		service.delete(bno);
 		rttr.addAttribute("pageNum", cri.getPageNum());
 		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
 		return "redirect:/notice/noticeList";
 	}
-
+	
+	
 	@GetMapping("/noticeList")
 	public void List(Criteria cri, Model model) {
 		log.info("list:" + cri);

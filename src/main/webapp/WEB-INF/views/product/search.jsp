@@ -20,7 +20,13 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/notice.css">
 </head>
-
+<style>
+	.searchArea {
+		margin: 0 0 20px;
+	    padding: 17px 20px 35px 130px;
+	    border: 5px solid #e8e8e8;
+    }
+</style>
 <body>
 
 	<%@ include file="../includes/sidebar.jsp"%>
@@ -28,60 +34,89 @@
 	
 	</script>
 	<div class="container" style="margin-left: 22%;">
-	
+		
 		<!-- Notice Start -->
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1 noticeLabel-row">
-				<h2>Product List</h2>
+				<h2>Search</h2>
 			</div>
 		</div>
 		<!-- row -->
-
-		<div class="row" >
-			<div class="col-md-10 col-md-offset-1">
-				<table class="table notice-board table-hover">
-					<thead>
-						<tr>
-							<td width = "10%" align = "center">NO</td>
-							<td width = "20%" align="center">상품명</td>
-							<td width = "20%" align="center">색상</td>
-							<td width = "10%" align="center">가격</td>
-							<td width = "20%" align="center">카테고리</td>
-							<td width = "10%" align="center">좋아요</td>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var = "products" items="${productList}" varStatus="status">
-							<tr onclick = "window.location='${pageContext.request.contextPath}/product/productInfo?code=${products.code }'">
-								<td>${products.code }	</td>
-								<td>${products.name }</td>
-								<td>색깔	</td>
-								<td>${products.price }	</td>
-								<td>${highCates[status.index] }/${lowCates[status.index] }</td>
-								<td>${products.wish_count }	</td>
+		<div class = "row">
+			<div class = "col-md-10 col-md-offset-1" >
+				<div class = "searchArea">
+					<form method = "get" action = "${pageContext.request.contextPath}/product/search">
+						<table class="table notice-board">
+							<tr>
+								<th>상품분류</th>
+								<td> 
+									<select name = "searchType">
+										<option>상품명</option>
+									</select>
+									<input type = "text" name = "keyword">
+								</td>
 							</tr>
-							
-						</c:forEach>
-					</tbody>
-				</table>
+							<tr>
+								<th>제외검색어</th>
+								<td><input type = "text" name = "exceptkeyword">
+							</tr>
+							<tr>
+								<th>판매가격대</th>
+								<td><input type = "text" name = "lowestprice">-<input type = "text" name = "highestprice">
+							</tr>
+							<tr>
+								<th>검색정렬기준</th>
+								<td>
+									<select name = "orderby">
+										<option>::: 기준 선택 :::</option>
+										<option>신상품 순</option>
+										<option value = "name">상품명 순</option>
+										<option value = "price">낮은가격 순</option>
+										<option value = "price">높은가격 순</option>
+										<option value = "wish_count">인기 순</option>
+										<option value = "">사용후기 순</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<div class = "searchButton  text-center">
+							<input type = "submit" value = "검색" class = "btn btn-default">
+						</div>
+					</form>
+				</div>
+				
+				<!-- <div class = "result_order">
+					<p class = "result">
+						총 개의 상품이 검색되었습니다.
+					</p>
+					<ul>
+						<li>상품명 |</li>
+						<li>낮은가격 |</li>
+						<li>높은가격 |</li>
+						<li>인기 |</li>
+						<li>사용후기</li>
+					</ul>
+				</div> -->
 			</div>
 		</div>
-		<form method = "get" action = "${pageContext.request.contextPath }/admin/productlist">
-			<div class="col-md-10 col-md-offset-1" align = "center">
-				<span class="form-inline search-area">
-					<select class="form-control" name = "searchType" style="width: 130px">
-						<option <c:if test = "${searchType == 'name' }">selected</c:if> value="name">상품명</option>
-						<option <c:if test = "${searchType == 'high_code' }">selected</c:if> value="high_code">상위카테고리</option>
-						<option <c:if test = "${searchType == 'low_code' }">selected</c:if> value="low_code">하위카테고리</option>
-					</select>
-					<input type="text" name = "keyword" value = "${keyword }" class="form-control" style="width: 180px;" required />
-					<button class="btn btn-default submit">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					</button>
-				</span>
-				<a class = "btn btn-default" href = "${pageContext.request.contextPath }/admin/productregist" >상품 등록</a>
+		
+		<div class = "row">
+			<div class="row ma-bo-50" id="newArrivalList">
+				<div class="col-md-10 col-md-offset-1">
+						<div class="col-md-4 prod-desc ma-bo-50">
+							<a href="#"><img src="/images/001.gif" width = "200px"></a>
+							<div class = "info">
+								<p><a href = "#">슬랙스</a></p>
+								<p>30000</p>
+								<p>comment</p>
+							</div>
+						</div>
+				</div>
 			</div>
-		</form>
+		</div>
+		
+		
+		
 		<div class="col-md-10 col-md-offset-1 pagination-div" style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">

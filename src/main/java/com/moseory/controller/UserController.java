@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +20,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.moseory.domain.AddedOrderInfoVO;
 import com.moseory.domain.CartVO;
 import com.moseory.domain.LevelEnumMapperValue;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderDetailVO;
+import com.moseory.domain.OrderListCri;
+import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.WishListVO;
+import com.moseory.service.ProductService;
 import com.moseory.service.UserService;
 
 import lombok.Setter;
@@ -41,6 +45,9 @@ public class UserController {
     
     @Setter(onMethod_ = @Autowired)
     private UserService userService;
+    
+    @Setter(onMethod_ = @Autowired)
+    private ProductService productService;
     
     //로그아웃 기능
     @GetMapping("/logout")
@@ -68,6 +75,14 @@ public class UserController {
 	map.put("levelJson", levelJson);
 	
 	return map;
+    }
+    
+    // 회원의 정보고 수정된 후 세션 업데이트
+    private void updateMember(HttpSession session, String id) {
+	MemberVO member = userService.readMember(id);
+	
+	// 수정한 회원 정보를 세션에 업데이트
+	session.setAttribute("user", member);
     }
     
     // 마이페이지
@@ -102,10 +117,7 @@ public class UserController {
 	
 	userService.modifyMember(member);
 	
-	member = userService.readMember(member.getId());
-	
-	// 수정한 회원 정보를 세션에 업데이트
-	session.setAttribute("user", member);
+	updateMember(session, member.getId());
 	
 	return "redirect:/user/modifyOk";
     }
@@ -147,32 +159,76 @@ public class UserController {
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
     }
     
+    private List<OrderDetailVO> details_list = new ArrayList<OrderDetailVO>();
+    
+    // details 받아오기
+    @PostMapping("/addDetailsList")
+    public void addDetailsList(@RequestBody OrderDetailVO details) {
+	details_list.add(details);
+    }
+    
     // 주문 등록
     @PostMapping("/addOrder")
-    public String addOrderPost(@RequestParam String member_id) {
-//	vo.setMember_id("admin11");
-//	vo.setDelivery_charge(0);
-//	vo.setRecipient_name("김민");
-//	vo.setRecipient_zipcode(153534);
-//	vo.setRecipient_address1("경기도 부천시");
-//	vo.setRecipient_address2("1층 카페");
-//	vo.setRecipient_tel(null);
-//	vo.setRecipient_phone("010-8455-9966");
-//	vo.setRecipient_email("admin11@naver.com");
-//	vo.setMessage("배송메세지입니다.");
-//	vo.setPay_method("card");
+    public String addOrderPost(@ModelAttribute OrderVO vo, HttpSession session, RedirectAttributes rttr) {
 	
-	//log.info(vo.toString());
+	String order_code = userService.addOrder(vo, details_list);
 	
-	log.info(member_id);
+	// 회원이 적립금을 사용했으니 세션 최신화
+	updateMember(session, vo.getMember_id());
 	
-	return null;
+	// 주문 완료 페이지에 주문 번호를 넘겨준다
+	rttr.addAttribute("order_code", order_code);
+	
+	if(details_list != null)
+	    details_list.clear();
+	
+	return "redirect:/user/orderCompletion";
     }
     
     // 주문 완료 페이지
     @GetMapping("/orderCompletion")
-    public void orderCompletion() {
+    public void orderCompletion(@RequestParam String order_code, Model model) {
+	// 주문 번호를 통해 페이지에 필요한 정보를 조회
+	OrderVO order = userService.getOrder(order_code);
+	log.info(order.getOrder_date());
+	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
+	List<String> orderDetailListJson = new ArrayList<String>();
+	for(OrderDetailVO orderDetail : orderDetailList) {
+	    String orderDetailJson = new Gson().toJson(orderDetail);
+	    orderDetailListJson.add(orderDetailJson);
+	}
+	
+	model.addAttribute("order", order);
+	model.addAttribute("orderDetailList", orderDetailListJson);
+    }
+    
+    // orderList 페이지
+    @GetMapping("/orderList")
+    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri cri) {
+	
+	MemberVO member = (MemberVO) session.getAttribute("user");
+	
+	
+	if(cri.getState() == null) /* 페이지 처음 호출 시 */
+	    // orderList 페이지 호출 시 전체 기간, 전체 상태로 초기화
+	    cri = new OrderListCri(member.getId(), null, null, "전체 상태");
+	else { /* 검색 조건으로 조회 시 */
+	    // 접속중인 id로 초기화
+	    cri.setMember_id(member.getId());
+	}
+	
+	List<OrderListVO> orderList = userService.getOrderList(cri);
+	
+	model.addAttribute("orderList", orderList);
+    }
+    
+    @PostMapping("/user/orderCancel")
+    public String orderCancel(@RequestParam String order_code, HttpSession session) {
+	MemberVO member = (MemberVO) session.getAttribute("user");
+	
+	userService.orderCancel(order_code, member.getId());
+	return "redirect:/user/orderList";
     }
     
     // 장바구니 페이지

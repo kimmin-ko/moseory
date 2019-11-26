@@ -56,6 +56,9 @@ public class ProductController {
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
+		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
+		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		model.addAttribute("bestProducts", bestProducts);
 		model.addAttribute("highCate", highCate);
 		model.addAttribute("lowCate", lowCate);
 		model.addAttribute("high_code", high_code);
@@ -215,6 +218,37 @@ public class ProductController {
 	    
 	    return new ResponseEntity<>(reviewList, HttpStatus.OK);
 	}
+	
+	
+	
+	@GetMapping("/search")
+	public String search(@RequestParam(defaultValue = "") String searchType,
+			@RequestParam String keyword,
+			@RequestParam(defaultValue = "") String exceptkeyword,
+			@RequestParam(defaultValue = "") String lowestprice,
+			@RequestParam(defaultValue = "") String highestprice,
+			@RequestParam(defaultValue = "") String orderby) {
+		Map<String, String> param = new HashMap<>();
+		param.put("searchType", searchType);
+		param.put("keyword", keyword);
+		param.put("exceptkeyword", exceptkeyword);
+		param.put("lowestprice", lowestprice);
+		param.put("highestprice", highestprice);
+		param.put("orderby", orderby);
+		
+		
+		List <ProductVO> list = productService.getSearchList(param);
+		return "product/search";
+	}
+	
+	@PostMapping("/search")
+	public String search() {
+		
+		return "product/search";
+	}
+	
+	
+	
 	
 	
 }

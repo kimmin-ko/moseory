@@ -18,7 +18,7 @@ public class NoticeDaoImpl implements NoticeDao {
 	private SqlSession sqlSession;
 
 	private static String namespace = "com.moseory.mapper.NoticeMapper";
-	// xml의 namespace 명과 동일해야 한다
+	// xml의 mapper의 namespace 명과 동일해야 한다
 
 	@Override
 	public void create(NoticeVO vo) {
@@ -47,7 +47,7 @@ public class NoticeDaoImpl implements NoticeDao {
 	
 	@Override
 	public int totalCount(Criteria cri) {
-		return sqlSession.selectOne(namespace +".totalCount");
+		return sqlSession.selectOne(namespace +".totalCount",cri);
 	}
 	
 	@Override

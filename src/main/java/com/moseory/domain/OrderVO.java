@@ -1,6 +1,6 @@
 package com.moseory.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,8 +11,8 @@ public class OrderVO {
     
     private String code; // 주문번호
     private String member_id; // 회원아이디
-    @DateTimeFormat(pattern = "yy-MM-dd hh:mm:ss")
-    private LocalDate order_date; // 주문 등록 날짜
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime order_date; // 주문 등록 날짜
     private int delivery_charge; // 배송비
     private String state; // 주문 상태
     private String recipient_name; // 수령인 이름
@@ -24,6 +24,7 @@ public class OrderVO {
     private String recipient_email; // 수령인 이메일
     private String message; // 배송메세지
     private String pay_method; // 결제 수단
+    private int used_point; // 사용한 적립금
     
 }
 

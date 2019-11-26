@@ -33,7 +33,7 @@
 				// 주문 상품명
 				var name = '';
 				// 주문 금액
-				var amount = 0;
+				var amount = 10;
 				// 구매자 이메일
 				var buyer_email = '${member.email}';
 				// 구매자 이름
@@ -47,7 +47,7 @@
 				
 				// 결제하기 버튼
 				$(".btn_payment").on("click", function() {
-					var recipient = $("input[name=name]").val();
+					var name = $("input[name=name]").val();
 					
 					var zipcode = $("input[name=zipcode]").val();
 					var address1 = $("input[name=address1]").val();
@@ -61,17 +61,19 @@
 					var phone1 = $("input[name=phone2]").val();
 					var phone2 = $("input[name=phone3]").val();
 					
+					var email = '';
 					var email1 = $("input[name=email1]").val();
 					var email2 = $("input[name=email2]").val();
 					
 					var message = $("textarea[name=delivery_message]").val();
-					console.log("message : " + message);
 					
-					if(!recipient) { // 수령인 비어있을 경우
+					var used_point = $("input[name=point]").val();
+					
+					if(!name) { // 수령인 비어있을 경우
 						alert("수령인 항목은 필수 입력값 입니다.");
 						$("input[name=name]").focus();
 						return;
-					} else if(checkRecipient(recipient)) { // 수령자명 유효성 검사
+					} else if(checkRecipient(name)) { // 수령자명 유효성 검사
 						alert("수령자명은 한글과 영문만 입력할 수 있습니다.");
 						$("input[name=name]").focus();
 						return;
@@ -108,6 +110,22 @@
 					}
 					
 					phone = $("select[name=phone1]").val() + '-' + phone1 + '-' + phone2;
+					email = email1 + '@' + email2;
+					
+					var order_vo = {
+							member_id : '${member.id}',
+							delivery_charge : delivery_charge,
+							recipient_name : name,
+							recipient_zipcode : zipcode,
+							recipient_address1 : address1,
+							recipient_address2 : address2,
+							recipient_tel : tel,
+							recipient_phone : phone,
+							recipient_email : email,
+							message : message,
+							pay_method : pay_method,
+							used_point : used_point
+					};
 					
 					// 최종 주문 금액이 0원인 경우
 					if(amount == 0) {
@@ -115,8 +133,14 @@
 						
 						if(c) {
 							// 주문 완료 시 실행
-							pay_method = 'point';
-							addOrder();
+							order_vo.pay_method = 'point';
+							
+							// 디테일 먼저 저장
+							details_list.forEach(function(details) {
+								addOrderDetail(details);
+							});
+							
+							addOrder(order_vo);	
 							return;
 						} else {
 							return;
@@ -138,8 +162,13 @@
 					    if ( rsp.success ) {
 					        var msg = '결제가 완료되었습니다.';
 							
+					     	// 디테일 먼저 저장
+							details_list.forEach(function(details) {
+								addOrderDetail(details);
+							});
+					     
 							// 주문 완료 처리
-							addOrder();
+							addOrder(order_vo);
 					    } else {
 					        var msg = '결제에 실패하였습니다.\n';
 					        msg += rsp.error_msg;
@@ -149,24 +178,48 @@
 					
 				}); // end payment_btn onclick
 				
-				function addOrder() {
+				function addOrderDetail(details) {
+					$.ajax({
+						type : 'post',
+						url : '/user/addDetailsList',
+						data : JSON.stringify(details),
+						contentType : 'application/json; charset=utf-8',
+						async : false
+					});
+				}
+				
+				// 주문 완료 시 실행 함수
+				function addOrder(order_vo) {
 					var form = $('<form></form>');
 					form.attr('method', 'post');
 					form.attr('action', '/user/addOrder');
 					form.appendTo('body');
 					
-					var member_id = $('<input type="hidden" name="member_id" value="${member.id}">');
+					var member_id = $('<input type="hidden" name="member_id" value="' + order_vo.member_id + '">');
+					var delivery_charge = $('<input type="hidden" name="delivery_charge" value="' + order_vo.delivery_charge + '">');
+					var recipient_name = $('<input type="hidden" name="recipient_name" value="' + order_vo.recipient_name + '">');
+					var recipient_zipcode = $('<input type="hidden" name="recipient_zipcode" value="' + order_vo.recipient_zipcode + '">');
+					var recipient_address1 = $('<input type="hidden" name="recipient_address1" value="' + order_vo.recipient_address1 + '">');
+					var recipient_address2 = $('<input type="hidden" name="recipient_address2" value="' + order_vo.recipient_address2 + '">');
+					var recipient_tel = $('<input type="hidden" name="recipient_tel" value="' + order_vo.recipient_tel + '">');
+					var recipient_phone = $('<input type="hidden" name="recipient_phone" value="' + order_vo.recipient_phone + '">');
+					var recipient_email = $('<input type="hidden" name="recipient_email" value="' + order_vo.recipient_email + '">');
+					var message = $('<input type="hidden" name="message" value="' + order_vo.message + '">');
+					var pay_method = $('<input type="hidden" name="pay_method" value="' + order_vo.pay_method + '">');
+					var used_point = $('<input type="hidden" name="used_point" value="' + order_vo.used_point + '">');
 					
 					form.append(member_id);
-					/* form.append('delivery_charge', delivery_charge);
-					form.append('recipient_name', name);
-					form.append('recipient_zipcode', zipcode);
-					form.append('recipient_address1', address1);
-					form.append('recipient_address2', address2);
-					form.append('recipient_tel', tel);
-					form.append('recipient_phone', phone);
-					form.append('message', message);
-					form.append('pay_method', pay_method); */
+					form.append(delivery_charge);
+					form.append(recipient_name);
+					form.append(recipient_zipcode);
+					form.append(recipient_address1);
+					form.append(recipient_address2);
+					form.append(recipient_tel);
+					form.append(recipient_phone);
+					form.append(recipient_email);
+					form.append(message);
+					form.append(pay_method);
+					form.append(used_point);
 					
 					form.submit();
 				}
@@ -202,15 +255,41 @@
 				// 최종 주문 금액
 				var total_prod_price = 0;
 				
+				// 주문 등록에 필요한 정보 (List<Map<String, Integer>> details_list)
+				var details_list = [];
+				
+				
 				// 모든 상품의 할인금액을 더해줌
 				<c:forEach var="addedOrderInfo" items="${addedOrderInfoList }">
+					// 해당 상품의 할인금액
 					var discount = ${(addedOrderInfo.price / 100) * member.level.discount * addedOrderInfo.quantity};
+					// 모든 상품의 총 할인금액
 					total_discount += discount;
 					
+					// 해당 상품의 적립금
 					var saving = ${(addedOrderInfo.price / 100) * member.level.saving * addedOrderInfo.quantity};
+					// 모든 상품의 총 적립금
 					total_saving += saving;
 					
 					origin_prod_price += ${addedOrderInfo.price * addedOrderInfo.quantity};
+					
+					var product_code = ${addedOrderInfo.code};
+					var product_detail_no = ${addedOrderInfo.product_detail_no};
+					var quantity = ${addedOrderInfo.quantity};
+					var price = ${addedOrderInfo.price};
+					var amount_d = price - discount;
+					
+					// 주문 등록에 필요한 주문 상품의 정보
+					var details = {
+							product_code : product_code,
+							product_detail_no : product_detail_no,
+							quantity : quantity,
+							amount : amount_d,
+							discount : discount,
+							point : saving
+					};
+					
+					details_list.push(details);
 						
 					// 결제 정보 저장
 					name = '${addedOrderInfo.name}';
@@ -334,7 +413,7 @@
 				}); // radio onchange
 
 			}); // end document
-			
+	
 	function changeDvryInfo(checkedValue) {
 		switch (checkedValue) {
 		case "member":
@@ -450,13 +529,25 @@
 								<td class="prod-info">
 									<span class="prod-name"> <a href="/product/productInfo?code=${code }"> <c:out value="${name }" /></a>
 									</span><br> <br> <span class="prod-option">
-										[옵션: 
-										<c:if test="${product_color ne null }">
-											<c:out value="${product_color }" />
-										</c:if> <c:if test="${product_size ne null }">
-											<c:out value="${product_size }" />
-										</c:if>
-										]
+										[옵션:&nbsp;
+		                            	<!-- color가 있을 때 -->
+		                            	<c:if test="${product_color ne null }"> 
+		                            		<!-- size가 있을 때 -->
+		                            		<c:if test="${product_size ne null }"> 
+		                            			<c:out value="${product_color }" /> /
+		                            			<c:out value="${product_size }" />
+		                            		</c:if>
+		                            		<!-- size가 없을 때 -->
+		                            		<c:if test="${product_size eq null }">
+		                            			<!-- size가 없는 상품은 color만 표시 -->
+		                            			<c:out value="${product_color }" />
+		                            		</c:if>
+		                            	</c:if>	
+		                            	<!-- color가 없을 때 -->
+		                            	<c:if test="${product_color eq null }">
+		                            		<c:out value="${product_size }" />
+		                            	</c:if>
+		                            	]
 									</span>
 								</td>
 								<!-- 판매가 -->

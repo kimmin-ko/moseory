@@ -16,9 +16,40 @@
 	<%@ include file="../includes/sidebar.jsp"%>
 
 	<script src="/js/product/productRegist.js"></script>
-
+	<script>
+		$(document).ready(function(){
+			$('#high_code').change(function(){
+				var high_code = $('#high_code').val();
+				
+					$.ajax({
+				        type : "post",
+				        url : "/admin/productcate",
+				        data : JSON.stringify(high_code),
+				        dataType: "json",
+				        contentType : "application/json; charset=utf-8",
+						success: function(data){
+							console.log(data);
+							if(data.length == 0){
+								$('#lowCategory').children().eq(i).remove();
+								$('#lowCategory').append("<option>하위카테고리가 없습니다</option>");
+							}else{
+								 for(var i =0; i < data.length; i++){
+									$('#lowCategory').children().eq(i).remove();
+									$('#lowCategory').append("<option>" + data[i].name + "</option>");
+								} 
+							}
+							
+						}
+				    });
+				
+				
+					
+					
+			});
+		});
+	</script>
 	<div class="container joinForm-container" style="margin-left: 22%">
-
+	
 		<!-- ProductRegist Start -->
 		<div class="row prod_reg_label">
 			<div class="col-md-10 col-md-offset-1">
@@ -36,7 +67,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="row prod_reg_body">
 			<div class="col-md-10 col-md-offset-1" style="padding: 0;">
 				<form id="registForm" action="/admin/productregist" method="post"
@@ -48,22 +79,22 @@
 						</tr>
 						<tr>
 							<th>상위 카테고리 <img src="/images/ico_required.gif"></th>
-							<td><select onchange="highCategory(this)" name="high_code">
+							<td>
+								<select id = "high_code" name = "high_code">
 									<option>카테고리를 선택해주세요</option>
-									<option value="1">아우터(OUTER)</option>
-									<option value="2">탑(TOP)</option>
-									<option value="3">셔츠(SHIRTS)</option>
-									<option value="4">하의(BOTTOM)</option>
-									<option value="5">가방(BAG)</option>
-									<option value="6">신발(SHOES)</option>
-									<option value="7">악세사리(ACC)</option>
-							</select></td>
+									<c:forEach var = "highCates" items = "${highCates }">
+										<option value = "${highCates.code }">${highCates.name }</option>
+									</c:forEach>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<th>하위 카테고리 <img src="/images/ico_required.gif"></th>
-							<td><select id="lowCategory" name="low_code">
-									<option>상위 카테고리를 선택해주세요</option>
-							</select></td>
+								<td>
+									<select id="lowCategory" name="low_code">
+											<option class = "empty">상위 카테고리를 선택해주세요</option>
+									</select>
+								</td>
 						</tr>
 						<tr>
 							<th>가격 <img src="/images/ico_required.gif"></th>
@@ -90,6 +121,7 @@
 						<tr>
 							<th>이미지</th>
 							<td><input type="file" id="getImage" name="files" multiple>
+								<button id = "uploadClick">파일 업로드</button>
 								<div class="imageArea"></div></td>
 						</tr>
 					</table>

@@ -71,25 +71,6 @@
             	// 상품 페이지에 뿌려줄 리뷰 정렬 초기화
             	var type = 'N';
             	
-            	// #,### formatNumber
-            	Number.prototype.format = function(){
-            	    if(this==0) return 0;
-            	 
-            	    var reg = /(^[+-]?\d+)(\d{3})/;
-            	    var n = (this + '');
-            	 
-            	    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
-            	 
-            	    return n;
-            	}; // Number.format()
-            	
-            	String.prototype.format = function(){
-            	    var num = parseFloat(this);
-            	    if( isNaN(num) ) return "0";
-            	 
-            	    return num.format();
-            	}; // String.format()
-            	
             	function order() {
             		// 로그인 정보가 없을 경우
             		if(user == null || user == '') {
