@@ -233,7 +233,7 @@ public class ProductController {
 		param.put("orderby", orderby);
 		
 		
-		List <ProductVO> list = productService.getSearchList(param);
+//		List <ProductVO> list = productService.getSearchList(param);
 		return "product/search";
 	}
 	

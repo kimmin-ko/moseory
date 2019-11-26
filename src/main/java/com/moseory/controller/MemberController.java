@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.moseory.domain.HighCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.service.HomeService;
 import com.moseory.service.MemberService;
 import com.moseory.util.KakaoConnectionUtil;
 
@@ -40,6 +43,13 @@ public class MemberController {
     @Setter(onMethod_ = @Autowired)
     private KakaoConnectionUtil kakao;
     
+    @Setter(onMethod_ = @Autowired)
+	private ServletContext application;
+    
+    @Setter(onMethod_ = @Autowired)
+	private HomeService homeService;
+	
+    
     // 요청 시 해당 필드만 데이터 입력 허용
     @InitBinder
     public void InitBinder(WebDataBinder dataBinder) {
@@ -49,7 +59,10 @@ public class MemberController {
     
     @GetMapping("/login")
     public void login() {
-	
+    	 // HighCate를 가져옴
+	    List<HighCateVO> highCateList = homeService.readHighCate();
+	    
+	    application.setAttribute("highCateList", highCateList);
     }
     
     @PostMapping("/loginProc")
@@ -70,6 +83,7 @@ public class MemberController {
     		model.addAttribute("user", vo);
     		return "index";
     	}
+    	
     	
     }
 

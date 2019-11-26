@@ -119,9 +119,12 @@
 									</script></td>
 						</tr>
 						<tr>
+							<th>썸네일</th>
+							<td><input type = "file" id = "thumbnail" name = "thumbnail"></td>
+						</tr>
+						<tr>
 							<th>이미지</th>
 							<td><input type="file" id="getImage" name="files" multiple>
-								<button id = "uploadClick">파일 업로드</button>
 								<div class="imageArea"></div></td>
 						</tr>
 					</table>
