@@ -83,7 +83,7 @@
 			case 'point' : $('.pay_method').text('적립금 결제'); break;
 		}
 		
-		$('.state').text('${order.state}');
+		$('.state').text(orderDetailList[0].state);
 		$('.order_date').text('${order.order_date}'.replace('T', ' '));
 		
 		$('.recipient_name').text('${order.recipient_name}');

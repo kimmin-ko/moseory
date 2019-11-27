@@ -12,6 +12,7 @@ public class OrderDetailVO {
     private int amount;
     private int discount;
     private int point;
+    private String state;
     
     // product
     private int product_code;

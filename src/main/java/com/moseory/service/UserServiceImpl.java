@@ -199,7 +199,7 @@ public class UserServiceImpl implements UserService {
 	List<OrderDetailVO> orderDetailList = userDao.getOrderDetail(order_code);
 	
 	// 2. 해당 주문의 상태를 '주문 취소'로 변경
-	userDao.updateOrderStateToCancel(orderDetailList.get(0).getOrder_code());
+	userDao.updateOrderState(orderDetailList.get(0).getOrder_code(), "주문 취소");
 	
 	for(OrderDetailVO orderDetail : orderDetailList) {
 	    // 3. 해당 상품의 판매량을 주문 수량만큼 감소
@@ -209,6 +209,44 @@ public class UserServiceImpl implements UserService {
 	    // 5. 회원이 주문에 사용한 적립금 반환
 	    userDao.increaseMemberPoint(member_id, orderDetail.getPoint());
 	}
+    }
+
+    @Override
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no) {
+	return userDao.getExchangeModalInfo(order_code, product_detail_no);
+    }
+
+    @Override
+    public void changeOrderState(String order_code, int product_detail_no, String state) {
+	String final_state = "";
+	
+	switch(state) {
+	case "exchange" :
+	    final_state = "교환 요청";
+	    break;
+	case "return" :
+	    final_state = "반품 요청";
+	    break;
+	}
+	
+	userDao.updateOrderStateToExchange(order_code, product_detail_no, final_state);
+    }
+
+    // 구매 확정
+    @Transactional
+    @Override
+    public void orderConfirm(Map<String, Object> param) {
+	String order_code = (String) param.get("order_code");
+	int product_detail_no = Integer.parseInt(param.get("product_detail_no")+"");
+	
+	
+	String member_id = (String) param.get("member_id");
+	int point = Integer.parseInt(param.get("point")+"");
+	int amount = Integer.parseInt(param.get("amount")+"");
+	
+	userDao.updateOrderStateToExchange(order_code, product_detail_no, "구매 확정");
+	
+	userDao.increasePointAndAmount(member_id, point, amount);
     }
     
     

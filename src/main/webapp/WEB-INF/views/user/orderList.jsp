@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% 
+ response.setHeader("Cache-Control","no-cache"); 
+ response.setHeader("Pragma","no-cache"); 
+ response.setDateHeader("Expires",0); 
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,7 +91,7 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                	<c:forEach var="order" items="${orderList }">
+	                	<c:forEach var="order" items="${orderList }" varStatus="idx">
 	                    <tr>
 	                        <td>
 	                            <img class="prod_file_path" src='<c:out value="${order.file_path }" />'>
@@ -128,9 +134,12 @@
 	                        			<button class="btn btn-default btn-sm" onclick="orderCancel('${order.code}')">주문 취소</button>
 	                        		</c:when>
 	                        		<c:when test="${order.state == '배송 완료' }">
-	                        			<button class="btn btn-default btn-sm">교환 요청</button>
-			                            <button class="btn btn-default btn-sm">반품 요청</button>
-			                            <button class="btn btn-default btn-sm">구매 확정</button>
+	                        			<button class="btn btn-default btn-sm" 
+	                        				onclick="showExchangeModal('${order.code }', '${order.product_detail_no }')">교환 요청</button>
+			                            <button class="btn btn-default btn-sm" 
+			                            	onclick="changeOrderState('${order.code}', '${order.product_detail_no }', 'return')">반품 요청</button>
+			                            <button class="btn btn-default btn-sm" 
+			                            	onclick="orderConfirm('${order.code}', '${order.product_detail_no }', '${order.point }', '${order.amount }')">구매 확정</button>
 	                        		</c:when>
 	                        		<c:when test="${order.state == '구매 확정' }">
 			                            <button class="btn btn-default btn-sm">리뷰 작성</button>
@@ -143,6 +152,50 @@
 	                	</c:forEach>
 	                </tbody>
 	            </table>
+	            
+	            <!-- 교환 요청 모달 -->
+	            <div class="modal fade exchange-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+	            	<div class="modal-dialog modal-sm">
+	            		<div class="modal-content">
+	            			<div class="modal-header">
+	            				<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="clearSelectOption()">
+	            					<span aria-hidden="true">&times;</span>
+	            				</button>
+	            				<p>옵션 교환</p>
+	            			</div>
+	            			<div class="modal-body">
+	            				<div class="row">
+		            				<div class="col-md-4">
+		            					<img class="modal_prod_img" id="modal_prod_img">
+		            				</div>
+		            				<div class="col-md-8">
+		            					<p class="modal_prod_name"></p>
+		            					<p class="modal_prod_option"></p>
+		            					<p class="modal_prod_quantity"></p>
+		            				</div>
+		            				
+		            				<div class="col-md-12 modal_change_order">
+		            					<p>교환 주문</p>
+		            				</div>
+		            				
+		            				<div class="col-md-12 modal_color_size">
+		            				</div>
+		            				
+		            				<div class="col-md-12">
+		            					<p style="font-size: 11px; color: gray;">- 동일 상품, 옵션 교환 외 환불 후 재주문하세요.</p>
+		            				</div>
+	            				</div>
+	            			</div>
+	            			<div class="modal-footer">
+	            				<div class="row">
+	            					<div class="col-md-12">
+	            						<button type="button" class="btn btn-detault exchangeReqBtn">교환 요청</button>
+	            					</div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
 	
 	            <div class="col-md-10 col-md-offset-1 l_pagination">
 	                <nav>
@@ -169,7 +222,6 @@
 	
 	    </div>
 		<!-- Order List End -->
-			
 	
 		<%@ include file="../includes/footer.jsp"%>
 

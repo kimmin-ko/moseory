@@ -140,6 +140,24 @@ public class ProductController {
 	    return stock != 0 ? new ResponseEntity<>(stock, HttpStatus.OK)
 		    	      : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping("/getColor/{code}")
+	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code) {
+	    
+	    List<String> color = productService.getProductColor(code);
+	    
+	    return new ResponseEntity<>(color, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getSize/{code}/{color}")
+	public ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
+			     @PathVariable("color") String color) {
+	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
+	    
+	    return productSize != null 
+		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
+		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
 	public ResponseEntity<Integer> increaseRecommend(
@@ -192,15 +210,7 @@ public class ProductController {
 	    return new ResponseEntity<>(review_recommend, HttpStatus.OK);
 	}
 
-	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<ProductDetailVO>> getColor(@PathVariable("code") int code,
-			     @PathVariable("color") String color) {
-	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
-	    
-	    return productSize != null 
-		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
-		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+	
 	
 	@GetMapping(value = "/getReviewList/{product_code}/{type}/{limit}",
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -214,8 +224,6 @@ public class ProductController {
 	    
 	    return new ResponseEntity<>(reviewList, HttpStatus.OK);
 	}
-	
-	
 	
 	@GetMapping("/search")
 	public String search(@RequestParam(defaultValue = "") String searchType,

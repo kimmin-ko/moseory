@@ -337,7 +337,7 @@ public class UserDaoTest {
 	    log.info("before point : " + member.getPoint());
 	}
 	
-	userDao.updateOrderStateToCancel(orderDetailList.get(0).getOrder_code());
+	userDao.updateOrderState(orderDetailList.get(0).getOrder_code(), "주문 취소");
 	
 	for(OrderDetailVO orderDetail : orderDetailList) {
 	    userDao.decreaseSaleCount(orderDetail.getProduct_code(), orderDetail.getQuantity());
@@ -357,6 +357,13 @@ public class UserDaoTest {
 	    log.info("after stock : " + stock);
 	    log.info("after point : " + member.getPoint());
 	}
+    }
+    
+    @Test
+    public void testGetExchangeModalInfo() {
+	OrderListVO vo = userDao.getExchangeModalInfo("201911251003594396114", 23);
+	
+	log.info(vo.toString());
     }
 
 }

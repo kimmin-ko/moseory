@@ -14,7 +14,6 @@ public class OrderVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime order_date; // 주문 등록 날짜
     private int delivery_charge; // 배송비
-    private String state; // 주문 상태
     private String recipient_name; // 수령인 이름
     private int recipient_zipcode; // 수령인 우편번호
     private String recipient_address1; // 수령인 기본주소
