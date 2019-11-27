@@ -82,7 +82,7 @@ public interface UserDao {
     /* 교환 모달 주문 정보 */
     public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no); 
     
-    public void updateOrderStateToExchange(String  order_code, int product_detail_no, String state);\
+    public void updateOrderStateToExchange(String  order_code, int product_detail_no, String state);
     
     /* 구매 확정 */
     public void increasePointAndAmount(String member_id, int point, int amount);
