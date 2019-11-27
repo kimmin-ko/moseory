@@ -65,7 +65,7 @@ public class PagingUtil {
 		this.prevPage = curPage - 1;
 		this.nextPage = curPage + 1;
 		
-		this.finish = curPage*pageSize;
+		this.finish = curPage*(pageSize+1);
 		this.start = this.finish - (this.pageSize -1);
 	}
 	
