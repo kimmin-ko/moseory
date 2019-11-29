@@ -34,7 +34,7 @@
 				flag = false;
 				
 			}
-			
+			console.log(flag);
 			if(flag){
 				form.submit();
 			}

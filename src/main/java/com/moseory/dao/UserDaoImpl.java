@@ -187,8 +187,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateOrderStateToCancel(String order_code) {
-	sqlSession.update(namespace+".updateOrderStateToCancel", order_code);
+    public void updateOrderState(String order_code, String state) {
+	Map<String, String> param = new HashMap<String, String>();
+	param.put("order_code", order_code);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".updateOrderState", param);
     }
 
     @Override
@@ -218,6 +222,34 @@ public class UserDaoImpl implements UserDao {
 	sqlSession.update(namespace+".increaseMemberPoint", param);
     }
 
+    @Override
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	
+	return sqlSession.selectOne(namespace+".getExchangeModalInfo", param);
+    }
+
+    @Override
+    public void updateOrderStateToExchange(String order_code, int product_detail_no, String state) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".updateOrderStateToExchange", param);
+    }
+
+    @Override
+    public void increasePointAndAmount(String member_id, int point, int amount) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("member_id", member_id);
+	param.put("point", point);
+	param.put("amount", amount);
+	
+	sqlSession.update(namespace+".increasePointAndAmount", param);
+    }
     /* ORDER 끝 */
     
     

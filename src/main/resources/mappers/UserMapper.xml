@@ -262,23 +262,23 @@
 	<!-- 주문 정보 등록 -->
 	<insert id="addOrder">
 	INSERT INTO
-	    tbl_order (code, member_id, delivery_charge, state, recipient_name, recipient_zipcode,  recipient_address1, 
+	    tbl_order (code, member_id, delivery_charge, recipient_name, recipient_zipcode,  recipient_address1, 
 	              recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method, used_point)
-	VALUES (#{code}, #{member_id}, #{delivery_charge}, '입금 확인', #{recipient_name}, #{recipient_zipcode},  #{recipient_address1}, 
+	VALUES (#{code}, #{member_id}, #{delivery_charge}, #{recipient_name}, #{recipient_zipcode},  #{recipient_address1}, 
 	       #{recipient_address2}, #{recipient_tel}, #{recipient_phone}, #{recipient_email}, #{message}, #{pay_method}, #{used_point})
 	</insert>
 	
 	<!-- 주문 상세 테이블 등록 -->
 	<insert id="addOrderDetail">
 	INSERT INTO
-	    tbl_order_detail (order_code, product_detail_no, amount, discount, point, quantity)
-	VALUES (#{order_code}, #{product_detail_no}, #{amount}, #{discount}, #{point}, #{quantity})
+	    tbl_order_detail (order_code, product_detail_no, amount, discount, point, quantity, state)
+	VALUES (#{order_code}, #{product_detail_no}, #{amount}, #{discount}, #{point}, #{quantity}, '입금 확인')
 	</insert>
 	
 	<!-- 주문 코드로 주문 정보 조회 -->
 	<select id="getOrder" resultType="OrderVO">
 	SELECT
-		code, member_id, order_date, delivery_charge, state, recipient_name, recipient_zipcode, recipient_address1,
+		code, member_id, order_date, delivery_charge, recipient_name, recipient_zipcode, recipient_address1,
     	recipient_address2, recipient_tel, recipient_phone, recipient_email, message, pay_method, used_point
 	FROM
 		tbl_order
@@ -289,7 +289,7 @@
 	<!-- 주문 코드로 주문 상세 정보 조회 -->
 	<select id="getOrderDetail" resultType="OrderDetailVO">
 	SELECT
-	    od.order_code, od.product_detail_no, od.amount, od.discount, od.point, od.quantity, p.code as product_code,
+	    od.order_code, od.product_detail_no, od.amount, od.discount, od.point, od.quantity, od.state, p.code as product_code,
 	    p.price as product_price, p.file_path as product_file_path, p.name as product_name, pd.product_color, pd.product_size, pd.product_stock
 	FROM
 	    tbl_order_detail od, tbl_product p, tbl_product_detail pd
@@ -303,7 +303,7 @@
 	<select id="getOrderList" resultType="OrderListVO">
 	SELECT
     	p.code as product_code, p.file_path, p.name, pd.product_color, pd.product_size,
-	    pd.no as product_detail_no, o.code, o.order_date, o.state, od.amount, od.quantity
+	    pd.no as product_detail_no, o.code, o.order_date, od.state, od.point, od.amount, od.quantity
 	FROM
 	    tbl_product p, tbl_product_detail pd, tbl_order o, tbl_order_detail od
 	WHERE
@@ -315,19 +315,20 @@
    			AND to_char(order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
 	    </if>
 	    <if test="state != '전체 상태'">
-		    AND o.state = #{state}
+		    AND od.state = #{state}
 	    </if>
 	ORDER BY
 	    o.code desc
 	</select>
 	
 	<!-- 주문 취소 Start -->
-	<update id="updateOrderStateToCancel">
+	<update id="updateOrderState">
 		UPDATE
-			tbl_order
-		SET state = '주문 취소' 
+			tbl_order_detail
+		SET 
+			state = #{state}
 		WHERE
-			code = #{order_code}
+			order_code = #{order_code}
 	</update>
 	
 	<update id="decreaseSaleCount">
@@ -348,6 +349,7 @@
 			no = #{product_detail_no}
 	</update>
 	
+	<!-- 사용자 적립금 증가 -->
 	<update id="increaseMemberPoint">
 	UPDATE
 	    tbl_member
@@ -357,9 +359,43 @@
 	    id = #{member_id}
 	</update>
 	<!-- 주문 취소 End -->
-	
 	<!-- END ORDER -->
 	
+	<!-- 교환 모달 주문 정보 -->
+	<select id="getExchangeModalInfo" resultType="OrderListVO">
+	SELECT
+	    p.code as product_code, p.file_path, p.name, pd.product_color, pd.product_size, od.quantity
+	FROM
+	    tbl_product p, tbl_product_detail pd, tbl_order_detail od
+	WHERE
+	    p.code = pd.product_code
+	    AND pd.no = od.product_detail_no
+	    AND od.order_code = #{order_code}
+	    AND od.product_detail_no = #{product_detail_no}
+	</select>
+	
+	<!-- 교환 요청 -->
+	<update id="updateOrderStateToExchange">
+	UPDATE
+	    tbl_order_detail 
+	SET
+	    state = #{state}
+	WHERE
+	    order_code = ${order_code}
+	    AND product_detail_no = #{product_detail_no}
+	</update>
+	
+	<!-- 구매 확정 -->
+	<!-- 사용자의 적립금, 총 구매금액 증가 -->
+	<update id="increasePointAndAmount">
+	UPDATE
+		tbl_member
+	SET
+		point = point + #{point},
+		total = total + #{amount}
+	WHERE
+		id = #{member_id}
+	</update>
 </mapper>
 
 

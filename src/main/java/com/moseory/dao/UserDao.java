@@ -71,13 +71,21 @@ public interface UserDao {
     public List<OrderListVO> getOrderList(OrderListCri cri);
     
     /* 주문 취소 */
-    public void updateOrderStateToCancel(String order_code);
+    public void updateOrderState(String order_code, String state);
     
     public void decreaseSaleCount(int product_code, int quantity);
     
     public void increaseProductStock(int product_detail_no, int quantity);
     
     public void increaseMemberPoint(String member_id, int used_point); 
+    
+    /* 교환 모달 주문 정보 */
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no); 
+    
+    public void updateOrderStateToExchange(String  order_code, int product_detail_no, String state);
+    
+    /* 구매 확정 */
+    public void increasePointAndAmount(String member_id, int point, int amount);
     
     
 }

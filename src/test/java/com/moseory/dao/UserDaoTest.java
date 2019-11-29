@@ -331,13 +331,12 @@ public class UserDaoTest {
 	    int stock = productDao.getProductStock(orderDetail.getProduct_detail_no());
 	    MemberVO member = userDao.getMember("test55");
 	    
-	    log.info("before order_state : " + order.getState());
 	    log.info("before sale_count : " + product.getSale_count());
 	    log.info("before stock : " + stock);
 	    log.info("before point : " + member.getPoint());
 	}
 	
-	userDao.updateOrderStateToCancel(orderDetailList.get(0).getOrder_code());
+	userDao.updateOrderState(orderDetailList.get(0).getOrder_code(), "주문 취소");
 	
 	for(OrderDetailVO orderDetail : orderDetailList) {
 	    userDao.decreaseSaleCount(orderDetail.getProduct_code(), orderDetail.getQuantity());
@@ -352,11 +351,17 @@ public class UserDaoTest {
 	    int stock = productDao.getProductStock(orderDetail.getProduct_detail_no());
 	    MemberVO member = userDao.getMember("test55");
 
-	    log.info("after order_state : " + order.getState());
 	    log.info("after sale_count : " + product.getSale_count());
 	    log.info("after stock : " + stock);
 	    log.info("after point : " + member.getPoint());
 	}
+    }
+    
+    @Test
+    public void testGetExchangeModalInfo() {
+	OrderListVO vo = userDao.getExchangeModalInfo("201911251003594396114", 23);
+	
+	log.info(vo.toString());
     }
 
 }
