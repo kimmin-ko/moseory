@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.moseory.mapper.ReviewMapper">
+	<!-- mapper 의 이름 -->
+
+	<!-- 게시판 글 작성 -->
+	<insert id="insert">
+		insert into tbl_review(no,title,content)
+		values(SEQ_REVIEW_NO.nextval,#{title},#{content})
+	</insert>
+
+	<!-- 게시글 상세 보기 조회 -->
+	<select id="select" parameterType="int" resultType="ReviewVO">
+		select * from
+		tbl_review where no = #{no}
+	</select>
+
+	<!-- 게시글 조회수 증가 처리 -->
+	<update id="hit">
+		update tbl_review
+		set hit = hit + 1
+		where no = #{no}
+	</update>
+
+	<!-- 게시글 수정 처리 -->
+	<update id="update">
+		update tbl_review
+		set title = #{title},
+		content =
+		#{content}
+		where no = #{no}
+	</update>
+
+	<!-- sql의 일부를 별도로 보관하고 필요한 경우에 include -->
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='reviewType' collection="reviewTypeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="reviewType == 'T'.toString()">
+							title like '%'||#{reviewKeyword}||'%'
+						</when>
+						<when test="reviewType == 'C'.toString()">
+							content like '%'||#{reviewKeyword}||'%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<!-- 게시글 페이징 처리하기 -->
+	<select id="getListWithPaging" resultType="ReviewVO">
+		<![CDATA[
+			select 
+				no,title,content,reg_date,hit
+			from (
+				select /*+INDEX_DESC(tbl_review pk_tbl_notice) */
+				rownum rn, no,title,content,reg_date,hit 
+				from tbl_review
+			where 
+			
+			]]>
+			<include refid = "criteria"></include>
+			<![CDATA[
+				rownum <=#{reviewPageNum} * #{reviewAmount}
+				)
+			where rn > (#{reviewPageNum}-1) * #{reviewAmount}
+			]]>
+	</select>
+
+	<!-- 게시글 총 개수 구하기 -->
+	<select id="totalCount" resultType="int">
+		select count(*) from
+		tbl_review where 
+		<include refid = "criteria"></include>
+		no>0
+	</select>
+
+</mapper>
