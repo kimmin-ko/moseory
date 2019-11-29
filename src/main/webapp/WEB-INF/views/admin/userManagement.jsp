@@ -100,7 +100,7 @@ if(message != ""){
 					<tbody>
 						<c:forEach var="model" items="${userList}" varStatus="status">
 							<tr onclick="javascript:ref('${model.id}');">
-								<td>${model.rownum}</td>
+								<td>${model.rnum}</td>
 								<td>${model.id}</td>
 								<td>${model.name}</td>
 								<td>${model.phone}</td>
@@ -113,6 +113,36 @@ if(message != ""){
 			</div>
 		</form>
 		<!-- UserManagement-body End -->
+		<!-- paging Start -->
+		<div class="col-md-10 col-md-offset-1 pagination-div" style="margin-bottom: 30px;">
+			<nav>
+				<ul class="pagination">
+					<c:if test="${paging.curBlock ne 1 }">
+						<li class ="button_first"><a href="${pageContext.request.contextPath }/admin/userManagement?curPage=${paging.startPage }">처음</a></li>
+					</c:if>
+					<c:if test="${paging.curPage ne 1 }">
+						<li class ="button_previous"><a href="${pageContext.request.contextPath }/admin/userManagement?curPage=${paging.prevPage }">이전</a></li>
+					</c:if>
+					<c:forEach var = "pageNumber" begin = "${paging.startPage }" end = "${paging.endPage }">
+						<c:choose>
+							<c:when test="${pageNumber eq paging.curPage }">
+								<li class ="paginate_button active"><span>${pageNumber }</span></li>
+							</c:when>
+							<c:otherwise>
+								<li class ="paginate_button"><a href = "${pageContext.request.contextPath }/admin/userManagement?curPage=${pageNumber}&searchType=${searchType}&keyword=${keyword}">${pageNumber }</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:if test = "${paging.curPage ne paging.pageCnt && paging.pageCnt > 0}">	
+						<li class ="button_next"><a href="${pageContext.request.contextPath }/admin/userManagement?curPage=${paging.nextPage }">다음</a></li>
+					</c:if>
+					<c:if test = "${paging.curBlock ne paging.blockCnt && paging.blockCnt > 0 }">
+						<li class ="button_end"><a href="${pageContext.request.contextPath }/admin/userManagement?curPage=${paging.endPage }">끝</a></li>
+					</c:if>
+				</ul>
+			</nav>
+		</div>
+		<!-- paging End -->
     </div>  
     <!-- UserManagement End -->
 

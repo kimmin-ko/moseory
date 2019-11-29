@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberVO {
     
-	private Integer rownum;
+	private Integer rnum;
     private String id; // 회원 아이디
     private String password; // 회원 비밀번호
     private String pwd_confirm_q; // 비밀번호 확인 질문
