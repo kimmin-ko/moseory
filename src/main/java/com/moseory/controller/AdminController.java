@@ -213,9 +213,12 @@ public class AdminController {
 		int totalCnt = 0;
 
 		if(keyword.equals("") != false) {	//검색 안하면
+			//리스트 개수 가져옴
 			totalCnt = adminService.getProductCount();
+			//리스트개수, 현재페이지를 model로 보내줌
 			pagingUtil = new PagingUtil(totalCnt, curPage);
-
+			//검색할 번호를 보내줌
+			//ex) 1페이지면 row 1~10까지 조회, 5페이지면 51~60까지 조회
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
 			model.addAttribute("productList", productList);
 			model.addAttribute("paging",pagingUtil);
@@ -223,6 +226,7 @@ public class AdminController {
 		else {	//검색 하면
 			if(searchType.equals("name")) {
 				try {
+					
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);

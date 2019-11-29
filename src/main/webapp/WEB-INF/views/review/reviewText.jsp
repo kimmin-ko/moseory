@@ -34,7 +34,7 @@
 				flag = false;
 				
 			}
-			console.log(flag);
+			
 			if(flag){
 				form.submit();
 			}
@@ -54,8 +54,8 @@
 					<table class="table table-striped">
 						<tr>
 							<td>&nbsp;</td>
-							<td align="center">NOTICE</td>
-							<td>공지 사항 관련된 게시판 입니다</td>
+							<td align="center">REVIEW</td>
+							<td>리뷰 게시판 입니다</td>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
@@ -82,6 +82,7 @@
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">
 							<td>&nbsp;</td>
 						</tr>
+						<input type = "hidden" name ="id" value="${member.id }"></input>
 					</table>
 				</form>
 			</div>

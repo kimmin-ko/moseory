@@ -20,10 +20,11 @@ public class OrderListVO {
     // order
     private String code; // 주문 번호
     private LocalDate order_date; // 주문 날짜
-    private String state; //주문 상태
     
     // order_detail
+    private int point; // 주문 적립금
     private int amount; // 주문 금액
     private int quantity; // 주문 수량
+    private String state; //주문 상태
     
 }

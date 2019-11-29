@@ -29,7 +29,7 @@
 	<script type="text/javascript">
 	$(document).ready(
         function() {
-            var result = '<c:out value="${result}"/>';
+            var result = '<c:out value="${reviewResult}"/>';
             checkModal(result);
 
             history.replaceState({}, null, null);
@@ -53,7 +53,7 @@
                     e.preventDefault();
                     console.log("click");
                     actionForm
-                        .find("input[name='pageNum']")
+                        .find("input[name='reviewPageNum']")
                         .val($(this).attr("href"));
                     actionForm.submit();
                 });
@@ -70,11 +70,11 @@
                                     "href") +
                                 "'>");
                         actionForm.attr("action",
-                            "/notice/noticeGet");
+                            "/review/reviewGet");
                         actionForm.submit();
                     })
 
-            //$(".")
+           
 
             var searchForm = $("#search");
 
@@ -85,12 +85,12 @@
                             return false;
                         }
 
-                        if (!searchForm.find("input[name='keyword']").val()) {
+                        if (!searchForm.find("input[name='reviewKeyword']").val()) {
                             alert("검색어를 입력하세요");
                             return false;
                         }
 
-                        searchForm.find("input[name='pageNum']").val("1");
+                        searchForm.find("input[name='reviewPageNum']").val("1");
                         e.preventDefault();
 
                         searchForm.submit();
@@ -104,7 +104,7 @@
 		<!-- Notice Start -->
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1 noticeLabel-row">
-				<p>NOTICE</p>
+				<p>REVIEW</p>
 			</div>
 		</div>
 		<!-- row -->
@@ -124,19 +124,19 @@
 
 					<tbody>
 					<tbody>
-						<c:forEach items="${list}" var="list">
+						<c:forEach items="${Reviewlist}" var="Reviewlist">
 							<tr>
 								<!-- NO -->
-								<td>${list.no}</td>
+								<td>${Reviewlist.no}</td>
 								<!-- TITLE -->
-								<td><a class='move' href='<c:out value="${list.no}"/>'><c:out
-											value="${list.title }" /></a></td>
+								<td><a class='move' href='<c:out value="${Reviewlist.no}"/>'><c:out
+											value="${Reviewlist.title }" /></a></td>
 								<!-- NAME -->
 								<td>모서리</td>
 								<!-- DATE -->
-								<td>${list.reg_date}</td>
+								<td>${Reviewlist.reg_date}</td>
 								<!-- HIT -->
-								<td>${list.hit}</td>
+								<td>${Reviewlist.hit}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -149,28 +149,28 @@
 			
 			<!-- 검색 처리 기능 -->
 			<div class="col-md-10 col-md-offset-1">
-				<form id='search' action="/notice/noticeList" method="get">
-					<select class="form-control" style="width: 130px; display:inline-block;" name="type">
+				<form id='search' action="/review/reviewList" method="get">
+					<select class="form-control" style="width: 130px; display:inline-block;" name="reviewType">
 						<option value=""
-							<c:out value="${pageMaker.cri.type == null ?'selected':''}"/>>검색조건</option>
+							<c:out value="${reviewPageMaker.reviewCri.reviewType == null ?'selected':''}"/>>검색조건</option>
 						<option value="T"
-							<c:out value="${pageMaker.cri.type == 'T' ?'selected':''}"/>>제목</option>
+							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'T' ?'selected':''}"/>>제목</option>
 						<option value="C"
-							<c:out value="${pageMaker.cri.type == 'C' ?'selected':''}"/>>내용</option>
+							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'C' ?'selected':''}"/>>내용</option>
 						<option value="TC"
-							<c:out value="${pageMaker.cri.type == 'TC' ?'selected':''}"/>>제목
+							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'TC' ?'selected':''}"/>>제목
 							+ 내용</option>
 					</select> 
-					<input type="text" class="form-control" name="keyword"
-						style="width: 180px; display:inline-block;" value="${pageMaker.cri.keyword}" /> <input
-						type='hidden' name='pageNum' value="${pageMaker.cri.pageNum }">
-					<input type='hidden' name='amount' value="${pageMaker.cri.amount }"><button class="btn btn-default">
+					<input type="text" class="form-control" name="reviewKeyword"
+						style="width: 180px; display:inline-block;" value="${reviewPageMaker.reviewCri.reviewKeyword}" /> <input
+						type='hidden' name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
+					<input type='hidden' name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }"><button class="btn btn-default">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
 					
 				</form>
 				<button type="button" class="btn btn-default"
-						onclick="location.href ='/notice/noticeText'">글쓰기</button>
+						onclick="location.href ='/review/reviewText'">글쓰기</button>
 			</div>
 			
 
@@ -181,20 +181,20 @@
 				style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">
-						<c:if test="${pageMaker.prev}">
+						<c:if test="${reviewPageMaker.prev}">
 							<li class="paginate_button previous"><a
-								href="${pageMaker.startPage-1 }">이전</a></li>
+								href="${reviewPageMaker.startPage-1 }">이전</a></li>
 						</c:if>
 
-						<c:forEach var="num" begin="${pageMaker.startPage }"
-							end="${pageMaker.endPage }">
-							<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a
+						<c:forEach var="num" begin="${reviewPageMaker.startPage }"
+							end="${reviewPageMaker.endPage }">
+							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? "active":"" }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
-						<c:if test="${pageMaker.next }">
+						<c:if test="${reviewPageMaker.next }">
 							<li class="paginate_button next"><a
-								href="${pageMaker.endPage+1 }">다음</a></li>
+								href="${reviewPageMaker.endPage+1 }">다음</a></li>
 						</c:if>
 
 
@@ -209,11 +209,11 @@
 		<!-- row -->
 		<!-- Notice End -->
 		
-		<form id="actionForm" action="/notice/noticeList" method="get">
-			<input type="hidden" name='pageNum' value="${pageMaker.cri.pageNum }">
-			<input type="hidden" name='amount' value="${pageMaker.cri.amount }">
-			<input type="hidden" name="type" value="${pageMaker.cri.type}">
-			<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+		<form id="actionForm" action="/review/reviewList" method="get">
+			<input type="hidden" name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
+			<input type="hidden" name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }">
+			<input type="hidden" name="reviewType" value="${reviewPageMaker.reviewCri.reviewType}">
+			<input type="hidden" name="reviewKeyword" value="${reviewPageMaker.reviewCri.reviewKeyword}">
 		</form>
 
 

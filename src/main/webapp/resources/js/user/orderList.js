@@ -111,13 +111,12 @@ $(document).ready(function() {
 		location.href='/user/orderList?' + state + startDate + endDate;
 		
 	}); // end getOrderList
-	
 
 }); // end document
 
 // 주문 취소
 function orderCancel(order_code) {
-	var c = confirm("주문을 취소하시겠습니까?\n(※ 해당 주문 번호의 모든 주문이 취소됩니다.)")
+	var c = confirm("주문을 취소하시겠습니까?\n(※ 해당 주문 번호의 모든 주문이 취소됩니다.)");
 	
 	if(c) {
 		var form = $('<form></form>');
@@ -130,10 +129,173 @@ function orderCancel(order_code) {
 	} else {
 		return;
 	}
+	
 }
 
+// 교환 요청
+function changeOrderState(order_code, product_detail_no, state) {
+	var q = '';
+	
+	switch(state) {
+		case 'exchange' : 
+			q = '해당 상품으로 교환하시겠습니까?';
+			break;
+		case 'return' : 
+			q = '해당 상품을 환불하시겠습니까?';
+			break;
+	}
+	
+	var c = confirm(q);
+	
+	if(c) {
+		var form = $('<form></form>');
+		form.attr('method', 'post');
+		form.attr('action', '/user/changeOrderState');
+		form.appendTo('body');
+		
+		form.append($('<input type="hidden" name="state" value="' + state + '">'));
+		form.append($('<input type="hidden" name="order_code" value="' + order_code + '">'));
+		form.append($('<input type="hidden" name="product_detail_no" value="' + product_detail_no + '">'));
+		form.submit();
+	} else {
+		return;
+	}
+	
+}
 
+// 구매 확정
+function orderConfirm(order_code, product_detail_no, point, amount) {
+	
+	var c = confirm("해당 상품을 구매 확정하시겠습니까?");
+	
+	if(c) {
+		var form = $('<form></form>');
+		form.attr('method', 'post');
+		form.attr('action', '/user/orderConfirm');
+		form.appendTo('body');
+		
+		form.append($('<input type="hidden" name="order_code" value="' + order_code + '">'));
+		form.append($('<input type="hidden" name="product_detail_no" value="' + product_detail_no + '">'));
+		form.append($('<input type="hidden" name="point" value="' + point + '">'));
+		form.append($('<input type="hidden" name="amount" value="' + amount + '">'));
+		form.submit();
+	} else {
+		return;
+	}
+	
+}
 
+// 모달창 초기화 및 보여주기
+function showExchangeModal(order_code, product_detail_no) {
+	
+	var product_code = new Number();
+	var first_color = '';
+	
+	$.ajax({
+		type : 'get',
+		url : '/user/getExchangeModalInfo/' + order_code + '/' + product_detail_no,
+		dataType : 'json',
+		async : false,
+		success : function(order_info) {
+			
+			// 색상과 사이즈가 존재하면 사이즈 앞에 / 붙임
+			var color = order_info.product_color;
+			var size = order_info.product_size;
+			
+			if(color) {
+				if(size) 
+					size = ' / ' + size;
+				else
+					size = '';
+			} else { // 컬러 x 사이즈 o
+				color = '';
+			}
+			
+			$('#modal_prod_img').attr('src', order_info.file_path);
+			$('.modal_prod_name').text(order_info.name);
+			$('.modal_prod_option').text('[옵션 : ' + color + size + ' ]');
+			$('.modal_prod_quantity').text(order_info.quantity + '개');
+			
+			// getColor에서 사용하기 위해 초기화
+			product_code = order_info.product_code;
+		}
+	});
+	
+	$.ajax({
+		type : 'get',
+		url : '/product/getColor/' + product_code,
+		dataType : 'json',
+		async : false,
+		success : function(color) {
+			first_color = color[0];
+			
+			var html_color = '<select class="form-control modal_select" id="modal_prod_color" onchange="getSize(\'' + product_code + '\', \'' + first_color + '\')">'
+						   + '	<option>선택하세요.</option>'
+						   + '</select>';
+			
+			if(color.length > 0) {
+				$('.modal_color_size').append(html_color);
+				
+				for(var i = 0; i < color.length; i++) {
+					$('#modal_prod_color').append('<option>' + color[i] + '</option>');
+				}
+			}
+			
+		}
+		
+	});
+	
+	$.ajax({
+		type : 'get',
+		url : '/product/getSize/' + product_code + '/' + first_color,
+		dataType : 'json',
+		async : false,
+		success : function(product) {
+
+			var html_size = '<select class="form-control modal_select" id="modal_prod_size">'
+				   		  + '	<option>선택하세요.</option>'
+				   		  + '</select>';
+	
+			if(product[0].product_size != null) {
+				$('.modal_color_size').append(html_size);
+			}
+			
+		}
+	});
+	
+	// 교환 요청 버튼에 onclick 속성 초기화
+	$('.exchangeReqBtn').attr('onclick', 'changeOrderState(\'' + order_code + '\', \'' + product_detail_no + '\', \'exchange\')');
+	
+	// 모달 창 띄우기
+	$('.exchange-modal-sm').modal({backdrop:'static'});
+}
+
+function getSize(product_code, color) {
+	
+	$('#modal_prod_size').empty();
+	
+	$.ajax({
+		type : 'get',
+		url : '/product/getSize/' + product_code + '/' + color,
+		dataType : 'json',
+		async : false,
+		success : function(product) {
+			
+			$('#modal_prod_size').append('<option>선택하세요.</option>');
+			
+			for(var i = 0; i < product.length; i++) {
+				$('#modal_prod_size').append('<option>' + product[i].product_size + '</option>');
+			}
+			
+		}
+	});
+	
+	
+}
+
+function clearSelectOption(){
+	$('.modal_color_size').empty();
+}
 
 
 
