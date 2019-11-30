@@ -117,10 +117,17 @@
 	</select>
 	
 	<select id="getUser" parameterType="map" resultMap="memberResultMap">
+	SELECT * FROM 
+	(
 		SELECT 
-		 rownum, id, name,	phone, email, lev 
+		 rownum  rnum,
+		 id,
+		 name,
+		 phone,
+		 email,
+		 lev 
 		FROM
-		  tbl_member
+		  tbl_member 
 		WHERE 1 = 1
 		<if test='searchValue != "" and searchType == "id"'>
 		  AND id = #{searchValue}
@@ -140,7 +147,36 @@
 		<if test='levelType != "all"'>
 		  AND lev = #{levelType}
 		</if>
-		ORDER BY join_date, rownum desc
+		ORDER BY join_date, rnum desc
+	)
+	WHERE 
+	  rnum BETWEEN #{start} AND #{finish}
+	</select>
+	
+	<select id="getUserCount" parameterType="map" resultType="int">
+		SELECT 
+		  count(*)
+		FROM
+		  tbl_member A
+		WHERE 1 = 1
+		<if test='searchValue != "" and searchType == "id"'>
+		  AND id = #{searchValue}
+		</if>
+		<if test='searchValue != "" and searchType == "name"'>
+		  AND name = #{searchValue}
+		</if>
+		<if test='commValue != "" and commType == "tel"'>
+		  AND tel = #{commValue}
+		</if>
+		<if test='commValue != "" and commType == "phone"'>
+		  AND phone = #{commValue}
+		</if>
+		<if test='searchEmail != ""'>
+		  AND email = #{searchEmail}
+		</if>
+		<if test='levelType != "all"'>
+		  AND lev = #{levelType}
+		</if>
 	</select>
 	
 	<select id="getUserDetail" parameterType="String" resultMap="memberResultMap">
@@ -166,5 +202,17 @@
 	    WHERE
 		  id = #{id}
 	</select>
+	
+	
+	<update id="modifyUserInfo" parameterType="map">
+	UPDATE
+    	tbl_member 
+	SET
+	    password = #{password}, pwd_confirm_q = #{pwd_confirm_q}, pwd_confirm_a = #{pwd_confirm_a}, name = #{name}, 
+	    zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, tel = #{tel}, phone = #{phone}, email = #{email}, birth = #{birth}, point = #{point} ,lev = #{level}
+	WHERE
+	    id = #{id}
+	</update>
+	
 	
 </mapper>

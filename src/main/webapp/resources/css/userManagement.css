@@ -83,7 +83,29 @@
 .body-table tr .con-td p {
     font-size: 11px;
 }
+.pagination-div {
+    text-align: center;
+}
 
+.pagination li a {
+    color: black;
+}
+
+.pagination li:hover a {
+    color: black;
+}
+
+.pagination li.active a {
+    background-color: gray;
+    color: black;
+    cursor: pointer;
+}
+
+.pagination li.active:hover a {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
 
 
 

@@ -113,5 +113,13 @@ public class AdminDaoImpl implements AdminDao{
 	public MemberVO getUserDetail(String id) {
 		return sqlSession.selectOne("AdminMapper.getUserDetail", id);
 	}
+	@Override
+	public int modifyUserInfo(Map<String, Object> param) {
+		return sqlSession.update("AdminMapper.modifyUserInfo", param);
+	}
+	@Override
+	public int getUserCount(HashMap<String, Object> map) {
+		return sqlSession.selectOne("AdminMapper.getUserCount", map);
+	}
 
 }

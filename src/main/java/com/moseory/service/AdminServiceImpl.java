@@ -4,6 +4,7 @@ package com.moseory.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -170,6 +171,17 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public MemberVO getUserDetail(String id) {
 		return adminDao.getUserDetail(id);
+	}
+
+	@Override
+	public int modifyUserInfo(Map<String, Object> param) {
+		
+		return adminDao.modifyUserInfo(param);
+	}
+
+	@Override
+	public int getUserCount(HashMap<String, Object> map) {
+		return adminDao.getUserCount(map);
 	}
 
 	

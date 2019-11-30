@@ -9,6 +9,13 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/memberModify.css">
+<script type="text/javascript">
+	var message = "${msg}";
+	if(message != ""){
+		alert(message);
+	}
+</script>
+
 </head>
 <body>
 
@@ -35,7 +42,7 @@
         </div>
     </div>
 	
-	<form action="/admin/userModify" method="post" id="modifyForm">
+	<form action="modifyUserInfo" method="post" id="modifyForm">
 	    <div class="row" style="margin-bottom: 30px;">
 	        <div class="col-md-10 col-md-offset-1" style="padding: 0;">
 	            <table class="table table-bordered">
@@ -145,7 +152,7 @@
 	                    </td>
 	                </tr>
 	                <tr>
-	                    <th>생년월일</th>
+	                    <th>생년월일<img src="/images/ico_required.gif"></th>
 	                    <td>
 	                    	<c:set var="birth" value="${fn:split(member.birth, '-') }" />
                             <input type="text" name="birth1" id="birth1" maxlength="4" value='<c:out value="${birth[0] }" />' style="width: 80px;" />년
@@ -157,7 +164,7 @@
 	                <tr>
 	                    <th>POINT</th>
 	                    <td>
-	                        <input type="text" name="point" id="point" value='${member.point }' style="width: 50px;" />
+	                        <input type="number" name="point" id="point" value="${member.point }" />
 	                    </td>
 	                </tr>
 	                <tr>
@@ -180,6 +187,8 @@
 	    <input type="hidden" name="phone" id="phone" />
         <input type="hidden" name="email" id="email" />
         <input type="hidden" name="birth" id="birth" />
+        <input type="hidden" name="id" id="id" value="${member.id}"/>
+        
     </form>
 
 	<div class="row" style="margin-bottom: 200px;">
@@ -188,10 +197,6 @@
 				style="background-color: #404549; color: white;">회원정보수정</button>
 			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/admin/userManagement'">취소</button>
 		</div>
-		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
-			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
-				onclick="location.href='/user/withdrawal'">회원탈퇴</button>
-	    </div>
 	</div>
     <!-- Modify Form End -->
 
@@ -201,7 +206,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-
+		
         // 비밀번호, 비밀번호 확인 포커스 아웃될 때
         $("#password, #password_check").blur(function() {
         	var password = $("#password").val();
@@ -284,7 +289,7 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
-            } else if(birth.length != 10) {
+            } else if(birth == null || birth.length != 10) {
             	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");
@@ -328,6 +333,8 @@
         var select_email = $("#select_email").val();
         $("#email2").val(select_email);
     }
+    
+    
 </script>
 
 </body>
