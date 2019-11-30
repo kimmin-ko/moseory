@@ -6,10 +6,15 @@
 
 .notice-board {
     font-size: 12px;
+    text-align: center;
 }
 
 .notice-board thead tr {
     background-color: #EBEBEB;
+}
+
+.notice_title {
+	text-align: left;
 }
 
 .pagination-div {

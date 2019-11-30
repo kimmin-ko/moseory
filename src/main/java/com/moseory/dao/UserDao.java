@@ -10,6 +10,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 public interface UserDao {
@@ -87,7 +88,16 @@ public interface UserDao {
     /* 구매 확정 */
     public void increasePointAndAmount(String member_id, int point, int amount);
     
+    /* 리뷰 등록 */
+    public void registReview(ReviewRegVO vo);
     
+    public int getProductCode(int product_detail_no);
+    
+    public List<Integer> getProductReviewGrade(int product_code);
+    
+    public int getReviewCount(int product_code);
+    
+    public void updateProductGrade(int product_code, double grade);
 }
 
 

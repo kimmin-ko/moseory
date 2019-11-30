@@ -11,7 +11,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
@@ -44,7 +44,7 @@ public interface ProductDao {
 	
 	ReviewVO getOriginalReview(int review_no);
 	
-	List<QnAVO> getQnA(int product_code);
+	List<QnaVO> getQnA(int product_code);
 	
 	void increaseRecommend(int review_no);
 	

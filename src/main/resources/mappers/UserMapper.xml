@@ -315,7 +315,7 @@
    			AND to_char(order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
 	    </if>
 	    <if test="state != '전체 상태'">
-		    AND od.state = #{state}
+		    AND od.state LIKE '%' || #{state} || '%'
 	    </if>
 	ORDER BY
 	    o.code desc
@@ -396,8 +396,58 @@
 	WHERE
 		id = #{member_id}
 	</update>
+	
+	<!-- 리뷰 등록 -->
+	<insert id="registReview">
+	INSERT INTO
+	    tbl_review (no, member_id, title, content, product_detail_no, grade)
+	VALUES
+	    (seq_review_no.nextval, #{member_id}, #{title}, #{content}, #{product_detail_no}, #{grade})
+	</insert>
+	
+	<!-- 상품 코드 가져오기 -->
+	<select id="getProductCode" resultType="int">
+	SELECT
+		product_code
+	FROM
+		tbl_product_detail
+	WHERE
+		no = #{product_detail_no}
+	</select>
+	
+	<!-- 해당 상품의 모든 리뷰 평점 -->
+	<select id="getProductReviewGrade" resultType="int">
+	SELECT
+	    r.grade
+	FROM
+	    tbl_review r, tbl_product_detail pd
+	WHERE
+	    r.product_detail_no = pd.no
+	    AND pd.product_code = #{product_code}
+	</select>
+	
+	<!-- 해당 상품의 리뷰 개수 -->
+	<select id="getReviewCount" resultType="int">
+	SELECT
+    	count(*)
+	FROM
+	    tbl_review r, tbl_product_detail pd
+	WHERE 
+	    r.product_detail_no = pd.no
+	    AND pd.product_code = #{product_code}
+	</select>
+	
+	<!-- 해당 상품의 평점 최신화 -->
+	<update id="updateProductGrade">
+	UPDATE
+		tbl_product
+	SET
+		grade = #{grade}
+	WHERE
+		code = #{product_code}
+	</update>
+	
 </mapper>
-
 
 
 

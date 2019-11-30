@@ -28,6 +28,7 @@ import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -362,6 +363,18 @@ public class UserDaoTest {
 	OrderListVO vo = userDao.getExchangeModalInfo("201911251003594396114", 23);
 	
 	log.info(vo.toString());
+    }
+    
+    @Test
+    public void testRegistReview() {
+	ReviewRegVO vo = new ReviewRegVO();
+	vo.setMember_id("admin11");
+	vo.setTitle("제목");
+	vo.setContent("내용");
+	vo.setProduct_detail_no(31);
+	vo.setGrade(4);
+	
+	userDao.registReview(vo);
     }
 
 }

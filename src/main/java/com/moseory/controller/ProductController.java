@@ -25,7 +25,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
@@ -46,7 +46,7 @@ public class ProductController {
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
 			List <ProductVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
-			for(ProductVO pVO : productVO) System.out.println(pVO);
+			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
 			String lowCode = req.getParameter("lowCode");
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
@@ -57,7 +57,7 @@ public class ProductController {
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
-		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		//for(ProductVO bests : bestProducts)  System.out.println(bests);
 		model.addAttribute("bestProducts", bestProducts);
 		model.addAttribute("highCate", highCate);
 		model.addAttribute("lowCate", lowCate);
@@ -113,7 +113,7 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		List<QnAVO> qnaList = productService.getQnA(code);
+		List<QnaVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
 		
 		return "product/productInfo";

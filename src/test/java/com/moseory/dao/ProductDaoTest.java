@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
@@ -78,7 +78,7 @@ public class ProductDaoTest {
     
     @Test
     public void testGetQna() {
-	List<QnAVO> qnaList = productDao.getQnA(34);
+	List<QnaVO> qnaList = productDao.getQnA(34);
 	qnaList.stream().forEach(x -> log.info(x.toString()));
     }
     

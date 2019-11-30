@@ -147,9 +147,10 @@
 	SELECT
     	count(*)
 	FROM
-	    tbl_review r left outer join tbl_product_detail pd on r.product_detail_no = pd.no
+	    tbl_review r, tbl_product_detail pd
 	WHERE 
-	    product_code = #{product_code}
+	    r.product_detail_no = pd.no
+	    AND pd.product_code = #{product_code}
 	</select>
 	
 	<!-- 해당 상품의 문의글 개수 조회 -->
@@ -188,12 +189,12 @@
 	<select id="getReview" resultMap="reviewMap">
 	<![CDATA[
 	SELECT 
-	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.file_path, r.file_name, r.recommend, r.grade,
+	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, p.file_path, r.recommend, r.grade,
 	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
 	FROM
 	    tbl_member m, 
 	    (SELECT 
-	        rownum, no, member_id, title, content, reg_date, hit, file_path, file_name, product_detail_no, recommend, grade 
+	        rownum, no, member_id, title, content, reg_date, hit, product_detail_no, recommend, grade 
 	     FROM
 	        tbl_review
 	     ORDER BY
@@ -213,10 +214,11 @@
 				</when>
 			</choose>
 	<![CDATA[
-	     ) r, tbl_product_detail pd
+	     ) r, tbl_product_detail pd, tbl_product p
 	WHERE
-	    r.product_detail_no = pd.no 
+	    r.product_detail_no = pd.no
 	    AND m.id = r.member_id
+	    AND pd.product_code = p.code
 	    AND pd.product_code = #{product_code}
 	    AND rownum <= #{limit}
 	]]>

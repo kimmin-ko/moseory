@@ -20,11 +20,10 @@ public class ReviewVO {
     private String title;
     private String content;
     
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate reg_date;
     private int hit;
     private String file_path;
-    private String file_name;
     
     private ProductDetailVO product_detail;
     

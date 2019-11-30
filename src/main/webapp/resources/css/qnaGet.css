@@ -1,0 +1,18 @@
+.qnaView-table {
+    font-size: 12px;
+}
+
+.tbl_header {
+    background-color: #F3F3F3;
+    height: 40px;
+    width: 120px;
+}
+
+.qnaOtherView-table tr td {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.otherView_title {
+    width: 100px;
+}

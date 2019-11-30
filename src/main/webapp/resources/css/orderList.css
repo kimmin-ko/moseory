@@ -150,3 +150,76 @@
 	color: white;
 }
 /* 교환 요청 모딜 End */
+
+/* 리뷰 모달 Start  */
+.body-row {
+	font-size: 13px;
+}
+
+.review_prod {
+	margin-bottom: 20px;
+}
+
+.review_prod_img {
+	width: 80px;
+	height: auto;
+}
+
+.review_prod_name {
+	font-weight: bold;
+}
+
+.review_prod_option {
+	color: gray;
+}
+
+.starLabel {
+	padding-top: 10px;
+	margin-bottom: 25px;
+}
+
+.starR {
+  background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+  background-size: auto 100%;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-indent: -9999px;
+  cursor: pointer;
+}
+
+.starR.on {
+	background-position:0 0;
+}
+
+.reviewLabel {
+	margin-bottom: 20px;
+}
+
+.review_title {
+	height: 30px;
+	margin-bottom: 20px;
+}
+
+.review_regist {
+	background-color: black;
+	color: white;
+}
+
+.modal-footer {
+	text-align: center;
+}
+
+/* 리뷰 모달 End  */
+
+
+
+
+
+
+
+
+
+
+
+
