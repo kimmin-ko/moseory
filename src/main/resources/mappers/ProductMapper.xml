@@ -16,8 +16,6 @@
 			0, <!-- sale_count -->
 			0, <!-- grade -->
 			0,<!-- wish_count -->
-			#{file_path},
-			#{file_name},
 			#{product_comment}
 		)
 	</insert>
@@ -57,7 +55,7 @@
 	<!--상품 코드로 정보 조회 -->
 	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
-		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
+		code, name, high_code, low_code, price, sale_count, grade, wish_count, product_comment
 	FROM
 		tbl_product
 	WHERE
