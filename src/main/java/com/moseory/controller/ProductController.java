@@ -29,6 +29,7 @@ import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
+import com.moseory.util.PagingUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -226,13 +227,15 @@ public class ProductController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@RequestParam(defaultValue = "") String searchType,
+	public String search(@RequestParam(defaultValue = "name") String searchType,
 			@RequestParam String keyword,
 			@RequestParam(defaultValue = "") String exceptkeyword,
 			@RequestParam(defaultValue = "") String lowestprice,
 			@RequestParam(defaultValue = "") String highestprice,
-			@RequestParam(defaultValue = "") String orderby) {
-		Map<String, String> param = new HashMap<>();
+			@RequestParam(defaultValue = "") String orderby,
+			@RequestParam(defaultValue = "1") int curPage,
+			Model model) {
+		Map<String, Object> param = new HashMap<>();
 		param.put("searchType", searchType);
 		param.put("keyword", keyword);
 		param.put("exceptkeyword", exceptkeyword);
@@ -240,8 +243,35 @@ public class ProductController {
 		param.put("highestprice", highestprice);
 		param.put("orderby", orderby);
 		
+		model.addAttribute("param", param);
+		PagingUtil pagingUtil;
+		int totalCnt = 0;
+		if(searchType.equals("name")) {
+			try {
+				totalCnt = productService.getSearchCount(param);
+				pagingUtil = new PagingUtil(totalCnt, curPage);
+				param.put("start", pagingUtil.getStart());
+				param.put("finish", pagingUtil.getFinish());
+				System.out.println(pagingUtil.getStart());
+				System.out.println(pagingUtil.getFinish());
+				
+				List <ProductVO> resultProduct = productService.getSearchList(param);
+				System.out.println(resultProduct);
+				model.addAttribute("resultProduct", resultProduct);
+				model.addAttribute("resultCount", totalCnt);
+				model.addAttribute("paging", pagingUtil);
+			}catch(NullPointerException e) {
+			}
+			
+		}else if(searchType.equals("high_code")) {
+			keyword = Integer.toString(productService.getHighCateCode(keyword));
+//			List <ProductVO> resultProduct = productService.getSearchList(param, pagingUtil.getStart(),pagingUtil.getFinish());
+
+		}else if(searchType.equals("low_code")) {
+			
+		}
 		
-//		List <ProductVO> list = productService.getSearchList(param);
+		
 		return "product/search";
 	}
 	

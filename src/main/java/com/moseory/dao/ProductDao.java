@@ -56,5 +56,9 @@ public interface ProductDao {
 	
 	public List<LowCateVO> getLowCate(int high_code);
 
-	List<ProductVO> getSearchList(Map<String, String> param);
+	List<ProductVO> getSearchList(Map<String, Object> param);
+
+	int getHighCateCode(String keyword);
+
+	int getSearchCount(Map<String, Object> param);
 }

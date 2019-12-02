@@ -338,13 +338,62 @@
 	
 	
 	<select id="getSearchList" parameterType="map" resultType="productVO">
-		select * from (
+	select * from (
+		select rownum as rn, A.* from  (
 			select * from tbl_product
-				where ${searchType} like '%'||#{searchType}||'%'
-					order by ${orderby} desc
-		)
+				where ${searchType} like '%'||#{keyword}||'%' 
+							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
+								and 
+								${searchType} not like '%'||#{exceptkeyword}||'%'
+							</if>
+						<if test = "orderby != null and orderby != ''">
+							order by #{orderby} desc
+						</if>
+						)A
+				<choose>
+					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
+				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+					</when>
+					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
+						<![CDATA[where price >= #{lowestprice}]]> 
+					</when>
+					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
+				        <![CDATA[where price <= #{highestprice}]]> 
+					</when>
+				</choose>
+				) where rn between #{start} and #{finish}
 	</select>
-
+	<select id="getSearchCount" parameterType="map" resultType = "int">
+		select count(*) from  (
+			select * from tbl_product
+				where ${searchType} like '%'||#{keyword}||'%' 
+							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
+								and 
+								${searchType} not like '%'||#{exceptkeyword}||'%'
+							</if>
+						<if test = "orderby != null and orderby != ''">
+							order by #{orderby} desc
+						</if>
+						)
+				<choose>
+					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
+				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+					</when>
+					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
+						<![CDATA[where price >= #{lowestprice}]]> 
+					</when>
+					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
+				        <![CDATA[where price <= #{highestprice}]]> 
+					</when>
+				</choose>
+	</select>
+<!-- select * from (
+		select rownum as rn, A.* from  (
+			select * from tbl_product
+				where name like '청%'
+							order by code desc)A
+				       where price >= 30000 
+				) where rn between 1 and 10 -->
 </mapper>
 
 

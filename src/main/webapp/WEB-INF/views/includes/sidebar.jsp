@@ -95,6 +95,7 @@ String.prototype.format = function() {
 		</div>
 	</c:forEach>
 	<form method="get" action = "${pageContext.request.contextPath }/product/search">
+		<input type = "hidden" value = "name" name = "searchType">
 		<div class="row ma-bo-50 ma-to-30">
 			<div class="col-md-10 col-md-offset-2 form-inline">
 				<div class="form-group">

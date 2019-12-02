@@ -15,7 +15,7 @@
 
 	<%@ include file="../includes/sidebar.jsp"%>
 
-	<script src="/js/product/productRegist.js"></script>
+	
 	<script>
 		$(document).ready(function(){
 			$('#high_code').change(function(){
@@ -41,13 +41,13 @@
 							
 						}
 				    });
-				
-				
-					
-					
 			});
+			
+			
+			
 		});
 	</script>
+	<script src="/js/product/productRegist.js"></script>
 	<div class="container joinForm-container" style="margin-left: 22%">
 	
 		<!-- ProductRegist Start -->

@@ -26,6 +26,18 @@
 	    padding: 17px 20px 35px 130px;
 	    border: 5px solid #e8e8e8;
     }
+    .resultArea {
+			overflow: hidden;
+			border: 1px solid #d7d5d5;
+			text-align: right;
+			line-height: 38px;
+    }
+    .resultArea p{
+		margin: 0;
+	    float: left;
+	    padding: 0 0 0 8px;
+	    color: #000;
+    }
 </style>
 <body>
 
@@ -51,18 +63,20 @@
 								<th>상품분류</th>
 								<td> 
 									<select name = "searchType">
-										<option>상품명</option>
+										<option value = "name">상품명</option>
+										<option value = "high_code">상위카테고리</option>
+										<option value = "low_code">하위카테고리</option>
 									</select>
-									<input type = "text" name = "keyword">
+									<input type = "text" name = "keyword" required>
 								</td>
 							</tr>
 							<tr>
 								<th>제외검색어</th>
-								<td><input type = "text" name = "exceptkeyword">
+								<td><input type = "text" name = "exceptkeyword"></td>
 							</tr>
 							<tr>
 								<th>판매가격대</th>
-								<td><input type = "text" name = "lowestprice">-<input type = "text" name = "highestprice">
+								<td><input type = "text" name = "lowestprice">-<input type = "text" name = "highestprice"></td>
 							</tr>
 							<tr>
 								<th>검색정렬기준</th>
@@ -84,33 +98,28 @@
 						</div>
 					</form>
 				</div>
-				
-				<!-- <div class = "result_order">
-					<p class = "result">
-						총 개의 상품이 검색되었습니다.
-					</p>
-					<ul>
-						<li>상품명 |</li>
-						<li>낮은가격 |</li>
-						<li>높은가격 |</li>
-						<li>인기 |</li>
-						<li>사용후기</li>
-					</ul>
-				</div> -->
 			</div>
 		</div>
-		
 		<div class = "row">
-			<div class="row ma-bo-50" id="newArrivalList">
+			<div class="row ma-bo-50">
+				<div class="col-md-10 col-md-offset-1 resultArea">
+					<p>총 ${resultCount} 개의 상품이 검색되었습니다.</p>
+				</div>
+			</div>
+		</div>
+		<div class = "row">
+			<div class="row ma-bo-50" id="productlist">
 				<div class="col-md-10 col-md-offset-1">
-						<div class="col-md-4 prod-desc ma-bo-50">
-							<a href="#"><img src="/images/001.gif" width = "200px"></a>
+					<c:forEach var = "resultProduct" items="${resultProduct }">
+						<div class="col-md-3 prod-desc ma-bo-50">
+							<a href="${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}"><img src="/images/001.gif" width = "200px"></a>
 							<div class = "info">
-								<p><a href = "#">슬랙스</a></p>
-								<p>30000</p>
-								<p>comment</p>
+								<p><a href = "${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}">${resultProduct.name }</a></p>
+								<p>${resultProduct.price }</p>
+								<p>${resultProduct.product_comment }</p> 
 							</div>
-						</div>
+						</div>							
+					</c:forEach>	
 				</div>
 			</div>
 		</div>
@@ -121,10 +130,22 @@
 				<nav>
 					<ul class="pagination">
 						<c:if test="${paging.curBlock ne 1 }">
-							<li class ="button_first"><a href="${pageContext.request.contextPath }/admin/productlist?curPage=${paging.startPage }">처음</a></li>
+							<li class ="button_first"><a href="${pageContext.request.contextPath }/product/search?
+																																							curPage=${paging.startPage }&
+																																							searchType=${param.searchType}&
+																																							keyword=${param.keyword}&
+																																							exceptkeyword=${param.exceptkeyword}&
+																																							lowestprice=${param.lowestprice}&
+																																							highestprice=${param.highestprice}">처음</a></li>
 						</c:if>
 						<c:if test="${paging.curPage ne 1 }">
-							<li class ="button_previous"><a href="${pageContext.request.contextPath }/admin/productlist?curPage=${paging.prevPage }">이전</a></li>
+							<li class ="button_previous"><a href="${pageContext.request.contextPath }/product/search?
+																												curPage=${prevPage}&
+																												searchType=${param.searchType}&
+																												keyword=${param.keyword}&
+																												exceptkeyword=${param.exceptkeyword}&
+																												lowestprice=${param.lowestprice}&
+																												highestprice=${param.highestprice}">이전</a></li>
 						</c:if>
 						<c:forEach var = "pageNumber" begin = "${paging.startPage }" end = "${paging.endPage }">
 							<c:choose>
@@ -132,15 +153,33 @@
 									<li class ="paginate_button active"><span>${pageNumber }</span></li>
 								</c:when>
 								<c:otherwise>
-									<li class ="paginate_button"><a href = "${pageContext.request.contextPath }/admin/productlist?curPage=${pageNumber}&searchType=${searchType}&keyword=${keyword}">${pageNumber }</a></li>
+									<li class ="paginate_button"><a href = "${pageContext.request.contextPath }/product/search?
+																												curPage=${pageNumber}&
+																												searchType=${param.searchType}&
+																												keyword=${param.keyword}&
+																												exceptkeyword=${param.exceptkeyword}&
+																												lowestprice=${param.lowestprice}&
+																												highestprice=${param.highestprice}">${pageNumber }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test = "${paging.curPage ne paging.pageCnt && paging.pageCnt > 0}">	
-							<li class ="button_next"><a href="${pageContext.request.contextPath }/admin/productlist?curPage=${paging.nextPage }">다음</a></li>
+							<li class ="button_next"><a href="${pageContext.request.contextPath }/product/search?
+																																							curPage=${paging.nextPage }
+																																							searchType=${param.searchType}&
+																																							keyword=${param.keyword}&
+																																							exceptkeyword=${param.exceptkeyword}&
+																																							lowestprice=${param.lowestprice}&
+																																							highestprice=${param.highestprice}">${pageNumber }">다음</a></li>
 						</c:if>
 						<c:if test = "${paging.curBlock ne paging.blockCnt && paging.blockCnt > 0 }">
-							<li class ="button_end"><a href="${pageContext.request.contextPath }/admin/productlist?curPage=${paging.endPage }">끝</a></li>
+							<li class ="button_end"><a href="${pageContext.request.contextPath }/product/search?
+																																						curPage=${paging.endPage }
+																																						searchType=${param.searchType}&
+																																						keyword=${param.keyword}&
+																																						exceptkeyword=${param.exceptkeyword}&
+																																						lowestprice=${param.lowestprice}&
+																																						highestprice=${param.highestprice}">${pageNumber }">끝</a></li>
 						</c:if>
 					</ul>
 				</nav>
