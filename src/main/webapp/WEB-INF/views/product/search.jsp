@@ -63,32 +63,31 @@
 								<th>상품분류</th>
 								<td> 
 									<select name = "searchType">
-										<option value = "name">상품명</option>
-										<option value = "high_code">상위카테고리</option>
-										<option value = "low_code">하위카테고리</option>
+										<option <c:if test = "${param.searchType == 'name' }">selected</c:if> value = "name">상품명</option>
+										<option <c:if test = "${param.searchType == 'high_code' }">selected</c:if> value = "high_code">상위카테고리</option>
+										<option <c:if test = "${param.searchType == 'low_code' }">selected</c:if> value = "low_code">하위카테고리</option>
 									</select>
-									<input type = "text" name = "keyword" required>
+									<input type = "text" value = "${param.keyword }" name = "keyword" required>
 								</td>
 							</tr>
 							<tr>
 								<th>제외검색어</th>
-								<td><input type = "text" name = "exceptkeyword"></td>
+								<td><input type = "text" value = "${param.exceptkeyword }" name = "exceptkeyword"></td>
 							</tr>
 							<tr>
 								<th>판매가격대</th>
-								<td><input type = "text" name = "lowestprice">-<input type = "text" name = "highestprice"></td>
+								<td><input type = "text" value = "${param.lowestprice }" name = "lowestprice">-<input type = "text" value = "${param.highestprice }" name = "highestprice"></td>
 							</tr>
 							<tr>
 								<th>검색정렬기준</th>
 								<td>
 									<select name = "orderby">
 										<option>::: 기준 선택 :::</option>
-										<option>신상품 순</option>
-										<option value = "name">상품명 순</option>
-										<option value = "price">낮은가격 순</option>
-										<option value = "price">높은가격 순</option>
-										<option value = "wish_count">인기 순</option>
-										<option value = "">사용후기 순</option>
+										<option <c:if test = "${param.orderby == 'code' }">selected</c:if> value = "code">상품코드 순</option>
+										<option <c:if test = "${param.orderby == 'name' }">selected</c:if> value = "name">상품명 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">낮은가격 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">높은가격 순</option>
+										<option <c:if test = "${param.orderby == 'wish_count' }">selected</c:if> value = "wish_count">인기 순</option>
 									</select>
 								</td>
 							</tr>

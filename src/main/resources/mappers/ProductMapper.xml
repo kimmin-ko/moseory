@@ -387,13 +387,7 @@
 					</when>
 				</choose>
 	</select>
-<!-- select * from (
-		select rownum as rn, A.* from  (
-			select * from tbl_product
-				where name like '청%'
-							order by code desc)A
-				       where price >= 30000 
-				) where rn between 1 and 10 -->
+	
 </mapper>
 
 

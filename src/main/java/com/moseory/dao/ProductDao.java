@@ -61,4 +61,6 @@ public interface ProductDao {
 	int getHighCateCode(String keyword);
 
 	int getSearchCount(Map<String, Object> param);
+
+	int getLowCateCode(String keyword);
 }

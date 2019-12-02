@@ -62,6 +62,7 @@ public class AdminController {
 	private static List<ProductDetailVO> detailInfo = new ArrayList<ProductDetailVO>();
 
 	@PostMapping(value = "/productInfo", consumes = "application/json")
+	@ResponseBody
 	public void productInfo(@RequestBody ProductDetailVO productDetailVO) {
 		detailInfo.add(productDetailVO);
 		log.info("detailInfo = " + detailInfo);

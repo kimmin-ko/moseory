@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -242,7 +243,6 @@ public class ProductController {
 		param.put("lowestprice", lowestprice);
 		param.put("highestprice", highestprice);
 		param.put("orderby", orderby);
-		
 		model.addAttribute("param", param);
 		PagingUtil pagingUtil;
 		int totalCnt = 0;
@@ -252,11 +252,8 @@ public class ProductController {
 				pagingUtil = new PagingUtil(totalCnt, curPage);
 				param.put("start", pagingUtil.getStart());
 				param.put("finish", pagingUtil.getFinish());
-				System.out.println(pagingUtil.getStart());
-				System.out.println(pagingUtil.getFinish());
 				
 				List <ProductVO> resultProduct = productService.getSearchList(param);
-				System.out.println(resultProduct);
 				model.addAttribute("resultProduct", resultProduct);
 				model.addAttribute("resultCount", totalCnt);
 				model.addAttribute("paging", pagingUtil);
@@ -264,14 +261,34 @@ public class ProductController {
 			}
 			
 		}else if(searchType.equals("high_code")) {
-			keyword = Integer.toString(productService.getHighCateCode(keyword));
-//			List <ProductVO> resultProduct = productService.getSearchList(param, pagingUtil.getStart(),pagingUtil.getFinish());
-
+			try {
+				System.out.println("Asdfdfsafads");
+				keyword = Integer.toString(productService.getHighCateCode(keyword));
+				param.put("keyword", keyword);
+				totalCnt = productService.getSearchCount(param);
+				pagingUtil = new PagingUtil(totalCnt, curPage);
+				param.put("start", pagingUtil.getStart());
+				param.put("finish", pagingUtil.getFinish());
+				
+				List <ProductVO> resultProduct = productService.getSearchList(param);
+				model.addAttribute("resultProduct", resultProduct);
+				model.addAttribute("resultCount", totalCnt);
+				model.addAttribute("paging", pagingUtil);
+			}catch(NullPointerException e) {
+			}
 		}else if(searchType.equals("low_code")) {
+			keyword = Integer.toString(productService.getLowCateCode(keyword));
+			param.put("keyword", keyword);
+			totalCnt = productService.getSearchCount(param);
+			pagingUtil = new PagingUtil(totalCnt, curPage);
+			param.put("start", pagingUtil.getStart());
+			param.put("finish", pagingUtil.getFinish());
 			
+			List <ProductVO> resultProduct = productService.getSearchList(param);
+			model.addAttribute("resultProduct", resultProduct);
+			model.addAttribute("resultCount", totalCnt);
+			model.addAttribute("paging", pagingUtil);
 		}
-		
-		
 		return "product/search";
 	}
 	
