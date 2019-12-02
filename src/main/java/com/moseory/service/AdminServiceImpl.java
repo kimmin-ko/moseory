@@ -184,6 +184,16 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getUserCount(map);
 	}
 
+	@Override
+	public List<HashMap<String, Object>> getOrder(HashMap<String, Object> map) {
+		return adminDao.getOrder(map);
+	}
+
+	@Override
+	public int getOrderCount(HashMap<String, Object> map) {
+		return adminDao.getOrderCount(map);
+	}
+
 	
 	
 }	

@@ -61,4 +61,8 @@ public interface AdminService {
 	
 	public int modifyUserInfo(Map<String, Object> param);
 	
+	public List<HashMap<String, Object>> getOrder(HashMap<String,Object> map);
+	
+	public int getOrderCount(HashMap<String,Object> map);
+	
 }
