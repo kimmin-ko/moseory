@@ -68,26 +68,38 @@ public class AdminController {
 	}
 
 	@PostMapping("/productregist")
-	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request)
+	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request,
+													@RequestParam String str_low_code)
 			throws IllegalStateException, IOException { 
-		
 		/* 파일 시작 */
+		
+		int low_code = adminService.getLowCateCode(str_low_code);
+		productVO.setLow_code(low_code);
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
-		String low_cate = adminService.getLowCate(productVO.getLow_code());
+//		String low_cate = adminService.getLowCate(productVO.getLow_code());
 		//	파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
+		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
-		List<MultipartFile> thumbnail = multipartRequest.getFiles("thumbnail");
+		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
 		
 		// 경로가 없으면 디렉토리 생성
 		File file = new File(save_path);
+		File thumbnail = new File(save_path);
 		if (file.exists() == false) {
 			file.mkdirs();
 		}
+		
+		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
+		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
+		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
+		System.out.println(thumbnailName);
+		thumbnail = new File(save_path + thumbnailName);
+		getThumbnail.get(0).transferTo(thumbnail);
+		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
-			System.out.println(thumbnail.get(i).getName());
+//			System.out.println(thumbnail.get(i).getName());
 			// 파일명이 같을 수도 있기 때문에
 			// 랜덤36문자_받아온파일이름
 			// 으로 파일 저장
@@ -96,6 +108,8 @@ public class AdminController {
 			file_name = file_name + "@" + fileName;
 			System.out.println("file_name = " + file_name);
 			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+			
+			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}

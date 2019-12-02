@@ -130,6 +130,11 @@ public class ProductServiceImpl implements ProductService{
 		return productDao.getSearchCount(param);
 	}
 
+	@Override
+	public int getLowCateCode(String keyword) {
+		return productDao.getLowCateCode(keyword);
+	}
+
 
 	
 	

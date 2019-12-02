@@ -135,7 +135,10 @@ public class ProductDaoImpl implements ProductDao{
 	public int getHighCateCode(String keyword) {
 		return  sqlSession.selectOne("AdminMapper.getHighCateCode",keyword);
 	}
-
+	@Override
+	public int getLowCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getLowCateCode",keyword);
+	}
 	@Override
 	public int getSearchCount(Map<String, Object> param) {
 		return sqlSession.selectOne("product.getSearchCount",param);

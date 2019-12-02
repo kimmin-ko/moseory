@@ -58,4 +58,6 @@ public interface ProductService {
 
 	int getSearchCount(Map<String, Object> param);
 
+	int getLowCateCode(String keyword);
+
 }

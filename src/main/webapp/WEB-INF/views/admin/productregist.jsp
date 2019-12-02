@@ -43,6 +43,18 @@
 				    });
 			});
 			
+			
+			/* $('#registForm').click(function(){
+				
+				var fileCheck = $('#thumbnail').val();
+				
+				if(fileCheck == ''){
+					alert('사진을 업로드해주세요');
+					return false;
+				}
+				
+			}); */
+			
 		});
 	</script>
 	<script src="/js/product/productRegist.js"></script>
@@ -89,7 +101,7 @@
 						<tr>
 							<th>하위 카테고리 <img src="/images/ico_required.gif"></th>
 								<td>
-									<select id="lowCategory" name="low_code">
+									<select id="lowCategory" name="str_low_code">
 											<option class = "empty">상위 카테고리를 선택해주세요</option>
 									</select>
 								</td>
@@ -118,7 +130,9 @@
 						</tr>
 						<tr>
 							<th>썸네일</th>
-							<td><input type = "file" id = "thumbnail" name = "thumbnail"></td>
+							<td>
+								<input type="file" id="thumbnail" name="thumbnail">
+							</td>
 						</tr>
 						<tr>
 							<th>이미지</th>
@@ -127,9 +141,8 @@
 						</tr>
 					</table>
 					<div class="regist_btn_area text-center">
-						<input type="button" value="등록" class="btn btn-primary btn-md"
-							onclick="regist()"> <input type="button" value="취소"
-							class="btn btn-default btn-md">
+						<button type="button" class="btn btn-primary btn-md" onclick="regist()">등록</button> 
+						<button type="button" class="btn btn-default btn-md">취소</button>
 					</div>
 
 				</form>
