@@ -1,0 +1,33 @@
+.mod_qna_header {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.mod_qna_header hr {
+    margin: 0;
+    color: gray;
+}
+
+.mod_qna_table {
+    font-size: 12px;
+}
+
+.mod_qna_table tr td {
+    vertical-align: middle;
+}
+
+.title {
+    width: 300px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.mod_btn {
+    background-color: black;
+    color: white;
+}
+
+.mod_qna_footer {
+    margin-bottom: 150px;
+    text-align: center;
+}

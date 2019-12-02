@@ -111,7 +111,7 @@ String.prototype.format = function() {
 	<!-- search div -->
 	<div class="row ma-bo-50">
 		<div class="col-md-10 col-md-offset-2 font-12">
-			<a href="/notice/noticeList">NOTICE</a>&nbsp; <a href="/qna/qnaList">Q&A</a>&nbsp;<a href="/review/reviewList">REVIEW</a>
+			<a href="/notice/noticeList">NOTICE</a>&nbsp;<a href="/qna/qnaList">Q&A</a>&nbsp;&nbsp;<a href="/review/reviewList">REVIEW</a>
 		</div>
 	</div>
 

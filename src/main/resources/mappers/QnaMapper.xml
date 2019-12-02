@@ -73,6 +73,71 @@
 	WHERE
 	    no = #{no}
 	</select>
+	
+	<!-- QnA 조회수 증가 -->
+	<update id="increaseQnaHit">
+	UPDATE
+	    tbl_qna
+	SET
+	    hit = hit + 1
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- QnA 삭제 -->
+	<delete id="deleteQna">
+	DELETE FROM
+	    tbl_qna
+	WHERE
+	    no = #{no}
+	</delete>
+	
+	<!-- QnA 수정 -->
+	<update id="updateQna">
+	UPDATE
+	    tbl_qna
+	SET
+	    title = #{title},
+	    content = #{content},
+	    secret = #{secret}
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- QnA의 모든 Reply 삭제 -->
+	<delete id="deleteAllReplyForQna">
+	DELETE FROM
+	    tbl_qna_reply
+	WHERE
+	    qna_no = #{qna_no}
+	</delete>
+	
+	<!-- QnA Reply 등록 -->
+	<insert id="insertReply">
+	INSERT INTO tbl_qna_reply(no, qna_no, member_id, content)
+	VALUES (seq_qna_reply.nextval, #{qna_no}, #{member_id}, #{content})
+	</insert>
+	
+	<!-- QnA Reply 조회 -->
+	<select id="getReplyList" resultType="QnaReplyVO">
+	SELECT
+		no, qna_no, member_id, content, reg_date
+	FROM
+		tbl_qna_reply
+	WHERE
+		qna_no = #{qna_no}
+	ORDER BY
+		no desc
+	</select>
+	
+	<!-- QnA Reply 삭제 -->
+	<delete id="deleteReply">
+	DELETE FROM
+	    tbl_qna_reply
+	WHERE
+	    no = #{no}
+	</delete>
+	
 </mapper>
 
 
