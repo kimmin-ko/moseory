@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.Criteria;
+import com.moseory.domain.QnaReplyVO;
 import com.moseory.domain.QnaVO;
 
 import lombok.Setter;
@@ -37,6 +38,41 @@ public class QnaDaoImpl implements QnaDao {
     @Override
     public QnaVO getQna(int no) {
 	return sqlSession.selectOne(namespace+".getQna", no);
+    }
+
+    @Override
+    public void increaseQnaHit(int no) {
+	sqlSession.update(namespace+".increaseQnaHit", no);
+    }
+
+    @Override
+    public void deleteQna(int no) {
+	sqlSession.delete(namespace+".deleteQna", no);
+    }
+
+    @Override
+    public void updateQna(QnaVO vo) {
+	sqlSession.update(namespace+".updateQna", vo);
+    }
+
+    @Override
+    public void insertReply(QnaReplyVO vo) {
+	sqlSession.insert(namespace+".insertReply", vo);
+    }
+
+    @Override
+    public List<QnaReplyVO> getReplyList(int qna_no) {
+	return sqlSession.selectList(namespace+".getReplyList", qna_no);
+    }
+
+    @Override
+    public void deleteAllReplyForQna(int qna_no) {
+	sqlSession.delete(namespace+".deleteAllReplyForQna", qna_no);
+    }
+
+    @Override
+    public void deleteReply(int no) {
+	sqlSession.delete(namespace+".deleteReply", no);
     }
 
     

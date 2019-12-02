@@ -31,8 +31,6 @@
 			$('.paginate_button a').on('click', function(e) {
 				e.preventDefault();
 				
-				console.log('click');
-				
 				actionForm.find('input[name=pageNum]').val($(this).attr('href'));
 				actionForm.submit();
 			});
@@ -61,35 +59,50 @@
 				
 				// 글 조회를 위한 번호
 				var no = $(this).find('input[name=no]').val();
-				console.log("no : " + no);
+				
+				// cri가 담겨있는 form
+				var actionForm = $('#actionForm');
+				actionForm.attr('action', '/qna/qnaGet');
+				actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 				
 				// 비밀글 여부
 				var secret = $(this).attr('href');
-				console.log("secret : " + secret);
-				console.log("member_id : " + member_id);
 				
 				// 작성자
 				var writer = $(this).find('input[name=writer]').val();
-				console.log("wirter : " + writer);
 				
 				if(secret == '1') { // 비밀글
 					if(member_id == writer) { // 작성자와 접속중인 사용자가 동일한 경우 
-						location.href="/qna/qnaGet?no=" + no; // 문의글 조회 이동
+						actionForm.submit(); // 문의글 조회 이동
 					} else { // 작성자가 아닌 경우
 						alert("비밀글은 작성자만 조회할 수 있습니다.");
 						return false;
 					}
 				} else { // 공개글
-					location.href="/qna/qnaGet?no=" + no; // 문의글 조회 이동
-				}
+					actionForm.submit(); // 문의글 조회 이동
+				 }
 				
 			});
 			
-			// 등록 버튼 클릭
-			$('.qna_reg_btn').on('click', function() {
+			var result = '<c:out value="${result}" />';
+			
+			checkAlert(result);
+			
+			history.replaceState({}, null, null);
+			
+			function checkAlert(result) {
 				
+				if(result === '' || history.state) {
+					return;
+				}
 				
-			});
+				if(result == 'success_delete') {
+					alert('해당 글이 삭제되었습니다.');
+				} else if(result == 'success_modify') {
+					alert('해당 글 수정이 완료되었습니다.');
+				}
+				
+			}
 			
 		}); // end document
 	</script>
@@ -106,11 +119,11 @@
 			<div class="col-md-10 col-md-offset-1">
 				<table class="table qna-board">
 					<colgroup>
-						<col style="width: 50px;"> <!-- NO -->
-						<col style="width: 250px;"> <!-- TITLE -->
-						<col style="width: 80px;"> <!-- NAME -->
-						<col style="width: 80px;"> <!-- DATE -->
-						<col style="width: 50px;"> <!-- HIT -->
+						<col width= 50px;> <!-- NO -->
+						<col width= 250px;> <!-- TITLE -->
+						<col width= 80px;> <!-- NAME -->
+						<col width= 80px;> <!-- DATE -->
+						<col width= 50px;> <!-- HIT -->
 					</colgroup>
 					<thead>
 						<tr>
@@ -154,7 +167,7 @@
 			
 			<!-- 검색 처리 -->
 			<div class="col-md-5 col-md-offset-1 search_area">
-				<form id="searchForm" action="/qna/qnaList" method="get" style="vertical-align: top;">
+				<form id="searchForm" action="/qna/qnaList" method="get">
 					<select class="form-control search_type" name="type">
 						<option value="T" <c:out value="${pageMaker.cri.type eq 'T' ? 'selected' : '' }" />>제목</option>
 						<option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected' : '' }" />>내용</option>
@@ -198,6 +211,8 @@
 			<form id="actionForm" action="/qna/qnaList" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+				<input type="hidden" name="type" value="${pageMaker.cri.type }">
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
 			</form>
 			
 		</div>

@@ -8,7 +8,7 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/qnaRegist.css">
+<link rel="stylesheet" href="/css/qnaModify.css">
 </head>
 <body>
 	<%@ include file="../includes/sidebar.jsp"%>
@@ -18,14 +18,20 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
-			// 등록 버튼
-			$('.reg_btn').on('click', function() {
-				var registForm = $('#registForm');
+			var title = "${qna.title}";
+			var content = '${qna.content}';
+			var secret = '${qna.secret}';
+			
+			$('.title').val(title);
+			CKEDITOR.instances['content'].setData(content);
+			$('input[name=secret]:input[value=' + secret + ']').prop('checked', true);
+			
+			// 수정 버튼
+			$('.mod_btn').on('click', function() {
+				var modifyForm = $('#modifyForm');
 				
 				var title = $('.title').val();
 				var content = CKEDITOR.instances['content'].getData();
-				
-				console.log(content);
 				
 				if(!title) {
 					alert("제목을 입력하세요.");
@@ -37,24 +43,29 @@
 					return false;
 				}
 				
-				registForm.submit();
+				modifyForm.submit();
 				
 			});
 		});
 	</script>
 	
 	<div class="container" style="margin-left: 22%;">
-	    <!-- Qna Regist Start -->
+	    <!-- Qna Modify Start -->
 	    <div class="row">
-	        <div class="col-md-10 col-md-offset-1 reg_qna_header">
+	        <div class="col-md-10 col-md-offset-1 mod_qna_header">
 	            <p>Q&A<small> | 상품 Q&A입니다.</small>
 	            <hr>
 	        </div>
 	
 	        <div class="col-md-10 col-md-offset-1">
-	        	<form id="registForm" action="/qna/qnaRegist" method="post">
+	        	<form id="modifyForm" action="/qna/qnaModify" method="post">
 	        		<input type="hidden" name="member_id" value='<c:out value="${user.id }" />'>
-		            <table class="table table-bordered reg_qna_table">
+	        		<input type="hidden" name="no" value='<c:out value="${qna.no }" />'>
+	        		<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }" />'>
+	        		<input type="hidden" name="amount" value='<c:out value="${cri.amount }" />'>
+	        		<input type="hidden" name="type" value='<c:out value="${cri.type }" />'>
+	        		<input type="hidden" name="keyword" value='<c:out value="${cri.keyword }" />'>
+		            <table class="table table-bordered mod_qna_table">
 		                <colgroup>
 		                    <col width="15%">
 		                    <col width="85%">
@@ -84,12 +95,12 @@
 	            </form>
 	        </div>
 	
-	        <div class="col-md-10 col-md-offset-1 reg_qna_footer">
-	            <button type="button" class="btn btn-default btn-sm reg_btn">등록</button>            
+	        <div class="col-md-10 col-md-offset-1 mod_qna_footer">
+	            <button type="button" class="btn btn-default btn-sm mod_btn">수정</button>            
 	            <button type="button" class="btn btn-default btn-sm cancel_btn" onclick="history.back()">취소</button>            
 	        </div>
 	    </div>
-	    <!-- Qna Regist End -->
+	    <!-- Qna Modify End -->
 	    
 		<%@ include file="../includes/footer.jsp" %>
 	

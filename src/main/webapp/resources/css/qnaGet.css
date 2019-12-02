@@ -1,3 +1,12 @@
+.qna-btn-row {
+	margin-bottom: 50px;
+	padding: 0;
+}
+
+.qna-btn-row div:last-child {
+	text-align: right;
+}
+
 .qnaView-table {
     font-size: 12px;
 }
@@ -16,3 +25,41 @@
 .otherView_title {
     width: 100px;
 }
+
+/* 댓글 */
+.reply_area {
+	margin-bottom: 30px;
+	font-size: 12px;
+}
+
+.reg_reply_tbl {
+	background-color: #F3F3F3;
+}
+
+#reply_content {
+	display: inline-block;
+	width: 90%;	
+}
+
+.reg_reply {
+	display: inline-block;
+	width: 8%;
+}
+
+.get_reply_tbl {
+	border: 0.5px solid #D0D0D0;
+}
+
+.get_reply_tbl > tbody > tr > td {
+	vertical-align: middle;
+}
+
+.delete_reply {
+	text-align: right;
+}
+
+
+
+
+
+

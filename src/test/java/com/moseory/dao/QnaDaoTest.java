@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.moseory.domain.Criteria;
+import com.moseory.domain.QnaReplyVO;
 import com.moseory.domain.QnaVO;
 
 import lombok.Setter;
@@ -37,4 +38,45 @@ public class QnaDaoTest {
      public void testGetQna() {
 	 log.info(qnaDao.getQna(10));
      }
+     
+     @Test
+     public void testDeleteQna() {
+	 qnaDao.deleteQna(65527);
+     }
+     
+     @Test
+     public void testUpdateQna() {
+	 QnaVO vo = new QnaVO();
+	 vo.setNo(65522);
+	 vo.setTitle("test modify");
+	 vo.setContent("test modify");
+	 vo.setSecret(0);
+	 
+	 qnaDao.updateQna(vo);
+     }
+     
+     @Test
+     public void testQnaReply() {
+	 QnaReplyVO vo = new QnaReplyVO();
+	 vo.setQna_no(65583);
+	 vo.setMember_id("admin11");
+	 vo.setContent("테스트");
+	 
+	 qnaDao.insertReply(vo);
+	 
+	 log.info(qnaDao.getReplyList(65583));
+     }
+     
 }
+
+
+
+
+
+
+
+
+
+
+
+

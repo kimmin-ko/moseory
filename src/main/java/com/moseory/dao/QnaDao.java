@@ -3,6 +3,7 @@ package com.moseory.dao;
 import java.util.List;
 
 import com.moseory.domain.Criteria;
+import com.moseory.domain.QnaReplyVO;
 import com.moseory.domain.QnaVO;
 
 public interface QnaDao {
@@ -19,6 +20,27 @@ public interface QnaDao {
     // QnA 조회
     public QnaVO getQna(int no);
     
+    // 조회수 증가
+    public void increaseQnaHit(int no);
+    
+    // QnA 삭제
+    public void deleteQna(int no);
+    
+    // QnA의 모든 Reply 삭제
+    public void deleteAllReplyForQna(int qna_no);
+    
+    // QnA 수정
+    public void updateQna(QnaVO vo);
+    
+    // QnA Reply 등록
+    public void insertReply(QnaReplyVO vo);
+    
+    // QnA Reply List 조회
+    public List<QnaReplyVO> getReplyList(int qna_no);
+    
+    // QnA Reply 삭제
+    public void deleteReply(int no);
+     
 }
 
 
