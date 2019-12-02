@@ -92,28 +92,8 @@ function detailInfo() {
             sendPro(product_detail);
         } // end for
 
-    } else if($(".product_color").val() && !$(".product_size").val()) { // 색상
-        $(".product_stock").each(function() {
-            console.log($(this).prev().val());
-            console.log(this.value);
-
-            color = $(this).prev().val();
-            stock = this.value;
-
-            color_arr.push(color);
-            stock_arr.push(stock);
-        }); // end each
-
-        for(var i = 0; i < stock_arr.length; i++) {
-            product_detail = {
-                product_color : color_arr[i],
-                product_stock : stock_arr[i]
-            };
-
-            sendPro(product_detail);
-        } // end for
-        
-    } else if(!$(".product_color").val() && $(".product_size").val()) { // 사이즈
+    }
+    else if(!$(".product_color").val() && $(".product_size").val()) { // 사이즈
         $(".product_stock").each(function() {
             console.log($(this).prev().val());
             console.log(this.value);
@@ -135,7 +115,7 @@ function detailInfo() {
         } // end for
 
     } // end if
-    
+
 } // end detailInfo() 
 
 function sendPro(productDetail) {

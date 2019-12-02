@@ -36,7 +36,6 @@ public class PagingUtil {
 		blockSize = 10;
 		setTotalCnt(totalCnt);
 		setCurPage(curPage);
-		
 		//총 페이지 수 설정(totalCnt/size)
 		setPageCnt(totalCnt);
 		//총 블럭 수 설정
@@ -44,7 +43,8 @@ public class PagingUtil {
 		
 		blockSetting(curPage);
 		
-		
+		this.finish = curPage*(pageSize);
+		this.start = this.finish - (this.pageSize -1);
 	}
 	
 	public void setPageCnt(int totalCnt) {
@@ -65,8 +65,6 @@ public class PagingUtil {
 		this.prevPage = curPage - 1;
 		this.nextPage = curPage + 1;
 		
-		this.finish = curPage*(pageSize+1);
-		this.start = this.finish - (this.pageSize -1);
 	}
 	
 	public void setCurBlock(int curPage) {

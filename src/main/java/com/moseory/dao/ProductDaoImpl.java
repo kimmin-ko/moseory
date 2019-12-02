@@ -127,8 +127,18 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, String> param) {
+	public List<ProductVO> getSearchList(Map<String, Object> param) {
 		return sqlSession.selectList("product.getSearchList",param);
+	}
+
+	@Override
+	public int getHighCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getHighCateCode",keyword);
+	}
+
+	@Override
+	public int getSearchCount(Map<String, Object> param) {
+		return sqlSession.selectOne("product.getSearchCount",param);
 	}
 	
 	

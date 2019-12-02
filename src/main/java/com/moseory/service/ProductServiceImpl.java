@@ -116,8 +116,18 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, String> param) {
+	public List<ProductVO> getSearchList(Map<String, Object> param) {
 		return productDao.getSearchList(param);
+	}
+
+	@Override
+	public int getHighCateCode(String keyword) {
+		return productDao.getHighCateCode(keyword);
+	}
+
+	@Override
+	public int getSearchCount(Map<String, Object> param) {
+		return productDao.getSearchCount(param);
 	}
 
 
