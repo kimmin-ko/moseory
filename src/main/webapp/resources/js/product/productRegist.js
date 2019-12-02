@@ -122,7 +122,7 @@ function sendPro(productDetail) {
     $.ajax({
         type : "post",
         url : "/admin/productInfo",
-        data : $.param(high_code),
+        data : JSON.stringify(productDetail),
         async : false,
         contentType : "application/json; charset=utf-8"
     });
