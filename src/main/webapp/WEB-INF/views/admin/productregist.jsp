@@ -43,8 +43,6 @@
 				    });
 			});
 			
-			
-			
 		});
 	</script>
 	<script src="/js/product/productRegist.js"></script>

@@ -188,7 +188,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	        			success : function(reply) {
 	        				addReplyHtml(reply);
 							
-							alert("댓글이 등록되었습니다.");
 							$('#reply_content').val('');
 	        			}
 	        		});
@@ -283,19 +282,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	        	</table>
 	        </div>
 	        
-	        <div class="col-md-10 col-md-offset-1">
-	            <table class="table table-bordered qnaOtherView-table">
-	                <tr>
-	                    <td class="otherView_title"><img src="/images/otherView_pre.jpg">이전글</td>
-	                    <td></td>
-	                </tr>
-	                <tr>
-	                    <td class="otherView_title"><img src="/images/otherView_next.jpg">다음글</td>
-	                    <td></td>
-	                </tr>
-	            </table>
-	        </div>
-	
 	    </div>
 	    
 	    <form id="operForm" action="/qna/qnaModify" method="get">
