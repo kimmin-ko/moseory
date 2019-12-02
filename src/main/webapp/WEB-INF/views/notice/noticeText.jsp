@@ -34,7 +34,7 @@
 				flag = false;
 				
 			}
-			
+			console.log(flag);
 			if(flag){
 				form.submit();
 			}
@@ -77,7 +77,6 @@
 						<tr align="center">
 							<td>&nbsp;</td>
 							<td colspan="2">
-							<input type=submit value="등록" class="btn btn-dark" OnClick="javascript:writeCheck()">
 							<input type="button" value="등록" class="btn btn-dark" OnClick="javascript:writeCheck()">
 								<input type=button value="취소"
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">

@@ -10,6 +10,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 public interface UserService {
@@ -55,6 +56,14 @@ public interface UserService {
     public List<OrderListVO> getOrderList(OrderListCri cri);
     
     public void orderCancel(String order_code, String member_id);
+    
+    public void changeOrderState(String order_code, int product_detail_no, String state);
+    
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no);
+    
+    public void orderConfirm(Map<String, Object> param);
+    
+    public void registReview(ReviewRegVO vo);
 }
 
 

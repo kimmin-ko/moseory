@@ -18,10 +18,13 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Service
 public class UserServiceImpl implements UserService {
     
@@ -199,7 +202,7 @@ public class UserServiceImpl implements UserService {
 	List<OrderDetailVO> orderDetailList = userDao.getOrderDetail(order_code);
 	
 	// 2. 해당 주문의 상태를 '주문 취소'로 변경
-	userDao.updateOrderStateToCancel(orderDetailList.get(0).getOrder_code());
+	userDao.updateOrderState(orderDetailList.get(0).getOrder_code(), "주문 취소");
 	
 	for(OrderDetailVO orderDetail : orderDetailList) {
 	    // 3. 해당 상품의 판매량을 주문 수량만큼 감소
@@ -209,6 +212,83 @@ public class UserServiceImpl implements UserService {
 	    // 5. 회원이 주문에 사용한 적립금 반환
 	    userDao.increaseMemberPoint(member_id, orderDetail.getPoint());
 	}
+    }
+
+    @Override
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no) {
+	return userDao.getExchangeModalInfo(order_code, product_detail_no);
+    }
+
+    @Override
+    public void changeOrderState(String order_code, int product_detail_no, String state) {
+	String final_state = "";
+	
+	switch(state) {
+	case "exchange" :
+	    final_state = "교환 요청";
+	    break;
+	case "return" :
+	    final_state = "반품 요청";
+	    break;
+	}
+	
+	userDao.updateOrderStateToExchange(order_code, product_detail_no, final_state);
+    }
+
+    // 구매 확정
+    @Transactional
+    @Override
+    public void orderConfirm(Map<String, Object> param) {
+	String order_code = (String) param.get("order_code");
+	int product_detail_no = Integer.parseInt(param.get("product_detail_no")+"");
+	
+	
+	String member_id = (String) param.get("member_id");
+	int point = Integer.parseInt(param.get("point")+"");
+	int amount = Integer.parseInt(param.get("amount")+"");
+	
+	userDao.updateOrderStateToExchange(order_code, product_detail_no, "구매 확정");
+	
+	userDao.increasePointAndAmount(member_id, point, amount);
+    }
+
+    @Transactional
+    @Override
+    public void registReview(ReviewRegVO vo) {
+	
+	// 사용자의 적립금 500 증가
+	userDao.increaseMemberPoint(vo.getMember_id(), 500);
+	
+	// 리뷰 등록
+	userDao.registReview(vo);
+	
+	// 주문 상태 변경
+	userDao.updateOrderStateToExchange(vo.getOrder_code(), vo.getProduct_detail_no(), "구매 확정 ");
+	
+	// 상품  코드 구하기
+	int product_code = userDao.getProductCode(vo.getProduct_detail_no());
+	
+	// 상품의 리뷰 평점 합계 구하기
+	int sumGrade = 0;
+	List<Integer> gradeList = userDao.getProductReviewGrade(product_code);
+	for(int grade : gradeList) {
+	    sumGrade += grade;
+	}
+	
+	log.info("sumGrade : " + sumGrade);
+	
+	// 상품의 리뷰 개수 구하기
+	int reviewCount = userDao.getReviewCount(product_code);
+	
+	log.info("reviewCount : " + reviewCount);
+	
+	// 상품 평점 구하기
+	double avgGrade = Math.floor( ((double)sumGrade / reviewCount) * 10 ) / 10.0;
+	
+	log.info("avgGrade : " + avgGrade);
+	
+	// 상품의 평점 최신화
+	userDao.updateProductGrade(product_code, avgGrade);
     }
     
     

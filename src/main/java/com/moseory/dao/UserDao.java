@@ -10,6 +10,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 public interface UserDao {
@@ -71,7 +72,7 @@ public interface UserDao {
     public List<OrderListVO> getOrderList(OrderListCri cri);
     
     /* 주문 취소 */
-    public void updateOrderStateToCancel(String order_code);
+    public void updateOrderState(String order_code, String state);
     
     public void decreaseSaleCount(int product_code, int quantity);
     
@@ -79,7 +80,24 @@ public interface UserDao {
     
     public void increaseMemberPoint(String member_id, int used_point); 
     
+    /* 교환 모달 주문 정보 */
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no); 
     
+    public void updateOrderStateToExchange(String  order_code, int product_detail_no, String state);
+    
+    /* 구매 확정 */
+    public void increasePointAndAmount(String member_id, int point, int amount);
+    
+    /* 리뷰 등록 */
+    public void registReview(ReviewRegVO vo);
+    
+    public int getProductCode(int product_detail_no);
+    
+    public List<Integer> getProductReviewGrade(int product_code);
+    
+    public int getReviewCount(int product_code);
+    
+    public void updateProductGrade(int product_code, double grade);
 }
 
 

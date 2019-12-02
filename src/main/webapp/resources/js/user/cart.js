@@ -6,6 +6,22 @@ $(document).ready(function() {
 	$(".check-all").click(function() {
 		$(".checkCart").prop("checked", this.checked);
 	});
+	
+	// 인풋의 값이 변할 때 재고 부족 체크
+	$('.qtyVal').on('input', function() {
+		var qty = Number($(this).val());
+		var stock = $(this).nextAll("input[name=stock]").val();
+		
+		console.log('qty : ' + qty);
+		console.log('stock : ' + stock);
+		
+		if(qty > stock) {
+			alert('재고가 부족합니다.');
+			qty = stock;
+		}
+		
+		$(this).val(qty);
+	});
 
 	// + 버튼을 누르면 수량을 1 증가시킨다.
 	$(".btn-inc").on("click", function() {

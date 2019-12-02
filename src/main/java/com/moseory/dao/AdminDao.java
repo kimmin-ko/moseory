@@ -3,6 +3,7 @@ package com.moseory.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -54,6 +55,10 @@ public interface AdminDao {
 
 	public List<MemberVO> getUser(HashMap<String,Object> map);
 	
+	public int getUserCount(HashMap<String,Object> map);
+	
 	public MemberVO getUserDetail(String id);
+	
+	public int modifyUserInfo(Map<String, Object> param);
 	
 }

@@ -25,7 +25,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
@@ -47,7 +47,7 @@ public class ProductController {
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
 			List <ProductVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
-			for(ProductVO pVO : productVO) System.out.println(pVO);
+			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
 			String lowCode = req.getParameter("lowCode");
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
@@ -58,7 +58,7 @@ public class ProductController {
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
-		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		//for(ProductVO bests : bestProducts)  System.out.println(bests);
 		model.addAttribute("bestProducts", bestProducts);
 		model.addAttribute("highCate", highCate);
 		model.addAttribute("lowCate", lowCate);
@@ -114,7 +114,7 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		List<QnAVO> qnaList = productService.getQnA(code);
+		List<QnaVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
 		
 		return "product/productInfo";
@@ -140,6 +140,24 @@ public class ProductController {
 	    
 	    return stock != 0 ? new ResponseEntity<>(stock, HttpStatus.OK)
 		    	      : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/getColor/{code}")
+	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code) {
+	    
+	    List<String> color = productService.getProductColor(code);
+	    
+	    return new ResponseEntity<>(color, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getSize/{code}/{color}")
+	public ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
+			     @PathVariable("color") String color) {
+	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
+	    
+	    return productSize != null 
+		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
+		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
@@ -193,15 +211,7 @@ public class ProductController {
 	    return new ResponseEntity<>(review_recommend, HttpStatus.OK);
 	}
 
-	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<ProductDetailVO>> getColor(@PathVariable("code") int code,
-			     @PathVariable("color") String color) {
-	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
-	    
-	    return productSize != null 
-		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
-		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+	
 	
 	@GetMapping(value = "/getReviewList/{product_code}/{type}/{limit}",
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -215,8 +225,6 @@ public class ProductController {
 	    
 	    return new ResponseEntity<>(reviewList, HttpStatus.OK);
 	}
-	
-	
 	
 	@GetMapping("/search")
 	public String search(@RequestParam(defaultValue = "name") String searchType,

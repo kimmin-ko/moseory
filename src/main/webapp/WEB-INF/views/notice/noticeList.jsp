@@ -1,6 +1,10 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% 
+ response.setHeader("Cache-Control","no-cache"); 
+ response.setHeader("Pragma","no-cache"); 
+ response.setDateHeader("Expires",0); 
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,16 +13,8 @@
 <title>모서리</title>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/sidebar.css">
-<link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/notice.css">
 <script src="/resources/ckeditor/ckeditor.js"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>모서리</title>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/notice.css">
 </head>
 
 <body>
@@ -112,6 +108,13 @@
 		<div class="row" style="margin-bottom: 150px;">
 			<div class="col-md-10 col-md-offset-1">
 				<table class="table notice-board">
+					<colgroup>
+						<col style="width: 50px;"> <!-- NO -->
+						<col style="width: 300px;"> <!-- TITLE -->
+						<col style="width: 80px;"> <!-- NAME -->
+						<col style="width: 80px;"> <!-- DATE -->
+						<col style="width: 50px;"> <!-- HIT -->
+					</colgroup>
 					<thead>
 						<tr>
 							<td>NO</td>
@@ -121,15 +124,13 @@
 							<td>HIT</td>
 						</tr>
 					</thead>
-
-					<tbody>
 					<tbody>
 						<c:forEach items="${list}" var="list">
 							<tr>
 								<!-- NO -->
 								<td>${list.no}</td>
 								<!-- TITLE -->
-								<td><a class='move' href='<c:out value="${list.no}"/>'><c:out
+								<td class="notice_title"><a class='move' href='<c:out value="${list.no}"/>'><c:out
 											value="${list.title }" /></a></td>
 								<!-- NAME -->
 								<td>모서리</td>
@@ -140,19 +141,15 @@
 							</tr>
 						</c:forEach>
 					</tbody>
-
-
-
-					</tbody>
 				</table>
 			</div>
 			
 			<!-- 검색 처리 기능 -->
 			<div class="col-md-10 col-md-offset-1">
 				<form id='search' action="/notice/noticeList" method="get">
-					<select class="form-control" style="width: 130px" name="type">
+					<select class="form-control" style="width: 130px; display:inline-block;" name="type">
 						<option value=""
-							<c:out value="${pageMaker.cri.type == null ?'selected':''}"/>>List</option>
+							<c:out value="${pageMaker.cri.type == null ?'selected':''}"/>>검색조건</option>
 						<option value="T"
 							<c:out value="${pageMaker.cri.type == 'T' ?'selected':''}"/>>제목</option>
 						<option value="C"
@@ -160,8 +157,9 @@
 						<option value="TC"
 							<c:out value="${pageMaker.cri.type == 'TC' ?'selected':''}"/>>제목
 							+ 내용</option>
-					</select> <input type="text" class="form-control" name="keyword"
-						style="width: 180px;" value="${pageMaker.cri.keyword}" /> <input
+					</select> 
+					<input type="text" class="form-control" name="keyword"
+						style="width: 180px; display:inline-block;" value="${pageMaker.cri.keyword}" /> <input
 						type='hidden' name='pageNum' value="${pageMaker.cri.pageNum }">
 					<input type='hidden' name='amount' value="${pageMaker.cri.amount }"><button class="btn btn-default">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -172,9 +170,6 @@
 						onclick="location.href ='/notice/noticeText'">글쓰기</button>
 			</div>
 			
-
-
-
 			<!-- 페이징 처리 -->
 			<div class="col-md-10 col-md-offset-1 pagination-div"
 				style="margin-bottom: 30px;">
@@ -187,7 +182,7 @@
 
 						<c:forEach var="num" begin="${pageMaker.startPage }"
 							end="${pageMaker.endPage }">
-							<li class="paginate_button ${pageMaker.cri.pageNum == num ? "active":"" }"><a
+							<li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active' : '' }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
@@ -195,14 +190,9 @@
 							<li class="paginate_button next"><a
 								href="${pageMaker.endPage+1 }">다음</a></li>
 						</c:if>
-
-
 					</ul>
 				</nav>
 			</div>
-
-
-
 		</div>
 
 		<!-- row -->
@@ -214,7 +204,8 @@
 			<input type="hidden" name="type" value="${pageMaker.cri.type}">
 			<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 		</form>
-
+	
+		<%@ include file="../includes/footer.jsp" %>
 
 	</div>
 

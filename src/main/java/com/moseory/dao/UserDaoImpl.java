@@ -15,6 +15,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -187,8 +188,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateOrderStateToCancel(String order_code) {
-	sqlSession.update(namespace+".updateOrderStateToCancel", order_code);
+    public void updateOrderState(String order_code, String state) {
+	Map<String, String> param = new HashMap<String, String>();
+	param.put("order_code", order_code);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".updateOrderState", param);
     }
 
     @Override
@@ -218,7 +223,64 @@ public class UserDaoImpl implements UserDao {
 	sqlSession.update(namespace+".increaseMemberPoint", param);
     }
 
-    /* ORDER 끝 */
+    @Override
+    public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	
+	return sqlSession.selectOne(namespace+".getExchangeModalInfo", param);
+    }
+
+    @Override
+    public void updateOrderStateToExchange(String order_code, int product_detail_no, String state) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".updateOrderStateToExchange", param);
+    }
+
+    @Override
+    public void increasePointAndAmount(String member_id, int point, int amount) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("member_id", member_id);
+	param.put("point", point);
+	param.put("amount", amount);
+	
+	sqlSession.update(namespace+".increasePointAndAmount", param);
+    }
+
+    // 리뷰 등록
+    @Override
+    public void registReview(ReviewRegVO vo) {
+	sqlSession.insert(namespace+".registReview", vo);
+    }
+
+    @Override
+    public List<Integer> getProductReviewGrade(int product_code) {
+	return sqlSession.selectList(namespace+".getProductReviewGrade", product_code);
+    }
+
+    @Override
+    public int getReviewCount(int product_code) {
+	return sqlSession.selectOne(namespace+".getReviewCount", product_code);
+    }
+
+    @Override
+    public int getProductCode(int product_detail_no) {
+	return sqlSession.selectOne(namespace+".getProductCode", product_detail_no);
+    }
+
+    @Override
+    public void updateProductGrade(int product_code, double grade) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("product_code", product_code);
+	param.put("grade", grade);
+	
+	sqlSession.update(namespace+".updateProductGrade", param);
+    }
     
     
 

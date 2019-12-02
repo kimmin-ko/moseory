@@ -170,7 +170,7 @@
         					
         					var year = reviewList[i].reg_date.year;
         					var month = reviewList[i].reg_date.monthValue;
-        					var day = reviewList[i].reg_date.dayOfMonth + 1;
+        					var day = reviewList[i].reg_date.dayOfMonth;
         					var reg_date = year + '-' + month + '-' + day;
         					
         					str += "<li data-no='" + reviewList[i].no + "'>";

@@ -10,11 +10,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.ProductService;
 import com.moseory.service.UserService;
@@ -190,7 +193,6 @@ public class UserController {
     public void orderCompletion(@RequestParam String order_code, Model model) {
 	// 주문 번호를 통해 페이지에 필요한 정보를 조회
 	OrderVO order = userService.getOrder(order_code);
-	log.info(order.getOrder_date());
 	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
 	List<String> orderDetailListJson = new ArrayList<String>();
@@ -223,12 +225,67 @@ public class UserController {
 	model.addAttribute("orderList", orderList);
     }
     
-    @PostMapping("/user/orderCancel")
+    // 주문 취소
+    @PostMapping("/orderCancel")
     public String orderCancel(@RequestParam String order_code, HttpSession session) {
 	MemberVO member = (MemberVO) session.getAttribute("user");
 	
 	userService.orderCancel(order_code, member.getId());
+	
+	// 사용자 적립금 반환 세션에 적용 
+	updateMember(session, member.getId());
+	
 	return "redirect:/user/orderList";
+    }
+    
+    // 교환 요청
+    @PostMapping("/changeOrderState")
+    public String changeOrderState(@RequestParam String order_code, 
+	    @RequestParam int product_detail_no, 
+	    @RequestParam String state,
+	    HttpSession session) {
+	
+	userService.changeOrderState(order_code, product_detail_no, state);
+	
+	return "redirect:/user/orderList";
+    }
+    
+    // 교환 모달 주문 정보
+    @GetMapping(value = "/getExchangeModalInfo/{order_code}/{product_detail_no}",
+	    	produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @ResponseBody ResponseEntity<OrderListVO> getExchangeModalInfo(
+	    @PathVariable("order_code") String order_code,
+	    @PathVariable("product_detail_no") int product_detail_no) {
+	
+	OrderListVO orderList = userService.getExchangeModalInfo(order_code, product_detail_no);
+	
+	return orderList != null ? new ResponseEntity<>(orderList, HttpStatus.OK)
+				 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    // 구매 확정
+    @PostMapping("/orderConfirm")
+    public String orderConfirm(@RequestParam Map<String, Object> param, HttpSession session) {
+	// order_code, product_detail_no, point, amount
+	MemberVO member = (MemberVO) session.getAttribute("user");
+	
+	param.put("member_id", member.getId());
+	
+	userService.orderConfirm(param);
+	
+	// 사용자 적립금 증가, 총 구매금액 증가 세션에 적용
+	updateMember(session, member.getId());
+	
+	return "redirect:/user/orderList";
+    }
+    
+    // 리뷰 등록
+    @PostMapping("/registReview")
+    public @ResponseBody ResponseEntity<String> registReview(@RequestBody ReviewRegVO vo) {
+	
+	userService.registReview(vo);
+	
+	return new ResponseEntity<>("success", HttpStatus.OK);
     }
     
     // 장바구니 페이지

@@ -1,0 +1,100 @@
+.qnaLabel-row {
+	text-align: center;
+	margin-top: 80px;
+	margin-bottom: 40px;
+}
+
+.qna_body {
+	margin-bottom: 150px;
+}
+
+.qna-board {
+	font-size: 12px;
+	text-align: center;
+}
+
+.qna-board tbody tr td {
+	vertical-align: middle;
+} 
+
+.qna_title {
+	text-align: left;
+}
+
+.secret_img {
+	width: 15px;
+	height: auto;
+}
+
+.qna_item {
+	width: 40px;
+	height: quto;
+}
+
+.qna_reg_btn {
+	background-color: black;
+	color: white;
+}
+
+.pagination-div {
+	text-align: center;
+}
+
+/* search */
+.search_area {
+	font-size: 12px;
+	margin-bottom: 40px;
+}
+
+.search_type {
+	display: inline-block;
+	font-size: 12px;
+	width: 130px;
+	height: 32px;
+}
+
+.search_keyword {
+	display: inline-block;
+	font-size: 12px;
+	width: 150px;
+	height: 30px;
+}
+
+.search_btn {
+	display: inline-block;
+}
+
+.reg_btn_area {
+	text-align: right;
+}
+
+/* pagination */
+.pagination > li > a
+{
+    background-color: white;
+    color: black;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: white;
+    background-color: black !Important;
+    border: solid 1px black !Important;
+}
+
+.pagination > .active > a:hover
+{
+    background-color: black !Important;
+    border: solid 1px black;
+}
+
