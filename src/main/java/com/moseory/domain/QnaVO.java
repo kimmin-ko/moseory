@@ -22,7 +22,6 @@ public class QnaVO {
     private int depth; // 단계
     private int step; // 글순서
     private int pno; // 부모 번호
-    private int answer; // 답글 수
     private int secret; // 비밀글
     
 }

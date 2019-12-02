@@ -38,6 +38,9 @@ public interface QnaService {
     // QnA Reply 삭제
     public void deleteReply(int no);
     
+    // QnA Answer 등록
+    public void registQnaAnswer(QnaVO vo);
+    
 }
 
 

@@ -122,7 +122,6 @@ public class QnaController {
     // QnA 삭제
     @PostMapping("/qnaDelete")
     public String qnaDelete(@RequestParam("no") int no, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
-	/* 해당 글의 답글 삭제처리 진행해야함 !!!! */
 	qnaService.deleteQna(no);
 	
 	rttr.addFlashAttribute("result", "success_delete");
@@ -161,6 +160,30 @@ public class QnaController {
 	return "redirect:/qna/qnaList";
     }
     
+    // QnA Answer 등록 페이지
+    @GetMapping("/qnaAnswerRegist")
+    public void qnaAnswerRegist(@ModelAttribute("cri") Criteria cri, @RequestParam("no") int no, Model model) {
+	QnaVO parentsQna = qnaService.getQna(no);
+	
+	model.addAttribute("qna", parentsQna);
+    }
+    
+    // QnA Answer 등록
+    @PostMapping("/qnaAnswerRegist")
+    public String qnaAnswerRegistPost(@ModelAttribute QnaVO qnaVO, @ModelAttribute Criteria cri, RedirectAttributes rttr) {
+	
+	qnaService.registQnaAnswer(qnaVO);
+	
+	rttr.addFlashAttribute("result", "success_answerRegist");
+	
+	rttr.addAttribute("pageNum", cri.getPageNum());
+	rttr.addAttribute("amount", cri.getAmount());
+	rttr.addAttribute("type", cri.getType());
+	rttr.addAttribute("keyword", cri.getKeyword());
+	
+	return "redirect:/qna/qnaList";
+    }
+    
     // QnA Reply 등록 및 조회
     @PostMapping(value = "/replyRegistAndGet",
 	    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -188,6 +211,8 @@ public class QnaController {
 	
 	return new ResponseEntity<>("success", HttpStatus.OK);
     }
+    
+    
     
 }
 

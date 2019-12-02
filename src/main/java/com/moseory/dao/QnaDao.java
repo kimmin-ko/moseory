@@ -40,6 +40,12 @@ public interface QnaDao {
     
     // QnA Reply 삭제
     public void deleteReply(int no);
+    
+    // QnA 답글 등록 전 그룹 step 증가
+    public void increaseGroupStep(int p_ref, int p_step);
+    
+    // QnA 답글 등록
+    public void insertQnaAnswer(QnaVO vo);
      
 }
 

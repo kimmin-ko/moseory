@@ -100,6 +100,8 @@
 					alert('해당 글이 삭제되었습니다.');
 				} else if(result == 'success_modify') {
 					alert('해당 글 수정이 완료되었습니다.');
+				} else if(result == 'success_answerRegist') {
+					alert('답변이 등록되었습니다.');
 				}
 				
 			}
@@ -142,6 +144,14 @@
 							<!-- TITLE -->
 							<td class="qna_title">
 								<a class="title" href="${qna.secret }">
+								<c:forEach begin="1" end="${qna.depth }" >
+									<c:if test="${qna.depth > 0 }">
+										&nbsp;&nbsp;
+									</c:if>
+								</c:forEach>
+								<c:if test="${qna.depth > 0 }">
+									<img src="/images/re.gif">
+								</c:if>
 								<c:if test="${qna.secret ne 1 }">
 									<c:out value="${qna.title }" />&nbsp;
 								</c:if>

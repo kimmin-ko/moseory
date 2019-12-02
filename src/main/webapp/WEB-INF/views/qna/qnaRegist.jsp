@@ -72,7 +72,7 @@
 		                    </td>
 		                </tr>
 		                <tr>
-		                    <td>비밀글</td>
+		                    <td>비밀글설정</td>
 		                    <td>
 		                        <input type="radio" id="public" name="secret" value="0" checked>
 		                        <label for="public">공개글</label>&nbsp;

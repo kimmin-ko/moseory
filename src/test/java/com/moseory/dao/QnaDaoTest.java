@@ -25,9 +25,9 @@ public class QnaDaoTest {
     
     @Test
     public void testPaging() {
-	Criteria cri = new Criteria();
-	cri.setKeyword("트1");
-	cri.setType("TC");
+	Criteria cri = new Criteria(2, 10);
+	//cri.setKeyword("원글");
+	//cri.setType("TC");
 	
 	List<QnaVO> list = qnaDao.getListWithPaging(cri);
 	

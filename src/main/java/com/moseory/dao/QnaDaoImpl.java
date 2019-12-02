@@ -1,6 +1,8 @@
 package com.moseory.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +75,20 @@ public class QnaDaoImpl implements QnaDao {
     @Override
     public void deleteReply(int no) {
 	sqlSession.delete(namespace+".deleteReply", no);
+    }
+
+    @Override
+    public void increaseGroupStep(int p_ref, int p_step) {
+	Map<String, Integer> param = new HashMap<String, Integer>();
+	param.put("ref", p_ref);
+	param.put("step", p_step);
+	
+	sqlSession.update(namespace+".increaseGroupStep", param);
+    }
+
+    @Override
+    public void insertQnaAnswer(QnaVO vo) {
+	sqlSession.insert(namespace+".insertQnaAnswer", vo);
     }
 
     

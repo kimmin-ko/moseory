@@ -27,21 +27,19 @@
 
 	<!-- 페이징처리하여 QnA List 조회 -->
 	<select id="getListWithPaging" resultType="QnaVO">
-	<![CDATA[
 	SELECT
-	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, answer, secret
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
 	FROM
 	    (SELECT
-	        /*+ INDEX_DESC(tbl_qna pk_tbl_qna) */
-	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, answer, secret
-	    FROM
-	        tbl_qna 
+	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	    FROM    
+	        tbl_qna
 	    WHERE
-	]]>
-	<include refid="criteria"></include>
+	    	<include refid="criteria"></include>
 	<![CDATA[
 	        rownum <= #{pageNum} * #{amount}
-	    )
+	    ORDER BY
+	        ref desc, step asc)
 	WHERE
 	    rn > (#{pageNum} - 1) * #{amount}
 	]]>
@@ -58,16 +56,32 @@
 		no > 0
 	</select>
 	
-	<!-- QnA 등록 -->
+	<!-- QnA 원글 등록 -->
 	<insert id="insertQna">
 	INSERT INTO tbl_qna(no, member_id, product_code, title, content, ref, secret)
 	VALUES(seq_qna_no.nextval, #{member_id}, #{product_code}, #{title}, #{content}, seq_qna_no.currval, #{secret})
 	</insert>
 	
+	<!-- QnA 답글 등록 전 그룹 step 증가 -->
+	<update id="increaseGroupStep">
+	UPDATE
+	    tbl_qna
+	SET
+	    step = step + 1
+	WHERE
+	    ref = #{ref} AND step > #{step}
+	</update>
+	
+	<!-- QnA 답글 등록 -->
+	<insert id="insertQnaAnswer">
+	INSERT INTO tbl_qna(no, member_id, product_code, title, content, ref, depth, step, pno, secret)
+	VALUES(seq_qna_no.nextval, #{member_id}, #{product_code}, #{title}, #{content}, #{ref}, #{depth}, #{step}, #{pno}, #{secret})
+	</insert>
+	
 	<!-- QnA 번호를 이용하여 조회 -->
 	<select id="getQna" resultType="QnaVO">
 	SELECT
-	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, answer, secret
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
 	FROM
 	    tbl_qna
 	WHERE

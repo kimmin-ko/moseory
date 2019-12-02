@@ -23,10 +23,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var content = '${qna.content}';
-			
-			$('.content').html(content);
-			
 			var operForm = $('#operForm');
 			
 			// 목록 버튼 클릭
@@ -38,7 +34,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 			
 			// 삭제 버튼 클릭
 			$('button[data-oper=delete]').on('click', function() {
-				var c = confirm('문의글을 삭제하시겠습니까?\n(※ 답글과 댓글이 모두 삭제됩니다.)');
+				var c = confirm('문의글을 삭제하시겠습니까?');
 				
 				if(c) {
 					operForm.attr('action', '/qna/qnaDelete');
@@ -52,6 +48,12 @@ if (request.getProtocol().equals("HTTP/1.1"))
 			// 수정 버튼 클릭
 			$('button[data-oper=modify]').on('click', function() {
 				operForm.attr('action', '/qna/qnaModify');
+				operForm.submit();
+			});
+			
+			// 답변 버튼 클릭
+			$('button[data-oper=answerRegist]').on('click', function() {
+				operForm.attr('action', '/qna/qnaAnswerRegist');
 				operForm.submit();
 			});
 			
@@ -80,8 +82,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	                    <td><c:out value="${qna.hit }" /></td>
 	                </tr>
 	                <tr>
-	                    <td class="content" colspan="4">
-	                    </td>
+	                    <td class="content" colspan="4">${qna.content }</td>
 	                </tr>
 	            </table>
 			</div>
@@ -98,7 +99,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 				        	<button type="button" data-oper="delete" class="btn btn-default btn-sm">삭제</button>
 				        	<button type="button" data-oper="modify" class="btn btn-default btn-sm">수정</button>
 			        	</c:if>
-		        		<button type="button" class="btn btn-default btn-sm">답변</button>
+		        		<button type="button" data-oper="answerRegist" class="btn btn-default btn-sm">답변</button>
 		        	</c:if>
 		        </div>
 	        </div>
@@ -209,7 +210,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 		        			success : function(result) {
 		        				console.log(result);
 		        				if(result == 'success') {
-		        					alert("댓글이 삭제되었습니다.");
 		        					getReply(qna_no);
 		        				} else {
 		        					alert("댓글 삭제 실패. 다시 시도해주세요.");
