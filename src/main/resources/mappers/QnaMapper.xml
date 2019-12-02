@@ -31,15 +31,14 @@
 	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
 	FROM
 	    (SELECT
+	    	/*+ INDEX_ASC(tbl_qna idx_answer) */
 	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
 	    FROM    
 	        tbl_qna
 	    WHERE
 	    	<include refid="criteria"></include>
 	<![CDATA[
-	        rownum <= #{pageNum} * #{amount}
-	    ORDER BY
-	        ref desc, step asc)
+	        rownum <= #{pageNum} * #{amount})
 	WHERE
 	    rn > (#{pageNum} - 1) * #{amount}
 	]]>

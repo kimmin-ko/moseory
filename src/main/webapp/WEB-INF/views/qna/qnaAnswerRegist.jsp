@@ -36,7 +36,12 @@
 					return false;
 				}
 				
-				registForm.submit();
+				var c = confirm("답변을 등록하시겠습니까?");
+				if(c) {
+					registForm.submit();
+				} else{
+					return false;
+				}
 				
 			});
 		});

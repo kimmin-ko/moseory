@@ -25,8 +25,6 @@
 				var title = $('.title').val();
 				var content = CKEDITOR.instances['content'].getData();
 				
-				console.log(content);
-				
 				if(!title) {
 					alert("제목을 입력하세요.");
 					$('.title').focus();
@@ -37,7 +35,12 @@
 					return false;
 				}
 				
-				registForm.submit();
+				var c = confirm("글을 등록하시겠습니까?");
+				if(c) {
+					registForm.submit();
+				} else{
+					return false;
+				}
 				
 			});
 		});
