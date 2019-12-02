@@ -62,5 +62,7 @@ public interface AdminService {
 	public MemberVO getUserDetail(String id);
 	
 	public int modifyUserInfo(Map<String, Object> param);
+
+	void saveFile(Map<String, Object> fileParam);
 	
 }

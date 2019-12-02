@@ -27,7 +27,7 @@
 				<ul class="prod-list"> <!-- 3개의 상품만 출력 -->
 					<c:forEach var="product" items="${productSaleCount }" begin="0" end="2">
 					<li>
-						<img src='<c:out value="${product.file_path }" />' class="weekly-img">
+						<img src=" class="weekly-img">
 						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out value='${product.code }' />"'>
 							<p><c:out value="${product.name }" /></p>
 							<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
@@ -55,8 +55,8 @@
 				<c:forEach var="product" items="${productNew }">
 				<div class="col-md-4 prod-desc ma-bo-50">
 					<a href="/product/productInfo?code=<c:out value='${product.code }' />">
-						<img src='<c:out value="${product.file_path }" />'></a>
-					<p>
+						<img src=''></a>
+					<p> 
 						<a href="#"><c:out value="${product.name }" /></a>
 					</p>
 					<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
