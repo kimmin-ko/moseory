@@ -386,6 +386,18 @@
 				</choose>
 	</select>
 	
+	<insert id="saveFile" parameterType="map">
+		insert into tbl_product_file values(
+			seq_product_file.nextval,
+			#{product_code},
+			#{thumbnail_name},
+			#{file_path},
+			#{file_name}
+		)
+		 
+	</insert>
+	
+	
 </mapper>
 
 

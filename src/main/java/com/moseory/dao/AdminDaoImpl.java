@@ -121,5 +121,9 @@ public class AdminDaoImpl implements AdminDao{
 	public int getUserCount(HashMap<String, Object> map) {
 		return sqlSession.selectOne("AdminMapper.getUserCount", map);
 	}
+	@Override
+	public void saveFile(Map<String, Object> fileParam) {
+		sqlSession.insert("product.saveFile", fileParam);
+	}
 
 }

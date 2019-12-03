@@ -72,7 +72,7 @@ public class AdminController {
 													@RequestParam String str_low_code)
 			throws IllegalStateException, IOException { 
 		/* 파일 시작 */
-		
+		//한글로 받아오는 low_code를 int로 변경
 		int low_code = adminService.getLowCateCode(str_low_code);
 		productVO.setLow_code(low_code);
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
@@ -89,13 +89,15 @@ public class AdminController {
 		if (file.exists() == false) {
 			file.mkdirs();
 		}
-		
+		//확장자를 가져옴
 		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
 		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
+		//썸네일명 = 상품명 + _thumbnail.확장자
 		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
 		System.out.println(thumbnailName);
 		thumbnail = new File(save_path + thumbnailName);
 		getThumbnail.get(0).transferTo(thumbnail);
+		
 		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
@@ -109,17 +111,21 @@ public class AdminController {
 			System.out.println("file_name = " + file_name);
 			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
 			
-			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}
-
-		productVO.setFile_name(file_name);
-		productVO.setFile_path(save_path);
-
 		/* product DB */
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
+		
+		//product file DB
+		Map <String, Object> fileParam = new HashMap<>();
+		fileParam.put("product_code", code);
+		fileParam.put("thumbnail_name", thumbnailName);
+		fileParam.put("file_path", save_path);
+		fileParam.put("file_name", file_name);
+		adminService.saveFile(fileParam);
+		
 
 		/* product_detail DB */
 		for (int i = 0; i < detailInfo.size(); i++) {
@@ -127,7 +133,7 @@ public class AdminController {
 			productdetailVO.setProduct_code(code);
 			adminService.product_detail_regist(productdetailVO);
 		}
-
+		
 		detailInfo.clear();
 
 		return "redirect:/index";
