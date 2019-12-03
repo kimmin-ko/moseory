@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%
+response.setHeader("Cache-Control","no-store");  
+response.setHeader("Pragma","no-cache");  
+response.setDateHeader("Expires",0);  
+if (request.getProtocol().equals("HTTP/1.1"))
+        response.setHeader("Cache-Control", "no-cache");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,9 +24,17 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
+			console.log('product_code : ${product_code}');
+			console.log('pageNum : ' + '${cri.pageNum}');
 			
 			// 등록 버튼
 			$('.reg_btn').on('click', function() {
+				
+				if(!'${user.id}') {
+					alert("로그인 후 이용해주세요.");
+					return false;
+				}
+				
 				var registForm = $('#registForm');
 				
 				var title = $('.title').val();
@@ -57,6 +72,11 @@
 	        <div class="col-md-10 col-md-offset-1">
 	        	<form id="registForm" action="/qna/qnaRegist" method="post">
 	        		<input type="hidden" name="member_id" value='<c:out value="${user.id }" />'>
+	        		<input type="hidden" name="product_code" value='<c:out value="${product_code }" />'>
+	        		<input type="hidden" name="pageNum" value="${cri.pageNum }">
+					<input type="hidden" name="amount" value="${cri.amount }">
+					<input type="hidden" name="type" value="${cri.type }">
+					<input type="hidden" name="keyword" value="${cri.keyword }">
 		            <table class="table table-bordered reg_qna_table">
 		                <colgroup>
 		                    <col width="15%">

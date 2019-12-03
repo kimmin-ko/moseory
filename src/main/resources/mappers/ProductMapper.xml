@@ -151,6 +151,25 @@
 	    AND pd.product_code = #{product_code}
 	</select>
 	
+	<!-- 페이징처리하여 QnA List 조회 -->
+	<select id="getListWithPaging" resultType="QnaVO">
+	SELECT
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	FROM
+	    (SELECT
+	    	/*+ INDEX_ASC(tbl_qna idx_answer) */
+	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	    FROM    
+	        tbl_qna
+	    WHERE
+	    	product_code = #{product_code}
+	<![CDATA[
+	        AND rownum <= #{pageNum} * #{amount})
+	WHERE
+	    rn > (#{pageNum} - 1) * #{amount}
+	]]>
+	</select>
+	
 	<!-- 해당 상품의 문의글 개수 조회 -->
 	<select id="getQnaCount" resultType="int">
 	SELECT
@@ -251,31 +270,6 @@
 	WHERE
 	    no = #{no}
 	</update>
-	
-	<resultMap type="QnAVO" id="QnAMap">
-		<result column="no" property="no" />
-		<result column="product_code" property="product_code" />
-		<result column="title" property="title" />
-		<result column="content" property="content" />
-		<result column="reg_date" property="reg_date" />
-		<result column="hit" property="hit" />
-		<association property="member" javaType="MemberVO">
-			<result column="id" property="id" />
-			<result column="name" property="name" />
-		</association>
-	</resultMap>
-	
-	<!-- 상품 정보 페이지의 Q&A 조회 -->
-	<select id="getQnA" resultMap="QnAMap">
-	SELECT
-	    q.no, m.id, m.name, q.product_code, q.title, q.content, q.reg_date, q.hit
-	FROM
-	    tbl_qna q LEFT OUTER JOIN tbl_member m ON q.member_id = m.id
-	WHERE
-		product_code = #{product_code}
-	ORDER BY
-		q.no desc
-	</select>
 	
 	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,6 @@ import com.moseory.domain.QnaReplyVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.service.QnaService;
 
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -61,19 +59,39 @@ public class QnaController {
     
     // Q&A 등록 페이지
     @GetMapping("/qnaRegist")
-    public void qnaRegist() {
+    public void qnaRegist(@ModelAttribute("cri") Criteria cri) { 
 	
+    }
+    
+    // 상품 정보 페이지에서 Q&A 등록
+    @GetMapping("/qnaRegistOnProductInfo")
+    public String qnaRegistOnProductInfo(@ModelAttribute("cri") Criteria cri, @RequestParam("code") int product_code, Model model) {
+	
+	// 상품 코드를 가지고 qnaRegist로 이동
+	model.addAttribute("product_code", product_code);
+	
+	return "/qna/qnaRegist";
     }
     
     // Q&A 등록
     @PostMapping("/qnaRegist")
-    public String qnaRegistPost(@ModelAttribute QnaVO qnaVO, Model model) {
+    public String qnaRegistPost(@ModelAttribute("cri") Criteria cri, @ModelAttribute QnaVO qnaVO, RedirectAttributes rttr) {
 	
-	log.info(qnaVO);
+	log.info("Post qnaRegist qnaVO :  " + qnaVO);
 	
 	qnaService.registQna(qnaVO);
 	
-	return "redirect:/qna/qnaList";
+	rttr.addAttribute("pageNum", cri.getPageNum());
+	rttr.addAttribute("amount", cri.getAmount());
+	rttr.addAttribute("type", cri.getType());
+	rttr.addAttribute("keyword", cri.getKeyword());
+	
+	// Q&A에 상품 코드가 존재 (특정 상품에 대한 Q&A)
+	if(qnaVO.getProduct_code() != null) {
+	    return "redirect:/product/productInfo?code=" + qnaVO.getProduct_code();
+	} else { // 일반 Q&A
+	    return "redirect:/qna/qnaList";
+	}
     }
     
     // Q&A 조회

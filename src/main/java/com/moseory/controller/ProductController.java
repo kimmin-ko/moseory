@@ -15,15 +15,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.PageDTO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -70,7 +72,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
-	public String productInfo(@RequestParam int code, Model model) {
+	public String productInfo(@RequestParam int code, @ModelAttribute Criteria cri, Model model) {
 		// 상품 조회
 		ProductVO productVO = productService.getProduct(code);
 		// 상품 디테일 조회
@@ -115,8 +117,11 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		List<QnaVO> qnaList = productService.getQnA(code);
+		log.info("product cri : " + cri);
+		
+		List<QnaVO> qnaList = productService.getQnA(cri, code);
 		model.addAttribute("qnaList", qnaList);
+		model.addAttribute("pageMaker", new PageDTO(cri, qnaCount));
 		
 		return "product/productInfo";
 	}

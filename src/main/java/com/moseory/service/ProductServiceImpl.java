@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.moseory.dao.ProductDao;
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
@@ -86,8 +87,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public List<QnaVO> getQnA(int product_code) {
-	    return productDao.getQnA(product_code);
+	public List<QnaVO> getQnA(Criteria cri, int product_code) {
+	    return productDao.getListWithPaging(cri, product_code);
 	}
 
 	@Override
