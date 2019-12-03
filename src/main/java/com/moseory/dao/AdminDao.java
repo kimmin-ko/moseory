@@ -3,15 +3,17 @@ package com.moseory.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-
+@Repository("adminDao")
 public interface AdminDao {
 
 	void product_regist(ProductVO productVO);
@@ -54,6 +56,12 @@ public interface AdminDao {
 
 	public List<MemberVO> getUser(HashMap<String,Object> map);
 	
+	public int getUserCount(HashMap<String,Object> map);
+	
 	public MemberVO getUserDetail(String id);
+	
+	public int modifyUserInfo(Map<String, Object> param);
+
+	void saveFile(Map<String, Object> fileParam);
 	
 }

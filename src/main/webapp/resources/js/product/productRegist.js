@@ -81,7 +81,7 @@ function detailInfo() {
             size_arr.push(size);
             stock_arr.push(stock);
         }); // end each
-
+        
         for(var i = 0; i < stock_arr.length; i++) {
             product_detail = {
                 product_color : color_arr[i],
@@ -93,26 +93,25 @@ function detailInfo() {
         } // end for
 
     } else if($(".product_color").val() && !$(".product_size").val()) { // 색상
-        $(".product_stock").each(function() {
-            console.log($(this).prev().val());
-            console.log(this.value);
+    	$(".product_stock").each(function() {
+    		console.log($(this).prev().val());
+    		console.log(this.value);
+    		
+    		color = $(this).prev().val();
+    		stock = this.value;
+    		
+    		color_arr.push(color);
+    		stock_arr.push(stock);
+    	}); // end each
+    	
+    	for(var i = 0; i < stock_arr.length; i++) {
+    		product_detail = {
+    	                product_color : color_arr[i],
+    	                product_stock : stock_arr[i]
+    	            };
 
-            color = $(this).prev().val();
-            stock = this.value;
-
-            color_arr.push(color);
-            stock_arr.push(stock);
-        }); // end each
-
-        for(var i = 0; i < stock_arr.length; i++) {
-            product_detail = {
-                product_color : color_arr[i],
-                product_stock : stock_arr[i]
-            };
-
-            sendPro(product_detail);
-        } // end for
-        
+    	            sendPro(product_detail);
+    	}
     } else if(!$(".product_color").val() && $(".product_size").val()) { // 사이즈
         $(".product_stock").each(function() {
             console.log($(this).prev().val());
@@ -135,25 +134,38 @@ function detailInfo() {
         } // end for
 
     } // end if
-    
+
 } // end detailInfo() 
 
 function sendPro(productDetail) {
     $.ajax({
         type : "post",
         url : "/admin/productInfo",
-        data : $.param(high_code),
+        data : JSON.stringify(productDetail),
         async : false,
         contentType : "application/json; charset=utf-8"
     });
 } // sendPro
 
 function regist() {
-    
+
 	// product detail 먼저 전달해서 List에 담아둔다
     detailInfo();
-    // product 정보를 등록한다
-    $("#registForm").submit();
+	$('#registForm').click(function(){
+		
+		var thumbnailCheck = $('#thumbnail').val();
+		var fileCheck = $('#getImage').val();
+		if(thumbnailCheck = '' || fileCheck == ''){
+			alert('사진을 업로드해주세요');
+			return;
+		}else{
+			 // product 정보를 등록한다
+			   $("#registForm").submit();
+		}
+		
+	});
+	
+   
 }
 
 

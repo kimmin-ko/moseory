@@ -12,7 +12,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public List<QnAVO> getQnA(int product_code) {
+	public List<QnaVO> getQnA(int product_code) {
 	    return productDao.getQnA(product_code);
 	}
 
@@ -116,8 +116,23 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, String> param) {
+	public List<ProductVO> getSearchList(Map<String, Object> param) {
 		return productDao.getSearchList(param);
+	}
+
+	@Override
+	public int getHighCateCode(String keyword) {
+		return productDao.getHighCateCode(keyword);
+	}
+
+	@Override
+	public int getSearchCount(Map<String, Object> param) {
+		return productDao.getSearchCount(param);
+	}
+
+	@Override
+	public int getLowCateCode(String keyword) {
+		return productDao.getLowCateCode(keyword);
 	}
 
 

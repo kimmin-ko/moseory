@@ -10,7 +10,7 @@ import lombok.ToString;
 public class Criteria {
 	
 	private int pageNum; // 페이지 번호
-	private int amount; // 한 페이지당 보여지는 Data
+	private int amount; // 한 페이지당 보여지는 Data 수
 	
 	private String type;
 	private String keyword;

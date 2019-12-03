@@ -33,6 +33,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.ProductService;
 import com.moseory.service.UserService;
@@ -192,7 +193,6 @@ public class UserController {
     public void orderCompletion(@RequestParam String order_code, Model model) {
 	// 주문 번호를 통해 페이지에 필요한 정보를 조회
 	OrderVO order = userService.getOrder(order_code);
-	log.info(order.getOrder_date());
 	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
 	List<String> orderDetailListJson = new ArrayList<String>();
@@ -259,8 +259,6 @@ public class UserController {
 	
 	OrderListVO orderList = userService.getExchangeModalInfo(order_code, product_detail_no);
 	
-	log.info(orderList.toString());
-	
 	return orderList != null ? new ResponseEntity<>(orderList, HttpStatus.OK)
 				 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -273,14 +271,21 @@ public class UserController {
 	
 	param.put("member_id", member.getId());
 	
-	log.info(param.toString());
-	
 	userService.orderConfirm(param);
 	
 	// 사용자 적립금 증가, 총 구매금액 증가 세션에 적용
 	updateMember(session, member.getId());
 	
 	return "redirect:/user/orderList";
+    }
+    
+    // 리뷰 등록
+    @PostMapping("/registReview")
+    public @ResponseBody ResponseEntity<String> registReview(@RequestBody ReviewRegVO vo) {
+	
+	userService.registReview(vo);
+	
+	return new ResponseEntity<>("success", HttpStatus.OK);
     }
     
     // 장바구니 페이지

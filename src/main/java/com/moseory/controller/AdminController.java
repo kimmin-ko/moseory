@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
@@ -62,32 +62,46 @@ public class AdminController {
 	private static List<ProductDetailVO> detailInfo = new ArrayList<ProductDetailVO>();
 
 	@PostMapping(value = "/productInfo", consumes = "application/json")
-	public void productInfo(@RequestBody ProductDetailVO productDetailVO) {
+	public @ResponseBody void productInfo(@RequestBody ProductDetailVO productDetailVO) {
 		detailInfo.add(productDetailVO);
 		log.info("detailInfo = " + detailInfo);
 	}
 
 	@PostMapping("/productregist")
-	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request)
+	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request,
+													@RequestParam String str_low_code)
 			throws IllegalStateException, IOException { 
-		
 		/* 파일 시작 */
+		//한글로 받아오는 low_code를 int로 변경
+		int low_code = adminService.getLowCateCode(str_low_code);
+		productVO.setLow_code(low_code);
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
-		String low_cate = adminService.getLowCate(productVO.getLow_code());
+//		String low_cate = adminService.getLowCate(productVO.getLow_code());
 		//	파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + low_cate + "/" + productVO.getName() + "/";
+		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/";
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
-		List<MultipartFile> thumbnail = multipartRequest.getFiles("thumbnail");
+		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
 		
 		// 경로가 없으면 디렉토리 생성
 		File file = new File(save_path);
+		File thumbnail = new File(save_path);
 		if (file.exists() == false) {
 			file.mkdirs();
 		}
+		//확장자를 가져옴
+		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
+		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
+		//썸네일명 = 상품명 + _thumbnail.확장자
+		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
+		System.out.println(thumbnailName);
+		thumbnail = new File(save_path + thumbnailName);
+		getThumbnail.get(0).transferTo(thumbnail);
+		
+		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
-			System.out.println(thumbnail.get(i).getName());
+//			System.out.println(thumbnail.get(i).getName());
 			// 파일명이 같을 수도 있기 때문에
 			// 랜덤36문자_받아온파일이름
 			// 으로 파일 저장
@@ -96,16 +110,22 @@ public class AdminController {
 			file_name = file_name + "@" + fileName;
 			System.out.println("file_name = " + file_name);
 			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}
-
-		productVO.setFile_name(file_name);
-		productVO.setFile_path(save_path);
-
 		/* product DB */
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
+		
+		//product file DB
+		Map <String, Object> fileParam = new HashMap<>();
+		fileParam.put("product_code", code);
+		fileParam.put("thumbnail_name", thumbnailName);
+		fileParam.put("file_path", save_path);
+		fileParam.put("file_name", file_name);
+		adminService.saveFile(fileParam);
+		
 
 		/* product_detail DB */
 		for (int i = 0; i < detailInfo.size(); i++) {
@@ -113,7 +133,7 @@ public class AdminController {
 			productdetailVO.setProduct_code(code);
 			adminService.product_detail_regist(productdetailVO);
 		}
-
+		
 		detailInfo.clear();
 
 		return "redirect:/index";
@@ -288,7 +308,8 @@ public class AdminController {
 			,@RequestParam(required = false, defaultValue = "") String searchValue
 			,@RequestParam(required = false, defaultValue = "") String commType
 			,@RequestParam(required = false, defaultValue = "") String commValue
-			,@RequestParam(required = false, defaultValue = "") String searchEmail) {
+			,@RequestParam(required = false, defaultValue = "") String searchEmail
+			,@RequestParam(defaultValue = "1") int curPage) {
 
 		HashMap<String, Object> map = new HashMap<String,Object>();
 		List<MemberVO> list = new ArrayList<MemberVO>();
@@ -300,7 +321,20 @@ public class AdminController {
 		map.put("commValue", commValue);
 		map.put("searchEmail", searchEmail);
 		
+		int userCount = adminService.getUserCount(map);
+		
+		PagingUtil pagingUtil;
+		pagingUtil = new PagingUtil(userCount, curPage);
+		
+		map.put("start", pagingUtil.getStart());
+		map.put("finish", pagingUtil.getFinish());
+		
+		System.out.println("userCount"+userCount);
+		System.out.println("start"+pagingUtil.getStart());
+		System.out.println("getFinish"+pagingUtil.getFinish());
+		
 		list = adminService.getUser(map);
+		System.out.println(list.toString());
 		model.addAttribute("userList", list);
 		model.addAttribute("levelType", levelType);
 		model.addAttribute("searchType", searchType);
@@ -309,6 +343,12 @@ public class AdminController {
 		model.addAttribute("commValue", commValue);
 		model.addAttribute("searchEmail", searchEmail);
 		
+		String msg = (req.getParameter("msg") == null) ? "" : req.getParameter("msg");
+		if(!msg.equals("")) {
+			model.addAttribute("msg", msg);
+		}
+		
+		model.addAttribute("paging",pagingUtil);
 		
 		return "admin/userManagement"; 
 	}
@@ -319,10 +359,35 @@ public class AdminController {
 		MemberVO member = new MemberVO();
 		member = adminService.getUserDetail(id);
 		System.out.println(member.toString());
+		String msg = (req.getParameter("msg") == null) ? "" : req.getParameter("msg");
+		if(!msg.equals("")) {
+			model.addAttribute("msg", msg);
+		}
 		model.addAttribute("member", member);
 		return "admin/getUserDetail";
 	}
 	
+	@PostMapping("modifyUserInfo")
+	public String modifyUserInfo(@RequestParam Map<String, Object> param, RedirectAttributes redirectAttributes, HttpServletRequest req, Model model) {
+		 
+		System.out.println("Contorller modifyUserInfo param ["+ param.toString() +"]");
+		int result = adminService.modifyUserInfo(param);
+		String msg = "";
+		if(result > 0) {
+			msg = "저장되었습니다.";
+			redirectAttributes.addAttribute("msg", msg);
+			return "redirect:/admin/userManagement";
+		}else {
+			msg = "시스템 에러";
+			String id = (param.get("id") == null) ? "" : param.get("id").toString();
+			redirectAttributes.addAttribute("id", id);
+			redirectAttributes.addAttribute("msg", msg);
+			return "redirect:/admin/getUserDetail";
+		}
+						
+		
+		
+	}
 
 }
 	

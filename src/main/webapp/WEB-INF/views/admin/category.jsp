@@ -50,7 +50,7 @@ if(message != ""){
 				          	</label></th>
 				          <th>Code</th>
 				          <th>Name</th>
-				          <th>explanation</th>
+				          <th>Explanation</th>
 				        </tr>
 			    	</thead>
 					<tbody>

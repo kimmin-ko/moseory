@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="/css/sidebar.css">
 
@@ -57,7 +58,6 @@ String.prototype.format = function() {
 			<div class="col-md-3 col-md-offset-2 font-12">
 				<a href="/user/logout">LOGOUT</a>
 			</div>
-			
 			<c:if test="${user.auth == 1}">
 				<div class="col-md-5 font-12">
 					<a href="/admin/manage">MANAGE</a>
@@ -95,6 +95,7 @@ String.prototype.format = function() {
 		</div>
 	</c:forEach>
 	<form method="get" action = "${pageContext.request.contextPath }/product/search">
+		<input type = "hidden" value = "name" name = "searchType">
 		<div class="row ma-bo-50 ma-to-30">
 			<div class="col-md-10 col-md-offset-2 form-inline">
 				<div class="form-group">
@@ -110,7 +111,7 @@ String.prototype.format = function() {
 	<!-- search div -->
 	<div class="row ma-bo-50">
 		<div class="col-md-10 col-md-offset-2 font-12">
-			<a href="/notice/noticeList">NOTICE</a>&nbsp; <a href="#">Q&A</a>&nbsp; <a href="/review/reviewList">REVIEW</a>
+			<a href="/notice/noticeList">NOTICE</a>&nbsp;<a href="/qna/qnaList">Q&A</a>&nbsp;&nbsp;<a href="/review/reviewList">REVIEW</a>
 		</div>
 	</div>
 

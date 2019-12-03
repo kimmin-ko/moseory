@@ -18,10 +18,13 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Service
 public class UserServiceImpl implements UserService {
     
@@ -247,6 +250,45 @@ public class UserServiceImpl implements UserService {
 	userDao.updateOrderStateToExchange(order_code, product_detail_no, "구매 확정");
 	
 	userDao.increasePointAndAmount(member_id, point, amount);
+    }
+
+    @Transactional
+    @Override
+    public void registReview(ReviewRegVO vo) {
+	
+	// 사용자의 적립금 500 증가
+	userDao.increaseMemberPoint(vo.getMember_id(), 500);
+	
+	// 리뷰 등록
+	userDao.registReview(vo);
+	
+	// 주문 상태 변경
+	userDao.updateOrderStateToExchange(vo.getOrder_code(), vo.getProduct_detail_no(), "구매 확정 ");
+	
+	// 상품  코드 구하기
+	int product_code = userDao.getProductCode(vo.getProduct_detail_no());
+	
+	// 상품의 리뷰 평점 합계 구하기
+	int sumGrade = 0;
+	List<Integer> gradeList = userDao.getProductReviewGrade(product_code);
+	for(int grade : gradeList) {
+	    sumGrade += grade;
+	}
+	
+	log.info("sumGrade : " + sumGrade);
+	
+	// 상품의 리뷰 개수 구하기
+	int reviewCount = userDao.getReviewCount(product_code);
+	
+	log.info("reviewCount : " + reviewCount);
+	
+	// 상품 평점 구하기
+	double avgGrade = Math.floor( ((double)sumGrade / reviewCount) * 10 ) / 10.0;
+	
+	log.info("avgGrade : " + avgGrade);
+	
+	// 상품의 평점 최신화
+	userDao.updateProductGrade(product_code, avgGrade);
     }
     
     

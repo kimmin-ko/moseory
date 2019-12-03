@@ -1,6 +1,6 @@
 package com.moseory.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,14 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QnAVO {
+public class QnaReplyVO {
 
     private int no;
-    private MemberVO member;
-    private int product_code;
-    private String title;
+    private int qna_no;
+    private String member_id;
     private String content;
-    private LocalDate reg_date;
-    private int hit;
+    private LocalDateTime reg_date;
     
 }

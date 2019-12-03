@@ -27,7 +27,10 @@
 	<!-- KO Datepicker JS -->
 	<script src="/js/bootstrap-datepicker.ko.min.js"></script>
 	
-	<script src="/js/user/orderList.js"></script>
+	<script type="text/javascript">
+		var member_id = '${user.id}';
+	</script>
+	<script type="text/javascript" src="/js/user/orderList.js"></script>
 	
 	<div class="container" style="margin-left: 22%;">
 	
@@ -47,15 +50,16 @@
 	            </div>
 	
 	            <input type="text" class="hasDatepicker form-control" id="startDate" name="startDate"
-	            autocomplete="false" placeholder="-">
+	            autocomplete="off" placeholder="-">
 	            -
 	            <input type="text" class="hasDatepicker form-control" id="endDate" name="endDate"
-	            autocomplete="false" placeholder="-">
+	            autocomplete="off" placeholder="-">
 	
 	            <select class="form-control" id="selectState" name="state">
 	                <option>전체 상태</option>
 	                <option>입금 확인</option>
 	                <option>배송 준비 중</option>
+	                <option>주문 취소</option>
 	                <option>발송 완료</option>
 	                <option>배송 완료</option>
 	                <option>구매 확정</option>
@@ -74,11 +78,11 @@
 	            <table class="table order_list_tbl">
 	                <colgroup>
 	                    <col style="width: 80px;"/> <!-- 이미지 -->
-	                    <col style="width: 250px;"/> <!-- 상품정보 -->
+	                    <col style="width: 230px;"/> <!-- 상품정보 -->
 	                    <col style="width: 100px;"/> <!-- 주문일자 -->
 	                    <col style="width: 170px;"/> <!-- 주문 번호 -->
 	                    <col style="width: 150px;"/> <!-- 주문금액 -->
-	                    <col style="width: 130px;"/> <!-- 주문상태 -->
+	                    <col style="width: 170px;"/> <!-- 주문상태 -->
 	                </colgroup>
 	                <thead>
 	                    <tr>
@@ -94,10 +98,16 @@
 	                	<c:forEach var="order" items="${orderList }" varStatus="idx">
 	                    <tr>
 	                        <td>
-	                            <img class="prod_file_path" src='<c:out value="${order.file_path }" />'>
+	                        	<a href='/product/productInfo?code=<c:out value="${order.product_code }" />'>
+	                            	<img class="prod_file_path" src='<c:out value="${order.file_path }" />'>
+	                            </a>
 	                        </td>
 	                        <td class="prod_info">
-	                            <span class="prod_name"><c:out value="${order.name }" /></span><br><br>
+	                            <span class="prod_name">
+	                            	<a href='/product/productInfo?code=<c:out value="${order.product_code }" />'>
+	                            		<c:out value="${order.name }" />
+	                            	</a>
+                            	</span><br><br>
 	                            <span class="prod_option">
 	                            [옵션:
                             	<c:if test="${order.product_color ne null }"> 
@@ -142,7 +152,8 @@
 			                            	onclick="orderConfirm('${order.code}', '${order.product_detail_no }', '${order.point }', '${order.amount }')">구매 확정</button>
 	                        		</c:when>
 	                        		<c:when test="${order.state == '구매 확정' }">
-			                            <button class="btn btn-default btn-sm">리뷰 작성</button>
+			                            <button class="btn btn-default btn-sm" 
+			                            	onclick="showReviewModal('${order.code}', '${order.product_detail_no}')">리뷰 작성</button>
 	                        		</c:when>
 	                        		<c:otherwise>
 	                        		</c:otherwise>
@@ -190,6 +201,60 @@
 	            				<div class="row">
 	            					<div class="col-md-12">
 	            						<button type="button" class="btn btn-detault exchangeReqBtn">교환 요청</button>
+	            					</div>
+	            				</div>
+	            			</div>
+	            		</div>
+	            	</div>
+	            </div>
+	            
+	            <!-- 리뷰 모달 -->
+	            <div class="modal fade review-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+	            	<div class="modal-dialog">
+	            		<div class="modal-content">
+	            			<div class="modal-header">
+	            				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	            					<span aria-hidden="true">&times;</span>
+	            				</button>
+	            				<p>리뷰 작성</p>
+	            			</div> <!-- header -->
+	            			<div class="modal-body">
+	            				<div class="row body-row">
+	            					<div class="col-md-12 review_prod">
+		            					<div class="col-md-3">
+		            						<img class="review_prod_img" src="/images/1.jpg">
+		            					</div>
+		            					<div class="col-md-9">
+		            						<p class="review_prod_name"></p>
+			            					<p class="review_prod_option"></p>
+		            					</div>
+	            					</div>
+	            					<div class="col-md-3 starLabel">
+	            						<span>별점을 매겨주세요</span>
+	            					</div>
+	            					<div class="col-md-9 starRev">
+										<span class="starR on">1</span>
+										<span class="starR on">2</span>
+										<span class="starR on">3</span>
+										<span class="starR on">4</span>
+										<span class="starR on">5</span>
+	            					</div>
+	            					
+	            					<div class="col-md-12 reviewLabel">
+	            						<p>리뷰 제목을 입력해주세요</p>
+	            						<input type="text" class="form-control review_title" placeholder="제목">
+	            						
+	            						<p>상품에 대한 평가를 남겨주세요</p>
+	            						<textarea class="form-control review_content" rows="5" placeholder="내용"></textarea>	
+	            					</div>
+	            				</div>
+	            			</div> <!-- body -->
+	            			<div class="modal-footer">
+	            				<div class="row">
+	            					<div class="col-md-12">
+	            						<input type="hidden" class="review_pdNo">
+	            						<input type="hidden" class="review_order_code">
+	            						<button type="button" class="btn btn-default review_regist">등록</button>
 	            					</div>
 	            				</div>
 	            			</div>
