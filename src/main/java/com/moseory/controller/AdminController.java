@@ -93,7 +93,8 @@ public class AdminController {
 		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
 		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
 		//썸네일명 = 상품명 + _thumbnail.확장자
-		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
+		String thumbnailName = "thumbnail_" + productVO.getName() + ext;
+
 		System.out.println(thumbnailName);
 		thumbnail = new File(save_path + thumbnailName);
 		getThumbnail.get(0).transferTo(thumbnail);
