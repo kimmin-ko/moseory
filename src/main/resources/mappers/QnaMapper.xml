@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.moseory.mapper.QnaMapper">
+
+	<sql id="criteria">	
+		<trim prefix="(" suffix=") AND" prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							content like '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'W'.toString()">
+							member_id like '%' || #{keyword} || '%'
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<!-- 페이징처리하여 QnA List 조회 -->
+	<select id="getListWithPaging" resultType="QnaVO">
+	SELECT
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	FROM
+	    (SELECT
+	    	/*+ INDEX_ASC(tbl_qna idx_answer) */
+	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	    FROM    
+	        tbl_qna
+	    WHERE
+	    	<include refid="criteria"></include>
+	<![CDATA[
+	        rownum <= #{pageNum} * #{amount})
+	WHERE
+	    rn > (#{pageNum} - 1) * #{amount}
+	]]>
+	</select>
+	
+	<!-- QnA 개수 -->
+	<select id="getQnaCount" resultType="int">
+	SELECT
+		count(*)
+	FROM
+		tbl_qna
+	WHERE
+		<include refid="criteria"></include>
+		no > 0
+	</select>
+	
+	<!-- QnA 원글 등록 -->
+	<insert id="insertQna">
+	INSERT INTO tbl_qna(no, member_id, product_code, title, content, ref, secret)
+	VALUES(seq_qna_no.nextval, #{member_id}, #{product_code}, #{title}, #{content}, seq_qna_no.currval, #{secret})
+	</insert>
+	
+	<!-- QnA 답글 등록 전 그룹 step 증가 -->
+	<update id="increaseGroupStep">
+	UPDATE
+	    tbl_qna
+	SET
+	    step = step + 1
+	WHERE
+	    ref = #{ref} AND step > #{step}
+	</update>
+	
+	<!-- QnA 답글 등록 -->
+	<insert id="insertQnaAnswer">
+	INSERT INTO tbl_qna(no, member_id, product_code, title, content, ref, depth, step, pno, secret)
+	VALUES(seq_qna_no.nextval, #{member_id}, #{product_code}, #{title}, #{content}, #{ref}, #{depth}, #{step}, #{pno}, #{secret})
+	</insert>
+	
+	<!-- QnA 번호를 이용하여 조회 -->
+	<select id="getQna" resultType="QnaVO">
+	SELECT
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	FROM
+	    tbl_qna
+	WHERE
+	    no = #{no}
+	</select>
+	
+	<!-- QnA 조회수 증가 -->
+	<update id="increaseQnaHit">
+	UPDATE
+	    tbl_qna
+	SET
+	    hit = hit + 1
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- QnA 삭제 -->
+	<delete id="deleteQna">
+	DELETE FROM
+	    tbl_qna
+	WHERE
+	    no = #{no}
+	</delete>
+	
+	<!-- QnA 수정 -->
+	<update id="updateQna">
+	UPDATE
+	    tbl_qna
+	SET
+	    title = #{title},
+	    content = #{content},
+	    secret = #{secret}
+	WHERE
+	    no = #{no}
+	</update>
+	
+	<!-- QnA의 모든 Reply 삭제 -->
+	<delete id="deleteAllReplyForQna">
+	DELETE FROM
+	    tbl_qna_reply
+	WHERE
+	    qna_no = #{qna_no}
+	</delete>
+	
+	<!-- QnA Reply 등록 -->
+	<insert id="insertReply">
+	INSERT INTO tbl_qna_reply(no, qna_no, member_id, content)
+	VALUES (seq_qna_reply.nextval, #{qna_no}, #{member_id}, #{content})
+	</insert>
+	
+	<!-- QnA Reply 조회 -->
+	<select id="getReplyList" resultType="QnaReplyVO">
+	SELECT
+		no, qna_no, member_id, content, reg_date
+	FROM
+		tbl_qna_reply
+	WHERE
+		qna_no = #{qna_no}
+	ORDER BY
+		no desc
+	</select>
+	
+	<!-- QnA Reply 삭제 -->
+	<delete id="deleteReply">
+	DELETE FROM
+	    tbl_qna_reply
+	WHERE
+	    no = #{no}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

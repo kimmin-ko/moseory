@@ -15,7 +15,8 @@
 		
 		<typeAlias alias="NoticeVO" type="com.moseory.domain.NoticeVO" />
 		<typeAlias alias="ReviewVO" type="com.moseory.domain.ReviewVO" />
-		<typeAlias alias="QnAVO" type="com.moseory.domain.QnAVO" />
+		<typeAlias alias="QnaVO" type="com.moseory.domain.QnaVO" />
+		<typeAlias alias="QnaReplyVO" type="com.moseory.domain.QnaReplyVO" />
 		
 		<typeAlias alias="CartVO" type="com.moseory.domain.CartVO" />
 		<typeAlias alias="WishListVO" type="com.moseory.domain.WishListVO" />
@@ -24,6 +25,7 @@
 		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
 		<typeAlias alias="productVO" type="com.moseory.domain.ProductVO" />
 		<typeAlias alias="productdetailVO" type="com.moseory.domain.ProductDetailVO" />
+		<typeAlias alias = "productFileVO" type = "com.moseory.domain.ProductFileVO"/>
 		
 		<typeAlias alias="OrderVO" type="com.moseory.domain.OrderVO"/>
 		<typeAlias alias="OrderDetailVO" type="com.moseory.domain.OrderDetailVO"/>

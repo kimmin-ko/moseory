@@ -12,7 +12,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
@@ -96,7 +96,7 @@ public class ProductDaoImpl implements ProductDao{
 	}
 	
 	@Override
-	public List<QnAVO> getQnA(int product_code) {
+	public List<QnaVO> getQnA(int product_code) {
 	    return sqlSession.selectList("product.getQnA", product_code);
 	}
 
@@ -127,8 +127,21 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, String> param) {
+	public List<ProductVO> getSearchList(Map<String, Object> param) {
 		return sqlSession.selectList("product.getSearchList",param);
+	}
+
+	@Override
+	public int getHighCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getHighCateCode",keyword);
+	}
+	@Override
+	public int getLowCateCode(String keyword) {
+		return  sqlSession.selectOne("AdminMapper.getLowCateCode",keyword);
+	}
+	@Override
+	public int getSearchCount(Map<String, Object> param) {
+		return sqlSession.selectOne("product.getSearchCount",param);
 	}
 	
 	

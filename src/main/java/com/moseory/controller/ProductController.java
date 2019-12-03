@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,10 +26,11 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnAVO;
+import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
+import com.moseory.util.PagingUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -46,7 +48,7 @@ public class ProductController {
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
 			List <ProductVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
-			for(ProductVO pVO : productVO) System.out.println(pVO);
+			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
 			String lowCode = req.getParameter("lowCode");
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
@@ -57,7 +59,7 @@ public class ProductController {
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
-		for(ProductVO bests : bestProducts)  System.out.println(bests);
+		//for(ProductVO bests : bestProducts)  System.out.println(bests);
 		model.addAttribute("bestProducts", bestProducts);
 		model.addAttribute("highCate", highCate);
 		model.addAttribute("lowCate", lowCate);
@@ -113,7 +115,7 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		List<QnAVO> qnaList = productService.getQnA(code);
+		List<QnaVO> qnaList = productService.getQnA(code);
 		model.addAttribute("qnaList", qnaList);
 		
 		return "product/productInfo";
@@ -226,22 +228,67 @@ public class ProductController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@RequestParam(defaultValue = "") String searchType,
+	public String search(@RequestParam(defaultValue = "name") String searchType,
 			@RequestParam String keyword,
 			@RequestParam(defaultValue = "") String exceptkeyword,
 			@RequestParam(defaultValue = "") String lowestprice,
 			@RequestParam(defaultValue = "") String highestprice,
-			@RequestParam(defaultValue = "") String orderby) {
-		Map<String, String> param = new HashMap<>();
+			@RequestParam(defaultValue = "") String orderby,
+			@RequestParam(defaultValue = "1") int curPage,
+			Model model) {
+		Map<String, Object> param = new HashMap<>();
 		param.put("searchType", searchType);
 		param.put("keyword", keyword);
 		param.put("exceptkeyword", exceptkeyword);
 		param.put("lowestprice", lowestprice);
 		param.put("highestprice", highestprice);
 		param.put("orderby", orderby);
-		
-		
-//		List <ProductVO> list = productService.getSearchList(param);
+		model.addAttribute("param", param);
+		PagingUtil pagingUtil;
+		int totalCnt = 0;
+		if(searchType.equals("name")) {
+			try {
+				totalCnt = productService.getSearchCount(param);
+				pagingUtil = new PagingUtil(totalCnt, curPage);
+				param.put("start", pagingUtil.getStart());
+				param.put("finish", pagingUtil.getFinish());
+				
+				List <ProductVO> resultProduct = productService.getSearchList(param);
+				model.addAttribute("resultProduct", resultProduct);
+				model.addAttribute("resultCount", totalCnt);
+				model.addAttribute("paging", pagingUtil);
+			}catch(NullPointerException e) {
+			}
+			
+		}else if(searchType.equals("high_code")) {
+			try {
+				System.out.println("Asdfdfsafads");
+				keyword = Integer.toString(productService.getHighCateCode(keyword));
+				param.put("keyword", keyword);
+				totalCnt = productService.getSearchCount(param);
+				pagingUtil = new PagingUtil(totalCnt, curPage);
+				param.put("start", pagingUtil.getStart());
+				param.put("finish", pagingUtil.getFinish());
+				
+				List <ProductVO> resultProduct = productService.getSearchList(param);
+				model.addAttribute("resultProduct", resultProduct);
+				model.addAttribute("resultCount", totalCnt);
+				model.addAttribute("paging", pagingUtil);
+			}catch(NullPointerException e) {
+			}
+		}else if(searchType.equals("low_code")) {
+			keyword = Integer.toString(productService.getLowCateCode(keyword));
+			param.put("keyword", keyword);
+			totalCnt = productService.getSearchCount(param);
+			pagingUtil = new PagingUtil(totalCnt, curPage);
+			param.put("start", pagingUtil.getStart());
+			param.put("finish", pagingUtil.getFinish());
+			
+			List <ProductVO> resultProduct = productService.getSearchList(param);
+			model.addAttribute("resultProduct", resultProduct);
+			model.addAttribute("resultCount", totalCnt);
+			model.addAttribute("paging", pagingUtil);
+		}
 		return "product/search";
 	}
 	

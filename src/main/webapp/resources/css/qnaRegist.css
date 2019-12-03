@@ -1,0 +1,33 @@
+.reg_qna_header {
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.reg_qna_header hr {
+    margin: 0;
+    color: gray;
+}
+
+.reg_qna_table {
+    font-size: 12px;
+}
+
+.reg_qna_table tr td {
+    vertical-align: middle;
+}
+
+.title {
+    width: 300px;
+    height: 30px;
+    font-size: 12px;
+}
+
+.reg_btn {
+    background-color: black;
+    color: white;
+}
+
+.reg_qna_footer {
+    margin-bottom: 150px;
+    text-align: center;
+}

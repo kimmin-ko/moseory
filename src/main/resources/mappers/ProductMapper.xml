@@ -16,8 +16,6 @@
 			0, <!-- sale_count -->
 			0, <!-- grade -->
 			0,<!-- wish_count -->
-			#{file_path},
-			#{file_name},
 			#{product_comment}
 		)
 	</insert>
@@ -57,7 +55,7 @@
 	<!--상품 코드로 정보 조회 -->
 	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
-		code, name, high_code, low_code, price, sale_count, grade, wish_count, file_path, file_name, product_comment
+		code, name, high_code, low_code, price, sale_count, grade, wish_count, product_comment
 	FROM
 		tbl_product
 	WHERE
@@ -147,9 +145,10 @@
 	SELECT
     	count(*)
 	FROM
-	    tbl_review r left outer join tbl_product_detail pd on r.product_detail_no = pd.no
+	    tbl_review r, tbl_product_detail pd
 	WHERE 
-	    product_code = #{product_code}
+	    r.product_detail_no = pd.no
+	    AND pd.product_code = #{product_code}
 	</select>
 	
 	<!-- 해당 상품의 문의글 개수 조회 -->
@@ -188,12 +187,12 @@
 	<select id="getReview" resultMap="reviewMap">
 	<![CDATA[
 	SELECT 
-	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.file_path, r.file_name, r.recommend, r.grade,
+	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, p.file_path, r.recommend, r.grade,
 	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
 	FROM
 	    tbl_member m, 
 	    (SELECT 
-	        rownum, no, member_id, title, content, reg_date, hit, file_path, file_name, product_detail_no, recommend, grade 
+	        rownum, no, member_id, title, content, reg_date, hit, product_detail_no, recommend, grade 
 	     FROM
 	        tbl_review
 	     ORDER BY
@@ -213,10 +212,11 @@
 				</when>
 			</choose>
 	<![CDATA[
-	     ) r, tbl_product_detail pd
+	     ) r, tbl_product_detail pd, tbl_product p
 	WHERE
-	    r.product_detail_no = pd.no 
+	    r.product_detail_no = pd.no
 	    AND m.id = r.member_id
+	    AND pd.product_code = p.code
 	    AND pd.product_code = #{product_code}
 	    AND rownum <= #{limit}
 	]]>
@@ -336,13 +336,68 @@
 	
 	
 	<select id="getSearchList" parameterType="map" resultType="productVO">
-		select * from (
+	select * from (
+		select rownum as rn, A.* from  (
 			select * from tbl_product
-				where ${searchType} like '%'||#{searchType}||'%'
-					order by ${orderby} desc
-		)
+				where ${searchType} like '%'||#{keyword}||'%' 
+							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
+								and 
+								${searchType} not like '%'||#{exceptkeyword}||'%'
+							</if>
+						<if test = "orderby != null and orderby != ''">
+							order by #{orderby} desc
+						</if>
+						)A
+				<choose>
+					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
+				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+					</when>
+					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
+						<![CDATA[where price >= #{lowestprice}]]> 
+					</when>
+					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
+				        <![CDATA[where price <= #{highestprice}]]> 
+					</when>
+				</choose>
+				) where rn between #{start} and #{finish}
 	</select>
-
+	<select id="getSearchCount" parameterType="map" resultType = "int">
+		select count(*) from  (
+			select * from tbl_product
+				where ${searchType} like '%'||#{keyword}||'%' 
+							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
+								and 
+								${searchType} not like '%'||#{exceptkeyword}||'%'
+							</if>
+						<if test = "orderby != null and orderby != ''">
+							order by #{orderby} desc
+						</if>
+						)
+				<choose>
+					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
+				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+					</when>
+					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
+						<![CDATA[where price >= #{lowestprice}]]> 
+					</when>
+					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
+				        <![CDATA[where price <= #{highestprice}]]> 
+					</when>
+				</choose>
+	</select>
+	
+	<insert id="saveFile" parameterType="map">
+		insert into tbl_product_file values(
+			seq_product_file.nextval,
+			#{product_code},
+			#{thumbnail_name},
+			#{file_path},
+			#{file_name}
+		)
+		 
+	</insert>
+	
+	
 </mapper>
 
 

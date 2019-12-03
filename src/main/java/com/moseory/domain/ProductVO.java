@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductVO {
-    
+    	// product
 	private int code;
 	private String name;
 	@NumberFormat(pattern = "#,###,###")
 	private int price;
 	private int high_code, low_code, sale_count, wish_count;
-	private String file_path, file_name, product_comment;
+	private String product_comment;
 	private double grade;
 	
 }

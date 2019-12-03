@@ -132,6 +132,10 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
 		return sqlSession.selectOne("AdminMapper.getOrderInfo", map);
+   }
+
+	public void saveFile(Map<String, Object> fileParam) {
+		sqlSession.insert("product.saveFile", fileParam);
 	}
 
 }

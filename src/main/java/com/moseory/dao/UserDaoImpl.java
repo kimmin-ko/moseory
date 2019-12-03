@@ -15,6 +15,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 
 import lombok.Setter;
@@ -250,7 +251,36 @@ public class UserDaoImpl implements UserDao {
 	
 	sqlSession.update(namespace+".increasePointAndAmount", param);
     }
-    /* ORDER 끝 */
+
+    // 리뷰 등록
+    @Override
+    public void registReview(ReviewRegVO vo) {
+	sqlSession.insert(namespace+".registReview", vo);
+    }
+
+    @Override
+    public List<Integer> getProductReviewGrade(int product_code) {
+	return sqlSession.selectList(namespace+".getProductReviewGrade", product_code);
+    }
+
+    @Override
+    public int getReviewCount(int product_code) {
+	return sqlSession.selectOne(namespace+".getReviewCount", product_code);
+    }
+
+    @Override
+    public int getProductCode(int product_detail_no) {
+	return sqlSession.selectOne(namespace+".getProductCode", product_detail_no);
+    }
+
+    @Override
+    public void updateProductGrade(int product_code, double grade) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("product_code", product_code);
+	param.put("grade", grade);
+	
+	sqlSession.update(namespace+".updateProductGrade", param);
+    }
     
     
 

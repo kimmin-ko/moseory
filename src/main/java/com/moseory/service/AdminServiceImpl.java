@@ -199,6 +199,10 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getOrderInfo(map);
 	}
 
+	public void saveFile(Map<String, Object> fileParam) {
+		adminDao.saveFile(fileParam);
+	}
+
 	
 	
 }	
