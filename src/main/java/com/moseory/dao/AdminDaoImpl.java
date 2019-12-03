@@ -122,6 +122,18 @@ public class AdminDaoImpl implements AdminDao{
 		return sqlSession.selectOne("AdminMapper.getUserCount", map);
 	}
 	@Override
+	public List<HashMap<String, Object>> getOrder(HashMap<String, Object> map) {
+		return sqlSession.selectList("AdminMapper.getOrder", map);
+	}
+	@Override
+	public int getOrderCount(HashMap<String, Object> map) {
+		return sqlSession.selectOne("AdminMapper.getOrderCount", map);
+	}
+	@Override
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
+		return sqlSession.selectOne("AdminMapper.getOrderInfo", map);
+   }
+
 	public void saveFile(Map<String, Object> fileParam) {
 		sqlSession.insert("product.saveFile", fileParam);
 	}

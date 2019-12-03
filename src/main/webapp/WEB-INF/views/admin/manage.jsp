@@ -33,7 +33,7 @@
 						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="/admin/category">카테고리</a></h6>
+						<h6><a href="${pageContext.request.contextPath }/admin/category">카테고리</a></h6>
 						<p>
 							카테고리를 추가, 변경, 삭제<br>
 							할 수 있는 공간입니다.
@@ -43,7 +43,7 @@
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="/admin/userManagement">회원 관리</a></h6>
+						<h6><a href="${pageContext.request.contextPath }/admin/userManagement">회원 관리</a></h6>
 						<p>
 							가입하신 회원들을 모아보고<br>
 							관리하는 공간입니다.
@@ -77,7 +77,7 @@
 						<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">주문 관리</a></h6>
+						<h6><a href="${pageContext.request.contextPath }/admin/orderManageList">주문 관리</a></h6>
 						<p>
 							회원들의 주문 내역을<br>
 							한눈에 관리할 수 있습니다.

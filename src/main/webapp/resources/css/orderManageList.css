@@ -1,0 +1,109 @@
+.order_list_lb {
+    margin-top: 100px;
+    margin-bottom: 80px;
+    text-align: center;
+}
+
+#startDate {
+    margin-left: 10px;
+}
+
+.hasDatepicker {
+    font-size: 12px;
+    display: inline-block;
+    width: 120px;
+    height: 28px;
+}
+
+#selectState {
+    font-size: 12px;
+    display: inline-block;
+    width: 130px;
+    height: auto;
+    margin-left: 10px;
+}
+#searchType{
+	font-size: 12px;
+    display: inline-block;
+    width: 90px;
+    height: auto;
+    margin-left: 10px;
+}
+#commType{
+	font-size: 12px;
+    display: inline-block;
+    width: 90px;
+    height: auto;
+    margin-left: 10px;
+}
+.m-order_list {
+    margin-bottom: 150px;
+}
+
+.order_list_cri {
+    margin-bottom: 15px;
+}
+.order_list_cri table tr td{
+	padding-left:5px;
+}
+.order_list_cri table tr h6{
+	padding-left:5px;
+}
+.order_list_cri table tr td input{
+	font-size: 12px;
+    display: inline-block;
+    width: 130px;
+    height: auto;
+}
+
+.order_list_tbl {
+    font-size: 12px;
+}
+
+.order_list_tbl thead tr {
+    font-size: 13px;
+    border-top: 1px solid black;
+    text-align: center;
+}
+.pagination-div {
+    text-align: center;
+}
+
+.pagination li a {
+    color: black;
+}
+
+.pagination li:hover a {
+    color: black;
+}
+
+.pagination li.active a {
+    background-color: gray;
+    color: black;
+    cursor: pointer;
+}
+
+.pagination li.active:hover a {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.order_list_tbl th{
+	text-align: center;
+}
+.order_list_tbl td{
+	text-align: center;
+}
+.prod_info {
+    text-align: left;
+}
+
+.prod_name {
+    font-weight: bold;
+}
+
+.prod_option {
+	color: gray;
+}
+
