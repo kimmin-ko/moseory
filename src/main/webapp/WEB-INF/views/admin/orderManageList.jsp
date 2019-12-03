@@ -91,7 +91,6 @@
 	            	<button type="submit" class="btn btn-default btn-sm" style="float:right; margin-bottom:10px;"name="searchBtn">검색</button>
 	        	</form>
 	        </div>
-	
 	        <div class="col-md-10 col-md-offset-1 m-order_list">
 	            <table class="table order_list_tbl">
 	                <colgroup>
@@ -116,7 +115,7 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach var="model" items="${orderList}" varStatus="status">
-							<tr onclick="javascript:ref('${model.CODE}');">
+							<tr onclick="javascript:ref('${model.CODE}', '${model.PRODUCT_COLOR}');">
 								<td>${model.RNUM}</td>
 								<td>
 									<fmt:formatDate value="${model.ORDER_DATE}" pattern="YYYY-MM-dd"/>
@@ -130,7 +129,6 @@
 								<td>
 									<span class="prod_name">${model.NAME}</span><br><br>
 	                            	<span class="prod_option">
-	                            		${model.PRODUCT_COLOR}
 	                            		[옵션:
 		                            	<c:if test="${model.PRODUCT_COLOR ne null }"> 
 		                            		<c:if test="${model.PRODUCT_SIZE ne null }"> 
@@ -151,7 +149,9 @@
 									<span class="order_amount"><fmt:formatNumber value="${model.AMOUNT}" />원</span><br>
 	                            	<span class="order_quantity"><fmt:formatNumber value="${model.QUANTITY}" />개</span>
 								</td>
-								<td>${model.STATE}</td>
+								<td>
+									<span class="order_state"><c:out value="${model.STATE}" /></span>
+								</td>
 							</tr>
 						</c:forEach>
 	                </tbody>
@@ -216,8 +216,12 @@ function convertStringToDate(str) {
 	return new Date(str[0], str[1], str[2]);
 } // end convertStringToDate
 
-function ref(code){
-	document.location.href="/admin/getOrderDetail?code="+code;
+function ref(code,color){
+	if(color == null || color == ""){
+		document.location.href="/admin/getOrderDetail?orderCode="+code;
+	}else{
+		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productColor="+color;
+	}
 }
 
 $(document).ready(function(){

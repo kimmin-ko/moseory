@@ -65,4 +65,5 @@ public interface AdminDao {
 	
 	public int getOrderCount(HashMap<String,Object> map);
 	
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map);
 }

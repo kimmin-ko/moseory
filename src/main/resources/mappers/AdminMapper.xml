@@ -296,4 +296,40 @@
 	    </if>
 	</select>
 	
+	<select id="getOrderInfo" parameterType="map" resultType="map">
+		SELECT 
+           O.code,
+           O.member_id,
+	       O.recipient_name,
+	       O.recipient_tel,
+	       O.recipient_phone,
+	       O.recipient_email,
+           D.product_detail_no,
+           O.order_date,
+           O.pay_method,
+           D.state,
+           D.amount, 
+           D.quantity,
+           P.name,
+           PD.product_color,
+           PD.product_size,
+           O.recipient_zipcode,
+           O.recipient_address1,
+           O.recipient_address2,
+           O.recipient_tel,
+           O.recipient_email,
+           O.used_point,
+           O.pay_method,
+           O.message
+        FROM
+           tbl_order O
+        JOIN tbl_order_detail D ON O.code = D.order_code
+        JOIN tbl_product_detail PD ON D.product_detail_no = PD.NO 
+        JOIN tbl_product P ON PD.product_code = P.code
+	    WHERE 1 = 1
+	      AND O.code = #{orderCode}
+	      <if test='productColor != ""'>
+	      	AND PD.product_color = #{productColor}
+	      </if>
+	</select>
 </mapper>

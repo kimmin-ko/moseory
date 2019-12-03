@@ -342,7 +342,7 @@ public class AdminController {
 			model.addAttribute("msg", msg);
 		}
 		model.addAttribute("member", member);
-		return "admin/getUserDetail";
+		return "admin/userDetail";
 	}
 	
 	@PostMapping("modifyUserInfo")
@@ -360,7 +360,7 @@ public class AdminController {
 			String id = (param.get("id") == null) ? "" : param.get("id").toString();
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addAttribute("msg", msg);
-			return "redirect:/admin/getUserDetail";
+			return "redirect:/admin/userDetail";
 		}
 						
 	}
@@ -415,15 +415,26 @@ public class AdminController {
 	}
 	
 	@GetMapping("getOrderDetail")
-	public String getOrderDetail(@RequestParam(required = true, defaultValue = "") String code, HttpServletRequest req, Model model) {
+	public String getOrderDetail(
+			@RequestParam(required = true, defaultValue = "") String orderCode,
+			@RequestParam(required = false, defaultValue = "") String productColor,
+			HttpServletRequest req, Model model) {
 		
 		
 		HashMap<String, Object> map = new HashMap<String,Object>();
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> orderInfo = new HashMap<String,Object>();
 		
+		map.put("orderCode", orderCode);
+		map.put("productColor", productColor);
 		
-		return "admin/getOrderDetail";
+		orderInfo = adminService.getOrderInfo(map);
+		System.out.println(orderInfo.toString());
+		model.addAttribute("orderInfo", orderInfo);
+		
+		return "admin/orderManageDetail";
 	}
 	
 }
 	
+
+

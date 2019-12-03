@@ -129,5 +129,9 @@ public class AdminDaoImpl implements AdminDao{
 	public int getOrderCount(HashMap<String, Object> map) {
 		return sqlSession.selectOne("AdminMapper.getOrderCount", map);
 	}
+	@Override
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
+		return sqlSession.selectOne("AdminMapper.getOrderInfo", map);
+	}
 
 }

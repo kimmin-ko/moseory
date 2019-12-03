@@ -194,6 +194,11 @@ public class AdminServiceImpl implements AdminService{
 		return adminDao.getOrderCount(map);
 	}
 
+	@Override
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
+		return adminDao.getOrderInfo(map);
+	}
+
 	
 	
 }	
