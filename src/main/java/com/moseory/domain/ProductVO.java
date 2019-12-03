@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductVO {
-    
+    	// product
 	private int code;
 	private String name;
 	@NumberFormat(pattern = "#,###,###")
