@@ -185,6 +185,20 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
+	public List<HashMap<String, Object>> getOrder(HashMap<String, Object> map) {
+		return adminDao.getOrder(map);
+	}
+
+	@Override
+	public int getOrderCount(HashMap<String, Object> map) {
+		return adminDao.getOrderCount(map);
+	}
+
+	@Override
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
+		return adminDao.getOrderInfo(map);
+	}
+
 	public void saveFile(Map<String, Object> fileParam) {
 		adminDao.saveFile(fileParam);
 	}

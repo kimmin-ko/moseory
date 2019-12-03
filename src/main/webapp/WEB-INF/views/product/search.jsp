@@ -169,7 +169,7 @@
 																																							keyword=${param.keyword}&
 																																							exceptkeyword=${param.exceptkeyword}&
 																																							lowestprice=${param.lowestprice}&
-																																							highestprice=${param.highestprice}">${pageNumber }">다음</a></li>
+																																							highestprice=${param.highestprice}">${pageNumber }다음</a></li>
 						</c:if>
 						<c:if test = "${paging.curBlock ne paging.blockCnt && paging.blockCnt > 0 }">
 							<li class ="button_end"><a href="${pageContext.request.contextPath }/product/search?
@@ -178,7 +178,7 @@
 																																						keyword=${param.keyword}&
 																																						exceptkeyword=${param.exceptkeyword}&
 																																						lowestprice=${param.lowestprice}&
-																																						highestprice=${param.highestprice}">${pageNumber }">끝</a></li>
+																																						highestprice=${param.highestprice}">${pageNumber }끝</a></li>
 						</c:if>
 					</ul>
 				</nav>

@@ -65,4 +65,9 @@ public interface AdminService {
 
 	void saveFile(Map<String, Object> fileParam);
 	
+	public List<HashMap<String, Object>> getOrder(HashMap<String,Object> map);
+	
+	public int getOrderCount(HashMap<String,Object> map);
+	
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map);
 }

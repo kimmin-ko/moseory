@@ -2,6 +2,7 @@ package com.moseory.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,7 +95,8 @@ public class AdminController {
 		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
 		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
 		//썸네일명 = 상품명 + _thumbnail.확장자
-		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
+		String thumbnailName = "thumbnail_" + productVO.getName() + ext;
+
 		System.out.println(thumbnailName);
 		thumbnail = new File(save_path + thumbnailName);
 		getThumbnail.get(0).transferTo(thumbnail);
@@ -329,10 +332,6 @@ public class AdminController {
 		map.put("start", pagingUtil.getStart());
 		map.put("finish", pagingUtil.getFinish());
 		
-		System.out.println("userCount"+userCount);
-		System.out.println("start"+pagingUtil.getStart());
-		System.out.println("getFinish"+pagingUtil.getFinish());
-		
 		list = adminService.getUser(map);
 		System.out.println(list.toString());
 		model.addAttribute("userList", list);
@@ -364,7 +363,7 @@ public class AdminController {
 			model.addAttribute("msg", msg);
 		}
 		model.addAttribute("member", member);
-		return "admin/getUserDetail";
+		return "admin/userDetail";
 	}
 	
 	@PostMapping("modifyUserInfo")
@@ -382,12 +381,81 @@ public class AdminController {
 			String id = (param.get("id") == null) ? "" : param.get("id").toString();
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addAttribute("msg", msg);
-			return "redirect:/admin/getUserDetail";
+			return "redirect:/admin/userDetail";
 		}
 						
-		
-		
 	}
-
+	
+	@GetMapping("orderManageList")
+	public String orderManageList (
+			@RequestParam(required = false, defaultValue = "") String searchType
+			,@RequestParam(required = false, defaultValue = "") String searchValue
+			,@RequestParam(required = false, defaultValue = "") String commType
+			,@RequestParam(required = false, defaultValue = "") String commValue
+			,@RequestParam(required = false, defaultValue = "") String searchEmail
+			,@RequestParam(required = false, defaultValue = "") String startDate
+			,@RequestParam(required = false, defaultValue = "") String endDate
+			,@RequestParam(required = false, defaultValue = "전체 상태") String state
+			,@RequestParam(defaultValue = "1") int curPage, HttpServletRequest req, Model model) {
+		
+		
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		map.put("searchType", searchType);
+		map.put("searchValue", searchValue);
+		map.put("commType", commType);
+		map.put("commValue", commValue);
+		map.put("searchEmail", searchEmail);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("state", state);
+		
+		int orderCount = adminService.getOrderCount(map);
+		
+		PagingUtil pagingUtil;
+		pagingUtil = new PagingUtil(orderCount, curPage);
+		
+		map.put("start", pagingUtil.getStart());
+		map.put("finish", pagingUtil.getFinish());
+		
+		System.out.println(orderCount);
+		System.out.println(map.toString());
+		
+		
+		list = adminService.getOrder(map);
+		model.addAttribute("orderList", list);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("commType", commType);
+		model.addAttribute("commValue", commValue);
+		model.addAttribute("searchEmail", searchEmail);
+		model.addAttribute("paging",pagingUtil);
+		
+		return "admin/orderManageList";
+	}
+	
+	@GetMapping("getOrderDetail")
+	public String getOrderDetail(
+			@RequestParam(required = true, defaultValue = "") String orderCode,
+			@RequestParam(required = false, defaultValue = "") String productColor,
+			HttpServletRequest req, Model model) {
+		
+		
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> orderInfo = new HashMap<String,Object>();
+		
+		map.put("orderCode", orderCode);
+		map.put("productColor", productColor);
+		
+		orderInfo = adminService.getOrderInfo(map);
+		System.out.println(orderInfo.toString());
+		model.addAttribute("orderInfo", orderInfo);
+		
+		return "admin/orderManageDetail";
+	}
+	
 }
 	
+
+
