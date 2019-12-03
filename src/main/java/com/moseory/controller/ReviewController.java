@@ -27,6 +27,12 @@ public class ReviewController {
 		this.service = service;
 	}
 	
+	@GetMapping("/reviewModal")
+	public String modal() {
+		return "/review/reviewModal";
+	}
+	
+	
 	@GetMapping("/reviewText")
 	public String reviewText() {
 		return "/review/reviewText";
@@ -72,8 +78,7 @@ public class ReviewController {
 		model.addAttribute("reviewPageMaker", new ReviewPageDTO(reviewCri, total));
 	}
 	
-	
-	
+
 	
 	
 }

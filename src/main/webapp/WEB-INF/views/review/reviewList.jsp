@@ -16,9 +16,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>모서리</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/notice.css">
+
 </head>
 
 <body>
@@ -59,9 +61,7 @@
                 });
 
             //게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
-            $(".move")
-                .on(
-                    "click",
+            $(".move").on("click",
                     function(e) {
                         e.preventDefault();
                         actionForm
@@ -72,30 +72,56 @@
                         actionForm.attr("action",
                             "/review/reviewGet");
                         actionForm.submit();
-                    })
-
-           
-
+                    });
+    
             var searchForm = $("#search");
-
+            
             $("#search button").on("click",
                     function(e) {
                         if (!searchForm.find("option:selected").val()) {
                             alert("검색 종류를 선택해 주세요");
                             return false;
                         }
-
                         if (!searchForm.find("input[name='reviewKeyword']").val()) {
                             alert("검색어를 입력하세요");
                             return false;
                         }
-
                         searchForm.find("input[name='reviewPageNum']").val("1");
                         e.preventDefault();
-
                         searchForm.submit();
                     });
-	
+            
+    		$("#createBtn").click(function(){
+    				action = 'create';
+    				type = 'POST';
+    				$("#modal-title").text("리뷰 작성");
+    				$("#reviewModal").modal();
+    				
+    		});
+    		
+    		$("#modalSubmit").click(function(){
+    			
+    			if(action == 'create'){
+    				bno = 0;
+    				url = "/review/reviewText";
+    			}
+    			
+    			var data = {
+    				"no":no,
+    				"title":$("#modalTitle").val(),
+    				"content":$("#modalContent").val()
+    			};
+    			
+    			$.ajax({
+    				url:url,
+    				type : 'POST',
+    				data:data,
+    				success:function(data){$("#reviewModal").modal('toggle');}
+    			
+    			});
+    		});
+    		
+    			
         });
 	</script>
 
@@ -139,10 +165,7 @@
 								<td>${Reviewlist.hit}</td>
 							</tr>
 						</c:forEach>
-					</tbody>
-
-
-
+					</tbody>v
 					</tbody>
 				</table>
 			</div>
@@ -171,6 +194,8 @@
 				</form>
 				<button type="button" class="btn btn-default"
 						onclick="location.href ='/review/reviewText'">글쓰기</button>
+				<button id="createBtn" type="button" class="btn btn-default" data-toggle="modal">write</button>
+	
 			</div>
 			
 
@@ -188,7 +213,7 @@
 
 						<c:forEach var="num" begin="${reviewPageMaker.startPage }"
 							end="${reviewPageMaker.endPage }">
-							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? "active":"" }"><a
+							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? "active" : "" }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
@@ -197,14 +222,11 @@
 								href="${reviewPageMaker.endPage+1 }">다음</a></li>
 						</c:if>
 
-
 					</ul>
 				</nav>
 			</div>
-
-
-
 		</div>
+		
 
 		<!-- row -->
 		<!-- Notice End -->
@@ -218,6 +240,8 @@
 
 
 	</div>
+	
+	
 
 	<!--  Modal 추가 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -240,6 +264,38 @@
 		<!-- Modal-dialog -->
 	</div>
 	<!-- Modal -->
+	
+	<!-- review Modal 추가 -->
+	<div class ="modal fade" id="reviewModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content -->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 id="modal-title" class="modal-title"></h4>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered noticeView-table">
+						<tr>
+							<td class="view_title">제목</td>
+							<td><input class="form-control" id="modalTitle" type="text"></td>
+						</tr>
+						<tr>
+							<td class="view_title">작성자</td>
+							<td>Moseory</td>
+						</tr>
+						<tr>
+							<td colspan="2"><textarea class="form-control" id="modalContent" rows="10" cols="60"></textarea></td>
+						</tr>
+					</table>
+					</div>
+					<div class="modal-footer">
+						<button id="modalSubmit" type="button" class="btn btn-default btn-sm">글쓰기</button>
+						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">취소</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 </body>
 </html>
