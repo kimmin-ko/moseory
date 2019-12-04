@@ -3,6 +3,7 @@ package com.moseory.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
-import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
-import com.moseory.service.ProductService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -27,9 +26,6 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class ProductDaoTest {
-    
-    @Setter(onMethod_ = @Autowired)
-    private ProductService productService;
     
     @Setter(onMethod_ = @Autowired)
     private ProductDao productDao;
@@ -47,13 +43,13 @@ public class ProductDaoTest {
     
     @Test
     public void testGetProductColor() {
-	List<String> colorStr = productDao.getProductColor(34);
+	List<String> colorStr = productDao.getProductColor(81);
 	colorStr.stream().forEach(x -> log.info(x));
     }
     
     @Test
     public void testGetProductSize() {
-	List<ProductDetailVO> sizeStr = productDao.getProductSize(34, "화이트");
+	List<ProductDetailVO> sizeStr = productDao.getProductSize(81, null);
 	sizeStr.stream().forEach(x -> log.info(x));
     }
     
@@ -77,12 +73,6 @@ public class ProductDaoTest {
     }
     
     @Test
-    public void testGetQna() {
-	List<QnaVO> qnaList = productDao.getQnA(34);
-	qnaList.stream().forEach(x -> log.info(x.toString()));
-    }
-    
-    @Test
     public void testModifyRecommend() {
 	ReviewVO review = productDao.getOriginalReview(21);
 	
@@ -103,6 +93,15 @@ public class ProductDaoTest {
 	int result = productDao.getProductDetailNo(param);
 	
 	log.info("result : " + result);
+    }
+    
+    @Test
+    public void testGetProductColorAndStock() {
+	List<Map<String, Object>> colorAndStock = productDao.getProductColorAndStock(82);
+	colorAndStock.forEach(x -> log.info(x.get("PRODUCT_COLOR")));
+	colorAndStock.forEach(x -> log.info(x.get("PRODUCT_STOCK")));
+	log.info(colorAndStock.toString());
+	
     }
     
 }

@@ -16,7 +16,6 @@ import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
-@Repository("productDao")
 public interface ProductDao {
 
 	List<ProductVO> highCateList(int high_code);
@@ -37,6 +36,8 @@ public interface ProductDao {
 	
 	int getProductStock(int product_detail_no);
 	
+	List<Map<String, Object>> getProductColorAndStock(int product_code);
+	
 	int getReviewCount(int product_code);
 
 	List<QnaVO> getListWithPaging(Criteria cri, int product_code);
@@ -46,7 +47,6 @@ public interface ProductDao {
 	List<ReviewVO> getReview(ReviewCri reviewCri);
 	
 	ReviewVO getOriginalReview(int review_no);
-	
 	
 	void increaseRecommend(int review_no);
 	

@@ -140,6 +140,16 @@
 		no = #{product_detail_no}
 	</select>
 	
+	<!-- 색상만 존재하는 상품의 색상과 재고 조회 -->
+	<select id="getProductColorAndStock" resultType="java.util.Map">
+	SELECT
+		product_color, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+	</select>
+	
 	<!-- 해당 상품의 리뷰 개수 조회 -->
 	<select id="getReviewCount" resultType="int">
 	SELECT
@@ -206,7 +216,7 @@
 	<select id="getReview" resultMap="reviewMap">
 	<![CDATA[
 	SELECT 
-	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, p.file_path, r.recommend, r.grade,
+	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.recommend, r.grade,
 	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
 	FROM
 	    tbl_member m, 

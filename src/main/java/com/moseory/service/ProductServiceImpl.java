@@ -17,7 +17,10 @@ import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
-@Service("productService")
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Service
 public class ProductServiceImpl implements ProductService{
 
 	@Autowired
@@ -53,7 +56,11 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
-	    return productDao.getProductSize(product_code, product_color);
+	    if(product_color != null && product_color.equals("null")) {
+		product_color = null;
+	    }
+	    List<ProductDetailVO> product_detail = productDao.getProductSize(product_code, product_color);
+	    return product_detail;
 	}
 	
 	@Override
@@ -134,6 +141,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public int getLowCateCode(String keyword) {
 		return productDao.getLowCateCode(keyword);
+	}
+
+	@Override
+	public List<Map<String, Object>> getProductColorAndStock(int product_code) {
+	    return productDao.getProductColorAndStock(product_code);
 	}
 
 

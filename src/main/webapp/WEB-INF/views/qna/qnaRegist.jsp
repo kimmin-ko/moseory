@@ -1,13 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-response.setHeader("Cache-Control","no-store");  
-response.setHeader("Pragma","no-cache");  
-response.setDateHeader("Expires",0);  
-if (request.getProtocol().equals("HTTP/1.1"))
-        response.setHeader("Cache-Control", "no-cache");
-%>
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -24,8 +16,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			console.log('product_code : ${product_code}');
-			console.log('pageNum : ' + '${cri.pageNum}');
 			
 			// 등록 버튼
 			$('.reg_btn').on('click', function() {

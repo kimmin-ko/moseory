@@ -65,7 +65,6 @@
 		<result property="name" column="name" />
 		<result property="price" column="price" />
 		<result property="wish_count" column="wish_count" />
-		<result property="file_path" column="file_path" />
 	</resultMap>
 	
 	<!-- 관심상품 등록 -->
@@ -107,7 +106,7 @@
 	<!-- 관심상품 리스트 -->
 	<select id="getWishList" resultMap="wishListMap">
 	SELECT
-	    m.id, p.code, p.name, p.price, p.wish_count, p.file_path
+	    m.id, p.code, p.name, p.price, p.wish_count
 	FROM
 	    tbl_wish_list wl, tbl_member m, tbl_product p
 	WHERE
@@ -150,7 +149,7 @@
     <select id="getCartList" resultType="CartVO">
 	SELECT
 	    c.no, c.member_id, c.quantity, pd.no as product_detail_no, pd.product_color, pd.product_size, pd.product_stock,
-    	p.code as product_code, p.name as product_name, p.price as product_price, p.file_path as product_file_path
+    	p.code as product_code, p.name as product_name, p.price as product_price
 	FROM
 	    tbl_cart c 
 	    JOIN tbl_product_detail pd 
@@ -212,7 +211,7 @@
 	<!-- 주문 목록에 추가 하려는 상품 정보 -->
 	<select id="getAddedOrderInfo" resultType="AddedOrderInfoVO">
 	SELECT
-		p.code, p.file_path, p.name, p.price, pd.no as product_detail_no, pd.product_color, pd.product_size 
+		p.code, p.name, p.price, pd.no as product_detail_no, pd.product_color, pd.product_size 
 	FROM
 		tbl_product p join tbl_product_detail pd on p.code = pd.product_code
 	WHERE
@@ -290,7 +289,7 @@
 	<select id="getOrderDetail" resultType="OrderDetailVO">
 	SELECT
 	    od.order_code, od.product_detail_no, od.amount, od.discount, od.point, od.quantity, od.state, p.code as product_code,
-	    p.price as product_price, p.file_path as product_file_path, p.name as product_name, pd.product_color, pd.product_size, pd.product_stock
+	    p.price as product_price, p.name as product_name, pd.product_color, pd.product_size, pd.product_stock
 	FROM
 	    tbl_order_detail od, tbl_product p, tbl_product_detail pd
 	WHERE
@@ -302,7 +301,7 @@
 	<!-- OrderListCri를 이용한 Order List 조회 -->
 	<select id="getOrderList" resultType="OrderListVO">
 	SELECT
-    	p.code as product_code, p.file_path, p.name, pd.product_color, pd.product_size,
+    	p.code as product_code, p.name, pd.product_color, pd.product_size,
 	    pd.no as product_detail_no, o.code, o.order_date, od.state, od.point, od.amount, od.quantity
 	FROM
 	    tbl_product p, tbl_product_detail pd, tbl_order o, tbl_order_detail od
@@ -364,7 +363,7 @@
 	<!-- 교환 모달 주문 정보 -->
 	<select id="getExchangeModalInfo" resultType="OrderListVO">
 	SELECT
-	    p.code as product_code, p.file_path, p.name, pd.product_color, pd.product_size, od.quantity
+	    p.code as product_code, p.name, pd.product_color, pd.product_size, od.quantity
 	FROM
 	    tbl_product p, tbl_product_detail pd, tbl_order_detail od
 	WHERE

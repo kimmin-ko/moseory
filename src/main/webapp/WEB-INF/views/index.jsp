@@ -27,7 +27,7 @@
 				<ul class="prod-list"> <!-- 3개의 상품만 출력 -->
 					<c:forEach var="product" items="${productSaleCount }" begin="0" end="2">
 					<li>
-						<img src=" class="weekly-img">
+						<img src="" class="weekly-img">
 						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out value='${product.code }' />"'>
 							<p><c:out value="${product.name }" /></p>
 							<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>

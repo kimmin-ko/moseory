@@ -117,7 +117,11 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		log.info("product cri : " + cri);
+		
+		// productInfo의 qna는 검색을 사용하지 않기 때문에 tpye을 이용해 
+		// 게시판 이용 후 productInfo 페이지로 이동하도록 설정해준다
+		cri.setType("P");
+		cri.setKeyword(code + "");
 		
 		List<QnaVO> qnaList = productService.getQnA(cri, code);
 		model.addAttribute("qnaList", qnaList);
@@ -149,25 +153,34 @@ public class ProductController {
 	}
 	
 	@GetMapping("/getColor/{code}")
-	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code) {
+	public @ResponseBody ResponseEntity<List<String>> getColor(@PathVariable("code") int product_code) {
 	    
-	    List<String> color = productService.getProductColor(code);
+	    List<String> color = productService.getProductColor(product_code);
 	    
 	    return new ResponseEntity<>(color, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
-			     @PathVariable("color") String color) {
-	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
+	@GetMapping("/getColorAndStock/{code}")
+	public @ResponseBody ResponseEntity<List<Map<String, Object>>> getColorAndStock(@PathVariable("code") int product_code) {
 	    
-	    return productSize != null 
-		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
+	    List<Map<String, Object>> colorAndStock = productService.getProductColorAndStock(product_code);
+	    
+	    return new ResponseEntity<>(colorAndStock, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getSize/{code}/{color}")
+	public @ResponseBody ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
+			     @PathVariable("color") String color) {
+	    
+	    List<ProductDetailVO> productDetail = productService.getProductSize(code, color);
+	    
+	    return productDetail != null 
+		    ? new ResponseEntity<>(productDetail, HttpStatus.OK)
 		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
-	public ResponseEntity<Integer> increaseRecommend(
+	public @ResponseBody ResponseEntity<Integer> increaseRecommend(
 		@PathVariable("review_no") int review_no, @PathVariable("user_id") String user_id, 
 		HttpServletRequest req, HttpServletResponse res) {
 	    boolean isCookie = false;

@@ -7,6 +7,11 @@ $(document).ready(function() {
 		$.removeCookie('qnaY');
 	}
 	
+	function setQnaTopCookie() {
+		var qnaY = $('.qna-header').offset().top;
+		$.cookie('qnaY', qnaY);
+	}
+	
 	var actionForm = $('#actionForm');
 	
 	// 페이지 번호 클릭
@@ -16,8 +21,7 @@ $(document).ready(function() {
 		$('input[name=pageNum]').val($(this).attr('href'));
 		
 		// div qna-header의 y값을 쿠키에 저장
-		var qnaY = $('.qna-header').offset().top;
-		$.cookie('qnaY', qnaY);
+		setQnaTopCookie();
 		
 		actionForm.submit();
 	});
@@ -26,6 +30,9 @@ $(document).ready(function() {
 	$('.title').on('click', function(e) {
 		// a 태그 막기
 		e.preventDefault();
+		
+		// div qna-header의 y값을 쿠키에 저장
+		setQnaTopCookie();
 		
 		// 글 조회를 위한 번호
 		var no = $(this).find('input[name=no]').val();
@@ -56,8 +63,9 @@ $(document).ready(function() {
 	
 	// Q&A 글쓰기 버튼 클릭
 	$('.qna_reg_btn').on('click', function() {
-		var qnaY = $('.qna-header').offset().top;
-		$.cookie('qnaY', qnaY);
+		
+		// div qna-header의 y값을 쿠키에 저장
+		setQnaTopCookie();
 		
 		actionForm.attr('action', '/qna/qnaRegistOnProductInfo');
 		actionForm.submit();

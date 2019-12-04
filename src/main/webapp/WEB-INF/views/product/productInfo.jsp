@@ -14,8 +14,6 @@
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
-<!-- jQuery cookie -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <div class="container" style="margin-left:22%;">
 
@@ -654,6 +652,8 @@
 			<input type="hidden" name="code" value="${product.code }">
 			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
 			<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+			<input type="hidden" name="type" value="${pageMaker.cri.type }">
+			<input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">
 		</form>
 
     </div> <!-- row -->

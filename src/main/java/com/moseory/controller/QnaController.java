@@ -52,7 +52,6 @@ public class QnaController {
     // Q&A 목록
     @GetMapping("/qnaList")
     public void qnaList(@ModelAttribute("cri") Criteria cri, Model model) {
-	log.info("cri : " + cri);
 	model.addAttribute("qnaList", qnaService.getList(cri));
 	model.addAttribute("pageMaker", new PageDTO(cri, qnaService.getQnaCount(cri)));
     }
@@ -77,8 +76,6 @@ public class QnaController {
     @PostMapping("/qnaRegist")
     public String qnaRegistPost(@ModelAttribute("cri") Criteria cri, @ModelAttribute QnaVO qnaVO, RedirectAttributes rttr) {
 	
-	log.info("Post qnaRegist qnaVO :  " + qnaVO);
-	
 	qnaService.registQna(qnaVO);
 	
 	rttr.addAttribute("pageNum", cri.getPageNum());
@@ -98,8 +95,6 @@ public class QnaController {
     @GetMapping("/qnaGet")
     public String qnaGet(@RequestParam int no, @ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest req, HttpServletResponse res) {
 	
-	log.info(cri);
-	
 	MemberVO member = getMember(req);
 	
 	String user_id = "";
@@ -109,8 +104,6 @@ public class QnaController {
 	else
 	    user_id = "u";
 		
-	log.info(user_id);
-	
 	// 조회수 증가 & 조회수 중복 방지
 	Cookie[] cookies = req.getCookies();
 	
@@ -151,7 +144,11 @@ public class QnaController {
 	rttr.addAttribute("type", cri.getType());
 	rttr.addAttribute("keyword", cri.getKeyword());
 	
-	return "redirect:/qna/qnaList";
+	if(cri.getType().equals("P")) {
+	    return "redirect:/product/productInfo?code=" + cri.getKeyword();
+	} else {
+	    return "redirect:/qna/qnaList";
+	}
     }
     
     // QnA 수정 페이지
@@ -165,9 +162,6 @@ public class QnaController {
     // QnA 수정
     @PostMapping("/qnaModify")
     public String qnaModifyPost(@ModelAttribute("qnaVO") QnaVO qnaVO, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
-	log.info(qnaVO);
-	log.info(cri);
-	
 	qnaService.modifyQna(qnaVO);
 	
 	rttr.addFlashAttribute("result", "success_modify");
@@ -177,7 +171,12 @@ public class QnaController {
 	rttr.addAttribute("type", cri.getType());
 	rttr.addAttribute("keyword", cri.getKeyword());
 	
-	return "redirect:/qna/qnaList";
+	if(cri.getType().equals("P")) {
+	    return "redirect:/product/productInfo?code=" + cri.getKeyword();
+	} else {
+	    return "redirect:/qna/qnaList";
+	}
+	
     }
     
     // QnA Answer 등록 페이지
@@ -190,7 +189,10 @@ public class QnaController {
     
     // QnA Answer 등록
     @PostMapping("/qnaAnswerRegist")
-    public String qnaAnswerRegistPost(@ModelAttribute QnaVO qnaVO, @ModelAttribute Criteria cri, RedirectAttributes rttr) {
+    public String qnaAnswerRegistPost(@ModelAttribute QnaVO qnaVO, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
+	
+	log.info("qna answer 등록 type : " + cri.getType());
+	log.info("qna answer 등록 keyword : " + cri.getKeyword());
 	
 	qnaService.registQnaAnswer(qnaVO);
 	
@@ -201,15 +203,17 @@ public class QnaController {
 	rttr.addAttribute("type", cri.getType());
 	rttr.addAttribute("keyword", cri.getKeyword());
 	
-	return "redirect:/qna/qnaList";
+	if(cri.getType().equals("P")) {
+	    return "redirect:/product/productInfo?code=" + cri.getKeyword();
+	} else {
+	    return "redirect:/qna/qnaList";
+	}
     }
     
     // QnA Reply 등록 및 조회
     @PostMapping(value = "/replyRegistAndGet",
 	    produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody ResponseEntity<List<QnaReplyVO>> replyRegistAndGet(@RequestBody QnaReplyVO vo) {
-	
-	log.info("QnaReplyVO : " + vo);
 	
 	return new ResponseEntity<>(qnaService.registAndGetReply(vo), HttpStatus.OK);
     }
@@ -224,8 +228,6 @@ public class QnaController {
     // QnA Reply 삭제
     @PostMapping("/replyDelete")
     public @ResponseBody ResponseEntity<String>  replyDelete(@RequestBody int no) {
-	
-	log.info("reply no : " + no);
 	
 	qnaService.deleteReply(no);
 	
