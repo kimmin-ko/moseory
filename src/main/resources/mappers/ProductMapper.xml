@@ -401,6 +401,14 @@
 		 
 	</insert>
 	
+	<select id="getProductFile" resultType="productFileVO">
+	SELECT
+		*
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+	</select>
 	
 </mapper>
 

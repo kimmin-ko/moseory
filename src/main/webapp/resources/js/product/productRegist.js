@@ -148,24 +148,51 @@ function sendPro(productDetail) {
 } // sendPro
 
 function regist() {
-
+	
+	if(!$('input[name=name]').val()) {
+		alert('상품명을 입력해주세요.');
+		$('input[name=name]').focus();
+	} else if($('select[name=high_code]').val() == '카테고리를 선택해주세요') {
+		alert('상위 카테고리를 선택해주세요.');
+		$('select[name=high_code]').focus();
+	} else if($('select[name=low_code]').val() == '상위 카테고리를 선택해주세요') {
+		alert('하위 카테고리를 선택해주세요.');
+		$('select[name=low_code]').focus();
+	} else if(!$('input[name=price]').val()) {
+		alert('가격을 입력해주세요.');
+		$('input[name=price]').focus();
+	} else if(checkNumber($('input[name=price]').val())) {
+		alert('가격은 숫자만 입력 가능합니다.');
+		$('input[name=price]').focus();
+ 	} else if(!$('.product_stock').val()) {
+		alert('상품 옵션은 필수입니다.');
+		return false;
+	} else if(checkNumber($('.product_stock').val())) {
+		alert('상품 재고는 숫자만 입력 가능합니다.');
+		return false;
+	} else if(!$('#thumbnail').val()) {
+		alert('대표 이미지를 등록해주세요.');
+		$('#thumbnail').focus();
+	} else if(!$('#getImage').val()) {
+		alert('상품 정보 이미지를 등록해주세요.');
+		$('#thumbnail').focus();
+	}
+	
 	// product detail 먼저 전달해서 List에 담아둔다
     detailInfo();
-	$('#registForm').click(function(){
 		
-		var thumbnailCheck = $('#thumbnail').val();
-		var fileCheck = $('#getImage').val();
-		if(thumbnailCheck = '' || fileCheck == ''){
-			alert('사진을 업로드해주세요');
-			return;
-		}else{
-			 // product 정보를 등록한다
-			   $("#registForm").submit();
-		}
-		
-	});
-	
-   
+	// product 정보를 등록한다
+	$("#registForm").submit();
+    
 }
 
-
+// 가격, 재고 유효성 검사
+function checkNumber(data) {
+	var pattern = /[^0-9]/;
+		
+	if(pattern.test(data)) {
+		return true;
+	} else {
+		return false;
+	}
+}

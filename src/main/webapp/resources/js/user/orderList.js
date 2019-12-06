@@ -98,19 +98,24 @@ $(document).ready(function() {
 	// 검색 조건으로 주문 조회
 	$('.getOrderList').on("click", function() {
 		
-		var state = $('select[name=state]').val();
-		var startDate = $('input[name=startDate]').val();
-		var endDate = $('input[name=endDate]').val();
+		var searchForm = $('#searchForm');
 		
-		state = 'state=' + state;
-		if(startDate != '' || startDate != null)
-			startDate = '&startDate=' + startDate;
-		if(endDate != '' || endDate != null)
-			endDate = '&endDate=' + endDate;
-		
-		location.href='/user/orderList?' + state + startDate + endDate;
+		searchForm.submit();
 		
 	}); // end getOrderList
+	
+	// 페이지 변경하여 주문 내역 조회
+	$('.paginate_button a').on('click', function(e) {
+		
+		e.preventDefault();
+		
+		var searchForm = $('#searchForm');
+		
+		$('input[name=pageNum]').val($(this).attr('href'));
+		
+		searchForm.submit();
+		
+	}); // end page button
 	
 	// 리뷰 등록할 때 평점, 5 초기화
 	var grade = new Number(5);

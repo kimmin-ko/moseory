@@ -186,6 +186,11 @@ public class UserDaoImpl implements UserDao {
     public List<OrderListVO> getOrderList(OrderListCri cri) {
 	return sqlSession.selectList(namespace+".getOrderList", cri);
     }
+    
+    @Override
+    public int getOrderListCount(OrderListCri cri) {
+	return sqlSession.selectOne(namespace+".getOrderListCount", cri);
+    }
 
     @Override
     public void updateOrderState(String order_code, String state) {
@@ -281,6 +286,8 @@ public class UserDaoImpl implements UserDao {
 	
 	sqlSession.update(namespace+".updateProductGrade", param);
     }
+
+   
     
     
 

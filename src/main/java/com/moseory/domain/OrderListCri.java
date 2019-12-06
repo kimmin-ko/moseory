@@ -6,10 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class OrderListCri {
 
@@ -19,4 +17,17 @@ public class OrderListCri {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private String state;
+    
+    private int pageNum; // 페이지 번호
+    private int amount; // 한 페이지당 보여지는 Data 수
+    
+    public OrderListCri() {
+	this(1, 10);
+    }
+    
+    public OrderListCri(int pageNum, int amount) {
+	this.pageNum = pageNum;
+	this.amount = amount;
+    }
+    
 }

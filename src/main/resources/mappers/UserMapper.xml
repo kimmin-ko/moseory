@@ -300,11 +300,38 @@
 	
 	<!-- OrderListCri를 이용한 Order List 조회 -->
 	<select id="getOrderList" resultType="OrderListVO">
-	SELECT
-    	p.code as product_code, p.name, pd.product_color, pd.product_size,
-	    pd.no as product_detail_no, o.code, o.order_date, od.state, od.point, od.amount, od.quantity
+	SELECT *
 	FROM
-	    tbl_product p, tbl_product_detail pd, tbl_order o, tbl_order_detail od
+		(SELECT
+	    	ROW_NUMBER() OVER (ORDER BY o.code DESC, p.code ASC) as rn, p.code as product_code, p.name, pd.product_color, pd.product_size,
+		    pd.no as product_detail_no, o.code, o.order_date, od.state, od.point, od.amount, od.quantity
+		FROM
+		    tbl_product p, tbl_product_detail pd, tbl_order o, tbl_order_detail od
+		WHERE
+		    p.code = pd.product_code
+		    AND pd.no = od.product_detail_no
+		    AND o.code = od.order_code
+		    AND o.member_id = (SELECT id FROM tbl_member WHERE id = #{member_id})
+		    <if test="startDate != null and endDate != null">
+	   			AND to_char(order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
+		    </if>
+		    <if test="state != '전체 상태'">
+			    AND od.state LIKE '%' || #{state} || '%'
+		    </if>
+		    )
+	WHERE
+		rn BETWEEN 1 + (#{pageNum} - 1) * #{amount} AND #{pageNum} * #{amount}
+	</select>
+	
+	<!-- OrderListCri를 이용한 OrderList의 개수 조회 -->
+	<select id="getOrderListCount" resultType="int">
+	SELECT
+		count(*)
+	FROM
+	    tbl_product p, 
+	    tbl_product_detail pd, 
+	    tbl_order o,
+	    tbl_order_detail od
 	WHERE
 	    p.code = pd.product_code
 	    AND pd.no = od.product_detail_no
@@ -316,8 +343,6 @@
 	    <if test="state != '전체 상태'">
 		    AND od.state LIKE '%' || #{state} || '%'
 	    </if>
-	ORDER BY
-	    o.code desc
 	</select>
 	
 	<!-- 주문 취소 Start -->

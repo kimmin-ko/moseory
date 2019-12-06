@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import com.moseory.dao.HomeDao;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.ProductVO;
+import com.moseory.util.ImageUtil;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Service
 public class HomeServiceImpl implements HomeService {
 
@@ -24,7 +27,12 @@ public class HomeServiceImpl implements HomeService {
 
     @Override
     public List<ProductVO> readProductNew() {
-	return homeDao.getProductNew();
+	List<ProductVO> product_list = homeDao.getProductNew(); 
+	for(ProductVO vo : product_list) {
+	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	    log.info("가공된 file_path : " + vo.getFile_path());
+	}
+	return product_list;
     }
 
     @Override
