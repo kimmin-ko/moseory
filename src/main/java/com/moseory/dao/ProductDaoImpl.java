@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -27,7 +28,7 @@ public class ProductDaoImpl implements ProductDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<ProductVO> highCateList(int high_code) {
+	public List<ProductAndFileVO> highCateList(int high_code) {
 		return sqlSession.selectList("product.highCateList", high_code);
 	}
 

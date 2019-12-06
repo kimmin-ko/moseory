@@ -90,9 +90,6 @@ public class AdminController {
 		ServletContext context = request.getSession().getServletContext();
 		String save_path = context.getRealPath("resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/");
 		
-		String resource_path = resourceLoader.getResource("resources/images/").getURL().getPath();
-		log.info("resource_path : " + resource_path);
-		
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
 		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
@@ -126,8 +123,8 @@ public class AdminController {
 			UUID random = UUID.randomUUID();
 			String fileName = random.toString() + "_" + files.get(i).getOriginalFilename();
 			file_name = file_name + "@" + fileName;
-			System.out.println("file_name = " + file_name);
-			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+//			System.out.println("file_name = " + file_name);
+//			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
 			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
@@ -264,7 +261,6 @@ public class AdminController {
 		else {	//검색 하면
 			if(searchType.equals("name")) {
 				try {
-					
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
@@ -272,12 +268,9 @@ public class AdminController {
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
 				}
-
-
 			}
 			else if(searchType.equals("high_code")) {
 				try {
-					keyword = Integer.toString(adminService.getHighCateCode(keyword));
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);

@@ -130,7 +130,7 @@
 						</tr>
 					</table>
 					<div class="regist_btn_area text-center">
-						<button type="button" class="btn btn-primary btn-md" onclick="regist()">등록</button> 
+						<button type="button" class="btn btn-primary btn-md" onclick="regist()" id = "formbtn">등록</button> 
 						<button type="button" class="btn btn-default btn-md">취소</button>
 					</div>
 

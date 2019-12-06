@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -16,7 +17,7 @@ import com.moseory.domain.ReviewVO;
 
 public interface ProductService {
 
-	List<ProductVO> highCateList(int high_code);
+	List<ProductAndFileVO> highCateList(int high_code);
 	
 	List<ProductVO> highCateListDetail(int high_code, String lowCode);
 

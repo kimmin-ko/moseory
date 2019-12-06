@@ -39,9 +39,16 @@
 	</insert>
 	
 	<!-- 상위카테고리 상품리스트 -->
-	<select id="highCateList" parameterType="int" resultType = "productVO">
-		select * from tbl_product
+	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
+		<!-- select * from tbl_product
 			where high_code = #{high_code}
+			 -->
+			select P.code, P.name, P.price, P.high_code, P.low_code, P.sale_count,
+						P.wish_count, P.product_comment, P.grade, 
+						F.fileno, F.product_code, F.thumbnail_name,
+						F.file_path, F.file_name 
+				from tbl_product P, tbl_product_file F
+        where P.high_code = #{high_code} and P.code = F.product_code
 	</select>
 	
 	<!-- 상위카테고리 상품리스트 세부목록-->
@@ -299,11 +306,25 @@
 	
 	<!-- 상품 검색된 리스트 -->
 	<select id="getListOnSearch" parameterType="map" resultType="productVO">
-		select * from (
+		<!-- select * from (
 			select A.*, rownum as rn from tbl_product A
 				where ${searchType} like '%'||#{keyword}||'%'
 			order by code)
-		where rn between #{start} and #{finish}
+		where rn between #{start} and #{finish} -->
+		 select * from (
+			select * from tbl_product where ${searchType} = (
+													select  code from tbl_high_cate
+														where name like '%'||#{keyword}||'%' or kname like '%'||#{keyword}||'%')
+													)
+		)where rownum between 1 and 10
+		
+		<!-- 
+			select * from (
+    select * from tbl_product 
+        where high_code = (select code from  tbl_high_cate
+    where name like '셔츠%' or kname like '셔츠%')
+) where rownum between 1 and 10;
+		 -->
 	</select>
 	
 	<select id="getHighCate" parameterType="int" resultType="HighCateVO">

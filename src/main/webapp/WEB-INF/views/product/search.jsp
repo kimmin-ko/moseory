@@ -85,8 +85,8 @@
 										<option>::: 기준 선택 :::</option>
 										<option <c:if test = "${param.orderby == 'code' }">selected</c:if> value = "code">상품코드 순</option>
 										<option <c:if test = "${param.orderby == 'name' }">selected</c:if> value = "name">상품명 순</option>
-										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">낮은가격 순</option>
-										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">높은가격 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price asc">낮은가격 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price desc">높은가격 순</option>
 										<option <c:if test = "${param.orderby == 'wish_count' }">selected</c:if> value = "wish_count">인기 순</option>
 									</select>
 								</td>

@@ -67,14 +67,7 @@ public class AdminDaoImpl implements AdminDao{
    public int deleteChildCategory(@Param(value = "codes") ArrayList<Integer> codes) {
       return sqlSession.delete("AdminMapper.deleteChildCategory", codes);
    }
-   @Override
-   public List<ProductVO> getProductList(int start, int finish) {
-      Map<String, Integer> param = new HashMap<String, Integer>();
-      param.put("start", start);
-      param.put("finish", finish);
-      System.out.println(sqlSession.selectList("product.getProductList",param));
-      return sqlSession.selectList("product.getProductList",param);
-   }
+   
    @Override
    public int getProductCount() {
       return sqlSession.selectOne("product.getProductCount");
@@ -82,20 +75,31 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public int getProductCount(String searchType, String keyword) {
 		Map<String, Object> param = new HashMap<String, Object>();
+		keyword = Integer.toString(sqlSession.selectOne("AdminMapper.getHighCateCode",keyword));
+
 		param.put("searchType", searchType);
 		param.put("keyword", keyword);
 		
 		return sqlSession.selectOne("product.getProductCount2", param);
 	}
+	
+	@Override
+	public List<ProductVO> getProductList(int start, int finish) {
+		Map<String, Integer> param = new HashMap<String, Integer>();
+		param.put("start", start);
+		param.put("finish", finish);
+		return sqlSession.selectList("product.getProductList",param);
+		}
    @Override
    public List<ProductVO> getProductList(int start, int finish, String searchType, String keyword) {
       Map<String, Object> param = new HashMap<String, Object>();
-      param.put("start", start);
-      param.put("finish", finish);
-      param.put("searchType", searchType);
-      param.put("keyword", keyword);
+		keyword = Integer.toString(sqlSession.selectOne("AdminMapper.getHighCateCode",keyword));
+		param.put("start", start);
+		param.put("finish", finish);
+		param.put("searchType", searchType);
+		param.put("keyword", keyword);
       
-      return sqlSession.selectList("product.getListOnSearch", param);
+		return sqlSession.selectList("product.getListOnSearch", param);
    }
 	@Override
 	public int getHighCateCode(String keyword) {

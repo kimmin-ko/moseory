@@ -30,8 +30,8 @@
 							</div>
 							<div class = "thumnail">
 								<a href = "${pageContext.request.contextPath }/product/productInfo?code=${bests.code }">
-									<img src="/images/1.jpg" class="weekly-img">
-								</a>
+									<img src="" class="weekly-img">
+								</a> 
 							</div>
 							<div class = "desc">
 								<p>${bests.name }</p>
@@ -70,12 +70,16 @@
 				
 				<c:forEach var = "product" items = "${productVO }">
 					<div class="col-md-4 prod-desc ma-bo-50">
-						<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}"><img src="/images/001.gif"></a>
+						<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}">
+							<img src="/images/001.gif"></a>
+							<img src = "/images/BAG/가방/btbgfdca/thumbnail_btbgfdca.jpg" width = "300px" height = "300px">
+							<img src = "${product.file_path }${product.thumbnail_name}" width = "300px" height = "300px">
+							<img src = "/resources/images/TOP/긴팔/tttasevrf/thumbnail_tttasevrf.jpg">
 						<p>
 							<a href = "${pageContext.request.contextPath }/product/productInfo?code=${product.code}">${product.name }</a>
 						</p>
 						<p>${product.price }</p>
-						<p>comment</p>
+						<p>comment</p> 
 					</div>
 				</c:forEach>
 			</div>

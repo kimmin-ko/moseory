@@ -21,6 +21,7 @@
     <div class="row" style="margin-top: 60px; margin-bottom: 150px;">
 
         <div class="col-md-7 product_image">
+            <img class="prod-img" src="">
             <%-- <img class="prod-img" src="<c:out value='${product.file_path }' />"> --%>
 
             <ul class="prod-info-list">

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.PageDTO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
@@ -48,7 +49,7 @@ public class ProductController {
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
-			List <ProductVO> productVO = productService.highCateList(high_code);
+			List <ProductAndFileVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
 			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
@@ -56,7 +57,7 @@ public class ProductController {
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
 			model.addAttribute("productVO",productVO);
 		}
-		
+		 
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
@@ -72,6 +73,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
+	public String productInfo(@RequestParam int code, Model model) {
 	public String productInfo(@RequestParam int code, @ModelAttribute Criteria cri, Model model) {
 		// 상품 조회
 		ProductVO productVO = productService.getProduct(code);
