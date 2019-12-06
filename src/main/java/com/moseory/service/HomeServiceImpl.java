@@ -22,7 +22,11 @@ public class HomeServiceImpl implements HomeService {
     
     @Override
     public List<ProductVO> readProductSaleCount() {
-	return homeDao.getProductSaleCount();
+	List<ProductVO> product_list = homeDao.getProductSaleCount(); 
+	for(ProductVO vo : product_list) {
+	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	}
+	return product_list;
     }
 
     @Override
@@ -30,7 +34,6 @@ public class HomeServiceImpl implements HomeService {
 	List<ProductVO> product_list = homeDao.getProductNew(); 
 	for(ProductVO vo : product_list) {
 	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
-	    log.info("가공된 file_path : " + vo.getFile_path());
 	}
 	return product_list;
     }

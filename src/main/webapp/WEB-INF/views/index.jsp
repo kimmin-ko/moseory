@@ -61,7 +61,7 @@
 				<c:forEach var="product" items="${productNew }">
 				<div class="col-md-4 prod-desc ma-bo-50">
 					<a href="/product/productInfo?code=<c:out value='${product.code }' />">
-						<img src='' /></a>
+						<img src='<c:out value="${product.file_path.concat(product.thumbnail_name) }" />' /></a>
 					<p> 
 						<a href="#"><c:out value="${product.name }" /></a>
 					</p>

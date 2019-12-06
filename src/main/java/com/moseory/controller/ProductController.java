@@ -73,7 +73,6 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
-	public String productInfo(@RequestParam int code, Model model) {
 	public String productInfo(@RequestParam int code, @ModelAttribute Criteria cri, Model model) {
 		// 상품 조회
 		ProductVO productVO = productService.getProduct(code);

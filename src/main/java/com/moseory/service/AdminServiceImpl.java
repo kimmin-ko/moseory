@@ -1,6 +1,8 @@
 
 package com.moseory.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,9 @@ import com.moseory.domain.MemberVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
+import lombok.extern.log4j.Log4j;
+
+@Log4j
 @Service("adminService")
 public class AdminServiceImpl implements AdminService{
 
@@ -24,6 +29,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public void product_regist(ProductVO productVO) {
+	    log.info(productVO);
 		adminDao.product_regist(productVO);
 	}
 
@@ -34,6 +40,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public void product_detail_regist(ProductDetailVO productdetailVO) {
+	    	log.info(productdetailVO);
 		adminDao.product_detail_regist(productdetailVO);
 	}
 
