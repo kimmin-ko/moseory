@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductAndFileVO;
@@ -37,13 +38,14 @@ public interface ProductDao {
 	
 	int getReviewCount(int product_code);
 
+	List<QnaVO> getListWithPaging(Criteria cri, int product_code);
+	
 	int getQnaCount(int product_code);
 	
 	List<ReviewVO> getReview(ReviewCri reviewCri);
 	
 	ReviewVO getOriginalReview(int review_no);
 	
-	List<QnaVO> getQnA(int product_code);
 	
 	void increaseRecommend(int review_no);
 	

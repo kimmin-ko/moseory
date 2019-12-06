@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductAndFileVO;
@@ -41,7 +42,7 @@ public interface ProductService {
 	
 	ReviewVO getOriginalReview(int review_no);
 	
-	List<QnaVO> getQnA(int product_code);
+	List<QnaVO> getQnA(Criteria cri, int product_code);
 	
 	void increaseRecommend(int review_no);
 	

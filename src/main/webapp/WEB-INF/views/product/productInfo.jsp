@@ -14,6 +14,8 @@
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
+<!-- jQuery cookie -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <div class="container" style="margin-left:22%;">
 
@@ -22,12 +24,12 @@
 
         <div class="col-md-7 product_image">
             <img class="prod-img" src="">
+            <%-- <img class="prod-img" src="<c:out value='${product.file_path }' />"> --%>
 
             <ul class="prod-info-list">
-                <li>DETAIL</li>
-                <li>INFO</li>
-                <li>REVIEW(<c:out value="${reviewCount }" />)</li>
-                <li>Q&A(<c:out value="${qnaCount }" />)</li>
+                <li class="menu_info">INFO</li>
+                <li class="menu_review">REVIEW(<c:out value="${reviewCount }" />)</li>
+                <li class="menu_qna">Q&A(<c:out value="${qnaCount }" />)</li>
             </ul>
         </div>
         
@@ -52,6 +54,9 @@
                 </p>
 
             <hr style="border: 0.5px solid #DFDFDF">
+            <script type="text/javascript">
+            	var member_id = '${user.id}';
+            </script>
             
             <script src="/js/product/productInfo.js"></script>
             
@@ -183,7 +188,7 @@
         					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
         					str += "		</p>";
         					str += "		<hr style='border: 0.5px #7F858A solid;'>";
-        					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
+        					//str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
         					str += "		<div class='col-md-11 review-body-prod-name'>";
         					str += "			${product.name }<br>";
         					str += "			[옵션 : " + reviewList[i].product_detail.product_color;
@@ -219,6 +224,12 @@
             	} // getReviewList
             	
             	$(document).ready(function() {
+            		//alert($('.main-container').scrollTop());
+            		
+            		/* $(window).scroll(function() {
+            			alert($(this).scrollTop());
+            		}); */
+            		
             		$("#total-price").text(total_price.format() + '원');
             		$("#total-quantity").text(total_quantity + '개');
             		
@@ -532,7 +543,7 @@
 
     </div> <!-- row -->
 
-    <div class="row" style="margin-bottom: 150px;">
+    <div class="row info_row" style="margin-bottom: 150px;">
         <div class="col-md-10 col-md-offset-1">
             <img src="/images/detail-view_01.jpg">
         </div>
@@ -571,22 +582,80 @@
                         <td width="40%">제목</td>
                         <td width="20%">작성자</td>
                         <td width="20%">작성일</td>
-                        <td width="10%">조회</td>
+                        <td width="10%">조회수</td>
                     </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="qna" items="${qnaList }">
-                    <tr>
-                        <td><c:out value="${qna.no}" /></td>
-                        <td><c:out value="${qna.title}" /></td>
-                        <td><c:out value="${qna.member.name}" /></td>
-                        <td><c:out value="${qna.reg_date}" /></td>
-                        <td><c:out value="${qna.hit}" /></td>
-                    </tr>
-                </c:forEach>
+					<tr>
+						<!-- NO -->
+						<td><c:out value="${qna.no }" /></td>
+						<!-- TITLE -->
+						<td class="qna_title">
+							<a class="title" href="${qna.secret }">
+							<c:forEach begin="1" end="${qna.depth }" >
+								<c:if test="${qna.depth > 0 }">
+									&nbsp;&nbsp;
+								</c:if>
+							</c:forEach>
+							<c:if test="${qna.depth > 0 }">
+								<img src="/images/re.gif">
+							</c:if>
+							<c:if test="${qna.secret ne 1 }">
+								<c:out value="${qna.title }" />&nbsp;
+							</c:if>
+							<c:if test="${qna.secret eq 1 }">
+								비밀글입니다.
+								<img class="secret_img" src="/images/secret.jpg">
+							</c:if>
+								<input type="hidden" name="writer" value="${qna.member_id }">
+								<input type="hidden" name="no" value="${qna.no }">
+							</a>
+						</td>
+						<!-- WRITER -->
+						<td class="qna_writer"><c:out value="${fn:substring(qna.member_id, 0, 2).concat('*****') }" /></td>
+						<!-- DATE -->
+						<td><c:out value="${qna.reg_date }" /></td>
+						<!-- HIT -->
+						<td><c:out value="${qna.hit }" /></td>
+					</tr>
+				</c:forEach>
                 </tbody>
             </table>
         </div>
+        
+        <div class="col-md-10 col-md-offset-1 reg_btn_area">
+			<c:if test="${user ne null }">
+				<button type="button" class="btn btn-default btn-sm qna_reg_btn">글쓰기</button>
+			</c:if>
+		</div>
+		
+		<!-- 페이징 처리 -->
+		<div class="col-md-10 col-md-offset-1 pagination-div">
+			<nav>
+				<ul class="pagination">
+					<c:if test="${pageMaker.prev}">
+						<li class="paginate_button previous"><a href="${pageMaker.startPage-1 }">&laquo;</a></li>
+					</c:if>
+
+					<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+						<li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active' : '' }">
+							<a href="${num }">${num }</a>
+						</li>
+					</c:forEach>
+
+					<c:if test="${pageMaker.next }">
+						<li class="paginate_button next"><a href="${pageMaker.endPage+1 }">&raquo;</a></li>
+					</c:if>
+				</ul>
+			</nav>
+		</div>
+		
+		<form id="actionForm" action="/product/productInfo" method="get">
+			<input type="hidden" name="code" value="${product.code }">
+			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+			<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+		</form>
 
     </div> <!-- row -->
 

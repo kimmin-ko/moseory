@@ -115,7 +115,7 @@
 							<div class = "info">
 								<p><a href = "${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}">${resultProduct.name }</a></p>
 								<p>${resultProduct.price }</p>
-								<p>${resultProduct.product_comment }</p> 
+								<p>${fn:substring(resultProduct.product_comment, 0, 20) }</p> 
 							</div>
 						</div>							
 					</c:forEach>	

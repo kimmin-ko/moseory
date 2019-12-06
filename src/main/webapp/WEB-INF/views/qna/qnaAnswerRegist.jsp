@@ -21,6 +21,11 @@
 			
 			// 등록 버튼
 			$('.reg_btn').on('click', function() {
+				if(!'${user.id}') {
+					alert("로그인 후 이용해주세요.");
+					return false;
+				}
+				
 				var registForm = $('#registForm');
 				
 				var title = $('.title').val();
