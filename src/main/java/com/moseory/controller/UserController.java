@@ -33,6 +33,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.PageDTO;
 import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.ProductService;
@@ -207,22 +208,22 @@ public class UserController {
     
     // orderList 페이지
     @GetMapping("/orderList")
-    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri cri) {
+    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri orderCri) {
 	
 	MemberVO member = (MemberVO) session.getAttribute("user");
 	
-	
-	if(cri.getState() == null) /* 페이지 처음 호출 시 */
-	    // orderList 페이지 호출 시 전체 기간, 전체 상태로 초기화
-	    cri = new OrderListCri(member.getId(), null, null, "전체 상태");
+	if(orderCri.getState() == null) /* 페이지 처음 호출 시 */
+	    // orderList 페이지 호출 시 전체 기간, 전체 상태, 1페이지로 초기화
+	    orderCri = new OrderListCri(member.getId(), null, null, "전체 상태", 1, 10);
 	else { /* 검색 조건으로 조회 시 */
-	    // 접속중인 id로 초기화
-	    cri.setMember_id(member.getId());
+	    // 접속중인 id로 초기화 (다른 데이터는 클라이언트에서 넘어옴)
+	    orderCri.setMember_id(member.getId());
 	}
 	
-	List<OrderListVO> orderList = userService.getOrderList(cri);
+	List<OrderListVO> orderList = userService.getOrderList(orderCri);
 	
 	model.addAttribute("orderList", orderList);
+	model.addAttribute("pageMaker", new PageDTO(orderCri, userService.getOrderListCount(orderCri)));
     }
     
     // 주문 취소

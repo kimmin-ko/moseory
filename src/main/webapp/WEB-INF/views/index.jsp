@@ -20,6 +20,12 @@
 		<div class="row ma-to-30 ma-bo-10">
 			<div class="col-lg-10 col-lg-offset-1" style="font-weight: bold;">WEEKLY BEST ITEM</div>
 		</div>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+				console.log($('.weekly-img').attr('src'));
+			});
+		</script>
 
 		<div class="row ma-bo-50">
 			<div class="col-lg-10 col-lg-offset-1">
@@ -27,7 +33,7 @@
 				<ul class="prod-list"> <!-- 3개의 상품만 출력 -->
 					<c:forEach var="product" items="${productSaleCount }" begin="0" end="2">
 					<li>
-						<img src=" class="weekly-img">
+						<img src='<c:out value="${product.file_path.concat(product.thumbnail_name) }" />' class="weekly-img" />
 						<div class="caption" onclick='location.href="/product/productInfo?code=<c:out value='${product.code }' />"'>
 							<p><c:out value="${product.name }" /></p>
 							<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
@@ -55,7 +61,7 @@
 				<c:forEach var="product" items="${productNew }">
 				<div class="col-md-4 prod-desc ma-bo-50">
 					<a href="/product/productInfo?code=<c:out value='${product.code }' />">
-						<img src=''></a>
+						<img src='' /></a>
 					<p> 
 						<a href="#"><c:out value="${product.name }" /></a>
 					</p>

@@ -191,8 +191,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OrderListVO> getOrderList(OrderListCri cri) {
-	return userDao.getOrderList(cri);
+    public List<OrderListVO> getOrderList(OrderListCri orderCri) {
+	return userDao.getOrderList(orderCri);
+    }
+    
+    @Override
+    public int getOrderListCount(OrderListCri orderCri) {
+	return userDao.getOrderListCount(orderCri);
     }
 
     @Transactional
@@ -290,6 +295,8 @@ public class UserServiceImpl implements UserService {
 	// 상품의 평점 최신화
 	userDao.updateProductGrade(product_code, avgGrade);
     }
+
+    
     
     
 

@@ -27,8 +27,18 @@ if (request.getProtocol().equals("HTTP/1.1"))
 			
 			// 목록 버튼 클릭
 			$('button[data-oper=list]').on('click', function() {
+				
 				operForm.find($('#no')).remove();
-				operForm.attr('action', '/qna/qnaList');
+				
+				var type = $('input[name=type]').val();
+				var url = '';
+				if(type == 'P') {
+					url = '/product/productInfo';
+				} else {
+					url = '/qna/qnaList';
+				}
+				
+				operForm.attr('action', url);
 				operForm.submit();
 			});
 			
@@ -89,7 +99,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 			
 			<div class="col-md-10 col-md-offset-1 qna-btn-row">
 				<div class="col-md-6">
-		            <button type="button" data-oper="list" class="btn btn-default btn-sm" onclick="location.href='/qna/qnaList'">목록</button>
+		            <button type="button" data-oper="list" class="btn btn-default btn-sm">목록</button>
 		        </div>
 				<div class="col-md-6">
 					<!-- 사용자가 회원일 경우 -->
@@ -290,6 +300,7 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	    	<input type="hidden" name="amount" value='<c:out value="${cri.amount }" />'>
 	    	<input type="hidden" name="type" value='<c:out value="${cri.type }" />'>
 	    	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword }" />'>
+	    	<input type="hidden" name="code" value='<c:out value="${cri.keyword }" />'>
 	    </form>
 	    
 	    <!-- Qna Get End -->

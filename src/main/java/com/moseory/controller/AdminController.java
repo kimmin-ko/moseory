@@ -2,18 +2,22 @@ package com.moseory.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +48,9 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private ResourceLoader resourceLoader;
 
 	@PostMapping("/productcate")
 	@ResponseBody
@@ -70,18 +77,19 @@ public class AdminController {
 	}
 
 	@PostMapping("/productregist")
-	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request,
-													@RequestParam String str_low_code) 
-			throws IllegalStateException, IOException
-		{ 
-		/* 파일 시작 */ 
+	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request, @RequestParam String str_low_code)
+			throws IllegalStateException, IOException {
+	    
+		/* 파일 시작 */
 		//한글로 받아오는 low_code를 int로 변경
 		int low_code = adminService.getLowCateCode(str_low_code);
 		productVO.setLow_code(low_code);
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
-//		String low_cate = adminService.getLowCate(productVO.getLow_code());
-		//	파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/";
+		
+		// 파일 이름 불러와서 폴더경로 + 파일이름
+		ServletContext context = request.getSession().getServletContext();
+		String save_path = context.getRealPath("resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/");
+		
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
 		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
@@ -90,11 +98,15 @@ public class AdminController {
 		File file = new File(save_path);
 		File thumbnail = new File(save_path);
 		if (file.exists() == false) {
+		    	log.info("디렉토리 생성");
 			file.mkdirs();
+			log.info("디렉토리 경로 : " + file.getAbsolutePath());
 		}
+		
 		//확장자를 가져옴
 		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
 		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
+		
 		//썸네일명 = 상품명 + _thumbnail.확장자
 		String thumbnailName = "thumbnail_" + productVO.getName() + ext;
 
@@ -104,10 +116,10 @@ public class AdminController {
 		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
-//			System.out.println(thumbnail.get(i).getName());
+			// System.out.println(thumbnail.get(i).getName());
+		    
 			// 파일명이 같을 수도 있기 때문에
-			// 랜덤36문자_받아온파일이름
-			// 으로 파일 저장
+			// 랜덤36문자_받아온파일이름으로 파일 저장
 			UUID random = UUID.randomUUID();
 			String fileName = random.toString() + "_" + files.get(i).getOriginalFilename();
 			file_name = file_name + "@" + fileName;
@@ -117,6 +129,7 @@ public class AdminController {
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}
+		
 		/* product DB */
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
@@ -128,7 +141,6 @@ public class AdminController {
 		fileParam.put("file_path", save_path);
 		fileParam.put("file_name", file_name);
 		adminService.saveFile(fileParam);
-		
 
 		/* product_detail DB */
 		for (int i = 0; i < detailInfo.size(); i++) {

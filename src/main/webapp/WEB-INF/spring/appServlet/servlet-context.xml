@@ -56,4 +56,5 @@
 	</interceptors>
 	
 	<context:component-scan base-package="com.moseory.controller" />
+	
 </beans:beans>

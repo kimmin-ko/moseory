@@ -21,6 +21,8 @@ import com.moseory.domain.ReviewVO;
 import lombok.extern.log4j.Log4j;
 
 @Repository("productDao")
+@Log4j
+@Repository
 public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
@@ -148,6 +150,11 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public int getSearchCount(Map<String, Object> param) {
 		return sqlSession.selectOne("product.getSearchCount",param);
+	}
+
+	@Override
+	public List<Map<String, Object>> getProductColorAndStock(int product_code) {
+	    return sqlSession.selectList("product.getProductColorAndStock", product_code);
 	}
 
 	

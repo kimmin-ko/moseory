@@ -71,6 +71,8 @@ public interface UserDao {
     /* 주문 목록 */
     public List<OrderListVO> getOrderList(OrderListCri cri);
     
+    public int getOrderListCount(OrderListCri cri);
+    
     /* 주문 취소 */
     public void updateOrderState(String order_code, String state);
     

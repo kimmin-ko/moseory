@@ -15,7 +15,6 @@ import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
-@Service("productService")
 public interface ProductService {
 
 	List<ProductAndFileVO> highCateList(int high_code);
@@ -33,6 +32,8 @@ public interface ProductService {
 	int getProductDetailNo(Map<String, Object> param);
 	
 	int getProductStock(int product_detail_no);
+	
+	List<Map<String, Object>> getProductColorAndStock(int product_code);
 	
 	int getReviewCount(int product_code);
 	

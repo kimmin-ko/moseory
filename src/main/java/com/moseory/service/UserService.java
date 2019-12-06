@@ -53,7 +53,9 @@ public interface UserService {
     
     public List<OrderDetailVO> getOrderDetails(String order_code);
     
-    public List<OrderListVO> getOrderList(OrderListCri cri);
+    public List<OrderListVO> getOrderList(OrderListCri orderCri);
+    
+    public int getOrderListCount(OrderListCri orderCri);
     
     public void orderCancel(String order_code, String member_id);
     

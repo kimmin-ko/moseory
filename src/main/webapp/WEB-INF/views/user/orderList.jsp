@@ -41,37 +41,46 @@
 	        </div>
 	
 	        <div class="col-md-10 col-md-offset-1 order_list_cri">
-	            <div class="btn-group btn-group-sm">
-	                <button type="button" class="btn btn-default" onclick="setPeriod('today')">오늘</button>
-	                <button type="button" class="btn btn-default" onclick="setPeriod('1week')">1주일</button>
-	                <button type="button" class="btn btn-default" onclick="setPeriod('1month')">1개월</button>
-	                <button type="button" class="btn btn-default" onclick="setPeriod('3month')">3개월</button>
-	                <button type="button" class="btn btn-default" onclick="setPeriod('all')">전체 시기</button>
-	            </div>
-	
-	            <input type="text" class="hasDatepicker form-control" id="startDate" name="startDate"
-	            autocomplete="off" placeholder="-">
-	            -
-	            <input type="text" class="hasDatepicker form-control" id="endDate" name="endDate"
-	            autocomplete="off" placeholder="-">
-	
-	            <select class="form-control" id="selectState" name="state">
-	                <option>전체 상태</option>
-	                <option>입금 확인</option>
-	                <option>배송 준비 중</option>
-	                <option>주문 취소</option>
-	                <option>발송 완료</option>
-	                <option>배송 완료</option>
-	                <option>구매 확정</option>
-	                <option>교환 요청</option>
-	                <option>교환 처리 중</option>
-	                <option>교환 완료</option>
-	                <option>환불 요청</option>
-	                <option>환불 처리 중</option>
-	                <option>환불 완료</option> 
-	            </select>
-	
-	            <button class="btn btn-default btn-sm getOrderList">조회</button>
+				
+				<!-- 검색 조건 FORM -->
+				<form id="searchForm" action="/user/orderList" method="get">
+				
+		            <div class="btn-group btn-group-sm">
+		                <button type="button" class="btn btn-default" onclick="setPeriod('today')">오늘</button>
+		                <button type="button" class="btn btn-default" onclick="setPeriod('1week')">1주일</button>
+		                <button type="button" class="btn btn-default" onclick="setPeriod('1month')">1개월</button>
+		                <button type="button" class="btn btn-default" onclick="setPeriod('3month')">3개월</button>
+		                <button type="button" class="btn btn-default" onclick="setPeriod('all')">전체 시기</button>
+		            </div>
+		            
+					<input type="hidden" name="member_id" value="${user.id }"> <!-- 사용자 id -->
+					<input type="hidden" name="pageNum" value="${pageMaker.orderCri.pageNum }"> <!-- page 번호 -->
+					<input type="hidden" name="admount" value="${pageMaker.orderCri.amount }"> <!-- 보여줄 주문정보 개수 -->
+		            <input type="text" class="hasDatepicker form-control" id="startDate" name="startDate"
+		            autocomplete="off" placeholder="-">
+		            -
+		            <input type="text" class="hasDatepicker form-control" id="endDate" name="endDate"
+		            autocomplete="off" placeholder="-">
+		
+		            <select class="form-control" id="selectState" name="state">
+		                <option>전체 상태</option>
+		                <option>입금 확인</option>
+		                <option>배송 준비 중</option>
+		                <option>주문 취소</option>
+		                <option>발송 완료</option>
+		                <option>배송 완료</option>
+		                <option>구매 확정</option>
+		                <option>교환 요청</option>
+		                <option>교환 처리 중</option>
+		                <option>교환 완료</option>
+		                <option>환불 요청</option>
+		                <option>환불 처리 중</option>
+		                <option>환불 완료</option> 
+		            </select>
+		            
+	            	<button class="btn btn-default btn-sm getOrderList">조회</button>
+	            </form>
+	            
 	        </div>
 	
 	        <div class="col-md-10 col-md-offset-1 m-order_list">
@@ -264,25 +273,24 @@
 	
 	            <div class="col-md-10 col-md-offset-1 l_pagination">
 	                <nav>
-	                    <ul class="pagination pagination-sm">
-	                        <li>
-	                            <a href="#" aria-label="Previous">
-	                                <span aria-hidden="true">&laquo;</span>
-	                            </a>
-	                        </li>
-	                        <li class="active"><a href="#">1</a></li>
-	                        <li><a href="#">2</a></li>
-	                        <li><a href="#">3</a></li>
-	                        <li><a href="#">4</a></li>
-	                        <li><a href="#">5</a></li>
-	                        <li>
-	                            <a href="#" aria-label="Next">
-	                                <span aria-hidden="true">&raquo;</span>
-	                            </a>
-	                        </li>
-	                    </ul>
-	                </nav>
+						<ul class="pagination">
+							<c:if test="${pageMaker.prev}">
+								<li class="paginate_button previous"><a href="${pageMaker.startPage-1 }">&laquo;</a></li>
+							</c:if>
+	
+							<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+								<li class="paginate_button ${pageMaker.orderCri.pageNum == num ? 'active' : '' }">
+									<a href="${num }">${num }</a>
+								</li>
+							</c:forEach>
+	
+							<c:if test="${pageMaker.next }">
+								<li class="paginate_button next"><a href="${pageMaker.endPage+1 }">&raquo;</a></li>
+							</c:if>
+						</ul>
+					</nav>
 	            </div>
+	            
 	        </div>
 	
 	    </div>

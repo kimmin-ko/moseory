@@ -14,7 +14,9 @@ import com.moseory.domain.ProductVO;
 import com.moseory.service.HomeService;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Controller
 public class HomeController {
     
@@ -29,6 +31,9 @@ public class HomeController {
 	    // WEEKLY BEST ITEM -> 판매량 순으로 데이터를 가져옴
 	    List<ProductVO> productSaleCount = homeService.readProductSaleCount();
 	    model.addAttribute("productSaleCount", productSaleCount);
+	    
+	    log.info("file_path : " + productSaleCount.get(0).getFile_path());
+	    log.info("thumbnail_name : " + productSaleCount.get(0).getThumbnail_name());
 	    
 	    // NEW ARRIVAL -> 최신 등록 순으로 데이터를 가져옴
 	    List<ProductVO> productNew = homeService.readProductNew();
