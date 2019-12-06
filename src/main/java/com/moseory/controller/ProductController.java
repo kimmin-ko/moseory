@@ -17,13 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -46,7 +46,7 @@ public class ProductController {
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
-			List <ProductVO> productVO = productService.highCateList(high_code);
+			List <ProductAndFileVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
 			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
@@ -54,7 +54,7 @@ public class ProductController {
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
 			model.addAttribute("productVO",productVO);
 		}
-		
+		 
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.moseory.dao.ProductDao;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -23,7 +24,7 @@ public class ProductServiceImpl implements ProductService{
 	private ProductDao productDao;
 	
 	@Override
-	public List<ProductVO> highCateList(int high_code) {
+	public List<ProductAndFileVO> highCateList(int high_code) {
 		return productDao.highCateList(high_code);
 	}
 

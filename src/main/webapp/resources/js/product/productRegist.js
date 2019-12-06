@@ -151,20 +151,8 @@ function regist() {
 
 	// product detail 먼저 전달해서 List에 담아둔다
     detailInfo();
-	$('#registForm').click(function(){
-		
-		var thumbnailCheck = $('#thumbnail').val();
-		var fileCheck = $('#getImage').val();
-		if(thumbnailCheck = '' || fileCheck == ''){
-			alert('사진을 업로드해주세요');
-			return;
-		}else{
-			 // product 정보를 등록한다
-			   $("#registForm").submit();
-		}
-		
-	});
-	
+	$("#registForm").submit();
+
    
 }
 

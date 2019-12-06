@@ -71,9 +71,10 @@ public class AdminController {
 
 	@PostMapping("/productregist")
 	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request,
-													@RequestParam String str_low_code)
-			throws IllegalStateException, IOException { 
-		/* 파일 시작 */
+													@RequestParam String str_low_code) 
+			throws IllegalStateException, IOException
+		{ 
+		/* 파일 시작 */ 
 		//한글로 받아오는 low_code를 int로 변경
 		int low_code = adminService.getLowCateCode(str_low_code);
 		productVO.setLow_code(low_code);
@@ -101,7 +102,6 @@ public class AdminController {
 		thumbnail = new File(save_path + thumbnailName);
 		getThumbnail.get(0).transferTo(thumbnail);
 		
-		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
 //			System.out.println(thumbnail.get(i).getName());
@@ -111,8 +111,8 @@ public class AdminController {
 			UUID random = UUID.randomUUID();
 			String fileName = random.toString() + "_" + files.get(i).getOriginalFilename();
 			file_name = file_name + "@" + fileName;
-			System.out.println("file_name = " + file_name);
-			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+//			System.out.println("file_name = " + file_name);
+//			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
 			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
@@ -249,7 +249,6 @@ public class AdminController {
 		else {	//검색 하면
 			if(searchType.equals("name")) {
 				try {
-					
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
@@ -257,12 +256,9 @@ public class AdminController {
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
 				}
-
-
 			}
 			else if(searchType.equals("high_code")) {
 				try {
-					keyword = Integer.toString(adminService.getHighCateCode(keyword));
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
