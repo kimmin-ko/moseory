@@ -73,6 +73,12 @@ public class ProductDaoTest {
     }
     
     @Test
+    public void testGetQna() {
+//	List<QnaVO> qnaList = productDao.getQnA(34);
+//	qnaList.stream().forEach(x -> log.info(x.toString()));
+    }
+    
+    @Test
     public void testModifyRecommend() {
 	ReviewVO review = productDao.getOriginalReview(21);
 	

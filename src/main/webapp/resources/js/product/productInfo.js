@@ -21,6 +21,8 @@ $(document).ready(function() {
 		$('input[name=pageNum]').val($(this).attr('href'));
 		
 		// div qna-header의 y값을 쿠키에 저장
+		var qnaY = $('.qna-header').offset().top;
+		$.cookie('qnaY', qnaY);
 		setQnaTopCookie();
 		
 		actionForm.submit();
@@ -63,6 +65,8 @@ $(document).ready(function() {
 	
 	// Q&A 글쓰기 버튼 클릭
 	$('.qna_reg_btn').on('click', function() {
+		var qnaY = $('.qna-header').offset().top;
+		$.cookie('qnaY', qnaY);
 		
 		// div qna-header의 y값을 쿠키에 저장
 		setQnaTopCookie();

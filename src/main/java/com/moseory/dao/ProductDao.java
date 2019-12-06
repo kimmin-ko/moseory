@@ -47,6 +47,7 @@ public interface ProductDao {
 	
 	ReviewVO getOriginalReview(int review_no);
 	
+	
 	void increaseRecommend(int review_no);
 	
 	void decreaseRecommend(int review_no);

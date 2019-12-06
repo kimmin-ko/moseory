@@ -118,6 +118,7 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
+		log.info("product cri : " + cri);
 		
 		// productInfo의 qna는 검색을 사용하지 않기 때문에 tpye을 이용해 
 		// 게시판 이용 후 productInfo 페이지로 이동하도록 설정해준다

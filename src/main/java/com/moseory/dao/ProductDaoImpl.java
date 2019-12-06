@@ -20,6 +20,7 @@ import com.moseory.domain.ReviewVO;
 
 import lombok.extern.log4j.Log4j;
 
+@Repository("productDao")
 @Log4j
 @Repository
 public class ProductDaoImpl implements ProductDao{

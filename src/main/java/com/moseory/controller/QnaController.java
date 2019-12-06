@@ -76,6 +76,8 @@ public class QnaController {
     @PostMapping("/qnaRegist")
     public String qnaRegistPost(@ModelAttribute("cri") Criteria cri, @ModelAttribute QnaVO qnaVO, RedirectAttributes rttr) {
 	
+	log.info("Post qnaRegist qnaVO :  " + qnaVO);
+	
 	qnaService.registQna(qnaVO);
 	
 	rttr.addAttribute("pageNum", cri.getPageNum());

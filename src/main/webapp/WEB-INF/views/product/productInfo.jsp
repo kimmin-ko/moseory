@@ -14,6 +14,8 @@
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
+<!-- jQuery cookie -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <div class="container" style="margin-left:22%;">
 
