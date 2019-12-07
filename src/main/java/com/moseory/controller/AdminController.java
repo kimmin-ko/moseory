@@ -49,9 +49,6 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
-	@Autowired
-	private ResourceLoader resourceLoader;
-
 	@PostMapping("/productcate")
 	@ResponseBody
 	public List<LowCateVO> productCate(@RequestBody int high_code){

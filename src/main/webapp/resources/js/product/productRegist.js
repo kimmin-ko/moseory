@@ -176,14 +176,13 @@ function regist() {
 	} else if(!$('#getImage').val()) {
 		alert('상품 정보 이미지를 등록해주세요.');
 		$('#thumbnail').focus();
-	}
-	
-	// product detail 먼저 전달해서 List에 담아둔다
-    detailInfo();
+	} else {
+		// product detail 먼저 전달해서 List에 담아둔다
+		detailInfo();
 		
-	// product 정보를 등록한다
-	$("#registForm").submit();
-    
+		// product 정보를 등록한다
+		$("#registForm").submit();
+	}
 }
 
 // 가격, 재고 유효성 검사
