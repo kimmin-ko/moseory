@@ -132,10 +132,27 @@ public class UserController {
 	
     }
     
-    // 회원 탈퇴
-    @GetMapping("/withdrawal")
-    public void withdrawal() {
+    // 비밀번호 체크
+    @GetMapping("/checkPwd/{id}")
+    public @ResponseBody ResponseEntity<String> checkPwd(@PathVariable("id") String id) {
 	
+	String password = userService.checkPwd(id);
+	
+	return password != null ? new ResponseEntity<>(password, HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    // 회원 탈퇴
+    @PostMapping("/withdrawal")
+    public String withdrawal(@RequestParam("id") String id, HttpSession session, RedirectAttributes rttr) {
+	
+	userService.withdrawal(id);
+	
+	session.invalidate();
+	
+	rttr.addFlashAttribute("withdrawal_result", "탈퇴 처리가 완료되었습니다.");
+	
+	return "redirect:/index";
     }
     
     // 주문 페이지

@@ -46,6 +46,25 @@
 	    id = #{id}
 	</update>
 	
+	<!-- 비밀번호 체크 -->
+	<select id="checkPwd" resultType="String">
+	SELECT
+	    password
+	FROM
+	    tbl_member
+	WHERE
+	    id = #{id}
+	</select>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="withdrawal">
+	DELETE FROM
+		tbl_member
+	WHERE
+		id = #{id}
+	</delete>
+	
+	
 	<!-- Test 회원 정보 삭제 -->
 	<delete id="deleteMember">
 	DELETE FROM

@@ -13,6 +13,26 @@
 <body>
 
 	<%@ include file="includes/sidebar.jsp" %>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var withdrawal_result = '<c:out value="${withdrawal_result}" />';
+			
+			checkAlert(withdrawal_result);
+			
+			history.replaceState({}, null, null);
+			
+			function checkAlert(result) {
+				if(result === '' || history.state) {
+					return;
+				}
+				
+				alert(result);
+				
+			} 
+			
+		});
+	</script>
 
 	<!-- Page Content -->
 	<div class="container" style="margin-left: 22%">
@@ -23,7 +43,7 @@
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
-				console.log($('.weekly-img').attr('src'));
+				
 			});
 		</script>
 

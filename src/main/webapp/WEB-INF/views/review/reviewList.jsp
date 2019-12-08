@@ -1,4 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,18 +10,11 @@
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
-<link rel="stylesheet" href="/css/notice.css">
+<link rel="stylesheet" href="/css/reviewList.css">
 <script src="/resources/ckeditor/ckeditor.js"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>모서리</title>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="/css/bootstrap.css">
-<link rel="stylesheet" href="/css/notice.css">
 </head>
 
 <body>
-
 
 	<%@ include file="../includes/sidebar.jsp"%>
 
@@ -112,6 +104,13 @@
 		<div class="row" style="margin-bottom: 150px;">
 			<div class="col-md-10 col-md-offset-1">
 				<table class="table notice-board">
+					<colgroup>
+						<col width= 50px;> <!-- NO -->
+						<col width= 250px;> <!-- TITLE -->
+						<col width= 80px;> <!-- NAME -->
+						<col width= 80px;> <!-- DATE -->
+						<col width= 50px;> <!-- HIT -->
+					</colgroup>
 					<thead>
 						<tr>
 							<td>NO</td>
@@ -124,19 +123,19 @@
 
 					<tbody>
 					<tbody>
-						<c:forEach items="${Reviewlist}" var="Reviewlist">
+						<c:forEach items="${reviewList}" var="review">
 							<tr>
 								<!-- NO -->
-								<td>${Reviewlist.no}</td>
+								<td>${review.no}</td>
 								<!-- TITLE -->
-								<td><a class='move' href='<c:out value="${Reviewlist.no}"/>'><c:out
-											value="${Reviewlist.title }" /></a></td>
+								<td class="qna_title"><a class='move' href='<c:out value="${review.no}"/>'>
+									<c:out value="${review.title }" /></a></td>
 								<!-- NAME -->
-								<td>모서리</td>
+								<td><c:out value="${fn:substring(review.member_id, 0, 2).concat('*****') }" /></td>
 								<!-- DATE -->
-								<td>${Reviewlist.reg_date}</td>
+								<td>${review.reg_date}</td>
 								<!-- HIT -->
-								<td>${Reviewlist.hit}</td>
+								<td>${review.hit}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -148,7 +147,7 @@
 			</div>
 			
 			<!-- 검색 처리 기능 -->
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-5 col-md-offset-1">
 				<form id='search' action="/review/reviewList" method="get">
 					<select class="form-control" style="width: 130px; display:inline-block;" name="reviewType">
 						<option value=""
@@ -164,13 +163,15 @@
 					<input type="text" class="form-control" name="reviewKeyword"
 						style="width: 180px; display:inline-block;" value="${reviewPageMaker.reviewCri.reviewKeyword}" /> <input
 						type='hidden' name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
-					<input type='hidden' name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }"><button class="btn btn-default">
+					<input type='hidden' name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }">
+					<button class="btn btn-default">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
 					
 				</form>
-				<button type="button" class="btn btn-default"
-						onclick="location.href ='/review/reviewText'">글쓰기</button>
+			</div>
+			<div class="col-md-5 reg_btn_area">
+				<button type="button" class="btn btn-default btn-sm" onclick="location.href ='/review/reviewText'">글쓰기</button>
 			</div>
 			
 
@@ -188,7 +189,7 @@
 
 						<c:forEach var="num" begin="${reviewPageMaker.startPage }"
 							end="${reviewPageMaker.endPage }">
-							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? "active":"" }"><a
+							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? 'active':'' }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
