@@ -37,57 +37,57 @@
 	
 	        <div class="col-md-10 col-md-offset-1 order_list_cri">
 	        	<form method="get" action="orderManageList">
-					<table>					
-						<tr>
-							<td style="padding-left:10px;">
-								<h6>기간</h6>
-							</td>
-							<td>
-					            <input type="text" class="hasDatepicker form-control" id="startDate" name="startDate"
-					            autocomplete="false" placeholder="-">
-					            -
-					            <input type="text" class="hasDatepicker form-control" id="endDate" name="endDate"
-					            autocomplete="false" placeholder="-">
-				            </td>
-				            <td style="padding-left:100px;">
-								<h6>주문 상태</h6>
-							</td>
-							<td>
-					            <select class="form-control" id="selectState" name="state">
-					                <option>전체 상태</option>
-					                <option>입금 확인</option>
-					                <option>배송 준비 중</option>
-					                <option>발송 완료</option>
-					                <option>배송 완료</option>
-					                <option>구매 확정</option>
-					                <option>교환 요청</option>
-					                <option>교환 처리 중</option>
-					                <option>교환 완료</option>
-					                <option>환불 요청</option>
-					                <option>환불 처리 중</option>
-					                <option>환불 완료</option> 
-					            </select>
-							</td>
-						</tr>
-		            	<tr>
-		            		<td><select name="searchType" id="searchType"  class="form-control">
+	        		<div class="col-md-12 order_list_cri">
+		        		<div class="col-md-4 order_list_cri">
+		        			<span class="span_name">기간</span>
+		        			<input type="text" class="hasDatepicker form-control" id="startDate" name="startDate"
+				            autocomplete="false" placeholder="-">
+				            -
+				            <input type="text" class="hasDatepicker form-control" id="endDate" name="endDate"
+				            autocomplete="false" placeholder="-">
+		        		</div>
+		        		<div class="col-md-4 order_list_cri">
+		        			<span class="span_name">이메일</span>
+		            		<input type="text" name="searchEmail" class="form-control search_email" value="${searchEmail }">
+		        		</div>
+		        		<div class="col-md-4 order_list_cri">
+		        			<span class="span_name">주문 번호</span>
+		        			<input type="text" name="orderValue" value="${orderValue }" class="form-control search_order">
+		        		</div>
+		        	</div>
+	        		<div class="col-md-12 order_list_cri">
+	        			<div class="col-md-4 order_list_cri">
+		        			<select name="searchType" id="searchType"  class="form-control search_type" >
 		            			<option value="id">ID</option>
 		            			<option value="name">Name</option>
-		            		</select></td>
-		            		<td><input type="text" name="searchValue" value="${searchValue}" class="form-control"></td>
-		            		<td><select name="commType" id="commType" class="form-control">
+		            		</select>
+	            			<input type="text" name="searchValue" value="${searchValue}" class="form-control search_keyword" >
+		            	</div>
+		            	<div class="col-md-4 order_list_cri">
+		            		<select name="commType" id="commType" class="form-control search_type">
 		            			<option value="phone" <c:if test="${commType == 'phone'}">selected</c:if> >Phone</option>
 		            			<option value="tel" <c:if test="${commType == 'tel'}">selected</c:if>>Tel</option>
-		            		</select></td>
-		            		<td><input type="text" name="commValue"  value="${commValue }" class="form-control"></td>
-		            		<td>
-		            			<h6>EMAIL</h6>
-		            		</td>
-		            		<td>
-		            			<input type="text" name="searchEmail" class="form-control" value="${searchEmail }">
-		            		</td>
-		            	</tr>
-		            </table>
+		            		</select>
+		            		<input type="text" name="commValue"  value="${commValue }" class="form-control search_keyword">
+		            	</div>
+		            	<div class="col-md-4 order_list_cri">
+		            		<span class="span_name">주문 상태</span>
+		        			<select class="form-control search_type" id="selectState" name="state">
+				                <option>전체 상태</option>
+				                <option>입금 확인</option>
+				                <option>배송 준비 중</option>
+				                <option>발송 완료</option>
+				                <option>배송 완료</option>
+				                <option>구매 확정</option>
+				                <option>교환 요청</option>
+				                <option>교환 처리 중</option>
+				                <option>교환 완료</option>
+				                <option>환불 요청</option>
+				                <option>환불 처리 중</option>
+				                <option>환불 완료</option> 
+				            </select>
+		            	</div>
+	        		</div>
 	            	<button type="submit" class="btn btn-default btn-sm" style="float:right; margin-bottom:10px;"name="searchBtn">검색</button>
 	        	</form>
 	        </div>
@@ -115,7 +115,7 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach var="model" items="${orderList}" varStatus="status">
-							<tr onclick="javascript:ref('${model.CODE}', '${model.PRODUCT_COLOR}');">
+							<tr onclick="javascript:ref('${model.CODE}', '${model.PRODUCT_DETAIL_NO}', '${model.PRODUCT_COLOR}');">
 								<td>${model.RNUM}</td>
 								<td>
 									<fmt:formatDate value="${model.ORDER_DATE}" pattern="YYYY-MM-dd"/>
@@ -152,6 +152,7 @@
 								<td>
 									<span class="order_state"><c:out value="${model.STATE}" /></span>
 								</td>
+								
 							</tr>
 						</c:forEach>
 	                </tbody>
@@ -216,11 +217,11 @@ function convertStringToDate(str) {
 	return new Date(str[0], str[1], str[2]);
 } // end convertStringToDate
 
-function ref(code,color){
+function ref(code,productDetailNo,color){
 	if(color == null || color == ""){
-		document.location.href="/admin/getOrderDetail?orderCode="+code;
+		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productDetailNo="+productDetailNo;
 	}else{
-		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productColor="+color;
+		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productDetailNo="+productDetailNo+"&productColor="+color;
 	}
 }
 
