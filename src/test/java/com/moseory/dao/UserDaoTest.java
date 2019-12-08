@@ -383,5 +383,11 @@ public class UserDaoTest {
 	
 	userDao.registReview(vo);
     }
+    
+    @Test
+    public void testCheckPwd() {
+	String passwrod = userDao.checkPwd("admin11");
+	log.info(passwrod);
+    }
 
 }

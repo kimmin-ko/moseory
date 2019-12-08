@@ -132,10 +132,27 @@ public class UserController {
 	
     }
     
-    // 회원 탈퇴
-    @GetMapping("/withdrawal")
-    public void withdrawal() {
+    // 비밀번호 체크
+    @GetMapping("/checkPwd/{id}")
+    public @ResponseBody ResponseEntity<String> checkPwd(@PathVariable("id") String id) {
 	
+	String password = userService.checkPwd(id);
+	
+	return password != null ? new ResponseEntity<>(password, HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    // 회원 탈퇴
+    @PostMapping("/withdrawal")
+    public String withdrawal(@RequestParam("id") String id, HttpSession session, RedirectAttributes rttr) {
+	
+	userService.withdrawal(id);
+	
+	session.invalidate();
+	
+	rttr.addFlashAttribute("withdrawal_result", "탈퇴 처리가 완료되었습니다.");
+	
+	return "redirect:/index";
     }
     
     // 주문 페이지
@@ -159,7 +176,6 @@ public class UserController {
 	
 	// 디테일 번호와 수량을 같이 전달해줘서 같은 VO에 저장함
 	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
-	
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
     }
     
@@ -196,14 +212,8 @@ public class UserController {
 	OrderVO order = userService.getOrder(order_code);
 	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
-	List<String> orderDetailListJson = new ArrayList<String>();
-	for(OrderDetailVO orderDetail : orderDetailList) {
-	    String orderDetailJson = new Gson().toJson(orderDetail);
-	    orderDetailListJson.add(orderDetailJson);
-	}
-	
 	model.addAttribute("order", order);
-	model.addAttribute("orderDetailList", orderDetailListJson);
+	model.addAttribute("orderDetailList", orderDetailList);
     }
     
     // orderList 페이지
@@ -240,13 +250,21 @@ public class UserController {
     }
     
     // 교환 요청
-    @PostMapping("/changeOrderState")
-    public String changeOrderState(@RequestParam String order_code, 
-	    @RequestParam int product_detail_no, 
-	    @RequestParam String state,
-	    HttpSession session) {
+    @PostMapping("/exchangeRequest")
+    public String exchangeRequest(@RequestParam String order_code, 
+                    	    @RequestParam int product_detail_no, 
+                    	    @RequestParam int e_product_detail_no) {
 	
-	userService.changeOrderState(order_code, product_detail_no, state);
+	userService.exchangeRequest(order_code, product_detail_no, e_product_detail_no);
+	
+	return "redirect:/user/orderList";
+    }
+    
+    // 환불 요청
+    @PostMapping("/returnRequest")
+    public String returnRequest(@RequestParam String order_code, @RequestParam int product_detail_no) {
+	
+	userService.returnRequest(order_code, product_detail_no);
 	
 	return "redirect:/user/orderList";
     }

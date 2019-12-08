@@ -19,6 +19,10 @@ public interface UserService {
     
     public void modifyMember(MemberVO vo);
     
+    public void withdrawal(String id);
+    
+    public String checkPwd(String id);
+    
     public void removeMember(String id);
     
     public int addWishList(Map<String, Object> param);
@@ -59,9 +63,11 @@ public interface UserService {
     
     public void orderCancel(String order_code, String member_id);
     
-    public void changeOrderState(String order_code, int product_detail_no, String state);
-    
     public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no);
+    
+    public void exchangeRequest(String  order_code, int product_detail_no, int e_product_detail_no);
+    
+    public void returnRequest(String  order_code, int product_detail_no);
     
     public void orderConfirm(Map<String, Object> param);
     

@@ -17,6 +17,7 @@ import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
+import com.moseory.util.ImageUtil;
 
 import lombok.extern.log4j.Log4j;
 
@@ -42,7 +43,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public ProductVO getProduct(int code) {
-		return productDao.getProduct(code);
+	    	ProductVO product = productDao.getProduct(code);
+	    	product.setFile_path(ImageUtil.convertImagePath(product.getFile_path()));
+		return product;
 	}
 
 	@Override
@@ -86,7 +89,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<ReviewVO> getReview(ReviewCri reviewCri) {
-	    return productDao.getReview(reviewCri);
+	    List<ReviewVO> vo_list = productDao.getReview(reviewCri);
+	    
+	    for(int i = 0; i < vo_list.size(); i++) {
+		ReviewVO vo = vo_list.get(i);
+		vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	    }
+	    
+	    return vo_list;
 	}
 
 	@Override

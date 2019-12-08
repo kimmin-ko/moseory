@@ -140,8 +140,6 @@ var productJs = (function() {
 		if(color != '') color = '&product_color=' + color; 
 		if(originSize != '') originSize = '&product_size=' + originSize;
 		
-		console.log("ajax color : " + color);
-		console.log("ajax originSize : " + originSize);
 		$.ajax({
 			type : 'get',
 			url : '/product/getProductDetailNo?product_code=' + product_code + color + originSize,

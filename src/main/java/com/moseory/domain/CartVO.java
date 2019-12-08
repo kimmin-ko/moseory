@@ -18,7 +18,10 @@ public class CartVO {
     private int product_code;
     private String product_name;
     private int product_price;
-    private String product_file_path;
+    
+    // product file 정보
+    private String file_path;
+    private String thumbnail_name;
     
     // product detail 정보
     private String product_color;

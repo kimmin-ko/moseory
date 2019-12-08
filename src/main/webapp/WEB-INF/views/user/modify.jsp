@@ -176,8 +176,7 @@
 			<button type="button" class="btn btn-default btn-sm" onclick="location.href='/user/myPage'">취소</button>
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="text-align: right;">
-			<button type="button" class="btn btn-default btn-withdrawal btn-sm" 
-				onclick="location.href='/user/withdrawal'">회원탈퇴</button>
+			<button type="button" class="btn btn-default btn-withdrawal btn-sm">회원탈퇴</button>
 	    </div>
 	</div>
     <!-- Modify Form End -->
@@ -186,8 +185,96 @@
 
 </div> <!-- container end -->
 
+<!-- 회원 탈퇴 모달 -->
+<div class="modal fade withdrawal-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<p>회원 탈퇴</p>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<p class="body-exp">비밀번호를 입력하세요.</p>
+						<input type="password" class="form-control" name="withdrawal_password"><br />
+						<ul class="withdrawal-guide">
+							<li>- 적립금, 회원 등급, 주문정보, Q&A 게시물, 리뷰 등의 데이터는 삭제됩니다.</li>
+							<li>- 회원 탈퇴 후 모든 회원 정보가 즉시 삭제되며 재가입시에 기존 아이디를 사용할 수 있습니다.</li>
+						</ul><br />
+						<input type="checkbox" id="checkGuide"><label class="guide-exp" for="checkGuide"> 안내사항을 모두 확인하였으며, 이에 동의합니다.</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-detault btn-sm withdrawalBtn">회원탈퇴</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$(document).ready(function() {
+		
+		// 회원 탈퇴
+		$('.withdrawalBtn').on('click', function() {
+
+			var id = '${user.id}';
+			
+			var input_password = $('input[name=withdrawal_password]').val();
+			
+			if(!$('input[name=withdrawal_password]').val()) {
+				alert('비밀번호를 입력해 주세요.');
+				$('input[name=withdrawal_password]').focus();
+				return false;
+			} else if(!$('#checkGuide').is(':checked')) {
+				alert('안내사항을 확인해 주세요.');
+				$('#checkGuide').focus();
+				return false;
+			}
+			
+			// 비밀번호 체크
+			$.ajax({
+				type : 'get',
+				url : '/user/checkPwd/' + id,
+				success : function(password) {
+					var c = confirm('모서리를 탈퇴 하시겠습니까?');
+					
+					if(c) {
+						
+						// 입력한 비밀번호가 틀리다면
+						if(input_password != password) {
+							alert('비밀번호가 일치하지 않습니다.');
+							return false;
+						}
+						
+						var form = $('<form></form>');
+						form.attr('action', '/user/withdrawal');
+						form.attr('method', 'post');
+						form.appendTo('body');
+						
+						form.append($('<input type="hidden" name="id" value="' + id + '">'));
+						form.submit();
+						
+					} else {
+						return false;
+					}
+				}
+			});
+			
+		});
+		
+		// 탈퇴버튼 클릭 (show modal)
+		$('.btn-withdrawal').on('click', function() {
+			
+			$('.withdrawal-modal-sm').modal();
+		});
 
         // 비밀번호, 비밀번호 확인 포커스 아웃될 때
         $("#password, #password_check").blur(function() {

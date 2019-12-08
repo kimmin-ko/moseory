@@ -54,6 +54,66 @@
 	margin-bottom: 80px;
 }
 
+..noticeLabel-row {
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+
+.notice-board {
+    font-size: 12px;
+    text-align: center;
+}
+
+.notice-board thead tr {
+    background-color: #EBEBEB;
+}
+
+.notice_title {
+	text-align: left;
+}
+
+.pagination-div {
+    text-align: center;
+}
+
+.pagination li a {
+    color: black;
+}
+
+.pagination li:hover a {
+    color: black;
+}
+
+.pagination li.active a {
+    background-color: gray;
+    color: black;
+    cursor: pointer;
+}
+
+.pagination li.active:hover a {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.search-area {
+    font-size: 13px;
+}
+
+.search-area select option.value {
+    font-size: 8px;
+}
+
+.notice-table {
+	margin-top: 80px;
+	margin-bottom: 80px;
+}
+
+.qna_title {
+	text-align: left;
+}
+
 .reg_btn_area {
 	text-align: right;
 }
