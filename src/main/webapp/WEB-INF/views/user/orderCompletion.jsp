@@ -17,8 +17,6 @@
 	$(document).ready(function() {
 		$('.order_code').text('${order.code}');
 		
-		var orderDetailList = JSON.parse('${orderDetailList}');
-		
 		// 총 상품금액
 		var total_prod_price = 0;
 		// 배송비
@@ -30,41 +28,10 @@
 		// 총 결제금액
 		var final_order_price = 0;
 		
-		var tbody = $('#order_prod_tbody');
-		orderDetailList.forEach(function(orderDetail) {
-			
-			total_prod_price += orderDetail.product_price * orderDetail.quantity;
-			total_discount += orderDetail.discount;
-			
-			// 색상과 사이즈가 존재하면 사이즈 앞에 / 붙임
-			if(orderDetail.product_color) {
-				if(orderDetail.product_size) 
-					orderDetail.product_size = ' / ' + orderDetail.product_size;
-				else
-					orderDetail.product_size = '';
-			} else {
-				orderDetail.product_color = '';
-			}
-			
-			var tr = '';
-			tr += '<tr>';
-			tr += '	<td>';
-			tr += '		<img src="' + orderDetail.product_file_path + '" class="order_prod_img">';
-			tr += '	</td>';
-			tr += '	<td class="order_prod_info">';
-			tr += '		<span class="order_prod_name">' + orderDetail.product_name + '</span><br><br>';
-			tr += '		<span class="order_prod_option">';
-			tr += '		[옵션: ' + orderDetail.product_color + orderDetail.product_size + ']';
-			tr += '		</span>';
-			tr += '	</td>';
-			tr += '	<td>' + orderDetail.product_price.format() + '원</td>';
-			tr += '	<td>' + orderDetail.discount.format() + '원</td>';
-			tr += '	<td>' + orderDetail.quantity.format() + '</td>';
-			tr += '	<td class="active">' + (orderDetail.product_price * orderDetail.quantity - orderDetail.discount).format() + '원</td>';
-			tr += '</tr>';
-			
-			tbody.append(tr);
-		});
+		<c:forEach var="orderDetail" items="${orderDetailList}">
+			total_prod_price += ${orderDetail.product_price};
+			total_discount += ${orderDetail.discount};
+		</c:forEach>
 		
 		final_order_price = total_prod_price + delivery_charge - total_discount - used_point;
 		
@@ -73,6 +40,8 @@
 		$('.total_discount').text('- ' + total_discount.format() + '원');
 		$('.used_point').text('- ' + used_point.format() + '원');
 		$('.final_order_price').text(final_order_price.format() + '원');
+		
+		$('.state').text('${orderDetailList[0].state}');
 		
 		switch('${order.pay_method}') {
 			case 'card' : $('.pay_method').text('신용카드'); break;
@@ -83,7 +52,6 @@
 			case 'point' : $('.pay_method').text('적립금 결제'); break;
 		}
 		
-		$('.state').text(orderDetailList[0].state);
 		$('.order_date').text('${order.order_date}'.replace('T', ' '));
 		
 		$('.recipient_name').text('${order.recipient_name}');
@@ -135,6 +103,37 @@
 	                    </tr>
 	                </thead>
 	                <tbody id="order_prod_tbody">
+	                	<c:forEach var="orderDetail" items="${orderDetailList }">
+			            <tr>
+							<td>
+								<img src='<c:out value="${orderDetail.file_path.concat(orderDetail.thumbnail_name) }" />' class="order_prod_img">
+							</td>
+							<td class="order_prod_info">
+								<span class="order_prod_name"><c:out value="${orderDetail.product_name }" /></span><br><br>
+								<span class="order_prod_option">
+								[옵션:&nbsp;
+                            	<c:if test="${orderDetail.product_color ne null }"> 
+                            		<c:if test="${orderDetail.product_size ne null }"> 
+                            			<c:out value="${orderDetail.product_color }" /> /
+                            			<c:out value="${orderDetail.product_size }" />
+                            		</c:if>
+                            		<c:if test="${orderDetail.product_size eq null }">
+                            			<c:out value="${orderDetail.product_color }" />
+                            		</c:if>
+                            	</c:if>	
+                            	<c:if test="${orderDetail.product_color eq null }">
+                            		<c:out value="${orderDetail.product_size }" />
+                            	</c:if>
+                            	]
+								</span>
+							</td>
+							<td><fmt:formatNumber value="${orderDetail.product_price }" />원</td>
+							<td><fmt:formatNumber value="${orderDetail.discount }" />원</td>
+							<td><fmt:formatNumber value="${orderDetail.quantity }" />개</td>
+							<td class="active">
+								<fmt:formatNumber value="${orderDetail.product_price * orderDetail.quantity - orderDetail.discount }" />원</td>
+						<tr>
+						</c:forEach>
  	                </tbody>
 	                <tfoot>
 	                    <tr>

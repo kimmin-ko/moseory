@@ -21,39 +21,28 @@
 			$('#high_code').change(function(){
 				var high_code = $('#high_code').val();
 				
-					$.ajax({
-				        type : "post",
-				        url : "/admin/productcate",
-				        data : JSON.stringify(high_code),
-				        dataType: "json",
-				        contentType : "application/json; charset=utf-8",
-						success: function(data){
-							console.log(data);
-							if(data.length == 0){
-								$('#lowCategory').children().eq(i).remove();
-								$('#lowCategory').append("<option>하위카테고리가 없습니다</option>");
-							}else{
-								 for(var i =0; i < data.length; i++){
-									$('#lowCategory').children().eq(i).remove();
-									$('#lowCategory').append("<option>" + data[i].name + "</option>");
-								} 
-							}
-							
-						}
-				    });
+				$.ajax({
+			        type : "post",
+			        url : "/admin/productcate",
+			        data : JSON.stringify(high_code),
+			        dataType: "json",
+			        contentType : "application/json; charset=utf-8",
+					success: function(data){
+						console.log(data);
+						if(data.length == 0){
+							$('#lowCategory').children().remove();
+							$('#lowCategory').append("<option>하위카테고리가 없습니다</option>");
+						} else {
+							$('#lowCategory').children().remove();
+							for(var i =0; i < data.length; i++){
+								$('#lowCategory').append("<option>" + data[i].name + "</option>");
+							} // end for 
+						} // end if
+					} // end success
+					
+			    }); // end ajax
+				
 			});
-			
-			
-			/* $('#registForm').click(function(){
-				
-				var fileCheck = $('#thumbnail').val();
-				
-				if(fileCheck == ''){
-					alert('사진을 업로드해주세요');
-					return false;
-				}
-				
-			}); */
 			
 		});
 	</script>
@@ -141,7 +130,7 @@
 						</tr>
 					</table>
 					<div class="regist_btn_area text-center">
-						<button type="button" class="btn btn-primary btn-md" onclick="regist()">등록</button> 
+						<button type="button" class="btn btn-primary btn-md" onclick="regist()" id = "formbtn">등록</button> 
 						<button type="button" class="btn btn-default btn-md">취소</button>
 					</div>
 

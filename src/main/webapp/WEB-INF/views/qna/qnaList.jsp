@@ -20,11 +20,6 @@
 			// 작성자의 아이디 블라인드 처리
 			var name = new String();
 			
-			/* <c:forEach var="qna" items="${qnaList}">
-				name = '${qna.member_id}'.substring(0, 2) + '*****'; 
-				$('.qna_writer').text(name);
-			</c:forEach> */
-			
 			// 페이지 클릭 이벤트 처리
 			var actionForm = $('#actionForm');
 			
@@ -50,6 +45,14 @@
 				e.preventDefault();
 				
 				searchForm.submit();
+			});
+			
+			// 글쓰기 클릭
+			$('.qna_reg_btn').on('click', function() {
+				var actionForm = $('#actionForm');
+				
+				actionForm.attr('action', '/qna/qnaRegist');
+				actionForm.submit();
 			});
 			
 			// 글 제목 클릭
@@ -193,7 +196,7 @@
 			</div>
 			<div class="col-md-5 reg_btn_area">
 				<c:if test="${user ne null }">
-					<button type="button" class="btn btn-detault btn-sm qna_reg_btn" onclick="location.href='/qna/qnaRegist'">글쓰기</button>
+					<button type="button" class="btn btn-default btn-sm qna_reg_btn">글쓰기</button>
 				</c:if>
 			</div>
 			

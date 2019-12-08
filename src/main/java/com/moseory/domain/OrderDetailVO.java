@@ -16,15 +16,17 @@ public class OrderDetailVO {
     
     // product
     private int product_code;
-    private String product_file_path;
     private String product_name;
     private int product_price;
-    
     
     // product detail
     private String product_color;
     private String product_size;
     private int product_stock;
+    
+    // product file
+    private String file_path;
+    private String thumbnail_name;
     
 }
 

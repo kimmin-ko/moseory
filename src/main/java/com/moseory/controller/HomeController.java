@@ -14,7 +14,9 @@ import com.moseory.domain.ProductVO;
 import com.moseory.service.HomeService;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 @Controller
 public class HomeController {
     
@@ -41,20 +43,6 @@ public class HomeController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

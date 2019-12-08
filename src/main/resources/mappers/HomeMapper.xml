@@ -8,14 +8,16 @@
 	<select id="getProductSaleCount" resultType="productVO">
 	<![CDATA[
 	SELECT
-    	code, name, high_code, low_code, price, sale_count, grade ,wish_count, product_comment
+    	*
 	FROM
-    	(SELECT
-			rownum, code, name, high_code, low_code, price, sale_count, grade ,wish_count, product_comment
-		FROM
-			tbl_product
-		ORDER BY
-			sale_count desc)
+	    (SELECT
+	        p.*, pf.*
+	    FROM
+	        tbl_product p, tbl_product_file pf
+	    WHERE
+	        p.code = pf.product_code
+	    ORDER BY
+	        p.sale_count desc)
 	WHERE
 	    rownum <= 3
     ]]>
@@ -25,13 +27,15 @@
 	<select id="getProductNew" resultType="productVO">
 	<![CDATA[
 	SELECT
-    	code, name, high_code, low_code, price, sale_count, grade ,wish_count, product_comment
+   		*
 	FROM
-    	(SELECT
-			rownum, code, name, high_code, low_code, price, sale_count, grade ,wish_count, product_comment
-		FROM
-			tbl_product
-		ORDER BY code desc)
+	    (SELECT
+	        p.*, pf.*
+	    FROM
+	        tbl_product p, tbl_product_file pf
+	    WHERE
+	        p.code = pf.product_code
+	    ORDER BY code desc)
 	WHERE
 	    rownum <= 60
    	]]>

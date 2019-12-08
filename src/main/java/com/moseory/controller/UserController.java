@@ -33,6 +33,7 @@ import com.moseory.domain.OrderDetailVO;
 import com.moseory.domain.OrderListCri;
 import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
+import com.moseory.domain.PageDTO;
 import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
 import com.moseory.service.ProductService;
@@ -158,7 +159,6 @@ public class UserController {
 	
 	// 디테일 번호와 수량을 같이 전달해줘서 같은 VO에 저장함
 	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
-	
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
     }
     
@@ -195,34 +195,28 @@ public class UserController {
 	OrderVO order = userService.getOrder(order_code);
 	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
-	List<String> orderDetailListJson = new ArrayList<String>();
-	for(OrderDetailVO orderDetail : orderDetailList) {
-	    String orderDetailJson = new Gson().toJson(orderDetail);
-	    orderDetailListJson.add(orderDetailJson);
-	}
-	
 	model.addAttribute("order", order);
-	model.addAttribute("orderDetailList", orderDetailListJson);
+	model.addAttribute("orderDetailList", orderDetailList);
     }
     
     // orderList 페이지
     @GetMapping("/orderList")
-    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri cri) {
+    public void orderList(HttpSession session, Model model, @ModelAttribute OrderListCri orderCri) {
 	
 	MemberVO member = (MemberVO) session.getAttribute("user");
 	
-	
-	if(cri.getState() == null) /* 페이지 처음 호출 시 */
-	    // orderList 페이지 호출 시 전체 기간, 전체 상태로 초기화
-	    cri = new OrderListCri(member.getId(), null, null, "전체 상태");
+	if(orderCri.getState() == null) /* 페이지 처음 호출 시 */
+	    // orderList 페이지 호출 시 전체 기간, 전체 상태, 1페이지로 초기화
+	    orderCri = new OrderListCri(member.getId(), null, null, "전체 상태", 1, 10);
 	else { /* 검색 조건으로 조회 시 */
-	    // 접속중인 id로 초기화
-	    cri.setMember_id(member.getId());
+	    // 접속중인 id로 초기화 (다른 데이터는 클라이언트에서 넘어옴)
+	    orderCri.setMember_id(member.getId());
 	}
 	
-	List<OrderListVO> orderList = userService.getOrderList(cri);
+	List<OrderListVO> orderList = userService.getOrderList(orderCri);
 	
 	model.addAttribute("orderList", orderList);
+	model.addAttribute("pageMaker", new PageDTO(orderCri, userService.getOrderListCount(orderCri)));
     }
     
     // 주문 취소
@@ -239,13 +233,21 @@ public class UserController {
     }
     
     // 교환 요청
-    @PostMapping("/changeOrderState")
-    public String changeOrderState(@RequestParam String order_code, 
-	    @RequestParam int product_detail_no, 
-	    @RequestParam String state,
-	    HttpSession session) {
+    @PostMapping("/exchangeRequest")
+    public String exchangeRequest(@RequestParam String order_code, 
+                    	    @RequestParam int product_detail_no, 
+                    	    @RequestParam int e_product_detail_no) {
 	
-	userService.changeOrderState(order_code, product_detail_no, state);
+	userService.exchangeRequest(order_code, product_detail_no, e_product_detail_no);
+	
+	return "redirect:/user/orderList";
+    }
+    
+    // 환불 요청
+    @PostMapping("/returnRequest")
+    public String returnRequest(@RequestParam String order_code, @RequestParam int product_detail_no) {
+	
+	userService.returnRequest(order_code, product_detail_no);
 	
 	return "redirect:/user/orderList";
     }

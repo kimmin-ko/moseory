@@ -24,6 +24,7 @@ public class ReviewVO {
     private LocalDate reg_date;
     private int hit;
     private String file_path;
+    private String thumbnail_name;
     
     private ProductDetailVO product_detail;
     

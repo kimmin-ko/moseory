@@ -25,8 +25,8 @@
 		<typeAlias alias="LowCateVO" type="com.moseory.domain.LowCateVO" />
 		<typeAlias alias="productVO" type="com.moseory.domain.ProductVO" />
 		<typeAlias alias="productdetailVO" type="com.moseory.domain.ProductDetailVO" />
+		<typeAlias alias = "productAndFileVO" type = "com.moseory.domain.ProductAndFileVO" />
 		<typeAlias alias = "productFileVO" type = "com.moseory.domain.ProductFileVO"/>
-		
 		<typeAlias alias="OrderVO" type="com.moseory.domain.OrderVO"/>
 		<typeAlias alias="OrderDetailVO" type="com.moseory.domain.OrderDetailVO"/>
 		<typeAlias alias="AddedOrderInfoVO" type="com.moseory.domain.AddedOrderInfoVO"/>

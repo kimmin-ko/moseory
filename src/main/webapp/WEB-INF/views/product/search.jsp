@@ -85,8 +85,8 @@
 										<option>::: 기준 선택 :::</option>
 										<option <c:if test = "${param.orderby == 'code' }">selected</c:if> value = "code">상품코드 순</option>
 										<option <c:if test = "${param.orderby == 'name' }">selected</c:if> value = "name">상품명 순</option>
-										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">낮은가격 순</option>
-										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price">높은가격 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price asc">낮은가격 순</option>
+										<option <c:if test = "${param.orderby == 'price' }">selected</c:if> value = "price desc">높은가격 순</option>
 										<option <c:if test = "${param.orderby == 'wish_count' }">selected</c:if> value = "wish_count">인기 순</option>
 									</select>
 								</td>
@@ -115,7 +115,7 @@
 							<div class = "info">
 								<p><a href = "${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}">${resultProduct.name }</a></p>
 								<p>${resultProduct.price }</p>
-								<p>${resultProduct.product_comment }</p> 
+								<p>${fn:substring(resultProduct.product_comment, 0, 20) }</p> 
 							</div>
 						</div>							
 					</c:forEach>	
@@ -169,7 +169,7 @@
 																																							keyword=${param.keyword}&
 																																							exceptkeyword=${param.exceptkeyword}&
 																																							lowestprice=${param.lowestprice}&
-																																							highestprice=${param.highestprice}">${pageNumber }">다음</a></li>
+																																							highestprice=${param.highestprice}">${pageNumber }다음</a></li>
 						</c:if>
 						<c:if test = "${paging.curBlock ne paging.blockCnt && paging.blockCnt > 0 }">
 							<li class ="button_end"><a href="${pageContext.request.contextPath }/product/search?
@@ -178,7 +178,7 @@
 																																						keyword=${param.keyword}&
 																																						exceptkeyword=${param.exceptkeyword}&
 																																						lowestprice=${param.lowestprice}&
-																																						highestprice=${param.highestprice}">${pageNumber }">끝</a></li>
+																																						highestprice=${param.highestprice}">${pageNumber }끝</a></li>
 						</c:if>
 					</ul>
 				</nav>

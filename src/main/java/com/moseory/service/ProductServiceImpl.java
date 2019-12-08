@@ -8,22 +8,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.moseory.dao.ProductDao;
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
+import com.moseory.util.ImageUtil;
 
-@Service("productService")
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Service
 public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	private ProductDao productDao;
 	
 	@Override
-	public List<ProductVO> highCateList(int high_code) {
+	public List<ProductAndFileVO> highCateList(int high_code) {
 		return productDao.highCateList(high_code);
 	}
 
@@ -37,7 +43,9 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Override
 	public ProductVO getProduct(int code) {
-		return productDao.getProduct(code);
+	    	ProductVO product = productDao.getProduct(code);
+	    	product.setFile_path(ImageUtil.convertImagePath(product.getFile_path()));
+		return product;
 	}
 
 	@Override
@@ -52,7 +60,11 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<ProductDetailVO> getProductSize(int product_code, String product_color) {
-	    return productDao.getProductSize(product_code, product_color);
+	    if(product_color != null && product_color.equals("null")) {
+		product_color = null;
+	    }
+	    List<ProductDetailVO> product_detail = productDao.getProductSize(product_code, product_color);
+	    return product_detail;
 	}
 	
 	@Override
@@ -77,7 +89,14 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public List<ReviewVO> getReview(ReviewCri reviewCri) {
-	    return productDao.getReview(reviewCri);
+	    List<ReviewVO> vo_list = productDao.getReview(reviewCri);
+	    
+	    for(int i = 0; i < vo_list.size(); i++) {
+		ReviewVO vo = vo_list.get(i);
+		vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	    }
+	    
+	    return vo_list;
 	}
 
 	@Override
@@ -86,8 +105,8 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public List<QnaVO> getQnA(int product_code) {
-	    return productDao.getQnA(product_code);
+	public List<QnaVO> getQnA(Criteria cri, int product_code) {
+	    return productDao.getListWithPaging(cri, product_code);
 	}
 
 	@Override
@@ -133,6 +152,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public int getLowCateCode(String keyword) {
 		return productDao.getLowCateCode(keyword);
+	}
+
+	@Override
+	public List<Map<String, Object>> getProductColorAndStock(int product_code) {
+	    return productDao.getProductColorAndStock(product_code);
 	}
 
 

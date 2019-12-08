@@ -15,15 +15,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
+import com.moseory.domain.PageDTO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
@@ -46,7 +49,7 @@ public class ProductController {
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
-			List <ProductVO> productVO = productService.highCateList(high_code);
+			List <ProductAndFileVO> productVO = productService.highCateList(high_code);
 			model.addAttribute("productVO",productVO);
 			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
@@ -54,7 +57,7 @@ public class ProductController {
 			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
 			model.addAttribute("productVO",productVO);
 		}
-		
+		 
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		
@@ -70,7 +73,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/productInfo")
-	public String productInfo(@RequestParam int code, Model model) {
+	public String productInfo(@RequestParam int code, @ModelAttribute Criteria cri, Model model) {
 		// 상품 조회
 		ProductVO productVO = productService.getProduct(code);
 		// 상품 디테일 조회
@@ -115,8 +118,14 @@ public class ProductController {
 		model.addAttribute("qnaCount", qnaCount);
 		
 		// QnA 리스트
-		List<QnaVO> qnaList = productService.getQnA(code);
+		// productInfo의 qna는 검색을 사용하지 않기 때문에 tpye을 이용해 
+		// 게시판 이용 후 productInfo 페이지로 이동하도록 설정해준다
+		cri.setType("P");
+		cri.setKeyword(code + "");
+		
+		List<QnaVO> qnaList = productService.getQnA(cri, code);
 		model.addAttribute("qnaList", qnaList);
+		model.addAttribute("pageMaker", new PageDTO(cri, qnaCount));
 		
 		return "product/productInfo";
 	}
@@ -144,25 +153,34 @@ public class ProductController {
 	}
 	
 	@GetMapping("/getColor/{code}")
-	public ResponseEntity<List<String>> getColor(@PathVariable("code") int code) {
+	public @ResponseBody ResponseEntity<List<String>> getColor(@PathVariable("code") int product_code) {
 	    
-	    List<String> color = productService.getProductColor(code);
+	    List<String> color = productService.getProductColor(product_code);
 	    
 	    return new ResponseEntity<>(color, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getSize/{code}/{color}")
-	public ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
-			     @PathVariable("color") String color) {
-	    List<ProductDetailVO> productSize = productService.getProductSize(code, color);
+	@GetMapping("/getColorAndStock/{code}")
+	public @ResponseBody ResponseEntity<List<Map<String, Object>>> getColorAndStock(@PathVariable("code") int product_code) {
 	    
-	    return productSize != null 
-		    ? new ResponseEntity<>(productSize, HttpStatus.OK)
+	    List<Map<String, Object>> colorAndStock = productService.getProductColorAndStock(product_code);
+	    
+	    return new ResponseEntity<>(colorAndStock, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getSize/{code}/{color}")
+	public @ResponseBody ResponseEntity<List<ProductDetailVO>> getSize(@PathVariable("code") int code,
+			     @PathVariable("color") String color) {
+	    
+	    List<ProductDetailVO> productDetail = productService.getProductSize(code, color);
+	    
+	    return productDetail != null 
+		    ? new ResponseEntity<>(productDetail, HttpStatus.OK)
 		    : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@PostMapping("/increaseRecommend/{review_no}/{user_id}")
-	public ResponseEntity<Integer> increaseRecommend(
+	public @ResponseBody ResponseEntity<Integer> increaseRecommend(
 		@PathVariable("review_no") int review_no, @PathVariable("user_id") String user_id, 
 		HttpServletRequest req, HttpServletResponse res) {
 	    boolean isCookie = false;
