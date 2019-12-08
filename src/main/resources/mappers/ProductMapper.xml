@@ -62,11 +62,12 @@
 	<!--상품 코드로 정보 조회 -->
 	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
-		code, name, high_code, low_code, price, sale_count, grade, wish_count, product_comment
+	    p.*, pf.*
 	FROM
-		tbl_product
+	    tbl_product p, tbl_product_file pf
 	WHERE
-		code = #{code}
+	    p.code = pf.product_code
+	    AND code = #{code}
 	</select>
 	
 	<!-- 상품 디테일 번호로 정보 조회 -->
@@ -204,7 +205,7 @@
 		<result column="reg_date" property="reg_date" />
 		<result column="hit" property="hit" />
 		<result column="file_path" property="file_path" />
-		<result column="file_name" property="file_name" />
+		<result column="thumbnail_name" property="thumbnail_name" />
 		<result column="recommend" property="recommend" />
 		<result column="grade" property="grade" />
 		<association property="member" javaType="MemberVO">
@@ -223,8 +224,8 @@
 	<select id="getReview" resultMap="reviewMap">
 	<![CDATA[
 	SELECT 
-	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.recommend, r.grade,
-	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
+	    r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.recommend, r.grade,
+	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size, pf.file_path, pf.thumbnail_name
 	FROM
 	    tbl_member m, 
 	    (SELECT 
@@ -248,9 +249,10 @@
 				</when>
 			</choose>
 	<![CDATA[
-	     ) r, tbl_product_detail pd, tbl_product p
+	     ) r, tbl_product_detail pd, tbl_product p, tbl_product_file pf
 	WHERE
 	    r.product_detail_no = pd.no
+	    AND p.code = pf.product_code
 	    AND m.id = r.member_id
 	    AND pd.product_code = p.code
 	    AND pd.product_code = #{product_code}

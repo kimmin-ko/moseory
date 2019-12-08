@@ -54,6 +54,8 @@
 
 .prod-img {
     margin-bottom: 20px;
+    width: 100%;
+    height: auto;
 }
 
 .prod-info-list li {

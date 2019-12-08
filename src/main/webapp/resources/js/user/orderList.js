@@ -189,7 +189,7 @@ function showReviewModal(order_code, product_detail_no) {
 			color = '';
 		}
 		
-		$('.review_prod_img').attr('src', order_info.file_path);
+		$('.review_prod_img').attr('src', order_info.file_path + order_info.thumbnail_name);
 		$('.review_prod_name').text(order_info.name);
 		$('.review_prod_option').text('[옵션 : ' + color + size + ' ]');
 	});
@@ -219,33 +219,22 @@ function orderCancel(order_code) {
 	
 }
 
-// 교환 요청
-function changeOrderState(order_code, product_detail_no, state) {
-	var q = '';
+// 환불 요청
+function returnRequest(order_code, product_detail_no) {
 	
-	switch(state) {
-		case 'exchange' : 
-			q = '해당 상품으로 교환하시겠습니까?';
-			break;
-		case 'return' : 
-			q = '해당 상품을 환불하시겠습니까?';
-			break;
-	}
-	
-	var c = confirm(q);
+	var c = confirm("해당 상품을 환불 요청하시겠습니까?");
 	
 	if(c) {
 		var form = $('<form></form>');
 		form.attr('method', 'post');
-		form.attr('action', '/user/changeOrderState');
+		form.attr('action', '/user/returnRequest');
 		form.appendTo('body');
 		
-		form.append($('<input type="hidden" name="state" value="' + state + '">'));
 		form.append($('<input type="hidden" name="order_code" value="' + order_code + '">'));
 		form.append($('<input type="hidden" name="product_detail_no" value="' + product_detail_no + '">'));
 		form.submit();
 	} else {
-		return;
+		return false;
 	}
 	
 }
@@ -295,7 +284,7 @@ function showExchangeModal(order_code, product_detail_no) {
 			color = '';
 		}
 		
-		$('#modal_prod_img').attr('src', order_info.file_path);
+		$('#modal_prod_img').attr('src', order_info.file_path + order_info.thumbnail_name);
 		$('.modal_prod_name').text(order_info.name);
 		$('.modal_prod_option').text('[옵션 : ' + color + size + ' ]');
 		$('.modal_prod_quantity').text(order_info.quantity + '개');
@@ -317,7 +306,6 @@ function showExchangeModal(order_code, product_detail_no) {
 				$('.modal_color_size').append(html_color);
 				
 				for(var i = 0; i < color.length; i++) {
-					console.log(color[i]);
 					$('#modal_prod_color').append('<option>' + color[i] + '</option>');
 				}
 	
@@ -389,8 +377,51 @@ function showExchangeModal(order_code, product_detail_no) {
 		}
 	});
 	
-	// 교환 요청 버튼에 onclick 속성 초기화
-	$('.exchangeReqBtn').attr('onclick', 'changeOrderState(\'' + order_code + '\', \'' + product_detail_no + '\', \'exchange\')');
+	// 교환 요청 버튼 클릭
+	$('.exchangeReqBtn').on('click', function() {
+		var product_color = $('#modal_prod_color').val();
+		var product_size = $('#modal_prod_size').val();
+		
+		if(product_color == '옵션 선택' || product_size == '옵션 선택') {
+			alert('옵션을 선택해주세요.');
+			return false;
+		}
+		
+		var param = {
+			product_code : product_code,
+			product_color : product_color,
+			product_size : product_size
+		};
+		
+		// tbl_order_detail e_product_detail_no에 저장하기 위하여
+		// product_code, color, sizr를 이용해 교환 요청할 상품의 product_detail_no를 조회한다
+		
+		var e_product_detail_no = '';
+		
+		orderListJs.getProductDetailNo(param, function(e_product_detail_no) {
+			if(product_detail_no == e_product_detail_no) {
+				alert('주문 상품과 옵션이 같습니다. 다시 선택해주세요.');
+				return false;
+			}
+			
+			var c = confirm('해당 상품으로 교환하시겠습니까?');
+			
+			if(c) {
+				var form = $('<form></form>');
+				form.attr('method', 'post');
+				form.attr('action', '/user/exchangeRequest');
+				form.appendTo('body');
+				
+				form.append($('<input type="hidden" name="order_code" value="' + order_code + '">'));
+				form.append($('<input type="hidden" name="product_detail_no" value="' + product_detail_no + '">'));
+				form.append($('<input type="hidden" name="e_product_detail_no" value="' + e_product_detail_no + '">'));
+				form.submit();
+			} else {
+				return false;
+			}
+		});
+		
+	});
 	
 	// 모달 창 띄우기
 	$('.exchange-modal-sm').modal({backdrop:'static'});
@@ -496,12 +527,37 @@ var orderListJs = (function() {
 		
 	}
 	
+	function getProductDetailNo(param, callback) {
+		// param = product_code, color, size
+		
+		if(!param.product_color)
+			param.product_color = '';
+		else if(param.product_color)
+			param.product_color = '&product_color=' + param.product_color;
+		
+		if(!param.product_size)
+			param.product_size ='';
+		else if(param.product_size)
+			param.product_size = '&product_size=' + param.product_size;
+		
+		$.ajax({
+			type : 'get',
+			url : '/product/getProductDetailNo?product_code=' + param.product_code + param.product_color + param.product_size,
+			success : function(no) {
+				if(callback)
+					callback(no);	
+			}
+		});
+		
+	}
+	
 	return {
 		getModalInfo : getModalInfo,
 		getSize : getSize,
 		getColor : getColor,
 		getColorAndStock : getColorAndStock,
-		registReview : registReview
+		registReview : registReview,
+		getProductDetailNo : getProductDetailNo
 	}
 	
 })();

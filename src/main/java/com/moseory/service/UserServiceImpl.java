@@ -20,6 +20,7 @@ import com.moseory.domain.OrderListVO;
 import com.moseory.domain.OrderVO;
 import com.moseory.domain.ReviewRegVO;
 import com.moseory.domain.WishListVO;
+import com.moseory.util.ImageUtil;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -64,7 +65,11 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public WishListVO getWishList(String member_id) {
-	return userDao.getWishList(member_id);
+	WishListVO vo = userDao.getWishList(member_id);
+	for(int i = 0; i < vo.getProducts().size(); i++) {
+	    vo.getProducts().get(i).setFile_path(ImageUtil.convertImagePath(vo.getProducts().get(i).getFile_path()));
+	}
+	return vo;
     }
 
     @Override
@@ -87,7 +92,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<CartVO> getCartList(String member_id) {
-	return userDao.getCartList(member_id);
+	List<CartVO> vo_list = userDao.getCartList(member_id);
+	
+	for(int i=0; i<vo_list.size(); i++) {
+	    vo_list.get(i).setFile_path(ImageUtil.convertImagePath(vo_list.get(i).getFile_path()));
+	}
+	
+	return vo_list; 
     }
 
     @Override
@@ -134,6 +145,7 @@ public class UserServiceImpl implements UserService {
 	for(int i = 0; i < pdNoList.size(); i++) {
 	    vo = userDao.getAddedOrderInfo(pdNoList.get(i));
 	    vo.setQuantity(quantityList.get(i));
+	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
 	    orderList.add(vo);
 	}
 	
@@ -144,7 +156,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String addOrder(OrderVO vo, List<OrderDetailVO> details_list) {
 	// 주문 번호 생성
-	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhhmmss"));
+	String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 	int random = (int)(Math.random() * 8999999) + 1000000;
 	String order_code = now + random;
 	
@@ -187,12 +199,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<OrderDetailVO> getOrderDetails(String order_code) {
-	return userDao.getOrderDetail(order_code);
+	
+	List<OrderDetailVO> vo_list = userDao.getOrderDetail(order_code);
+	
+	for(int i = 0; i < vo_list.size(); i++) {
+	    OrderDetailVO vo = vo_list.get(i);
+	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	}
+	
+	return vo_list;
     }
 
     @Override
     public List<OrderListVO> getOrderList(OrderListCri orderCri) {
-	return userDao.getOrderList(orderCri);
+	
+	List<OrderListVO> vo_list = userDao.getOrderList(orderCri); 
+	for(int i = 0; i < vo_list.size(); i++) {
+	    OrderListVO vo = vo_list.get(i);
+	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	}
+	
+	return vo_list;
     }
     
     @Override
@@ -221,23 +248,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public OrderListVO getExchangeModalInfo(String order_code, int product_detail_no) {
-	return userDao.getExchangeModalInfo(order_code, product_detail_no);
-    }
-
-    @Override
-    public void changeOrderState(String order_code, int product_detail_no, String state) {
-	String final_state = "";
-	
-	switch(state) {
-	case "exchange" :
-	    final_state = "교환 요청";
-	    break;
-	case "return" :
-	    final_state = "반품 요청";
-	    break;
-	}
-	
-	userDao.updateOrderStateToExchange(order_code, product_detail_no, final_state);
+	OrderListVO vo = userDao.getExchangeModalInfo(order_code, product_detail_no);
+	vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
+	return vo;
     }
 
     // 구매 확정
@@ -252,7 +265,7 @@ public class UserServiceImpl implements UserService {
 	int point = Integer.parseInt(param.get("point")+"");
 	int amount = Integer.parseInt(param.get("amount")+"");
 	
-	userDao.updateOrderStateToExchange(order_code, product_detail_no, "구매 확정");
+	userDao.changeOrderState(order_code, product_detail_no, "구매 확정");
 	
 	userDao.increasePointAndAmount(member_id, point, amount);
     }
@@ -268,7 +281,7 @@ public class UserServiceImpl implements UserService {
 	userDao.registReview(vo);
 	
 	// 주문 상태 변경
-	userDao.updateOrderStateToExchange(vo.getOrder_code(), vo.getProduct_detail_no(), "구매 확정 ");
+	userDao.changeOrderState(vo.getOrder_code(), vo.getProduct_detail_no(), "구매 확정 ");
 	
 	// 상품  코드 구하기
 	int product_code = userDao.getProductCode(vo.getProduct_detail_no());
@@ -280,23 +293,26 @@ public class UserServiceImpl implements UserService {
 	    sumGrade += grade;
 	}
 	
-	log.info("sumGrade : " + sumGrade);
-	
 	// 상품의 리뷰 개수 구하기
 	int reviewCount = userDao.getReviewCount(product_code);
 	
-	log.info("reviewCount : " + reviewCount);
-	
 	// 상품 평점 구하기
 	double avgGrade = Math.floor( ((double)sumGrade / reviewCount) * 10 ) / 10.0;
-	
-	log.info("avgGrade : " + avgGrade);
 	
 	// 상품의 평점 최신화
 	userDao.updateProductGrade(product_code, avgGrade);
     }
 
-    
+    @Override
+    public void exchangeRequest(String order_code, int product_detail_no, int e_product_detail_no) {
+	userDao.exchangeRequest(order_code, product_detail_no, e_product_detail_no);
+    }
+
+    @Override
+    public void returnRequest(String order_code, int product_detail_no) {
+	userDao.changeOrderState(order_code, product_detail_no, "환불 요청");
+    }
+
     
     
 

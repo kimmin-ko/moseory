@@ -39,7 +39,7 @@ $(document).ready(function() {
 		origin_prod_price += ${cart.product_price * cart.quantity };
 	</c:forEach>
 	
-	total_prod_price = origin_prod_price - total_discount;
+	total_prod_price = origin_prod_price - Math.floor(total_discount);
 	
 	$(".total-prod-price").html("<strong>" + total_prod_price.format() + "원</strong>");
 	
@@ -135,7 +135,7 @@ $(document).ready(function() {
                         <!-- 상품 이미지 -->
                         <td>
                         	<a href='/product/productInfo?code=<c:out value="${cart.product_code }" />'>
-                        		<img src='<c:out value="${cart.product_file_path }" />' class="cart-img">
+                        		<img src='<c:out value="${cart.file_path.concat(cart.thumbnail_name) }" />' class="cart-img">
                         	</a>
                         </td>
                         <!-- 상품 정보 -->

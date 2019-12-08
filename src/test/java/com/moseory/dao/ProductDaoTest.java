@@ -110,6 +110,14 @@ public class ProductDaoTest {
 	
     }
     
+    @Test
+    public void testGetReviewList() {
+	List<ReviewVO> vo_list = productDao.getReview(new ReviewCri(381, "N", 5));
+	for(ReviewVO vo : vo_list) {
+	    log.info("썸네일" + vo.getThumbnail_name());
+	}
+    }
+    
 }
 
 

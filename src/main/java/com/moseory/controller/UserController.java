@@ -159,7 +159,6 @@ public class UserController {
 	
 	// 디테일 번호와 수량을 같이 전달해줘서 같은 VO에 저장함
 	addedOrderInfoList = userService.getAddedOrderInfoList(product_detail_no_list, quantity_list);
-	
 	model.addAttribute("addedOrderInfoList", addedOrderInfoList);
     }
     
@@ -196,14 +195,8 @@ public class UserController {
 	OrderVO order = userService.getOrder(order_code);
 	List<OrderDetailVO> orderDetailList = userService.getOrderDetails(order_code);
 	
-	List<String> orderDetailListJson = new ArrayList<String>();
-	for(OrderDetailVO orderDetail : orderDetailList) {
-	    String orderDetailJson = new Gson().toJson(orderDetail);
-	    orderDetailListJson.add(orderDetailJson);
-	}
-	
 	model.addAttribute("order", order);
-	model.addAttribute("orderDetailList", orderDetailListJson);
+	model.addAttribute("orderDetailList", orderDetailList);
     }
     
     // orderList 페이지
@@ -240,13 +233,21 @@ public class UserController {
     }
     
     // 교환 요청
-    @PostMapping("/changeOrderState")
-    public String changeOrderState(@RequestParam String order_code, 
-	    @RequestParam int product_detail_no, 
-	    @RequestParam String state,
-	    HttpSession session) {
+    @PostMapping("/exchangeRequest")
+    public String exchangeRequest(@RequestParam String order_code, 
+                    	    @RequestParam int product_detail_no, 
+                    	    @RequestParam int e_product_detail_no) {
 	
-	userService.changeOrderState(order_code, product_detail_no, state);
+	userService.exchangeRequest(order_code, product_detail_no, e_product_detail_no);
+	
+	return "redirect:/user/orderList";
+    }
+    
+    // 환불 요청
+    @PostMapping("/returnRequest")
+    public String returnRequest(@RequestParam String order_code, @RequestParam int product_detail_no) {
+	
+	userService.returnRequest(order_code, product_detail_no);
 	
 	return "redirect:/user/orderList";
     }

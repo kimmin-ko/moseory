@@ -238,16 +238,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateOrderStateToExchange(String order_code, int product_detail_no, String state) {
-	Map<String, Object> param = new HashMap<String, Object>();
-	param.put("order_code", order_code);
-	param.put("product_detail_no", product_detail_no);
-	param.put("state", state);
-	
-	sqlSession.update(namespace+".updateOrderStateToExchange", param);
-    }
-
-    @Override
     public void increasePointAndAmount(String member_id, int point, int amount) {
 	Map<String, Object> param = new HashMap<String, Object>();
 	param.put("member_id", member_id);
@@ -285,6 +275,27 @@ public class UserDaoImpl implements UserDao {
 	param.put("grade", grade);
 	
 	sqlSession.update(namespace+".updateProductGrade", param);
+    }
+
+    @Override
+    public void exchangeRequest(String order_code, int product_detail_no, int e_product_detail_no) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("e_product_detail_no", e_product_detail_no);
+	
+	sqlSession.update(namespace+".exchangeRequest", param);
+    }
+
+
+    @Override
+    public void changeOrderState(String order_code, int product_detail_no, String state) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".changeOrderState", param);
     }
 
    

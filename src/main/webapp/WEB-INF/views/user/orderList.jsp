@@ -108,7 +108,7 @@
 	                    <tr>
 	                        <td>
 	                        	<a href='/product/productInfo?code=<c:out value="${order.product_code }" />'>
-	                            	<img class="prod_file_path" src='<c:out value="${order.file_path }" />'>
+	                            	<img class="prod_file_path" src='<c:out value="${order.file_path.concat(order.thumbnail_name) }" />'>
 	                            </a>
 	                        </td>
 	                        <td class="prod_info">
@@ -156,7 +156,7 @@
 	                        			<button class="btn btn-default btn-sm" 
 	                        				onclick="showExchangeModal('${order.code }', '${order.product_detail_no }')">교환 요청</button>
 			                            <button class="btn btn-default btn-sm" 
-			                            	onclick="changeOrderState('${order.code}', '${order.product_detail_no }', 'return')">반품 요청</button>
+			                            	onclick="returnRequest('${order.code}', '${order.product_detail_no }')">반품 요청</button>
 			                            <button class="btn btn-default btn-sm" 
 			                            	onclick="orderConfirm('${order.code}', '${order.product_detail_no }', '${order.point }', '${order.amount }')">구매 확정</button>
 	                        		</c:when>
@@ -231,7 +231,7 @@
 	            				<div class="row body-row">
 	            					<div class="col-md-12 review_prod">
 		            					<div class="col-md-3">
-		            						<img class="review_prod_img" src="/images/1.jpg">
+		            						<img class="review_prod_img">
 		            					</div>
 		            					<div class="col-md-9">
 		            						<p class="review_prod_name"></p>

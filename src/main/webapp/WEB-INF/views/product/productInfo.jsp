@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +22,7 @@
     <div class="row" style="margin-top: 60px; margin-bottom: 150px;">
 
         <div class="col-md-7 product_image">
-            <img class="prod-img" src="">
-            <%-- <img class="prod-img" src="<c:out value='${product.file_path }' />"> --%>
+            <img class="prod-img" src="<c:out value='${product.file_path.concat(product.thumbnail_name) }' />">
 
             <ul class="prod-info-list">
                 <li class="menu_info">INFO</li>
@@ -188,7 +186,7 @@
         					str += "			<span class='review-grade'>평점&nbsp;" + reviewList[i].grade + "</span>";
         					str += "		</p>";
         					str += "		<hr style='border: 0.5px #7F858A solid;'>";
-        					//str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + "'></div>";
+        					str += "		<div class='col-md-1'><img src='" + reviewList[i].file_path + reviewList[i].thumbnail_name + "'></div>";
         					str += "		<div class='col-md-11 review-body-prod-name'>";
         					str += "			${product.name }<br>";
         					str += "			[옵션 : " + reviewList[i].product_detail.product_color;
@@ -545,11 +543,14 @@
 
     <div class="row info_row" style="margin-bottom: 150px;">
         <div class="col-md-10 col-md-offset-1">
-            <img src="/images/detail-view_01.jpg">
+        	<c:forTokens var="file_name" items="${product.file_name }" delims="@">
+        		<img src='<c:out value="${product.file_path.concat(file_name) }" />' />
+        		<br />
+        	</c:forTokens>
         </div>
     </div> <!-- row -->
 
-    <div class="row" style="margin-bottom: 150px;">
+    <div class="row" style="margin-bottom: 400px;">
 
         <div class="col-md-10 col-md-offset-1 review-header"> <!-- review header -->
             <p>Review(<c:out value="${reviewCount }" />)</p>

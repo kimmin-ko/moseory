@@ -27,7 +27,7 @@ $(document).ready(function() {
                  + '        <option value="S">S</option>'
                  + '        <option value="M">M</option>'
                  + '        <option value="L">L</option>'
-                 + '    <option value="XL">XL</option>'
+                 + '    	<option value="XL">XL</option>'
                  + '    </select>'
                  + '    <input type="text" class="product_stock" placeholder="재고 입력"> 개&nbsp;'
                  + '    <input type="button" value="X" onclick="deletePrtDiv(this)">'
@@ -46,7 +46,7 @@ function addSizeForColor(add_btn) {
              + '        <option value="S">S</option>'
              + '        <option value="M">M</option>'
              + '        <option value="L">L</option>'
-             + '    <option value="XL">XL</option>'
+             + '    	<option value="XL">XL</option>'
              + '    </select>'
              + '    <input type="text" class="product_stock" placeholder="재고 입력"> 개&nbsp;'
              + '    <input type="button" class="delete_size" value="X" onclick="deletePrtDiv(this)">'
@@ -74,7 +74,7 @@ function detailInfo() {
             console.log(this.value);
     
             color = $(this).parent().prevAll(".product_color").val();
-            size = $(this).next().val();
+            size = $(this).prev().val();
             stock = this.value;
     
             color_arr.push(color);
