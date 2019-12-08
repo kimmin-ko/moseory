@@ -20,7 +20,7 @@
 		
 		<div class="row ma-bo-50">
 			<div class="col-lg-10 col-lg-offset-1">
-				<ul class="prod-list">
+				<!-- <ul class="prod-list">
 					<c:forEach var = "bests" items = "${bestProducts}" varStatus="status">
 						<li>
 							<div class = "best_title">
@@ -39,7 +39,7 @@
 							</div>
 						</li>
 					</c:forEach>
-				</ul>
+				</ul> -->
 			</div>
 		</div>
 		<!-- WEEKLY BEST ITEM ROW -->

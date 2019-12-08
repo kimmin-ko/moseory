@@ -396,6 +396,7 @@ public class AdminController {
 			,@RequestParam(required = false, defaultValue = "") String startDate
 			,@RequestParam(required = false, defaultValue = "") String endDate
 			,@RequestParam(required = false, defaultValue = "전체 상태") String state
+			,@RequestParam(required = false, defaultValue = "") String orderValue
 			,@RequestParam(defaultValue = "1") int curPage, HttpServletRequest req, Model model) {
 		
 		
@@ -410,6 +411,8 @@ public class AdminController {
 		map.put("startDate", startDate);
 		map.put("endDate", endDate);
 		map.put("state", state);
+		map.put("orderValue", orderValue);
+		
 		
 		int orderCount = adminService.getOrderCount(map);
 		
@@ -418,11 +421,7 @@ public class AdminController {
 		
 		map.put("start", pagingUtil.getStart());
 		map.put("finish", pagingUtil.getFinish());
-		
-		System.out.println(orderCount);
-		System.out.println(map.toString());
-		
-		
+
 		list = adminService.getOrder(map);
 		model.addAttribute("orderList", list);
 		model.addAttribute("searchType", searchType);
@@ -430,6 +429,7 @@ public class AdminController {
 		model.addAttribute("commType", commType);
 		model.addAttribute("commValue", commValue);
 		model.addAttribute("searchEmail", searchEmail);
+		model.addAttribute("orderValue",orderValue);
 		model.addAttribute("paging",pagingUtil);
 		
 		return "admin/orderManageList";

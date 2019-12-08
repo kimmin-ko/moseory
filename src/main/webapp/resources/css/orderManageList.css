@@ -11,7 +11,7 @@
 .hasDatepicker {
     font-size: 12px;
     display: inline-block;
-    width: 120px;
+    width: 100px;
     height: 28px;
 }
 
@@ -27,14 +27,12 @@
     display: inline-block;
     width: 90px;
     height: auto;
-    margin-left: 10px;
 }
 #commType{
 	font-size: 12px;
     display: inline-block;
     width: 90px;
     height: auto;
-    margin-left: 10px;
 }
 .m-order_list {
     margin-bottom: 150px;
@@ -107,3 +105,32 @@
 	color: gray;
 }
 
+.search_type {
+	display: inline-block;
+	font-size: 12px;
+	width: 100px;
+	height: 32px;
+}
+
+.search_keyword {
+	display: inline-block;
+	font-size: 12px;
+	width: 130px;
+	height: 30px;
+}
+.search_email {
+	display: inline-block;
+	font-size: 12px;
+	width: 170px;
+	height: 30px;
+}
+.search_order{
+	display: inline-block;
+	font-size: 12px;
+	width: 150px;
+	height: 30px;
+}
+.span_name {
+    font-size: 12px;
+    margin-right: 5px;
+}

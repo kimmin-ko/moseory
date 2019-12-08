@@ -117,40 +117,41 @@
 	</select>
 	
 	<select id="getUser" parameterType="map" resultMap="memberResultMap">
-	SELECT * FROM 
-	(
-		SELECT 
-		 rownum  rnum,
-		 id,
-		 name,
-		 phone,
-		 email,
-		 lev 
-		FROM
-		  tbl_member 
-		WHERE 1 = 1
-		<if test='searchValue != "" and searchType == "id"'>
-		  AND id = #{searchValue}
-		</if>
-		<if test='searchValue != "" and searchType == "name"'>
-		  AND name = #{searchValue}
-		</if>
-		<if test='commValue != "" and commType == "tel"'>
-		  AND tel = #{commValue}
-		</if>
-		<if test='commValue != "" and commType == "phone"'>
-		  AND phone = #{commValue}
-		</if>
-		<if test='searchEmail != ""'>
-		  AND email = #{searchEmail}
-		</if>
-		<if test='levelType != "all"'>
-		  AND lev = #{levelType}
-		</if>
-		ORDER BY join_date, rnum desc
-	)
-	WHERE 
-	  rnum BETWEEN #{start} AND #{finish}
+		SELECT * FROM 
+		(
+			SELECT rownum as num, A.* FROM  
+			(
+				SELECT 
+				 ROW_NUMBER() OVER (ORDER BY join_date ASC) AS rnum,
+				 id,
+				 name,
+				 phone,
+				 email,
+				 lev 
+				FROM
+				  tbl_member 
+				WHERE 1 = 1
+				<if test='searchValue != "" and searchType == "id"'>
+				  AND id = #{searchValue}
+				</if>
+				<if test='searchValue != "" and searchType == "name"'>
+				  AND name = #{searchValue}
+				</if>
+				<if test='commValue != "" and commType == "tel"'>
+				  AND tel = #{commValue}
+				</if>
+				<if test='commValue != "" and commType == "phone"'>
+				  AND phone = #{commValue}
+				</if>
+				<if test='searchEmail != ""'>
+				  AND email = #{searchEmail}
+				</if>
+				<if test='levelType != "all"'>
+				  AND lev = #{levelType}
+				</if>
+				 ORDER BY rnum desc
+			) A
+		) B WHERE B.num BETWEEN #{start} AND #{finish}
 	</select>
 	
 	<select id="getUserCount" parameterType="map" resultType="int">
@@ -215,54 +216,59 @@
 	</update>
 	
 	<select id="getOrder" parameterType="map" resultType="map">
-		SELECT * FROM (
-		  SELECT 
-            ROW_NUMBER() OVER (ORDER BY O.order_date ASC) AS rnum,
-            O.code,
-            O.member_id,
-		    O.recipient_name,
-		    O.recipient_tel,
-		    O.recipient_phone,
-		    O.recipient_email,
-            D.product_detail_no,
-            O.order_date,
-            O.pay_method,
-            D.state,
-            D.amount, 
-            D.quantity,
-            P.name,
-            PD.product_color,
-            PD.product_size
-          FROM
-            tbl_order O
-          JOIN tbl_order_detail D ON O.code = D.order_code
-          JOIN tbl_product_detail PD ON D.product_detail_no = PD.NO 
-          JOIN tbl_product P ON PD.product_code = P.code
-		  WHERE 1 = 1
-		  <if test='searchValue != "" and searchType == "id"'>
-		    AND O.member_id = #{searchValue}
-		  </if>
-		  <if test='searchValue != "" and searchType == "name"'>
-		    AND O.recipient_name = #{searchValue}
-		  </if>
-		  <if test='commValue != "" and commType == "tel"'>
-		    AND O.recipient_tel = #{commValue}
-		  </if>
-		  <if test='commValue != "" and commType == "phone"'>
-		    AND O.recipient_phone = #{commValue}
-		  </if>
-		  <if test='searchEmail != ""'>
-		    AND O.recipient_email = #{searchEmail}
-		  </if>
-		  <if test='startDate != "" and endDate != ""'>
-   		    AND to_char(O.order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
-	      </if>
-	      <if test='state != "전체 상태"'>
-		    AND D.state = #{state}
-	      </if>
-	      ORDER BY rnum DESC
-	    )
-	    WHERE rnum BETWEEN #{start} AND #{finish}
+		SELECT * FROM(
+		  SELECT rownum as num, A.* FROM (
+		    SELECT 
+              ROW_NUMBER() OVER (ORDER BY O.order_date ASC) AS rnum,
+              O.code,
+              O.member_id,
+		      O.recipient_name,
+		      O.recipient_tel,
+		      O.recipient_phone,
+		      O.recipient_email,
+              D.product_detail_no,
+              O.order_date,
+              O.pay_method,
+              D.state,
+              D.amount, 
+              D.quantity,
+              P.name,
+              PD.product_color,
+              PD.product_size
+            FROM
+              tbl_order O
+            JOIN tbl_order_detail D ON O.code = D.order_code
+            JOIN tbl_product_detail PD ON D.product_detail_no = PD.NO 
+            JOIN tbl_product P ON PD.product_code = P.code
+		    WHERE 1 = 1
+		    <if test='searchValue != "" and searchType == "id"'>
+		      AND O.member_id = #{searchValue}
+		    </if>
+		    <if test='searchValue != "" and searchType == "name"'>
+		      AND O.recipient_name = #{searchValue}
+		    </if>
+		    <if test='commValue != "" and commType == "tel"'>
+		      AND O.recipient_tel = #{commValue}
+		    </if>
+		    <if test='commValue != "" and commType == "phone"'>
+		      AND O.recipient_phone = #{commValue}
+		    </if>
+		    <if test='searchEmail != ""'>
+   		      AND O.recipient_email = #{searchEmail}
+		    </if>
+		    <if test='startDate != "" and endDate != ""'>
+   		      AND to_char(O.order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
+	        </if>
+	        <if test='orderValue != ""'>
+	          AND O.code = #{orderValue}
+	        </if>
+	        <if test='state != "전체 상태"'>
+  		      AND D.state = #{state}
+	        </if>
+	        ORDER BY rnum DESC
+	      ) A
+	    )B
+	    WHERE B.num BETWEEN #{start} AND #{finish}
 	</select>
 	
 	<select id="getOrderCount" parameterType="map" resultType="int">
@@ -291,6 +297,9 @@
 		<if test='startDate != "" and endDate != ""'>
    		  AND to_char(O.order_date, 'yyyy-mm-dd') BETWEEN #{startDate} AND #{endDate}
 	    </if>
+	    <if test='orderValue != ""'>
+          AND O.code = #{orderValue}
+        </if>
 	    <if test='state != "전체 상태"'>
 		  AND D.state = #{state}
 	    </if>
