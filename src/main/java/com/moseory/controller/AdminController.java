@@ -443,6 +443,7 @@ public class AdminController {
 	@GetMapping("getOrderDetail")
 	public String getOrderDetail(
 			@RequestParam(required = true, defaultValue = "") String orderCode,
+			@RequestParam(required = true, defaultValue = "") String productDetailNo,
 			@RequestParam(required = false, defaultValue = "") String productColor,
 			HttpServletRequest req, Model model) {
 		
@@ -451,6 +452,7 @@ public class AdminController {
 		HashMap<String, Object> orderInfo = new HashMap<String,Object>();
 		
 		map.put("orderCode", orderCode);
+		map.put("productDetailNo", productDetailNo);
 		map.put("productColor", productColor);
 		
 		orderInfo = adminService.getOrderInfo(map);

@@ -337,6 +337,7 @@
         JOIN tbl_product P ON PD.product_code = P.code
 	    WHERE 1 = 1
 	      AND O.code = #{orderCode}
+	      AND D.product_detail_no = #{productDetailNo}
 	      <if test='productColor != ""'>
 	      	AND PD.product_color = #{productColor}
 	      </if>

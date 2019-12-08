@@ -115,7 +115,7 @@
 	                </thead>
 	                <tbody>
 	                	<c:forEach var="model" items="${orderList}" varStatus="status">
-							<tr onclick="javascript:ref('${model.CODE}', '${model.PRODUCT_COLOR}');">
+							<tr onclick="javascript:ref('${model.CODE}', '${model.PRODUCT_DETAIL_NO}', '${model.PRODUCT_COLOR}');">
 								<td>${model.RNUM}</td>
 								<td>
 									<fmt:formatDate value="${model.ORDER_DATE}" pattern="YYYY-MM-dd"/>
@@ -152,6 +152,7 @@
 								<td>
 									<span class="order_state"><c:out value="${model.STATE}" /></span>
 								</td>
+								
 							</tr>
 						</c:forEach>
 	                </tbody>
@@ -216,11 +217,11 @@ function convertStringToDate(str) {
 	return new Date(str[0], str[1], str[2]);
 } // end convertStringToDate
 
-function ref(code,color){
+function ref(code,productDetailNo,color){
 	if(color == null || color == ""){
-		document.location.href="/admin/getOrderDetail?orderCode="+code;
+		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productDetailNo="+productDetailNo;
 	}else{
-		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productColor="+color;
+		document.location.href="/admin/getOrderDetail?orderCode="+code+"&productDetailNo="+productDetailNo+"&productColor="+color;
 	}
 }
 
