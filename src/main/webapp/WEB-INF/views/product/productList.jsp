@@ -79,7 +79,7 @@
 						<p>${product.price }</p>
 						<p>comment</p> 
 					</div>
-				</c:forEach>
+				</c:forEach> 
 			</div>
 		</div>
 		<!-- NEW ARRIVAL ROW -->

@@ -361,29 +361,30 @@
 
 	</select>
 	
-	
-	<select id="getSearchList" parameterType="map" resultType="productVO">
+	<select id="getSearchList" parameterType="map" resultType="productAndFileVO">
 	select * from (
 		select rownum as rn, A.* from  (
-			select * from tbl_product
-				where ${searchType} like '%'||#{keyword}||'%' 
+			select P.code, P.name, P.price, P.low_code, P.sale_count, P.wish_count,
+						P.product_comment, P.grade, F.fileno, F.thumbnail_name, F.file_path,
+						F.file_name from tbl_product P, tbl_product_file F
+				where P.code = F.product_code and P.${searchType} like '%'||#{keyword}||'%' 
 							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
 								and 
-								${searchType} not like '%'||#{exceptkeyword}||'%'
+								P.${searchType} not like '%'||#{exceptkeyword}||'%'
 							</if>
 						<if test = "orderby != null and orderby != ''">
-							order by #{orderby} desc
+							order by P.#{orderby} desc
 						</if>
 						)A
 				<choose>
 					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
-				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+				        <![CDATA[where P.price >= #{lowestprice} and P.price <= #{highestprice}]]> 
 					</when>
 					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
-						<![CDATA[where price >= #{lowestprice}]]> 
+						<![CDATA[where P.price >= #{lowestprice}]]> 
 					</when>
 					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
-				        <![CDATA[where price <= #{highestprice}]]> 
+				        <![CDATA[where P.price <= #{highestprice}]]> 
 					</when>
 				</choose>
 				) where rn between #{start} and #{finish}
@@ -424,15 +425,10 @@
 		 
 	</insert>
 	
-	<select id="getProductFile" resultType="productFileVO">
-	SELECT
-		*
-	FROM
-		tbl_product_detail
-	WHERE
-		product_code = #{product_code}
+	<select id = "getProductFile" parameterType = "int" resultType = "productFileVO">
+		select * from tbl_product_file
+			where product_code = #{code}
 	</select>
-	
 </mapper>
 
 

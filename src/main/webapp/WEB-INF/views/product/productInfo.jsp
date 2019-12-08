@@ -22,7 +22,7 @@
     <div class="row" style="margin-top: 60px; margin-bottom: 150px;">
 
         <div class="col-md-7 product_image">
-            <img class="prod-img" src="<c:out value='${product.file_path.concat(product.thumbnail_name) }' />">
+            <img width = "300px" height = "300px" class="prod-img" src="<c:out value='${product.file_path.concat(product.thumbnail_name) }' /> " >
 
             <ul class="prod-info-list">
                 <li class="menu_info">INFO</li>
@@ -544,7 +544,7 @@
     <div class="row info_row" style="margin-bottom: 150px;">
         <div class="col-md-10 col-md-offset-1">
         	<c:forTokens var="file_name" items="${product.file_name }" delims="@">
-        		<img src='<c:out value="${product.file_path.concat(file_name) }" />' />
+        		<img src='<c:out value="${product.file_path.concat(file_name) }" />' /> 
         		<br />
         	</c:forTokens>
         </div>

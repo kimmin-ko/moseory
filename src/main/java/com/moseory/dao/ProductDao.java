@@ -10,6 +10,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
+import com.moseory.domain.ProductFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
@@ -58,11 +59,13 @@ public interface ProductDao {
 	
 	public List<LowCateVO> getLowCate(int high_code);
 
-	List<ProductVO> getSearchList(Map<String, Object> param);
+	List<ProductAndFileVO> getSearchList(Map<String, Object> param);
 
 	int getHighCateCode(String keyword);
 
 	int getSearchCount(Map<String, Object> param);
 
 	int getLowCateCode(String keyword);
+
+	ProductFileVO getProductFile(int code);
 }
