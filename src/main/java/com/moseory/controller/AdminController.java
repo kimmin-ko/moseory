@@ -86,7 +86,7 @@ public class AdminController {
 		// 파일 이름 불러와서 폴더경로 + 파일이름
 		ServletContext context = request.getSession().getServletContext();
 		String save_path = context.getRealPath("resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/");
-		
+		System.out.println("경로 : " + save_path);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
 		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");

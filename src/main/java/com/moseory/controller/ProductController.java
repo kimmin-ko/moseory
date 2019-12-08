@@ -25,14 +25,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
-import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.PageDTO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ProductService;
+import com.moseory.util.ImageUtil;
 import com.moseory.util.PagingUtil;
 
 import lombok.extern.log4j.Log4j;
@@ -44,12 +45,18 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
-	
+	@Autowired
+	private ImageUtil imageUtil;
 	@GetMapping("/productList")
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
 		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
 			List <ProductAndFileVO> productVO = productService.highCateList(high_code);
+			for(int i = 0; i < productVO.size(); i++) {
+				
+				productVO.get(i).setFile_path(imageUtil.convertImagePath(productVO.get(i).getFile_path()));
+			}
+			System.out.println("productVOㄷㄷㄷㄷㄷ: " + productVO);
 			model.addAttribute("productVO",productVO);
 			//for(ProductVO pVO : productVO) System.out.println(pVO);
 		}else {
