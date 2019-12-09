@@ -54,6 +54,14 @@
 		</interceptor>
 	</interceptors>
 	
+	<beans:bean id="highCateInterceptor" class="com.moseory.interceptor.HighCateInterceptor" />
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:ref bean="highCateInterceptor" />
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.moseory.controller" />
 	
 </beans:beans>
