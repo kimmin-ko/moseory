@@ -161,4 +161,9 @@ public class AdminDaoImpl implements AdminDao {
 	sqlSession.insert("product.saveFile", fileParam);
     }
 
+	@Override
+	public Integer getOrderCount(int code) {
+		return sqlSession.selectOne("AdminMapper.getOrderCount2", code);
+	}
+
 }

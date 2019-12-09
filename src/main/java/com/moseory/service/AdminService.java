@@ -70,4 +70,6 @@ public interface AdminService {
 	public int getOrderCount(HashMap<String,Object> map);
 	
 	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map);
+
+	Integer getOrderCount(int code);
 }

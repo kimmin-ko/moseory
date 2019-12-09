@@ -1,7 +1,6 @@
 
 package com.moseory.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -208,6 +207,11 @@ public class AdminServiceImpl implements AdminService{
 
 	public void saveFile(Map<String, Object> fileParam) {
 		adminDao.saveFile(fileParam);
+	}
+
+	@Override
+	public Integer getOrderCount(int code) {
+		return adminDao.getOrderCount(code);
 	}
 
 	

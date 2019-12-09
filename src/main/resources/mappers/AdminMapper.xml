@@ -342,4 +342,12 @@
 	      	AND PD.product_color = #{productColor}
 	      </if>
 	</select>
+	
+	<select id="getOrderCount2" parameterType="int" resultType = "int">
+		select count(*) from tbl_order_detail
+			where product_detail_no = #{code}
+	</select>
+	
+	
+	
 </mapper>
