@@ -13,6 +13,7 @@ import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
+import com.moseory.domain.ProductFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
@@ -134,7 +135,7 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, Object> param) {
+	public List<ProductAndFileVO> getSearchList(Map<String, Object> param) {
 		return sqlSession.selectList("product.getSearchList",param);
 	}
 
@@ -154,6 +155,11 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public List<Map<String, Object>> getProductColorAndStock(int product_code) {
 	    return sqlSession.selectList("product.getProductColorAndStock", product_code);
+	}
+
+	@Override
+	public ProductFileVO getProductFile(int code) {
+		return sqlSession.selectOne("product.getProductFile", code);
 	}
 
 	
