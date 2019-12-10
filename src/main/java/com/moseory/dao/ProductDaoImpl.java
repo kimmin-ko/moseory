@@ -29,13 +29,8 @@ public class ProductDaoImpl implements ProductDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<ProductAndFileVO> highCateList(int high_code) {
-		return sqlSession.selectList("product.highCateList", high_code);
-	}
-
-	@Override
-	public List<ProductVO> highCateListDetail(Map<Object, Object> map) {
-		return sqlSession.selectList("product.highCateListDetail", map);
+	public List<ProductAndFileVO> highCateList(Map<String,Object> map) {
+		return sqlSession.selectList("product.highCateList", map);
 	}
 	
 	@Override

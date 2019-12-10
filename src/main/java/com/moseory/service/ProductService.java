@@ -18,9 +18,7 @@ import com.moseory.domain.ReviewVO;
 
 public interface ProductService {
 
-	List<ProductAndFileVO> highCateList(int high_code);
-	
-	List<ProductVO> highCateListDetail(int high_code, String lowCode);
+	List<ProductAndFileVO> highCateList(Map<String,Object> map);
 
 	ProductVO getProduct(int code);
 

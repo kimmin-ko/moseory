@@ -51,23 +51,26 @@ public class ProductController {
 	@GetMapping("/productList")
 	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
 		
-		if(req.getParameter("lowCode") == null || req.getParameter("lowCode").equals("")) {
-			List <ProductAndFileVO> productVO = productService.highCateList(high_code);
-			for(int i = 0; i < productVO.size(); i++) {
-				productVO.get(i).setFile_path(imageUtil.convertImagePath(productVO.get(i).getFile_path()));
-				System.out.println(productVO.get(i).getFile_path());
-
-			}
-			model.addAttribute("productVO",productVO);
-			//for(ProductVO pVO : productVO) System.out.println(pVO);
-		}else {
-			String lowCode = req.getParameter("lowCode");
-			List <ProductVO> productVO = productService.highCateListDetail(high_code, lowCode);
-			model.addAttribute("productVO",productVO);
+		Map<String, Object> map = new HashMap<String,Object>();
+		String orderByType = req.getParameter("orderByType") != null ? req.getParameter("orderByType").toString() : "";
+		String lowCode = req.getParameter("lowCode") != null ? req.getParameter("lowCode").toString() : "";
+		
+		map.put("high_code",high_code);
+		map.put("lowCode",lowCode);
+		map.put("orderByType",orderByType);
+		
+		List <ProductAndFileVO> productVO = productService.highCateList(map);
+		for(int i = 0; i < productVO.size(); i++) {
+			productVO.get(i).setFile_path(imageUtil.convertImagePath(productVO.get(i).getFile_path()));
 		}
+		model.addAttribute("productVO",productVO);
+		//for(ProductVO pVO : productVO) System.out.println(pVO);
+		
 		 
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
+		
+		
 		
 		List <ProductVO> bestProducts = productService.getBestProduct(high_code);
 		//for(ProductVO bests : bestProducts)  System.out.println(bests);
