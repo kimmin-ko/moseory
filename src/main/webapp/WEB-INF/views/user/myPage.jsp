@@ -102,7 +102,7 @@
 						" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">상품 리뷰 관리</a></h6>
+						<h6><a href="/review/reviewMyList">상품 리뷰 관리</a></h6>
 						<p>
 							고객님께서 작성하신 상품 리뷰글을 관리하는 공간입니다.<br>
 							고객님께서 작성하신 리뷰를 한눈에 확인하실 수 있습니다.

@@ -16,7 +16,7 @@ public class ReviewVO {
     private int no;
     
     private MemberVO member;
-    
+    private String member_id;
     private String title;
     private String content;
     

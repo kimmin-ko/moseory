@@ -19,5 +19,7 @@ public interface ReviewService {
 	
 	public int totalCount(ReviewCriteria reviewCri);
 	
+	public List<ReviewVO> getListMyPage(ReviewCriteria reviewCri);
+	
 
 }

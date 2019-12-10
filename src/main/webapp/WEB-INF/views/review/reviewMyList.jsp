@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/notice.css">
+<script src="/resources/ckeditor/ckeditor.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>모서리</title>
@@ -26,6 +27,104 @@
 
 
 	<%@ include file="../includes/sidebar.jsp"%>
+
+	<script type="text/javascript">
+	$(document).ready(
+        function() {
+            var result = '<c:out value="${reviewResult}"/>';
+            checkModal(result);
+
+            history.replaceState({}, null, null);
+
+            function checkModal(result) {
+                if (result === '' || history.state) {
+                    return;
+                }
+                if (parseInt(result) >= 0) {
+                    $(".modal-body").html("게시글이 등록 되었습니다");
+                }
+                $("#myModal").modal("show");
+
+            }
+
+            var actionForm = $("#actionForm");
+
+            $(".paginate_button a").on(
+                "click",
+                function(e) {
+                    e.preventDefault();
+                    console.log("click");
+                    actionForm
+                        .find("input[name='reviewPageNum']")
+                        .val($(this).attr("href"));
+                    actionForm.submit();
+                });
+
+            //게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
+            $(".move").on("click",
+                    function(e) {
+                        e.preventDefault();
+                        actionForm
+                            .append("<input type ='hidden' name='no' value ='" +
+                                $(this).attr(
+                                    "href") +
+                                "'>");
+                        actionForm.attr("action",
+                            "/review/reviewGet");
+                        actionForm.submit();
+                    });
+    
+            var searchForm = $("#search");
+            
+            $("#search button").on("click",
+                    function(e) {
+                        if (!searchForm.find("option:selected").val()) {
+                            alert("검색 종류를 선택해 주세요");
+                            return false;
+                        }
+                        if (!searchForm.find("input[name='reviewKeyword']").val()) {
+                            alert("검색어를 입력하세요");
+                            return false;
+                        }
+                        searchForm.find("input[name='reviewPageNum']").val("1");
+                        e.preventDefault();
+                        searchForm.submit();
+                    });
+            
+    		$("#createBtn").click(function(){
+    				action = 'create';
+    				type = 'POST';
+    				$("#modal-title").text("리뷰 작성");
+    				$("#reviewModal").modal();
+    				
+    		});
+    		
+    		$("#modalSubmit").click(function(){
+    			
+    			if(action == 'create'){
+    				bno = 0;
+    				url = "/review/reviewText";
+    			}
+    			var data = {
+    				"no":bno,
+    				"title":$("#modalTitle").val(),
+    				"content":$("#modalContent").val()
+    			};
+    			$.ajax({
+    				url:url,
+    				type : 'POST',
+    				data:JSON.stringify(data),
+    				success:function(data){
+    					alert('gg');
+    					$("#reviewModal").modal('toggle');
+    				}
+    			
+    			});
+    		});
+    		
+    			
+        });
+	</script>
 
 	<div class="container" style="margin-left: 22%;">
 
@@ -57,19 +156,19 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${Reviewlist}" var="Reviewlist">
+						<c:forEach items="${ReviewMylist}" var="ReviewMylist">
 							<tr>
 								<!-- NO -->
-								<td>${Reviewlist.no}</td>
+								<td>${ReviewMylist.no}</td>
 								<!-- TITLE -->
-								<td><a class='move' <%-- href='<c:out value="${Reviewlist.no}"/>' --%>><c:out
-											value="${Reviewlist.title }" /></a></td>
+								<td><a class='move' href='<c:out value="${ReviewMylist.no}"/>'><c:out
+											value="${ReviewMylist.title }" /></a></td>
 								<!-- NAME -->
-								<td>모서리</td>
+								<td>${user.id }</td>
 								<!-- DATE -->
-								<td>${Reviewlist.reg_date}</td>
+								<td>${ReviewMylist.reg_date}</td>
 								<!-- HIT -->
-								<td>${Reviewlist.hit}</td>
+								<td>${ReviewMylist.hit}</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -81,19 +180,19 @@
 				<form id='search' action="/review/reviewList" method="get">
 					<select class="form-control" style="width: 130px; display:inline-block;" name="reviewType">
 						<option value=""
-							<c:out value="${reviewPageMaker.reviewCri.reviewType == null ?'selected':''}"/>>검색조건</option>
+							<c:out value="${reviewMyPageMaker.reviewCri.reviewType == null ?'selected':''}"/>>검색조건</option>
 						<option value="T"
-							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'T' ?'selected':''}"/>>제목</option>
+							<c:out value="${reviewMyPageMaker.reviewCri.reviewType == 'T' ?'selected':''}"/>>제목</option>
 						<option value="C"
-							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'C' ?'selected':''}"/>>내용</option>
+							<c:out value="${reviewMyPageMaker.reviewCri.reviewType == 'C' ?'selected':''}"/>>내용</option>
 						<option value="TC"
-							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'TC' ?'selected':''}"/>>제목
+							<c:out value="${reviewMyPageMaker.reviewCri.reviewType == 'TC' ?'selected':''}"/>>제목
 							+ 내용</option>
 					</select> 
 					<input type="text" class="form-control" name="reviewKeyword"
-						style="width: 180px; display:inline-block;" value="${reviewPageMaker.reviewCri.reviewKeyword}" /> <input
-						type='hidden' name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
-					<input type='hidden' name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }"><button class="btn btn-default">
+						style="width: 180px; display:inline-block;" value="${reviewMyPageMaker.reviewCri.reviewKeyword}" /> <input
+						type='hidden' name='reviewPageNum' value="${reviewMyPageMaker.reviewCri.reviewPageNum }">
+					<input type='hidden' name='reviewAmount' value="${reviewMyPageMaker.reviewCri.reviewAmount }"><button class="btn btn-default">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
 					
@@ -110,20 +209,20 @@
 				style="margin-bottom: 30px;">
 				<nav>
 					<ul class="pagination">
-						<c:if test="${reviewPageMaker.prev}">
+						<c:if test="${reviewMyPageMaker.prev}">
 							<li class="paginate_button previous"><a
-								href="${reviewPageMaker.startPage-1 }">이전</a></li>
+								href="${reviewMyPageMaker.startPage-1 }">이전</a></li>
 						</c:if>
 
-						<c:forEach var="num" begin="${reviewPageMaker.startPage }"
-							end="${reviewPageMaker.endPage }">
-							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? "active" : "" }"><a
+						<c:forEach var="num" begin="${reviewMyPageMaker.startPage }"
+							end="${reviewMyPageMaker.endPage }">
+							<li class="paginate_button ${reviewMyPageMaker.reviewCri.reviewPageNum == num ? "active" : "" }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
-						<c:if test="${reviewPageMaker.next }">
+						<c:if test="${reviewMyPageMaker.next }">
 							<li class="paginate_button next"><a
-								href="${reviewPageMaker.endPage+1 }">다음</a></li>
+								href="${reviewMyPageMaker.endPage+1 }">다음</a></li>
 						</c:if>
 
 					</ul>
@@ -135,10 +234,10 @@
 		<!-- Review End -->
 		
 		<form id="actionForm" action="/review/reviewList" method="get">
-			<input type="hidden" name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
-			<input type="hidden" name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }">
-			<input type="hidden" name="reviewType" value="${reviewPageMaker.reviewCri.reviewType}">
-			<input type="hidden" name="reviewKeyword" value="${reviewPageMaker.reviewCri.reviewKeyword}">
+			<input type="hidden" name='reviewPageNum' value="${reviewMyPageMaker.reviewCri.reviewPageNum }">
+			<input type="hidden" name='reviewAmount' value="${reviewMyPageMaker.reviewCri.reviewAmount }">
+			<input type="hidden" name="reviewType" value="${reviewMyPageMaker.reviewCri.reviewType}">
+			<input type="hidden" name="reviewKeyword" value="${reviewMyPageMaker.reviewCri.reviewKeyword}">
 		</form>
 		
 		<%@ include file="../includes/footer.jsp" %>
@@ -200,116 +299,4 @@
 		</div>
 
 </body>
-<script>
-$(document).ready(function(){
-
-    
-    $(".move").click(function(){
-    	alert('123');
-    	$.ajax({
-    		type : 'get',
-    		url :'/review/reviewGet/' + "${Reviewlist.no}",
-    		async : false,
-    		success : function(reply){
-    			alert('123');
-
-    		}
-    	});
-    });
-    var result = '<c:out value="${reviewResult}"/>';
-    checkModal(result);
-
-    history.replaceState({}, null, null);
-
-    function checkModal(result) {
-        if (result === '' || history.state) {
-            return;
-        }
-        if (parseInt(result) >= 0) {
-            $(".modal-body").html("게시글이 등록 되었습니다");
-        }
-        $("#myModal").modal("show");
-
-    };
-    
-
-    
-
-    var actionForm = $("#actionForm");
-
-    $(".paginate_button a").on(
-        "click",
-        function(e) {
-            e.preventDefault();
-            console.log("click");
-            actionForm
-                .find("input[name='reviewPageNum']")
-                .val($(this).attr("href"));
-            actionForm.submit();
-        });
-
-    //게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
-   /*  $(".move").on("click",
-            function(e) {
-                e.preventDefault();
-                actionForm
-                    .append("<input type ='hidden' name='no' value ='" +
-                        $(this).attr(
-                            "href") +
-                        "'>");
-                actionForm.attr("action",
-                    "/review/reviewGet");
-                actionForm.submit();
-            }); */
-
-    var searchForm = $("#search");
-    
-    $("#search button").on("click",
-            function(e) {
-                if (!searchForm.find("option:selected").val()) {
-                    alert("검색 종류를 선택해 주세요");
-                    return false;
-                }
-                if (!searchForm.find("input[name='reviewKeyword']").val()) {
-                    alert("검색어를 입력하세요");
-                    return false;
-                }
-                searchForm.find("input[name='reviewPageNum']").val("1");
-                e.preventDefault();
-                searchForm.submit();
-            });
-    
-	$("#createBtn").click(function(){
-			action = 'create';
-			type = 'POST';
-			$("#modal-title").text("리뷰 작성");
-			$("#reviewModal").modal();
-			
-	});
-	
-	$("#modalSubmit").click(function(){
-		
-		if(action == 'create'){
-			bno = 0;
-			url = "/review/reviewText";
-		}
-		var data = {
-			"no":bno,
-			"title":$("#modalTitle").val(),
-			"content":$("#modalContent").val()
-		};
-		$.ajax({
-			url:url,
-			type : 'POST',
-			data:JSON.stringify(data),
-			success:function(data){
-				alert('gg');
-				$("#reviewModal").modal('toggle');
-			}
-		
-		});
-	});
-
-})
-</script>
 </html>

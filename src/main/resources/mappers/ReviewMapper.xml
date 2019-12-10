@@ -58,7 +58,7 @@
 			select 
 				no,title,content,reg_date,hit
 			from (
-				select /*+INDEX_DESC(tbl_review pk_tbl_notice) */
+				select /*+INDEX_DESC(tbl_review pk_tbl_review) */
 				rownum rn, no,title,content,reg_date,hit 
 				from tbl_review
 			where 
@@ -79,5 +79,27 @@
 		<include refid = "criteria"></include>
 		no>0
 	</select>
+	
+	<!-- 자신이 쓴 글 작성 처리하기 -->
+	<select id="getListMyPage" resultType="ReviewVO">
+		<![CDATA[
+			select 
+				no,title,content,reg_date,hit
+			from (
+				select /*+INDEX_DESC(tbl_review pk_tbl_review) */
+				rownum rn, no,title,content,reg_date,hit 
+				from tbl_review
+			where member_id = #{member_id}  and 
+			
+			]]>
+			<include refid = "criteria"></include>
+			<![CDATA[
+				rownum <=#{reviewPageNum} * #{reviewAmount}
+				)
+			where rn > (#{reviewPageNum}-1) * #{reviewAmount}
+			]]>
+	</select>
+	
+	
 
 </mapper>
