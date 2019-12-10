@@ -375,6 +375,7 @@ public class AdminController {
 	public String modifyUserInfo(@RequestParam Map<String, Object> param, RedirectAttributes redirectAttributes, HttpServletRequest req, Model model) {
 		 
 		System.out.println("Contorller modifyUserInfo param ["+ param.toString() +"]");
+		
 		int result = adminService.modifyUserInfo(param);
 		String msg = "";
 		if(result > 0) {
@@ -437,6 +438,12 @@ public class AdminController {
 		model.addAttribute("orderValue",orderValue);
 		model.addAttribute("paging",pagingUtil);
 		
+		String msg = (req.getParameter("msg") == null) ? "" : req.getParameter("msg");
+		
+		if(!msg.equals("")) {
+			model.addAttribute("msg", msg);
+		}
+		
 		return "admin/orderManageList";
 	}
 	
@@ -456,10 +463,28 @@ public class AdminController {
 		map.put("productColor", productColor);
 		
 		orderInfo = adminService.getOrderInfo(map);
-		System.out.println(orderInfo.toString());
 		model.addAttribute("orderInfo", orderInfo);
 		
 		return "admin/orderManageDetail";
+	}
+	
+	@PostMapping("modifyOrderInfo")
+	public String modifyOrderInfo(@RequestParam HashMap<String, Object> param, HttpServletRequest req, RedirectAttributes redirectAttributes ) {
+		
+		System.out.println("Contorller modifyOrderInfo param ["+ param.toString() +"]");
+		
+		
+		int result = adminService.modifyOrderInfo(param);
+		String msg = "";
+		if(result > 0) {
+			msg = "저장되었습니다.";
+			redirectAttributes.addAttribute("msg", msg);
+		}else {
+			msg = "시스템 에러";
+			redirectAttributes.addAttribute("msg", msg);
+		}
+		return "redirect:/admin/orderManageList";
+		
 	}
 	
 }

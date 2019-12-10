@@ -31,7 +31,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			log.info("LoginInterceptor VO Check "+memberVO.toString());
 			session.setAttribute("user", memberVO);
 			Object destination = session.getAttribute("destination");
-			response.sendRedirect(destination != null ? (String) destination : "/index");
+			Object destinationAdmin = session.getAttribute("destinationAdmin");
+			if(destinationAdmin != null) {
+				if(!memberVO.toString().contains("auth=1")) {
+					response.sendRedirect("/index");
+				}else {					
+					response.sendRedirect(destinationAdmin != null ? (String) destinationAdmin : "/index");
+				}
+			}else {
+				response.sendRedirect(destination != null ? (String) destination : "/index");				
+			}
 		}
 	}
 	

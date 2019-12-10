@@ -69,4 +69,19 @@ public interface AdminDao {
 	public int getOrderCount(HashMap<String,Object> map);
 	
 	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map);
+	
+	public HashMap<String, Object> getChangeInfo(String e_no);
+	
+	public void modifyShippingInfo(HashMap<String,Object> param);
+	
+	public void modifyShippingDetailInfo(HashMap<String,Object> param);
+	
+	public void addStock(HashMap<String,Object> param);
+	
+	public void modifyProductCode(HashMap<String,Object> param);
+	
+	public void exchangeRemoveStock(HashMap<String,Object> param);
+	
+	public void productSalesRateRemove(HashMap<String,Object> param);
 }
+

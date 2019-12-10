@@ -157,8 +157,43 @@ public class AdminDaoImpl implements AdminDao {
 	return sqlSession.selectOne("AdminMapper.getOrderInfo", map);
     }
 
+    @Override
     public void saveFile(Map<String, Object> fileParam) {
 	sqlSession.insert("product.saveFile", fileParam);
     }
 
+	@Override
+	public HashMap<String, Object> getChangeInfo(String e_no) {
+		return sqlSession.selectOne("AdminMapper.getChangeInfo", e_no);
+	}
+
+	@Override
+	public void modifyShippingInfo(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.modifyShippingInfo", param);
+	}
+
+	@Override
+	public void modifyShippingDetailInfo(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.modifyShippingDetailInfo", param);
+	}
+	
+	@Override
+	public void addStock(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.addStock", param);
+	}
+	
+	@Override
+	public void modifyProductCode(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.modifyProductCode", param);
+	}
+	
+	@Override
+	public void exchangeRemoveStock(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.exchangeRemoveStock", param);
+	}
+	
+	@Override
+	public void productSalesRateRemove(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.productSalesRateRemove", param);
+	}
 }

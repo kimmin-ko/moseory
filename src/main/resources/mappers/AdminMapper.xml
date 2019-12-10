@@ -234,7 +234,8 @@
               D.quantity,
               P.name,
               PD.product_color,
-              PD.product_size
+              PD.product_size,
+              D.e_product_detail_no
             FROM
               tbl_order O
             JOIN tbl_order_detail D ON O.code = D.order_code
@@ -329,7 +330,8 @@
            O.recipient_email,
            O.used_point,
            O.pay_method,
-           O.message
+           O.message,
+           D.e_product_detail_no
         FROM
            tbl_order O
         JOIN tbl_order_detail D ON O.code = D.order_code
@@ -342,4 +344,91 @@
 	      	AND PD.product_color = #{productColor}
 	      </if>
 	</select>
+	
+	<select id="getChangeInfo" parameterType="String" resultType="map">
+		SELECT 
+		  p.name,
+		  pd.product_color, 
+		  pd.product_size
+        FROM 
+          tbl_order_detail od,
+          tbl_product_detail pd,
+          tbl_product p
+        WHERE 1 = 1
+        AND od.e_product_detail_no = #{e_no}
+        AND od.e_product_detail_no = pd.no
+        AND p.code = pd.product_code
+	</select>
+	
+	<update id="modifyShippingInfo" parameterType="map">
+		UPDATE
+	      tbl_order 
+		SET
+		  recipient_name = #{recipient_name},
+		  recipient_zipcode = #{zipcode}, 
+		  recipient_tel = #{recipient_tel},
+		  recipient_phone = #{recipient_phone},
+		  recipient_address1 = #{address1},
+		  recipient_address2 = #{address2},
+		  recipient_email = #{recipient_email},
+		  message= #{message}
+		WHERE 1 = 1
+		  AND code = #{code}
+	</update>
+	
+	<update id="modifyShippingDetailInfo" parameterType="map">
+		UPDATE
+	      tbl_order_detail 
+		SET
+		  state = #{newState}
+		WHERE 1 = 1
+		  AND order_code = #{code}
+		  AND product_detail_no = #{p_no}
+	</update>
+	
+	<update id="addStock" parameterType="map">
+		UPDATE
+		  tbl_product_detail
+	    SET
+	      product_stock = product_stock+1 
+	    WHERE
+	      no = #{p_no}
+	</update>
+	
+	<update id="modifyProductCode" parameterType="map">
+		UPDATE
+		  tbl_order_detail
+	    SET
+	      product_detail_no = #{e_no},
+	      e_product_detail_no = null 
+	    WHERE 1 = 1
+	      AND product_detail_no = #{p_no}
+	      AND order_code = #{code}
+	</update>
+	
+	<update id="exchangeRemoveStock" parameterType="map">
+		UPDATE
+		  tbl_product_detail
+	    SET
+	      product_stock = product_stock-1 
+	    WHERE
+	      no = #{e_no}
+	</update>
+	
+	<update id="productSalesRateRemove" parameterType="map">
+		MERGE 
+		  INTO tbl_product P
+		USING (select * from tbl_product_detail) PD
+		  ON 
+		  (
+		   P.code = PD.product_code AND PD.NO = #{p_no}
+		  )
+		WHEN MATCHED THEN
+		  UPDATE SET  P.sale_count = P.sale_count-1
+	</update>
+	
+	
+	
+	
+	
 </mapper>

@@ -1,5 +1,7 @@
 package com.moseory.interceptor;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,8 +22,14 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		}else {
 			query= "?" + query;
 		}
-		if(req.getMethod().equals("GET")) {
-			req.getSession().setAttribute("destination", uri + query);
+		if(uri.contains("/admin/")) {
+			if(req.getMethod().equals("GET")) {
+				req.getSession().setAttribute("destinationAdmin", uri + query);
+			}
+		}else {
+			if(req.getMethod().equals("GET")) {
+				req.getSession().setAttribute("destination", uri + query);
+			}
 		}
 	}
 	

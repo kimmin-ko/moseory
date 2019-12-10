@@ -1,8 +1,6 @@
 
 package com.moseory.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +8,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.moseory.dao.AdminDao;
 import com.moseory.domain.HighCateVO;
@@ -203,13 +203,63 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map) {
-		return adminDao.getOrderInfo(map);
+		
+		HashMap<String, Object> orderInfo = new HashMap<String, Object>();
+		HashMap<String, Object> changeInfo = new HashMap<String, Object>();
+		
+		orderInfo = adminDao.getOrderInfo(map);
+		
+		String e_no = orderInfo.get("E_PRODUCT_DETAIL_NO") != null ? orderInfo.get("E_PRODUCT_DETAIL_NO").toString() : "";
+		
+		if(e_no != "") {
+			changeInfo = adminDao.getChangeInfo(e_no);
+			orderInfo.put("changeInfo", changeInfo);
+		}
+		
+		return orderInfo;
 	}
-
+	
+	@Override
 	public void saveFile(Map<String, Object> fileParam) {
 		adminDao.saveFile(fileParam);
 	}
-
 	
-	
+	@Override
+	@Transactional
+	public int modifyOrderInfo(HashMap<String,Object> param) {
+		/*
+		 * STATE 
+		 * 1 교환 처리 중 : 반품 재고 증가, 교환 상품 재고 감소
+		 * 2 교환 완료 : e_no 삽입 후 삭제
+		 * 3 환불 처리 중 : 상품 판매량 감소, 상품 재고 증가
+		 * */
+		try {
+			adminDao.modifyShippingInfo(param); //order 배송 정보 update
+			adminDao.modifyShippingDetailInfo(param); //order_detail 주문 상태 update
+			
+			String state = param.get("state") != null ? param.get("state").toString() : "";
+			String newState = param.get("newState") != null ? param.get("newState").toString() : "";
+			
+			//주문 배송 상태의 변경이 일어난지 체크
+			if((newState != "" && state != "") && !newState.equals(state)) {
+				if(newState.equals("교환 처리 중")) {
+					adminDao.addStock(param); //반품 재고 증가
+					adminDao.exchangeRemoveStock(param); //교환 상품 재고 감소
+				}
+				
+				if(newState.equals("교환 완료")) {
+					adminDao.modifyProductCode(param); //e_no 삽입 후 삭제
+				}
+				
+				if(newState.equals("환불 처리 중")) {
+					adminDao.addStock(param); //재고 증가
+					adminDao.productSalesRateRemove(param); //상품 판매량 감소
+				}
+			}
+			return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }	

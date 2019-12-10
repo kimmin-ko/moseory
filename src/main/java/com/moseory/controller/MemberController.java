@@ -59,7 +59,7 @@ public class MemberController {
     
     @GetMapping("/login")
     public void login() {
-    	 // HighCate를 가져옴
+    	// HighCate를 가져옴
 	    List<HighCateVO> highCateList = homeService.readHighCate();
 	    
 	    application.setAttribute("highCateList", highCateList);
