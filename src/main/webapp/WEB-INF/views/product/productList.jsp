@@ -20,7 +20,7 @@
 		
 		<div class="row ma-bo-50">
 			<div class="col-lg-10 col-lg-offset-1">
-				<ul class="prod-list">
+				<!-- <ul class="prod-list">
 					<c:forEach var = "bests" items = "${bestProducts}" varStatus="status">
 						<li>
 							<div class = "best_title">
@@ -30,8 +30,8 @@
 							</div>
 							<div class = "thumnail">
 								<a href = "${pageContext.request.contextPath }/product/productInfo?code=${bests.code }">
-									<img src="/images/1.jpg" class="weekly-img">
-								</a>
+									<img src="" class="weekly-img">
+								</a> 
 							</div>
 							<div class = "desc">
 								<p>${bests.name }</p>
@@ -39,7 +39,7 @@
 							</div>
 						</li>
 					</c:forEach>
-				</ul>
+				</ul> -->
 			</div>
 		</div>
 		<!-- WEEKLY BEST ITEM ROW -->
@@ -70,14 +70,16 @@
 				
 				<c:forEach var = "product" items = "${productVO }">
 					<div class="col-md-4 prod-desc ma-bo-50">
-						<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}"><img src="/images/001.gif"></a>
+						<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}">
+							<img src = "${product.file_path }${product.thumbnail_name}" width = "300px" height = "300px">
+						</a>	
 						<p>
 							<a href = "${pageContext.request.contextPath }/product/productInfo?code=${product.code}">${product.name }</a>
 						</p>
 						<p>${product.price }</p>
-						<p>comment</p>
+						<p>comment</p> 
 					</div>
-				</c:forEach>
+				</c:forEach> 
 			</div>
 		</div>
 		<!-- NEW ARRIVAL ROW -->

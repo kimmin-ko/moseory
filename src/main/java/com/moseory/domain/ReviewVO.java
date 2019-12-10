@@ -16,7 +16,10 @@ public class ReviewVO {
     private int no;
     
     private MemberVO member;
+
     private String member_id;
+    
+
     private String title;
     private String content;
     
@@ -24,6 +27,7 @@ public class ReviewVO {
     private LocalDate reg_date;
     private int hit;
     private String file_path;
+    private String thumbnail_name;
     
     private ProductDetailVO product_detail;
     

@@ -294,7 +294,7 @@
 					name = '${addedOrderInfo.name}';
 				</c:forEach>
 				
-				total_prod_price = origin_prod_price - total_discount;
+				total_prod_price = origin_prod_price - Math.floor(total_discount);
 				
 				$(".total-prod-price").html("<strong>" + total_prod_price.format() + "원</strong>");
 				
@@ -310,15 +310,15 @@
 				}
 				
 				// 최종 결제 금액 (total_discount와 delivery_charge보다 뒤에 선언)
-				var final_order_price = origin_prod_price + delivery_charge - total_discount;
+				var final_order_price = origin_prod_price + delivery_charge - Math.floor(total_discount);
 				
 				// 결제 페이지로 넘겨줄 금액 초기화
 				amount = final_order_price;
 				
 				// 회원 등급 할인, 합계 할인 초기화
-				$(".total_discount, .sum_discount").text('-' + total_discount.format());
+				$(".total_discount, .sum_discount").text('-' + Math.floor(total_discount).format());
 				// 총 적립금 초기화
-				$(".total_saving").text(total_saving.format());
+				$(".total_saving").text(Math.floor(Math.floor(total_saving)).format());
 				// 최종 결제 금액 초기화
 				$(".final_order_price").text(final_order_price.format());
 				
@@ -347,7 +347,7 @@
 					}
 					
 					// 합계 할인
-					sum_discount = total_discount + point;
+					sum_discount = Math.floor(total_discount) + point;
 					var input_final_order_price = origin_prod_price + delivery_charge - sum_discount;
 					
 					if(point == 0) $(".use_point").text('0');
@@ -422,12 +422,20 @@
 			$("input[name=address2]").val('${member.address2}');
 
 			var tel = "${member.tel}".split('-');
-			$("select[name=tel1]").val(tel[0]);
+			if(!tel[0]) // tel이 비어있으면
+				$("select[name=tel1] option:eq(0)").prop("selected", true);
+			else
+				$("select[name=tel1]").val(tel[0]);
+			
 			$("input[name=tel2]").val(tel[1]);
 			$("input[name=tel3]").val(tel[2]);
 
 			var phone = "${member.phone}".split('-');
-			$("select[name=phone1]").val(phone[0]);
+			if(!phone[0]) // tel이 비어있으면
+				$("select[name=phone1] option:eq(0)").prop("selected", true);
+			else
+				$("select[name=phone1]").val(phone[0]);
+			
 			$("input[name=phone2]").val(phone[1]);
 			$("input[name=phone3]").val(phone[2]);
 
@@ -505,7 +513,7 @@
 						<c:forEach var="addedOrderInfo" items="${addedOrderInfoList }">
 							<c:set var="no" value="${addedOrderInfo.product_detail_no }" />
 							<c:set var="code" value="${addedOrderInfo.code }" />
-							<c:set var="file_path" value="${addedOrderInfo.file_path }" />
+							<c:set var="thumbnail_name" value="${addedOrderInfo.file_path.concat(addedOrderInfo.thumbnail_name) }" />
 							<c:set var="name" value="${addedOrderInfo.name }" />
 							<c:set var="product_color" value="${addedOrderInfo.product_color }" />
 							<c:set var="product_size" value="${addedOrderInfo.product_size }" />
@@ -521,8 +529,7 @@
 								<td><input type="checkbox" class="check-order"
 									value='<c:out value="${no }" />'></td>
 								<!-- 상품 이미지 -->
-								<td><a href="/product/productInfo?code=${code }"> <img
-										class="order-img" src='<c:out value="${file_path }" />'></a>
+								<td><a href="/product/productInfo?code=${code }"> <img class="order-img" src='<c:out value="${thumbnail_name }" />'></a>
 								</td>
 								<!-- 상품 정보 -->
 								<td class="prod-info">

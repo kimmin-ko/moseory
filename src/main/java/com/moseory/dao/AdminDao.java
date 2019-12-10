@@ -64,4 +64,26 @@ public interface AdminDao {
 
 	void saveFile(Map<String, Object> fileParam);
 	
+	public List<HashMap<String, Object>> getOrder(HashMap<String,Object> map);
+	
+	public int getOrderCount(HashMap<String,Object> map);
+	
+	public HashMap<String, Object> getOrderInfo(HashMap<String,Object> map);
+	
+	public HashMap<String, Object> getChangeInfo(String e_no);
+	
+	public void modifyShippingInfo(HashMap<String,Object> param);
+	
+	public void modifyShippingDetailInfo(HashMap<String,Object> param);
+	
+	public void addStock(HashMap<String,Object> param);
+	
+	public void modifyProductCode(HashMap<String,Object> param);
+	
+	public void exchangeRemoveStock(HashMap<String,Object> param);
+	
+	public void productSalesRateRemove(HashMap<String,Object> param);
+
+	Integer getOrderCount(int code);
 }
+

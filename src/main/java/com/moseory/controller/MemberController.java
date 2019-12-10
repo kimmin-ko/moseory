@@ -44,11 +44,10 @@ public class MemberController {
     private KakaoConnectionUtil kakao;
     
     @Setter(onMethod_ = @Autowired)
-	private ServletContext application;
-    
-    @Setter(onMethod_ = @Autowired)
 	private HomeService homeService;
 	
+	@Setter(onMethod_ = @Autowired)
+	private ServletContext application;
     
     // 요청 시 해당 필드만 데이터 입력 허용
     @InitBinder
@@ -59,10 +58,11 @@ public class MemberController {
     
     @GetMapping("/login")
     public void login() {
-    	 // HighCate를 가져옴
+    	// HighCate를 가져옴
 	    List<HighCateVO> highCateList = homeService.readHighCate();
 	    
 	    application.setAttribute("highCateList", highCateList);
+
     }
     
     @PostMapping("/loginProc")

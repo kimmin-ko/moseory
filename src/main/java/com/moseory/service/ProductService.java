@@ -5,18 +5,20 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
+import com.moseory.domain.ProductFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
-@Service("productService")
 public interface ProductService {
 
-	List<ProductVO> highCateList(int high_code);
+	List<ProductAndFileVO> highCateList(int high_code);
 	
 	List<ProductVO> highCateListDetail(int high_code, String lowCode);
 
@@ -32,6 +34,8 @@ public interface ProductService {
 	
 	int getProductStock(int product_detail_no);
 	
+	List<Map<String, Object>> getProductColorAndStock(int product_code);
+	
 	int getReviewCount(int product_code);
 	
 	int getQnaCount(int product_code);
@@ -40,7 +44,7 @@ public interface ProductService {
 	
 	ReviewVO getOriginalReview(int review_no);
 	
-	List<QnaVO> getQnA(int product_code);
+	List<QnaVO> getQnA(Criteria cri, int product_code);
 	
 	void increaseRecommend(int review_no);
 	
@@ -52,12 +56,14 @@ public interface ProductService {
 	
 	public List<LowCateVO> getLowCate(int high_code);
 
-	List<ProductVO> getSearchList(Map<String, Object> param);
+	List<ProductAndFileVO> getSearchList(Map<String, Object> param);
 
 	int getHighCateCode(String keyword);
 
 	int getSearchCount(Map<String, Object> param);
 
 	int getLowCateCode(String keyword);
+
+	ProductFileVO getProductFile(int code);
 
 }

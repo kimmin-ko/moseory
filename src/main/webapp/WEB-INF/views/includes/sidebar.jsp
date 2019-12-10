@@ -7,10 +7,16 @@
 <link rel="stylesheet" href="/css/sidebar.css">
 
 <!-- jquery js -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-	crossorigin="anonymous"></script>
+	crossorigin="anonymous"></script> -->
 <!-- bootstrap js -->
+<!-- jQuery script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- jQuery cookie script -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- bootstrap script -->
 <script src="/js/bootstrap.js"></script>
 
 <script type="text/javascript">
@@ -62,6 +68,11 @@ String.prototype.format = function() {
 				<div class="col-md-5 font-12">
 					<a href="/admin/manage">MANAGE</a>
 				</div>
+			<c:if test="${user.auth == 0}">
+				<div class="col-md-5 font-12">
+					
+				</div>
+			</c:if>
 			</c:if>
 		</c:if>
 		<c:if test="${empty user }">
@@ -69,11 +80,7 @@ String.prototype.format = function() {
 				<a href="/member/join">JOIN US</a>
 			</div>
 		</c:if>
-		<c:if test="${!empty user }">
-			<div class="col-md-5 font-12 joinus">
-				
-			</div>
-		</c:if>
+		
 	</div>
 
 	<div class="row ma-bo-50">

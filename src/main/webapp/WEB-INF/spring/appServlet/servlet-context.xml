@@ -13,6 +13,7 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- <resources mapping="/**" location="/" /> -->
 	<resources mapping="/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -53,5 +54,14 @@
 		</interceptor>
 	</interceptors>
 	
+	<beans:bean id="highCateInterceptor" class="com.moseory.interceptor.HighCateInterceptor" />
+	<interceptors>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:ref bean="highCateInterceptor" />
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.moseory.controller" />
+	
 </beans:beans>

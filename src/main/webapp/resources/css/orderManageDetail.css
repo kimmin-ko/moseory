@@ -1,3 +1,7 @@
+.orderManageDetail {
+    margin-bottom: 50px;
+}
+
 .modifyLabel-row {
     text-align: center;
 }
@@ -56,32 +60,3 @@ table th {
 	width: 319px;
 	margin-bottom: 5px;
 }
-
-/* 회원 탈퇴 모달 */
-.modal-header p {
-	font-size: 14px;
-	font-weight: bold;
-}
-
-.body-exp {
-	font-size: 11px;
-	font-weight: bold;
-}
-
-.withdrawal-guide {
-	list-style: none;
-	padding: 0;
-	font-size: 12px;
-	color: gray;
-}
-
-.guide-exp {
-	font-size: 11px;
-}
-
-.withdrawalBtn {
-	background-color: black;
-	color: white;
-}
-
-

@@ -21,6 +21,11 @@
 			
 			// 등록 버튼
 			$('.reg_btn').on('click', function() {
+				if(!'${user.id}') {
+					alert("로그인 후 이용해주세요.");
+					return false;
+				}
+				
 				var registForm = $('#registForm');
 				
 				var title = $('.title').val();
@@ -59,6 +64,10 @@
 	        	<form id="registForm" action="/qna/qnaAnswerRegist" method="post">
 	        		<input type="hidden" name="member_id" value='<c:out value="${user.id }" />'>
 	        		<input type="hidden" name="pno" value='<c:out value="${qna.no }" />'>
+	        		<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }" />'>
+			    	<input type="hidden" name="amount" value='<c:out value="${cri.amount }" />'>
+			    	<input type="hidden" name="type" value='<c:out value="${cri.type }" />'>
+			    	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword }" />'>
 		            <table class="table table-bordered reg_qna_table">
 		                <colgroup>
 		                    <col width="15%">

@@ -40,6 +40,16 @@ public class UserDaoImpl implements UserDao {
 	log.info("dao member : " + vo.getPwd_confirm_a());
 	sqlSession.update(namespace+".updateMember", vo);
     }
+    
+    @Override
+    public void withdrawal(String id) {
+	sqlSession.delete(namespace+".withdrawal", id);
+    }
+    
+    @Override
+    public String checkPwd(String id) {
+	return sqlSession.selectOne(namespace+".checkPwd", id);
+    }
 
     @Override
     public void deleteMember(String id) {
@@ -186,6 +196,11 @@ public class UserDaoImpl implements UserDao {
     public List<OrderListVO> getOrderList(OrderListCri cri) {
 	return sqlSession.selectList(namespace+".getOrderList", cri);
     }
+    
+    @Override
+    public int getOrderListCount(OrderListCri cri) {
+	return sqlSession.selectOne(namespace+".getOrderListCount", cri);
+    }
 
     @Override
     public void updateOrderState(String order_code, String state) {
@@ -233,16 +248,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateOrderStateToExchange(String order_code, int product_detail_no, String state) {
-	Map<String, Object> param = new HashMap<String, Object>();
-	param.put("order_code", order_code);
-	param.put("product_detail_no", product_detail_no);
-	param.put("state", state);
-	
-	sqlSession.update(namespace+".updateOrderStateToExchange", param);
-    }
-
-    @Override
     public void increasePointAndAmount(String member_id, int point, int amount) {
 	Map<String, Object> param = new HashMap<String, Object>();
 	param.put("member_id", member_id);
@@ -281,17 +286,35 @@ public class UserDaoImpl implements UserDao {
 	
 	sqlSession.update(namespace+".updateProductGrade", param);
     }
+
+    @Override
+    public void exchangeRequest(String order_code, int product_detail_no, int e_product_detail_no) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("e_product_detail_no", e_product_detail_no);
+	
+	sqlSession.update(namespace+".exchangeRequest", param);
+    }
+
+
+    @Override
+    public void changeOrderState(String order_code, int product_detail_no, String state) {
+	Map<String, Object> param = new HashMap<String, Object>();
+	param.put("order_code", order_code);
+	param.put("product_detail_no", product_detail_no);
+	param.put("state", state);
+	
+	sqlSession.update(namespace+".changeOrderState", param);
+    }
+
+   
+
+   
     
     
 
 }
-
-
-
-
-
-
-
 
 
 

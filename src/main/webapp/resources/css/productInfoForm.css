@@ -7,6 +7,13 @@
     font-size: 12px;
 }
 
+.menu_info:hover,
+.menu_review:hover,
+.menu_qna:hover {
+	cursor: pointer;
+}
+
+
 .select-option {
     width: 200px;
 }
@@ -185,9 +192,47 @@
 	text-align: center;
 }
 
+/* Q&A */
+.qna_reg_btn {
+	background-color: black;
+	color: white;
+}
+
+.reg_btn_area {
+	text-align: right;
+}
 
 
+/* pagination */
+.pagination > li > a
+{
+    background-color: white;
+    color: black;
+}
 
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
 
+.pagination > .active > a
+{
+    color: white;
+    background-color: black !Important;
+    border: solid 1px black !Important;
+}
 
+.pagination > .active > a:hover
+{
+    background-color: black !Important;
+    border: solid 1px black;
+}
 
+.pagination-div {
+	text-align: center;
+}

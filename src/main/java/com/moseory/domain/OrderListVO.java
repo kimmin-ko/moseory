@@ -9,8 +9,11 @@ public class OrderListVO {
     
     // product
     private int product_code; // 상품 코드
-    private String file_path; // 상품 이미지 경로
     private String name; // 상품 이름
+    
+    // product_file
+    private String file_path; // 상품 이미지 경로
+    private String thumbnail_name; // 대표 이미지 이름
     
     // product_detail
     private int product_detail_no; // 상품 디테일 번호

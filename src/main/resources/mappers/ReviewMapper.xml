@@ -56,10 +56,12 @@
 	<select id="getListWithPaging" resultType="ReviewVO">
 		<![CDATA[
 			select 
-				no,title,content,reg_date,hit
+				no, member_id, title, content, reg_date, hit
 			from (
+
 				select /*+INDEX_DESC(tbl_review pk_tbl_review) */
 				rownum rn, no,title,content,reg_date,hit 
+
 				from tbl_review
 			where 
 			

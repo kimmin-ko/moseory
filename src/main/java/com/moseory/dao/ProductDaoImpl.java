@@ -8,9 +8,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductDetailVO;
+import com.moseory.domain.ProductFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
@@ -19,14 +22,14 @@ import com.moseory.domain.ReviewVO;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
-@Repository("productDao")
+@Repository
 public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<ProductVO> highCateList(int high_code) {
+	public List<ProductAndFileVO> highCateList(int high_code) {
 		return sqlSession.selectList("product.highCateList", high_code);
 	}
 
@@ -79,6 +82,16 @@ public class ProductDaoImpl implements ProductDao{
 	public int getReviewCount(int product_code) {
 	    return sqlSession.selectOne("product.getReviewCount", product_code);
 	}
+	
+	@Override
+	public List<QnaVO> getListWithPaging(Criteria cri, int product_code) {
+	    Map<String, Integer> param = new HashMap<String, Integer>();
+	    param.put("pageNum", cri.getPageNum());
+	    param.put("amount", cri.getAmount());
+	    param.put("product_code", product_code);
+	    
+	    return sqlSession.selectList("product.getListWithPaging", param);
+	}
 
 	@Override
 	public int getQnaCount(int product_code) {
@@ -95,11 +108,6 @@ public class ProductDaoImpl implements ProductDao{
 	    return sqlSession.selectOne("product.getOriginalReview", review_no);
 	}
 	
-	@Override
-	public List<QnaVO> getQnA(int product_code) {
-	    return sqlSession.selectList("product.getQnA", product_code);
-	}
-
 	@Override
 	public void increaseRecommend(int review_no) {
 	    sqlSession.update("product.increaseRecommend", review_no);
@@ -127,7 +135,7 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<ProductVO> getSearchList(Map<String, Object> param) {
+	public List<ProductAndFileVO> getSearchList(Map<String, Object> param) {
 		return sqlSession.selectList("product.getSearchList",param);
 	}
 
@@ -143,16 +151,21 @@ public class ProductDaoImpl implements ProductDao{
 	public int getSearchCount(Map<String, Object> param) {
 		return sqlSession.selectOne("product.getSearchCount",param);
 	}
+
+	@Override
+	public List<Map<String, Object>> getProductColorAndStock(int product_code) {
+	    return sqlSession.selectList("product.getProductColorAndStock", product_code);
+	}
+
+	@Override
+	public ProductFileVO getProductFile(int code) {
+		return sqlSession.selectOne("product.getProductFile", code);
+	}
+
 	
-	
+
 
 }
-
-
-
-
-
-
 
 
 

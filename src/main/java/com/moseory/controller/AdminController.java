@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,7 +43,7 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-
+	
 	@PostMapping("/productcate")
 	@ResponseBody
 	public List<LowCateVO> productCate(@RequestBody int high_code){
@@ -68,17 +69,19 @@ public class AdminController {
 	}
 
 	@PostMapping("/productregist")
-	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request,
-													@RequestParam String str_low_code)
-			throws IllegalStateException, IOException { 
+	public String productRegist(@ModelAttribute ProductVO productVO, HttpServletRequest request, @RequestParam String str_low_code)
+			throws IllegalStateException, IOException {
+	    
 		/* 파일 시작 */
 		//한글로 받아오는 low_code를 int로 변경
 		int low_code = adminService.getLowCateCode(str_low_code);
 		productVO.setLow_code(low_code);
 		String high_cate = adminService.getHighCate(productVO.getHigh_code());
-//		String low_cate = adminService.getLowCate(productVO.getLow_code());
-		//	파일 이름 불러와서 폴더경로 + 파일이름
-		String save_path = "/moseory/src/main/webapp/resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/";
+		
+		// 파일 이름 불러와서 폴더경로 + 파일이름
+		ServletContext context = request.getSession().getServletContext();
+		String save_path = context.getRealPath("resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/");
+		System.out.println("경로 : " + save_path);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
 		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
@@ -87,33 +90,38 @@ public class AdminController {
 		File file = new File(save_path);
 		File thumbnail = new File(save_path);
 		if (file.exists() == false) {
+		    	log.info("디렉토리 생성");
 			file.mkdirs();
+			log.info("디렉토리 경로 : " + file.getAbsolutePath());
 		}
+		
 		//확장자를 가져옴
 		int split = getThumbnail.get(0).getOriginalFilename().lastIndexOf(".");
 		String ext = getThumbnail.get(0).getOriginalFilename().substring(split);
+		
 		//썸네일명 = 상품명 + _thumbnail.확장자
-		String thumbnailName = productVO.getName() + "_thumbnail" + ext;
+		String thumbnailName = "thumbnail_" + productVO.getName() + ext;
+
 		System.out.println(thumbnailName);
 		thumbnail = new File(save_path + thumbnailName);
 		getThumbnail.get(0).transferTo(thumbnail);
 		
-		
 		String file_name = "";
 		for (int i = 0; i < files.size(); i++) {
-//			System.out.println(thumbnail.get(i).getName());
+			// System.out.println(thumbnail.get(i).getName());
+		    
 			// 파일명이 같을 수도 있기 때문에
-			// 랜덤36문자_받아온파일이름
-			// 으로 파일 저장
+			// 랜덤36문자_받아온파일이름으로 파일 저장
 			UUID random = UUID.randomUUID();
 			String fileName = random.toString() + "_" + files.get(i).getOriginalFilename();
 			file_name = file_name + "@" + fileName;
-			System.out.println("file_name = " + file_name);
-			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
+//			System.out.println("file_name = " + file_name);
+//			System.out.println("업로드된 파일 이름 = " + files.get(i).getOriginalFilename());
 			
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}
+		
 		/* product DB */
 		adminService.product_regist(productVO);
 		int code = adminService.setCode(productVO.getName());
@@ -125,7 +133,6 @@ public class AdminController {
 		fileParam.put("file_path", save_path);
 		fileParam.put("file_name", file_name);
 		adminService.saveFile(fileParam);
-		
 
 		/* product_detail DB */
 		for (int i = 0; i < detailInfo.size(); i++) {
@@ -225,7 +232,8 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String keyword,
 			Model model) {
 		List <ProductVO> productList = new ArrayList<>();
-
+		List <Integer> orderCnt = new ArrayList<>();
+		
 		model.addAttribute("searchType",searchType);
 		model.addAttribute("keyword",keyword);
 
@@ -240,41 +248,56 @@ public class AdminController {
 			//검색할 번호를 보내줌
 			//ex) 1페이지면 row 1~10까지 조회, 5페이지면 51~60까지 조회
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
+			//productList의 code를 각각 보내면
+			//size만큼 돌려서 orderCnt에 차례대로 저장
+			
+			for(int i = 0; i < productList.size(); i++) {
+				orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+			}
+			model.addAttribute("orderCnt", orderCnt);
 			model.addAttribute("productList", productList);
 			model.addAttribute("paging",pagingUtil);
 		}
 		else {	//검색 하면
 			if(searchType.equals("name")) {
 				try {
-					
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
 				}
-
-
 			}
 			else if(searchType.equals("high_code")) {
 				try {
-					keyword = Integer.toString(adminService.getHighCateCode(keyword));
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
 				}
 
-			}
+			} 
 			else if(searchType.equals("low_code")) {
 				try {
 					keyword = Integer.toString(adminService.getLowCateCode(keyword));
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
@@ -297,10 +320,14 @@ public class AdminController {
 	
 	@GetMapping("/stats")
 	public String stats() {
-		
 		return "admin/stats";
 	}	
-	
+	@PostMapping("/stats")
+	@ResponseBody
+	public String stats(@RequestBody String term) {
+		System.out.println(term);
+		return "admin/stats";
+	}	
 	@GetMapping("userManagement")
 	public String userManagement(HttpServletRequest req, Model model
 			,@RequestParam(required = false, defaultValue = "all") String levelType
@@ -328,10 +355,6 @@ public class AdminController {
 		
 		map.put("start", pagingUtil.getStart());
 		map.put("finish", pagingUtil.getFinish());
-		
-		System.out.println("userCount"+userCount);
-		System.out.println("start"+pagingUtil.getStart());
-		System.out.println("getFinish"+pagingUtil.getFinish());
 		
 		list = adminService.getUser(map);
 		System.out.println(list.toString());
@@ -364,13 +387,14 @@ public class AdminController {
 			model.addAttribute("msg", msg);
 		}
 		model.addAttribute("member", member);
-		return "admin/getUserDetail";
+		return "admin/userDetail";
 	}
 	
 	@PostMapping("modifyUserInfo")
 	public String modifyUserInfo(@RequestParam Map<String, Object> param, RedirectAttributes redirectAttributes, HttpServletRequest req, Model model) {
 		 
 		System.out.println("Contorller modifyUserInfo param ["+ param.toString() +"]");
+		
 		int result = adminService.modifyUserInfo(param);
 		String msg = "";
 		if(result > 0) {
@@ -382,12 +406,107 @@ public class AdminController {
 			String id = (param.get("id") == null) ? "" : param.get("id").toString();
 			redirectAttributes.addAttribute("id", id);
 			redirectAttributes.addAttribute("msg", msg);
-			return "redirect:/admin/getUserDetail";
+			return "redirect:/admin/userDetail";
 		}
 						
+	}
+	
+	@GetMapping("orderManageList")
+	public String orderManageList (
+			@RequestParam(required = false, defaultValue = "") String searchType
+			,@RequestParam(required = false, defaultValue = "") String searchValue
+			,@RequestParam(required = false, defaultValue = "") String commType
+			,@RequestParam(required = false, defaultValue = "") String commValue
+			,@RequestParam(required = false, defaultValue = "") String searchEmail
+			,@RequestParam(required = false, defaultValue = "") String startDate
+			,@RequestParam(required = false, defaultValue = "") String endDate
+			,@RequestParam(required = false, defaultValue = "전체 상태") String state
+			,@RequestParam(required = false, defaultValue = "") String orderValue
+			,@RequestParam(defaultValue = "1") int curPage, HttpServletRequest req, Model model) {
 		
+		
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		map.put("searchType", searchType);
+		map.put("searchValue", searchValue);
+		map.put("commType", commType);
+		map.put("commValue", commValue);
+		map.put("searchEmail", searchEmail);
+		map.put("startDate", startDate);
+		map.put("endDate", endDate);
+		map.put("state", state);
+		map.put("orderValue", orderValue);
+		
+		
+		int orderCount = adminService.getOrderCount(map);
+		
+		PagingUtil pagingUtil;
+		pagingUtil = new PagingUtil(orderCount, curPage);
+		
+		map.put("start", pagingUtil.getStart());
+		map.put("finish", pagingUtil.getFinish());
+
+		list = adminService.getOrder(map);
+		model.addAttribute("orderList", list);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("commType", commType);
+		model.addAttribute("commValue", commValue);
+		model.addAttribute("searchEmail", searchEmail);
+		model.addAttribute("orderValue",orderValue);
+		model.addAttribute("paging",pagingUtil);
+		
+		String msg = (req.getParameter("msg") == null) ? "" : req.getParameter("msg");
+		
+		if(!msg.equals("")) {
+			model.addAttribute("msg", msg);
+		}
+		
+		return "admin/orderManageList";
+	}
+	
+	@GetMapping("getOrderDetail")
+	public String getOrderDetail(
+			@RequestParam(required = true, defaultValue = "") String orderCode,
+			@RequestParam(required = true, defaultValue = "") String productDetailNo,
+			@RequestParam(required = false, defaultValue = "") String productColor,
+			HttpServletRequest req, Model model) {
+		
+		
+		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> orderInfo = new HashMap<String,Object>();
+		
+		map.put("orderCode", orderCode);
+		map.put("productDetailNo", productDetailNo);
+		map.put("productColor", productColor);
+		
+		orderInfo = adminService.getOrderInfo(map);
+		model.addAttribute("orderInfo", orderInfo);
+		
+		return "admin/orderManageDetail";
+	}
+	
+	@PostMapping("modifyOrderInfo")
+	public String modifyOrderInfo(@RequestParam HashMap<String, Object> param, HttpServletRequest req, RedirectAttributes redirectAttributes ) {
+		
+		System.out.println("Contorller modifyOrderInfo param ["+ param.toString() +"]");
+		
+		
+		int result = adminService.modifyOrderInfo(param);
+		String msg = "";
+		if(result > 0) {
+			msg = "저장되었습니다.";
+			redirectAttributes.addAttribute("msg", msg);
+		}else {
+			msg = "시스템 에러";
+			redirectAttributes.addAttribute("msg", msg);
+		}
+		return "redirect:/admin/orderManageList";
 		
 	}
-
+	
 }
 	
+
+

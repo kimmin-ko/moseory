@@ -39,9 +39,16 @@
 	</insert>
 	
 	<!-- 상위카테고리 상품리스트 -->
-	<select id="highCateList" parameterType="int" resultType = "productVO">
-		select * from tbl_product
+	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
+		<!-- select * from tbl_product
 			where high_code = #{high_code}
+			 -->
+			select P.code, P.name, P.price, P.high_code, P.low_code, P.sale_count,
+						P.wish_count, P.product_comment, P.grade, 
+						F.fileno, F.product_code, F.thumbnail_name,
+						F.file_path, F.file_name 
+				from tbl_product P, tbl_product_file F
+        where P.high_code = #{high_code} and P.code = F.product_code
 	</select>
 	
 	<!-- 상위카테고리 상품리스트 세부목록-->
@@ -55,11 +62,12 @@
 	<!--상품 코드로 정보 조회 -->
 	<select id="getProduct" parameterType="int" resultType = "productVO">
 	SELECT
-		code, name, high_code, low_code, price, sale_count, grade, wish_count, product_comment
+	    p.*, pf.*
 	FROM
-		tbl_product
+	    tbl_product p, tbl_product_file pf
 	WHERE
-		code = #{code}
+	    p.code = pf.product_code
+	    AND code = #{code}
 	</select>
 	
 	<!-- 상품 디테일 번호로 정보 조회 -->
@@ -140,6 +148,16 @@
 		no = #{product_detail_no}
 	</select>
 	
+	<!-- 색상만 존재하는 상품의 색상과 재고 조회 -->
+	<select id="getProductColorAndStock" resultType="java.util.Map">
+	SELECT
+		product_color, product_stock
+	FROM
+		tbl_product_detail
+	WHERE
+		product_code = #{product_code}
+	</select>
+	
 	<!-- 해당 상품의 리뷰 개수 조회 -->
 	<select id="getReviewCount" resultType="int">
 	SELECT
@@ -149,6 +167,25 @@
 	WHERE 
 	    r.product_detail_no = pd.no
 	    AND pd.product_code = #{product_code}
+	</select>
+	
+	<!-- 페이징처리하여 QnA List 조회 -->
+	<select id="getListWithPaging" resultType="QnaVO">
+	SELECT
+	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	FROM
+	    (SELECT
+	    	/*+ INDEX_ASC(tbl_qna idx_answer) */
+	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
+	    FROM    
+	        tbl_qna
+	    WHERE
+	    	product_code = #{product_code}
+	<![CDATA[
+	        AND rownum <= #{pageNum} * #{amount})
+	WHERE
+	    rn > (#{pageNum} - 1) * #{amount}
+	]]>
 	</select>
 	
 	<!-- 해당 상품의 문의글 개수 조회 -->
@@ -168,7 +205,7 @@
 		<result column="reg_date" property="reg_date" />
 		<result column="hit" property="hit" />
 		<result column="file_path" property="file_path" />
-		<result column="file_name" property="file_name" />
+		<result column="thumbnail_name" property="thumbnail_name" />
 		<result column="recommend" property="recommend" />
 		<result column="grade" property="grade" />
 		<association property="member" javaType="MemberVO">
@@ -187,8 +224,8 @@
 	<select id="getReview" resultMap="reviewMap">
 	<![CDATA[
 	SELECT 
-	    rownum, r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, p.file_path, r.recommend, r.grade,
-	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size
+	    r.no, m.id, m.lev, r.title, r.content, r.reg_date, r.hit, r.recommend, r.grade,
+	    pd.no as product_detail_no, pd.product_code, pd.product_color, pd.product_size, pf.file_path, pf.thumbnail_name
 	FROM
 	    tbl_member m, 
 	    (SELECT 
@@ -212,9 +249,10 @@
 				</when>
 			</choose>
 	<![CDATA[
-	     ) r, tbl_product_detail pd, tbl_product p
+	     ) r, tbl_product_detail pd, tbl_product p, tbl_product_file pf
 	WHERE
 	    r.product_detail_no = pd.no
+	    AND p.code = pf.product_code
 	    AND m.id = r.member_id
 	    AND pd.product_code = p.code
 	    AND pd.product_code = #{product_code}
@@ -252,31 +290,6 @@
 	    no = #{no}
 	</update>
 	
-	<resultMap type="QnAVO" id="QnAMap">
-		<result column="no" property="no" />
-		<result column="product_code" property="product_code" />
-		<result column="title" property="title" />
-		<result column="content" property="content" />
-		<result column="reg_date" property="reg_date" />
-		<result column="hit" property="hit" />
-		<association property="member" javaType="MemberVO">
-			<result column="id" property="id" />
-			<result column="name" property="name" />
-		</association>
-	</resultMap>
-	
-	<!-- 상품 정보 페이지의 Q&A 조회 -->
-	<select id="getQnA" resultMap="QnAMap">
-	SELECT
-	    q.no, m.id, m.name, q.product_code, q.title, q.content, q.reg_date, q.hit
-	FROM
-	    tbl_qna q LEFT OUTER JOIN tbl_member m ON q.member_id = m.id
-	WHERE
-		product_code = #{product_code}
-	ORDER BY
-		q.no desc
-	</select>
-	
 	<!-- 상품 전체 리스트 카운트 -->
 	<select id="getProductCount" resultType = "int">
 		select count(*) from tbl_product
@@ -295,11 +308,25 @@
 	
 	<!-- 상품 검색된 리스트 -->
 	<select id="getListOnSearch" parameterType="map" resultType="productVO">
-		select * from (
+		<!-- select * from (
 			select A.*, rownum as rn from tbl_product A
 				where ${searchType} like '%'||#{keyword}||'%'
 			order by code)
-		where rn between #{start} and #{finish}
+		where rn between #{start} and #{finish} -->
+		 select * from (
+			select * from tbl_product where ${searchType} = (
+													select  code from tbl_high_cate
+														where name like '%'||#{keyword}||'%' or kname like '%'||#{keyword}||'%')
+													)
+		)where rownum between 1 and 10
+		
+		<!-- 
+			select * from (
+    select * from tbl_product 
+        where high_code = (select code from  tbl_high_cate
+    where name like '셔츠%' or kname like '셔츠%')
+) where rownum between 1 and 10;
+		 -->
 	</select>
 	
 	<select id="getHighCate" parameterType="int" resultType="HighCateVO">
@@ -334,29 +361,30 @@
 
 	</select>
 	
-	
-	<select id="getSearchList" parameterType="map" resultType="productVO">
+	<select id="getSearchList" parameterType="map" resultType="productAndFileVO">
 	select * from (
 		select rownum as rn, A.* from  (
-			select * from tbl_product
-				where ${searchType} like '%'||#{keyword}||'%' 
+			select P.code, P.name, P.price, P.low_code, P.sale_count, P.wish_count,
+						P.product_comment, P.grade, F.fileno, F.thumbnail_name, F.file_path,
+						F.file_name from tbl_product P, tbl_product_file F
+				where P.code = F.product_code and P.${searchType} like '%'||#{keyword}||'%' 
 							<if test = "exceptkeyword != null and exceptkeyword != ''"> 
 								and 
-								${searchType} not like '%'||#{exceptkeyword}||'%'
+								P.${searchType} not like '%'||#{exceptkeyword}||'%'
 							</if>
 						<if test = "orderby != null and orderby != ''">
-							order by #{orderby} desc
+							order by P.#{orderby} desc
 						</if>
 						)A
 				<choose>
 					<when test="(lowestprice != null and lowestprice != '') and (highestprice != null and highestprice != '')">
-				        <![CDATA[where price >= #{lowestprice} and price <= #{highestprice}]]> 
+				        <![CDATA[where P.price >= #{lowestprice} and P.price <= #{highestprice}]]> 
 					</when>
 					<when test="(lowestprice != null and lowestprice != '') or (highestprice == null and highestprice == '')">
-						<![CDATA[where price >= #{lowestprice}]]> 
+						<![CDATA[where P.price >= #{lowestprice}]]> 
 					</when>
 					<when test="(lowestprice == null and lowestprice == '') or (highestprice != null and highestprice != '')">
-				        <![CDATA[where price <= #{highestprice}]]> 
+				        <![CDATA[where P.price <= #{highestprice}]]> 
 					</when>
 				</choose>
 				) where rn between #{start} and #{finish}
@@ -397,7 +425,10 @@
 		 
 	</insert>
 	
-	
+	<select id = "getProductFile" parameterType = "int" resultType = "productFileVO">
+		select * from tbl_product_file
+			where product_code = #{code}
+	</select>
 </mapper>
 
 

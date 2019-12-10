@@ -312,13 +312,20 @@ public class UserDaoTest {
     @Test
     public void testGetOrderList() {
 	//OrderListCri cri = new OrderListCri("admin11", LocalDate.of(2019, 11, 21), LocalDate.of(2019, 11, 25), "배송 준비 중");
-	OrderListCri cri = new OrderListCri("admin11", null, null, "배송 준비 중");
-
-	List<OrderListVO> voList = userDao.getOrderList(cri);
+	OrderListCri orderCri = new OrderListCri("admin11", null, null, "전체 상태", 3, 10);
+	
+	List<OrderListVO> voList = userDao.getOrderList(orderCri);
 
 	for (OrderListVO vo : voList) {
 	    log.info(vo.toString());
 	}
+    }
+    
+    @Test
+    public void testGetOrderListCount() {
+	OrderListCri orderCri = new OrderListCri("admin11", null, null, "배송 완료", 1, 10);
+	int total = userDao.getOrderListCount(orderCri);
+	log.info("total : " + total);
     }
     
     @Test
@@ -375,6 +382,12 @@ public class UserDaoTest {
 	vo.setGrade(4);
 	
 	userDao.registReview(vo);
+    }
+    
+    @Test
+    public void testCheckPwd() {
+	String passwrod = userDao.checkPwd("admin11");
+	log.info(passwrod);
     }
 
 }

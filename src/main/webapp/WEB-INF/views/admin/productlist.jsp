@@ -12,13 +12,6 @@
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
 <link rel="stylesheet" href="/css/notice.css">
-<script src="/resources/ckeditor/ckeditor.js"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>모서리</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/notice.css">
 </head>
 
 <body>
@@ -38,16 +31,17 @@
 		<!-- row -->
 
 		<div class="row" >
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-8 col-md-offset-1">
 				<table class="table notice-board table-hover">
 					<thead>
 						<tr>
-							<td width = "10%" align = "center">NO</td>
-							<td width = "20%" align="center">상품명</td>
-							<td width = "20%" align="center">색상</td>
+							<td width = "7%" align = "center">NO</td>
+							<td width = "15%" align="center">상품명</td>
+							<td width = "15%" align="center">색상</td>
 							<td width = "10%" align="center">가격</td>
-							<td width = "20%" align="center">카테고리</td>
-							<td width = "10%" align="center">좋아요</td>
+							<td width = "15%" align="center">카테고리</td>
+							<td width = "7%" align = "center">주문 수</td>
+							<td width = "7%" align="center">좋아요</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,6 +52,7 @@
 								<td>색깔	</td>
 								<td>${products.price }	</td>
 								<td>${highCates[status.index] }/${lowCates[status.index] }</td>
+								<td>${orderCnt[status.index] }</td>
 								<td>${products.wish_count }	</td>
 							</tr>
 							
