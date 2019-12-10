@@ -173,7 +173,7 @@
         	<%@ include file="../includes/use_agreement_1.jsp" %>
         </div>
         <div class="col-md-10 col-md-offset-1" style="padding: 0;">
-         	이용약관에 동의하십니까? <input type="checkbox" name="agreement" id="agree1">동의함
+         	이용약관에 동의하십니까? <input type="checkbox" name="agreement" id="agree1"><label for="agree1">동의함</label>
         </div>
     </div>
 
@@ -185,7 +185,7 @@
 			<%@ include file="../includes/use_agreement_2.jsp" %>
 		</div>
 		<div class="col-md-10 col-md-offset-1" style="padding: 0; margin-bottom: 30px;">
-			개인정보 수집 및 이용에 동의하십니까?  <input type="checkbox" name="agreement" id="agree2">동의함
+			개인정보 수집 및 이용에 동의하십니까?  <input type="checkbox" name="agreement" id="agree2"><label for="agree2">동의함</label>
         </div>
         <div class="col-md-10 col-md-offset-1" style="text-align: center;">
 			<button type="submit" class="btn btn-default" id="submitBtn"
@@ -353,7 +353,7 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
-            } else if(birth.length != 10) {
+            } else if(birth != null && birth.length != 10) {
             	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");

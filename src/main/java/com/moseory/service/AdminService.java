@@ -73,4 +73,5 @@ public interface AdminService {
 	
 	public int modifyOrderInfo(HashMap<String,Object> param);
 
+	Integer getOrderCount(int code);
 }

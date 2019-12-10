@@ -21,6 +21,10 @@ public interface UserDao {
     
     public void deleteMember(String id);
     
+    public String checkPwd(String id);
+    
+    public void withdrawal(String id);
+    
     public int addWishList(Map<String, Object> param);
     
     public void increaseWishCount(int product_code);

@@ -66,7 +66,7 @@ public class ReviewController {
 	@GetMapping("/reviewList")
 	public void List(ReviewCriteria reviewCri, Model model) {
 		log.info("list:" + reviewCri);
-		model.addAttribute("Reviewlist", service.getListWithPaging(reviewCri));
+		model.addAttribute("reviewList", service.getListWithPaging(reviewCri));
 		int total = service.totalCount(reviewCri);
 		log.info("total" + total);
 		model.addAttribute("reviewPageMaker", new ReviewPageDTO(reviewCri, total));

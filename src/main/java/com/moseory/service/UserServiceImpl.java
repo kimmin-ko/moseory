@@ -41,6 +41,16 @@ public class UserServiceImpl implements UserService {
     public void modifyMember(MemberVO vo) {
 	userDao.updateMember(vo);
     }
+    
+    @Override
+    public void withdrawal(String id) {
+	userDao.withdrawal(id);
+    }
+    
+    @Override
+    public String checkPwd(String id) {
+	return userDao.checkPwd(id);
+    }
 
     @Override
     public void removeMember(String id) {
@@ -66,8 +76,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public WishListVO getWishList(String member_id) {
 	WishListVO vo = userDao.getWishList(member_id);
-	for(int i = 0; i < vo.getProducts().size(); i++) {
-	    vo.getProducts().get(i).setFile_path(ImageUtil.convertImagePath(vo.getProducts().get(i).getFile_path()));
+	if(vo != null) {
+	    for(int i = 0; i < vo.getProducts().size(); i++) {
+		vo.getProducts().get(i).setFile_path(ImageUtil.convertImagePath(vo.getProducts().get(i).getFile_path()));
+	    }
 	}
 	return vo;
     }
@@ -312,6 +324,10 @@ public class UserServiceImpl implements UserService {
     public void returnRequest(String order_code, int product_detail_no) {
 	userDao.changeOrderState(order_code, product_detail_no, "환불 요청");
     }
+
+    
+
+   
 
     
     

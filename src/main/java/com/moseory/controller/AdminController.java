@@ -2,8 +2,6 @@ package com.moseory.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -86,7 +81,7 @@ public class AdminController {
 		// 파일 이름 불러와서 폴더경로 + 파일이름
 		ServletContext context = request.getSession().getServletContext();
 		String save_path = context.getRealPath("resources/images/" + high_cate + "/" + str_low_code + "/" + productVO.getName() + "/");
-		
+		System.out.println("경로 : " + save_path);
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		List<MultipartFile> files = multipartRequest.getFiles("files");
 		List<MultipartFile> getThumbnail = multipartRequest.getFiles("thumbnail");
@@ -237,7 +232,8 @@ public class AdminController {
 			@RequestParam(defaultValue = "") String keyword,
 			Model model) {
 		List <ProductVO> productList = new ArrayList<>();
-
+		List <Integer> orderCnt = new ArrayList<>();
+		
 		model.addAttribute("searchType",searchType);
 		model.addAttribute("keyword",keyword);
 
@@ -252,6 +248,13 @@ public class AdminController {
 			//검색할 번호를 보내줌
 			//ex) 1페이지면 row 1~10까지 조회, 5페이지면 51~60까지 조회
 			productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish());
+			//productList의 code를 각각 보내면
+			//size만큼 돌려서 orderCnt에 차례대로 저장
+			
+			for(int i = 0; i < productList.size(); i++) {
+				orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+			}
+			model.addAttribute("orderCnt", orderCnt);
 			model.addAttribute("productList", productList);
 			model.addAttribute("paging",pagingUtil);
 		}
@@ -261,6 +264,10 @@ public class AdminController {
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
@@ -271,18 +278,26 @@ public class AdminController {
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
 				}
 
-			}
+			} 
 			else if(searchType.equals("low_code")) {
 				try {
 					keyword = Integer.toString(adminService.getLowCateCode(keyword));
 					totalCnt = adminService.getProductCount(searchType, keyword);
 					pagingUtil = new PagingUtil(totalCnt, curPage);
 					productList = adminService.getProductList(pagingUtil.getStart(), pagingUtil.getFinish(), searchType, keyword);
+					for(int i = 0; i < productList.size(); i++) {
+						orderCnt.add((adminService.getOrderCount(productList.get(i).getCode())));
+					}
+					model.addAttribute("orderCnt", orderCnt);
 					model.addAttribute("productList", productList);
 					model.addAttribute("paging",pagingUtil);
 				}catch(NullPointerException e) {
@@ -305,10 +320,14 @@ public class AdminController {
 	
 	@GetMapping("/stats")
 	public String stats() {
-		
 		return "admin/stats";
 	}	
-	
+	@PostMapping("/stats")
+	@ResponseBody
+	public String stats(@RequestBody String term) {
+		System.out.println(term);
+		return "admin/stats";
+	}	
 	@GetMapping("userManagement")
 	public String userManagement(HttpServletRequest req, Model model
 			,@RequestParam(required = false, defaultValue = "all") String levelType

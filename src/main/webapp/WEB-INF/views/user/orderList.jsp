@@ -72,9 +72,11 @@
 		                <option>구매 확정</option>
 		                <option>교환 요청</option>
 		                <option>교환 처리 중</option>
+		                <option>교환 취소</option>
 		                <option>교환 완료</option>
 		                <option>환불 요청</option>
 		                <option>환불 처리 중</option>
+		                <option>환불 취소</option> 
 		                <option>환불 완료</option> 
 		            </select>
 		            

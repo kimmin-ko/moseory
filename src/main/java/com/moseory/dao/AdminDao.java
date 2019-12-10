@@ -83,5 +83,7 @@ public interface AdminDao {
 	public void exchangeRemoveStock(HashMap<String,Object> param);
 	
 	public void productSalesRateRemove(HashMap<String,Object> param);
+
+	Integer getOrderCount(int code);
 }
 

@@ -40,6 +40,16 @@ public class UserDaoImpl implements UserDao {
 	log.info("dao member : " + vo.getPwd_confirm_a());
 	sqlSession.update(namespace+".updateMember", vo);
     }
+    
+    @Override
+    public void withdrawal(String id) {
+	sqlSession.delete(namespace+".withdrawal", id);
+    }
+    
+    @Override
+    public String checkPwd(String id) {
+	return sqlSession.selectOne(namespace+".checkPwd", id);
+    }
 
     @Override
     public void deleteMember(String id) {
@@ -299,17 +309,12 @@ public class UserDaoImpl implements UserDao {
     }
 
    
+
+   
     
     
 
 }
-
-
-
-
-
-
-
 
 
 

@@ -427,8 +427,10 @@
 		  UPDATE SET  P.sale_count = P.sale_count-1
 	</update>
 	
-	
-	
+	<select id="getOrderCount2" parameterType="int" resultType = "int">
+		select count(*) from tbl_order_detail
+			where product_detail_no = #{code}
+	</select>
 	
 	
 </mapper>

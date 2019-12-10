@@ -422,12 +422,20 @@
 			$("input[name=address2]").val('${member.address2}');
 
 			var tel = "${member.tel}".split('-');
-			$("select[name=tel1]").val(tel[0]);
+			if(!tel[0]) // tel이 비어있으면
+				$("select[name=tel1] option:eq(0)").prop("selected", true);
+			else
+				$("select[name=tel1]").val(tel[0]);
+			
 			$("input[name=tel2]").val(tel[1]);
 			$("input[name=tel3]").val(tel[2]);
 
 			var phone = "${member.phone}".split('-');
-			$("select[name=phone1]").val(phone[0]);
+			if(!phone[0]) // tel이 비어있으면
+				$("select[name=phone1] option:eq(0)").prop("selected", true);
+			else
+				$("select[name=phone1]").val(phone[0]);
+			
 			$("input[name=phone2]").val(phone[1]);
 			$("input[name=phone3]").val(phone[2]);
 

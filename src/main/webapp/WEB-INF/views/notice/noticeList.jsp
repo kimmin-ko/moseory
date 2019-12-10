@@ -145,7 +145,7 @@
 			</div>
 			
 			<!-- 검색 처리 기능 -->
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-5 col-md-offset-1">
 				<form id='search' action="/notice/noticeList" method="get">
 					<select class="form-control" style="width: 130px; display:inline-block;" name="type">
 						<option value=""
@@ -166,8 +166,9 @@
 					</button>
 					
 				</form>
-				<button type="button" class="btn btn-default"
-						onclick="location.href ='/notice/noticeText'">글쓰기</button>
+			</div>
+			<div class="col-md-5 reg_btn_area">
+				<button type="button" class="btn btn-default btn-sm" onclick="location.href ='/notice/noticeText'">글쓰기</button>
 			</div>
 			
 			<!-- 페이징 처리 -->

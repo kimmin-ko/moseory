@@ -1,6 +1,7 @@
 
 package com.moseory.service;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -222,6 +223,11 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public void saveFile(Map<String, Object> fileParam) {
 		adminDao.saveFile(fileParam);
+	}
+
+	@Override
+	public Integer getOrderCount(int code) {
+		return adminDao.getOrderCount(code);
 	}
 	
 	@Override

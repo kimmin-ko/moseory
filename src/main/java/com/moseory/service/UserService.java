@@ -19,6 +19,10 @@ public interface UserService {
     
     public void modifyMember(MemberVO vo);
     
+    public void withdrawal(String id);
+    
+    public String checkPwd(String id);
+    
     public void removeMember(String id);
     
     public int addWishList(Map<String, Object> param);

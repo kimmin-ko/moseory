@@ -111,7 +111,9 @@
 				<div class="col-md-10 col-md-offset-1">
 					<c:forEach var = "resultProduct" items="${resultProduct }">
 						<div class="col-md-3 prod-desc ma-bo-50">
-							<a href="${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}"><img src="/images/001.gif" width = "200px"></a>
+							<a href="${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}">
+								<img src = "${resultProduct.file_path }${resultProduct.thumbnail_name}" width = "200px" height = "200px">
+							</a>
 							<div class = "info">
 								<p><a href = "${pageContext.request.contextPath }/product/productInfo?code=${resultProduct.code}">${resultProduct.name }</a></p>
 								<p>${resultProduct.price }</p>
