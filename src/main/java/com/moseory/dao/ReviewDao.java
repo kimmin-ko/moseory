@@ -19,4 +19,6 @@ public interface ReviewDao {
 	public int totalCount(ReviewCriteria reviewCri);
 	
 	void viewCount(int num);
+	
+	public List<ReviewVO> getListMyPage(ReviewCriteria reviewCri);
 }

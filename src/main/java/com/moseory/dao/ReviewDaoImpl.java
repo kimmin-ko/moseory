@@ -49,8 +49,12 @@ public class ReviewDaoImpl implements ReviewDao {
 	public void viewCount(int num) {
 		sqlSession.update(namespace+".hit",num);
 	}
-
 	
+	@Override
+	public List<ReviewVO> getListMyPage(ReviewCriteria reviewCri){
+		return sqlSession.selectList(namespace+".getListMyPage",reviewCri);
+	}
+
 	
 }
 

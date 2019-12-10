@@ -54,5 +54,11 @@ public class ReviewServiceImpl implements ReviewService{
 		return dao.totalCount(reviewCri);
 	}
 	
+	@Override
+	public List<ReviewVO> getListMyPage(ReviewCriteria reviewCri){
+		log.info("get List My Page" + reviewCri);
+		return dao.getListMyPage(reviewCri);
+	}
+	
 
 }

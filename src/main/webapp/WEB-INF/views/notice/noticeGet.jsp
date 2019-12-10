@@ -33,7 +33,7 @@
 	</script>
 
 
-	<div class="container" style="margin-left:22%;">
+	<div class="container" style="margin-left: 22%;">
 
 		<div class="row" style="margin-top: 70px; margin-bottom: 30px;">
 
@@ -59,11 +59,13 @@
 					</tr>
 
 					<tr>
-						<td colspan="4" height ="300px" width="300px">${board.content };</td>
+						<td colspan="4" height="300px" width="300px">${board.content };</td>
 					</tr>
 				</table>
-
-				<button data-oper="modify" class="btn btn-default btn-sm">수정</button>
+				
+				<c:if test="${user.auth == 1 }">
+					<button data-oper="modify" class="btn btn-default btn-sm">수정</button>
+				</c:if>
 				<button data-oper="list" class="btn btn-default btn-sm">목록</button>
 			</div>
 
@@ -82,21 +84,22 @@
 				</table>
 			</div>
 		</div>
-		
-
-			<form id='operForm' action="/notice/noticeModify" method="get">
-				<input type='hidden' name='no'
-					value='<c:out value = "${board.no }"/>'> <input
-					type='hidden' name='pageNum'
-					value='<c:out value = "${cri.pageNum }"/>'> <input
-					type='hidden' name='amount'
-					value='<c:out value = "${cri.amount }"/>'>
-					<input type='hidden' name='keyword' value='<c:out value="${cri.keyword }"/>'>
-					<input type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
-			</form>
 
 
-<%@ include file="../includes/footer.jsp"%>
-</div>
+		<form id='operForm' action="/notice/noticeModify" method="get">
+			<input type='hidden' name='no'
+				value='<c:out value = "${board.no }"/>'> <input
+				type='hidden' name='pageNum'
+				value='<c:out value = "${cri.pageNum }"/>'> <input
+				type='hidden' name='amount'
+				value='<c:out value = "${cri.amount }"/>'> <input
+				type='hidden' name='keyword'
+				value='<c:out value="${cri.keyword }"/>'> <input
+				type='hidden' name='type' value='<c:out value="${cri.type }"/>'>
+		</form>
+
+
+		<%@ include file="../includes/footer.jsp"%>
+	</div>
 </body>
 </html>
