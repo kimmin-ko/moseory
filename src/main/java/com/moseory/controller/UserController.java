@@ -77,7 +77,7 @@ public class UserController {
 		map.put("member", member);
 		map.put("memberJson", memberJson);
 		map.put("levelJson", levelJson);
-
+		
 		return map;
 	}
 
