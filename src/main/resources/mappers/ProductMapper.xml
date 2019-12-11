@@ -40,23 +40,33 @@
 	
 	<!-- 상위카테고리 상품리스트 -->
 	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
-		<!-- select * from tbl_product
-			where high_code = #{high_code}
-			 -->
-			select P.code, P.name, P.price, P.high_code, P.low_code, P.sale_count,
-						P.wish_count, P.product_comment, P.grade, 
-						F.fileno, F.product_code, F.thumbnail_name,
-						F.file_path, F.file_name 
-				from tbl_product P, tbl_product_file F
-        where P.high_code = #{high_code} and P.code = F.product_code
-	</select>
-	
-	<!-- 상위카테고리 상품리스트 세부목록-->
-	<select id="highCateListDetail" parameterType="map" resultType = "productVO">
-		select * from tbl_product
-			where high_code = #{high_code}
-			and low_code = #{lowCode} 
-			
+		SELECT 
+		  P.code, 
+		  P.name, 
+		  P.price, 
+		  P.high_code, 
+		  P.low_code, 
+		  P.sale_count,
+		  P.wish_count, 
+		  P.product_comment, 
+		  P.grade, 
+		  F.fileno, 
+		  F.product_code, 
+		  F.thumbnail_name,
+		  F.file_path, F.file_name 
+		FROM 
+		  tbl_product P, 
+		  tbl_product_file F
+        WHERE 1 = 1  
+        AND P.code = F.product_code
+        AND P.high_code = #{high_code}
+        <if test='lowCode != ""'>
+		  AND low_code = #{lowCode} 
+		</if>
+		<if test='orderByType != ""'>
+		  ORDER BY #{orderByType}
+		</if>
+        
 	</select>
 	
 	<!--상품 코드로 정보 조회 -->

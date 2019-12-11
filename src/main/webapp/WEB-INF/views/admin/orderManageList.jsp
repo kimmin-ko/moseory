@@ -18,6 +18,12 @@
 <!-- Bootstrap Datepicker CSS -->
 <link rel="stylesheet" href="/css/bootstrap-datepicker3.standalone.min.css">
 </head>
+<script type="text/javascript">
+	var message = "${msg}";
+	if(message != ""){
+		alert(message);
+	}
+</script>
 <body>
 
 	<%@ include file="../includes/sidebar.jsp"%>

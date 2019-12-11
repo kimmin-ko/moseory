@@ -30,16 +30,8 @@ public class ProductServiceImpl implements ProductService{
 	private ProductDao productDao;
 	
 	@Override
-	public List<ProductAndFileVO> highCateList(int high_code) {
-		return productDao.highCateList(high_code);
-	}
-
-	@Override
-	public List<ProductVO> highCateListDetail(int high_code, String lowCode) {
-		Map<Object, Object> map = new HashMap<Object, Object>();
-		map.put("high_code", high_code);
-		map.put("lowCode", lowCode);
-		return productDao.highCateListDetail(map);
+	public List<ProductAndFileVO> highCateList(Map<String,Object> map) {
+		return productDao.highCateList(map);
 	}
 	
 	@Override

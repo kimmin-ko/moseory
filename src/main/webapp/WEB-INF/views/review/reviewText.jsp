@@ -69,9 +69,7 @@
 							<td>&nbsp;</td>
 							<td align="center">내용</td>
 							<td><textarea name="content" cols="100" rows="13">     
-							
 							</textarea></td>
-
 							<td>&nbsp;</td>
 						</tr>
 						<tr align="center">
@@ -82,7 +80,8 @@
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">
 							<td>&nbsp;</td>
 						</tr>
-						<input type = "hidden" name ="id" value="${member.id }"></input>
+						
+							
 					</table>
 				</form>
 			</div>

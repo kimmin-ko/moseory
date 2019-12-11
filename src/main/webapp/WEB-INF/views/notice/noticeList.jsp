@@ -166,9 +166,16 @@
 					</button>
 					
 				</form>
+
+				<c:if test="${user.auth == 1 }">
+				<button type="button" class="btn btn-default"
+						onclick="location.href ='/notice/noticeText'">글쓰기</button>
+				</c:if>
+
 			</div>
 			<div class="col-md-5 reg_btn_area">
 				<button type="button" class="btn btn-default btn-sm" onclick="location.href ='/notice/noticeText'">글쓰기</button>
+
 			</div>
 			
 			<!-- 페이징 처리 -->
