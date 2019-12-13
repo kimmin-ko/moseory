@@ -14,9 +14,7 @@ import lombok.NoArgsConstructor;
 public class ReviewVO {
     
     private int no;
-    
     private MemberVO member;
-
     private String member_id;
     
 

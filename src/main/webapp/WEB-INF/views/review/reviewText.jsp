@@ -51,6 +51,7 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1 notice-table">
 				<form name="writeform" method="post">
+					<input type = "hidden" name="member_id" value ="${user.id }">
 					<table class="table table-striped">
 						<tr>
 							<td>&nbsp;</td>
@@ -80,8 +81,7 @@
 								class="btn btn-dark" OnClick="javascript:history.back(-1)">
 							<td>&nbsp;</td>
 						</tr>
-						
-							
+										
 					</table>
 				</form>
 			</div>

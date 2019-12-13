@@ -2,6 +2,7 @@ package com.moseory.domain;
 
 import javax.mail.Session;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@AllArgsConstructor
 public class ReviewCriteria {
 	
 	private int reviewPageNum; // 페이지 번호
