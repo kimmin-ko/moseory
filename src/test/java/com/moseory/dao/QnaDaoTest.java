@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.moseory.domain.Criteria;
 import com.moseory.domain.QnaReplyVO;
 import com.moseory.domain.QnaVO;
+import com.moseory.domain.ReviewCriteria;
+import com.moseory.domain.ReviewVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -23,11 +25,21 @@ public class QnaDaoTest {
     @Setter(onMethod_ = @Autowired)
     private QnaDao qnaDao;
     
+    @Autowired
+    private ReviewDao reviewDao;
+    
+    @Test
+    public void testGetReview() {
+    	List<ReviewVO> vo_list = reviewDao.getListWithPaging(new ReviewCriteria(1, 10, "admin11", null, null));
+    	vo_list.forEach(x -> log.info(x));
+    }
+    
     @Test
     public void testPaging() {
 	Criteria cri = new Criteria(2, 10);
 	//cri.setKeyword("원글");
 	//cri.setType("TC");
+	
 	
 	List<QnaVO> list = qnaDao.getListWithPaging(cri);
 	

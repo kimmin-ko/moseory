@@ -10,17 +10,11 @@
 <link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/footer.css">
-<<<<<<< HEAD
-<link rel="stylesheet" href="/css/notice.css">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>모서리</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="/css/bootstrap.css">
 <link rel="stylesheet" href="/css/notice.css">
 <link rel="stylesheet" href="/css/reviewList.css">
-<script src="/resources/ckeditor/ckeditor.js"></script>
 </head>
 
 <body>
@@ -42,16 +36,26 @@
 			<div class="col-md-10 col-md-offset-1">
 				<table class="table notice-board">
 					<colgroup>
-						<col style="width: 50px;"> <!-- NO -->
-						<col style="width: 300px;"> <!-- TITLE -->
-						<col style="width: 80px;"> <!-- NAME -->
-						<col style="width: 80px;"> <!-- DATE -->
-						<col style="width: 50px;"> <!-- HIT -->
-						<col width= 50px;> <!-- NO -->
-						<col width= 250px;> <!-- TITLE -->
-						<col width= 80px;> <!-- NAME -->
-						<col width= 80px;> <!-- DATE -->
-						<col width= 50px;> <!-- HIT -->
+						<col style="width: 50px;">
+						<!-- NO -->
+						<col style="width: 300px;">
+						<!-- TITLE -->
+						<col style="width: 80px;">
+						<!-- NAME -->
+						<col style="width: 80px;">
+						<!-- DATE -->
+						<col style="width: 50px;">
+						<!-- HIT -->
+						<col width=50px;>
+						<!-- NO -->
+						<col width=250px;>
+						<!-- TITLE -->
+						<col width=80px;>
+						<!-- NAME -->
+						<col width=80px;>
+						<!-- DATE -->
+						<col width=50px;>
+						<!-- HIT -->
 					</colgroup>
 					<thead>
 						<tr>
@@ -69,14 +73,13 @@
 								<td>${review.no}</td>
 								<!-- TITLE -->
 
-								<td><a class='move' <%-- href='<c:out value="${Reviewlist.no}"/>' --%>><c:out
-											value="${Reviewlist.title }" /></a></td>
+								<td><a class='move' href='<c:out value="${review.no}"/>'><c:out
+											value="${review.title }" /></a></td>
 
-								<td class="qna_title"><a class='move' href='<c:out value="${review.no}"/>'>
-									<c:out value="${review.title }" /></a></td>
 
 								<!-- NAME -->
-								<td><c:out value="${fn:substring(review.member_id, 0, 2).concat('*****') }" /></td>
+								<td><c:out
+										value="${fn:substring(review.member_id, 0, 2).concat('*****') }" /></td>
 								<!-- DATE -->
 								<td>${review.reg_date}</td>
 								<!-- HIT -->
@@ -86,11 +89,12 @@
 					</tbody>
 				</table>
 			</div>
-			
+
 			<!-- 검색 처리 기능 -->
 			<div class="col-md-5 col-md-offset-1">
 				<form id='search' action="/review/reviewList" method="get">
-					<select class="form-control" style="width: 130px; display:inline-block;" name="reviewType">
+					<select class="form-control"
+						style="width: 130px; display: inline-block;" name="reviewType">
 						<option value=""
 							<c:out value="${reviewPageMaker.reviewCri.reviewType == null ?'selected':''}"/>>검색조건</option>
 						<option value="T"
@@ -100,28 +104,32 @@
 						<option value="TC"
 							<c:out value="${reviewPageMaker.reviewCri.reviewType == 'TC' ?'selected':''}"/>>제목
 							+ 내용</option>
-					</select> 
-					<input type="text" class="form-control" name="reviewKeyword"
-						style="width: 180px; display:inline-block;" value="${reviewPageMaker.reviewCri.reviewKeyword}" /> <input
-						type='hidden' name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
-					<input type='hidden' name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }">
+					</select> <input type="text" class="form-control" name="reviewKeyword"
+						style="width: 180px; display: inline-block;"
+						value="${reviewPageMaker.reviewCri.reviewKeyword}" /> <input
+						type='hidden' name='reviewPageNum'
+						value="${reviewPageMaker.reviewCri.reviewPageNum }"> <input
+						type='hidden' name='reviewAmount'
+						value="${reviewPageMaker.reviewCri.reviewAmount }">
 					<button class="btn btn-default">
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					</button>
-					
+
 				</form>
 
 				<button type="button" class="btn btn-default"
-						onclick="location.href ='/review/reviewText'">글쓰기</button>
-				<button id="createBtn" type="button" class="btn btn-default" data-toggle="modal">write</button>
-	
+					onclick="location.href ='/review/reviewText'">글쓰기</button>
+				<button id="createBtn" type="button" class="btn btn-default"
+					data-toggle="modal">write</button>
+
 
 			</div>
 			<div class="col-md-5 reg_btn_area">
-				<button type="button" class="btn btn-default btn-sm" onclick="location.href ='/review/reviewText'">글쓰기</button>
+				<button type="button" class="btn btn-default btn-sm"
+					onclick="location.href ='/review/reviewText'">글쓰기</button>
 
 			</div>
-		
+
 
 			<!-- 페이징 처리 -->
 			<div class="col-md-10 col-md-offset-1 pagination-div"
@@ -137,8 +145,8 @@
 							end="${reviewPageMaker.endPage }">
 
 
-							<li class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? 'active':'' }"><a
-
+							<li
+								class="paginate_button ${reviewPageMaker.reviewCri.reviewPageNum == num ? 'active':'' }"><a
 								href="${num }">${num }</a></li>
 						</c:forEach>
 
@@ -154,15 +162,19 @@
 
 		<!-- row -->
 		<!-- Review End -->
-		
+
 		<form id="actionForm" action="/review/reviewList" method="get">
-			<input type="hidden" name='reviewPageNum' value="${reviewPageMaker.reviewCri.reviewPageNum }">
-			<input type="hidden" name='reviewAmount' value="${reviewPageMaker.reviewCri.reviewAmount }">
-			<input type="hidden" name="reviewType" value="${reviewPageMaker.reviewCri.reviewType}">
-			<input type="hidden" name="reviewKeyword" value="${reviewPageMaker.reviewCri.reviewKeyword}">
+			<input type="hidden" name='reviewPageNum'
+				value="${reviewPageMaker.reviewCri.reviewPageNum }"> <input
+				type="hidden" name='reviewAmount'
+				value="${reviewPageMaker.reviewCri.reviewAmount }"> <input
+				type="hidden" name="reviewType"
+				value="${reviewPageMaker.reviewCri.reviewType}"> <input
+				type="hidden" name="reviewKeyword"
+				value="${reviewPageMaker.reviewCri.reviewKeyword}">
 		</form>
-		
-		<%@ include file="../includes/footer.jsp" %>
+
+		<%@ include file="../includes/footer.jsp"%>
 
 	</div>
 
@@ -187,9 +199,9 @@
 		<!-- Modal-dialog -->
 	</div>
 	<!-- 게시글 Modal End-->
-	
+
 	<!-- review Modal 추가 -->
-	<div class ="modal fade" id="reviewModal" role="dialog">
+	<div class="modal fade" id="reviewModal" role="dialog">
 		<div class="modal-dialog">
 			<!-- Modal content -->
 			<div class="modal-content">
@@ -203,40 +215,59 @@
 							<td class="view_title">제목</td>
 							<td><input class="form-control" id="modalTitle" type="text"></td>
 						</tr>
+
 						<tr>
 							<td class="view_title">작성자</td>
-							<td>Moseory</td>
+							<td><input class="form-control" id="modalWriter" type="text"></td>
 						</tr>
+
 						<tr>
-							<td colspan="2"><textarea class="form-control" id="modalContent" rows="10" cols="60"></textarea></td>
+							<td colspan="2"><textarea class="form-control"
+									id="modalContent" rows="10" cols="60"></textarea></td>
 						</tr>
 					</table>
-					</div>
-					<div class="modal-footer">
-						<button id="modalSubmit" type="button" class="btn btn-default btn-sm">글쓰기</button>
-						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">취소</button>
-					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="modalSubmit" type="button"
+						class="btn btn-default btn-sm">글쓰기</button>
+					<button type="button" class="btn btn-default btn-sm"
+						data-dismiss="modal">취소</button>
 				</div>
 			</div>
 		</div>
+	</div>
 
 </body>
 <script>
 $(document).ready(function(){
-
-    
+		
     $(".move").click(function(){
-    	alert('123');
-    	$.ajax({
-    		type : 'get',
-    		url :'/review/reviewGet/' + "${Reviewlist.no}",
-    		async : false,
-    		success : function(reply){
-    			alert('123');
+       var no = $(this).attr('href');
+       
+       $.ajax({
+          type : 'get',
+          url :'/review/reviewGet/' + no,
+          async : false,
+          success : function(review){
+        	  addValueModal(review)
+        	  alert("check my modal");
+          }
+       });
 
-    		}
-    	});
     });
+    
+    function addValueModal(review){
+  	  action = 'create';
+      type = 'POST';
+      
+  	  $("#modal-title").text("REVIEW");
+   	  $("#modalTitle").val(review.title);
+   	  $("#modalWriter").val(review.member_id);
+   	  $("#modalContent").val(review.content);
+   	  $("#reviewModal").modal();
+  	   
+     }
+    
     var result = '<c:out value="${reviewResult}"/>';
     checkModal(result);
 
@@ -252,9 +283,7 @@ $(document).ready(function(){
         $("#myModal").modal("show");
 
     };
-    
-
-    
+   
 
     var actionForm = $("#actionForm");
 
@@ -300,36 +329,16 @@ $(document).ready(function(){
                 searchForm.submit();
             });
     
-	$("#createBtn").click(function(){
-			action = 'create';
-			type = 'POST';
-			$("#modal-title").text("리뷰 작성");
-			$("#reviewModal").modal();
-			
-	});
-	
-	$("#modalSubmit").click(function(){
-		
-		if(action == 'create'){
-			bno = 0;
-			url = "/review/reviewText";
-		}
-		var data = {
-			"no":bno,
-			"title":$("#modalTitle").val(),
-			"content":$("#modalContent").val()
-		};
-		$.ajax({
-			url:url,
-			type : 'POST',
-			data:JSON.stringify(data),
-			success:function(data){
-				alert('gg');
-				$("#reviewModal").modal('toggle');
-			}
-		
-		});
-	});
+   $("#createBtn").click(function(){
+         action = 'create';
+         type = 'POST';
+         $("#modal-title").text("리뷰 작성");
+         $("#reviewModal").modal();
+         
+   });
+   
+  
+   
 
 })
 </script>

@@ -26,6 +26,11 @@ public class QnaDaoImpl implements QnaDao {
     public List<QnaVO> getListWithPaging(Criteria cri) {
 	return sqlSession.selectList(namespace+".getListWithPaging", cri);
     }
+    
+    @Override
+    public List<QnaVO> getMyListWithPaging(Criteria cri){
+    	return sqlSession.selectList(namespace+".getMyListWithPaging",cri);
+    }
 
     @Override
     public int getQnaCount(Criteria cri) {

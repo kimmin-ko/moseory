@@ -88,7 +88,7 @@
 						" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">공지사항 관리</a></h6>
+						<h6><a href="/notice/noticeList">공지사항 관리</a></h6>
 						<p>
 							관리자님께서 공지사항을 관리하는 공간입니다.<br>
 							관리자님께서 작성하신 공지를 한눈에 확인하실 수 있습니다.
