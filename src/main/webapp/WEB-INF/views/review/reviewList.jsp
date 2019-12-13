@@ -117,16 +117,10 @@
 
 				</form>
 
-				<button type="button" class="btn btn-default"
-					onclick="location.href ='/review/reviewText'">글쓰기</button>
-				<button id="createBtn" type="button" class="btn btn-default"
-					data-toggle="modal">write</button>
-
+		
 
 			</div>
-			<div class="col-md-5 reg_btn_area">
-				<button type="button" class="btn btn-default btn-sm"
-					onclick="location.href ='/review/reviewText'">글쓰기</button>
+			
 
 			</div>
 
@@ -213,25 +207,28 @@
 					<table class="table table-bordered noticeView-table">
 						<tr>
 							<td class="view_title">제목</td>
-							<td><input class="form-control" id="modalTitle" type="text"></td>
+							<td><div id="modalTitle"></div></td>
 						</tr>
 
 						<tr>
 							<td class="view_title">작성자</td>
-							<td><input class="form-control" id="modalWriter" type="text"></td>
+							<td><div id="modalWriter"></div></td>
+						</tr>
+						
+						<tr>
+							<td class="view_title">Grade</td>
+							<td><div id="modalGrade"></div></td>
 						</tr>
 
 						<tr>
-							<td colspan="2"><textarea class="form-control"
-									id="modalContent" rows="10" cols="60"></textarea></td>
+							<td colspan="2"><div style = "width:300px; height:200px;"
+									id="modalContent"></div></td>
 						</tr>
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button id="modalSubmit" type="button"
-						class="btn btn-default btn-sm">글쓰기</button>
 					<button type="button" class="btn btn-default btn-sm"
-						data-dismiss="modal">취소</button>
+						data-dismiss="modal">닫기</button>
 				</div>
 			</div>
 		</div>
@@ -241,29 +238,30 @@
 <script>
 $(document).ready(function(){
 		
-    $(".move").click(function(){
-       var no = $(this).attr('href');
-       
-       $.ajax({
-          type : 'get',
-          url :'/review/reviewGet/' + no,
-          async : false,
-          success : function(review){
-        	  addValueModal(review)
-        	  alert("check my modal");
-          }
-       });
+	$(".move").click(function(e){
+	       e.preventDefault();
+	       var no = $(this).attr('href');
+	       
+	       $.ajax({
+	          type : 'get',
+	          url :'/review/reviewGet/' + no,
+	          async : false,
+	          success : function(review){
+	             addValueModal(review);
+	          }
+	       });
 
-    });
+	    });
     
     function addValueModal(review){
   	  action = 'create';
       type = 'POST';
       
   	  $("#modal-title").text("REVIEW");
-   	  $("#modalTitle").val(review.title);
-   	  $("#modalWriter").val(review.member_id);
-   	  $("#modalContent").val(review.content);
+   	  $("#modalTitle").html(review.title);
+   	  $("#modalWriter").html(review.member_id);
+   	  $("#modalGrade").html(review.grade);
+   	  $("#modalContent").html(review.content);
    	  $("#reviewModal").modal();
   	   
      }
@@ -298,20 +296,6 @@ $(document).ready(function(){
             actionForm.submit();
         });
 
-    //게시글 제목에만 걸어주면, pageNum과 amount가 전송되지 않는다
-   /*  $(".move").on("click",
-            function(e) {
-                e.preventDefault();
-                actionForm
-                    .append("<input type ='hidden' name='no' value ='" +
-                        $(this).attr(
-                            "href") +
-                        "'>");
-                actionForm.attr("action",
-                    "/review/reviewGet");
-                actionForm.submit();
-            }); */
-
     var searchForm = $("#search");
     
     $("#search button").on("click",
@@ -329,13 +313,7 @@ $(document).ready(function(){
                 searchForm.submit();
             });
     
-   $("#createBtn").click(function(){
-         action = 'create';
-         type = 'POST';
-         $("#modal-title").text("리뷰 작성");
-         $("#reviewModal").modal();
-         
-   });
+
    
   
    
