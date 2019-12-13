@@ -18,9 +18,7 @@ import com.moseory.domain.ReviewVO;
 
 public interface ProductDao {
 
-	List<ProductAndFileVO> highCateList(int high_code);
-
-	List<ProductVO> highCateListDetail(Map<Object, Object> map);
+	List<ProductAndFileVO> highCateList(Map<String,Object> map);
 	
 	ProductVO getProduct(int code);
 	

@@ -51,10 +51,17 @@
 			<h5>${highCate.name}</h5>	
 				<hr>
 			<h6>
-				<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}">전체</a>
-				<c:forEach var = "lowCate" items = "${lowCate}">
-					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&lowCode=${lowCate.code}">${lowCate.name}</a>
-				</c:forEach>
+				<span style="float:left">
+					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}">전체</a>
+					<c:forEach var = "lowCate" items = "${lowCate}">
+						<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&lowCode=${lowCate.code}">${lowCate.name}</a>
+					</c:forEach>
+				</span>
+				<span style="float:right">
+					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&orderByType=code">등록순</a>
+					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&orderByType=price">인기순</a>
+					<a href = "${pageContext.request.contextPath}/product/productList?high_code=${high_code}&orderByType=sale_count">가격순</a>
+				</span>
 			</h6>
 			<!-- 하위 카테고리 -->
 				
@@ -62,8 +69,6 @@
 		</div>
 		
 		<div class="row ma-to-30 ma-bo-20">
-			<div class="col-md-10 col-md-offset-1" style="font-weight: bold;">NEW
-				ARRIVAL</div>
 		</div>
 		<div class="row ma-bo-50" id="newArrivalList">
 			<div class="col-md-10 col-md-offset-1">
@@ -83,7 +88,32 @@
 			</div>
 		</div>
 		<!-- NEW ARRIVAL ROW -->
-
+		<div class="col-md-10 col-md-offset-1 pagination-div" style="margin-bottom: 30px;">
+			<nav>
+				<ul class="pagination">
+					<c:if test="${paging.curBlock ne 1 }">
+						<li class ="button_first"><a href="${pageContext.request.contextPath }/product/productList?high_code=${high_code}&curPage=${paging.startPage }">처음</a></li>
+					</c:if>
+					<c:if test="${paging.curPage ne 1 }">
+						<li class ="button_previous"><a href="${pageContext.request.contextPath }/product/productList?high_code=${high_code}&curPage=${paging.prevPage }">이전</a></li>
+					</c:if>
+					<c:forEach var = "pageNumber" begin = "${paging.startPage }" end = "${paging.endPage }">
+						<c:choose>
+							<c:when test="${pageNumber eq paging.curPage }">
+								<li class ="paginate_button active"><span>${pageNumber }</span></li>
+							</c:when>
+						</c:choose>
+					</c:forEach>
+					<c:if test = "${paging.curPage ne paging.pageCnt && paging.pageCnt > 0}">	
+						<li class ="button_next"><a href="${pageContext.request.contextPath }/product/productList?high_code=${high_code}&curPage=${paging.nextPage }">다음</a></li>
+					</c:if>
+					<c:if test = "${paging.curBlock ne paging.blockCnt && paging.blockCnt > 0 }">
+						<li class ="button_end"><a href="${pageContext.request.contextPath }/product/productList?high_code=${high_code}&curPage=${paging.endPage }">끝</a></li>
+					</c:if>
+				</ul>
+			</nav>
+		</div>
+		<!-- paging End -->
 		<%@ include file="../includes/footer.jsp" %>
 
 	</div>
