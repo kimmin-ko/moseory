@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 @Repository("adminDao")
@@ -85,5 +86,7 @@ public interface AdminDao {
 	public void productSalesRateRemove(HashMap<String,Object> param);
 
 	Integer getOrderCount(int code);
+
+	List<OrderStatsVO> getOrderStats(String selectTerm);
 }
 
