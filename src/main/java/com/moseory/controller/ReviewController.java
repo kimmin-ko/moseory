@@ -12,15 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.moseory.domain.MemberVO;
 import com.moseory.domain.ReviewCriteria;
 import com.moseory.domain.ReviewPageDTO;
 import com.moseory.domain.ReviewVO;
 import com.moseory.service.ReviewService;
 import lombok.extern.log4j.Log4j;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -54,12 +51,13 @@ public class ReviewController {
 
 		return "success";
 	}
-	
-	//제목 클릭하면 modal 창 뛰우기
+
+	// 제목 클릭하면 modal 창 뛰우기
 	@GetMapping("/reviewGet/{no}")
-	public @ResponseBody ResponseEntity<ReviewVO> replyGet(@PathVariable("no") int bno){
-	System.out.println("dasd");	
-	return new ResponseEntity<>(service.read(bno),HttpStatus.OK);
+	public @ResponseBody ResponseEntity<ReviewVO> replyGet(@PathVariable("no") int bno) {
+		log.info(service.read(bno));
+		return new ResponseEntity<>(service.read(bno), HttpStatus.OK);
+		
 	}
 
 	/*
@@ -92,8 +90,6 @@ public class ReviewController {
 		log.info("total" + total);
 		model.addAttribute("reviewPageMaker", new ReviewPageDTO(reviewCri, total));
 	}
-	
-	
 
 	@GetMapping("/reviewMyList")
 	public void reviewMyList(ReviewCriteria reviewCri, Model model, HttpSession session) {

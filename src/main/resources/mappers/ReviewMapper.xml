@@ -8,8 +8,8 @@
 
 	<!-- 게시판 글 작성 -->
 	<insert id="insert">
-		insert into tbl_review(no,title,content)
-		values(SEQ_REVIEW_NO.nextval,#{title},#{content})
+		insert into tbl_review(no,title,content,member_id)
+		values(SEQ_REVIEW_NO.nextval,#{title},#{content},#{member_id})
 	</insert>
 
 	<!-- 게시글 상세 보기 조회 -->
@@ -54,18 +54,13 @@
 
 	<!-- 게시글 페이징 처리하기 -->
 	<select id="getListWithPaging" resultType="ReviewVO">
-		<![CDATA[
 			select 
-				no, member_id, title, content, reg_date, hit
+				no,title,content,reg_date,hit
 			from (
-
 				select /*+INDEX_DESC(tbl_review pk_tbl_review) */
-				rownum rn, no,title,content,reg_date,hit 
-
+				rownum rn,no,title,content,reg_date,hit
 				from tbl_review
 			where 
-			
-			]]>
 			<include refid = "criteria"></include>
 			<![CDATA[
 				rownum <=#{reviewPageNum} * #{reviewAmount}
