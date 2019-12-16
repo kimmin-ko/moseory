@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -198,5 +199,14 @@ public class AdminDaoImpl implements AdminDao {
 	}
 	public Integer getOrderCount(int code) {
 		return sqlSession.selectOne("AdminMapper.getOrderCount2", code);
+	}
+
+	@Override
+	public List<OrderStatsVO> getOrderStats(String selectTerm) {
+		System.out.println("selectTerm = " + selectTerm);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("selectTerm", selectTerm);
+		System.out.println("dao : " + sqlSession.selectList("AdminMapper.getOrderStats",param));
+		return sqlSession.selectList("AdminMapper.getOrderStats",param);
 	}
 }

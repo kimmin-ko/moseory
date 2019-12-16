@@ -432,5 +432,23 @@
 			where product_detail_no = #{code}
 	</select>
 	
+	<select id="getOrderStats" parameterType="map" resultType = "OrderStatsVO">
+		select O.code, O.order_date, O.pay_method, OD.amount, OD.quantity from tbl_order O, tbl_order_detail OD
+			where
+			    <if test='selectTerm == "termYear"'>
+				    to_char(O.order_date,'YY') =  to_char(SYSDATE,'YY') 
+			    </if>
+			  <!--  <if test="term == 'termMonth'">
+				    to_char(O.order_date,'MM') =  to_char(SYSDATE,'MM') 
+			    </if> -->
+			   <!--  <if test="term == 'termWeek'">
+				    to_char(O.order_date,'MM') =  to_char(SYSDATE,'YY') 
+			    </if> -->
+			    <if test='selectTerm == "termDay"'>
+				    to_char(O.order_date,'DD') = to_char(SYSDATE,'DD') 
+			    </if>
+    			and O.code = od.order_code and OD.state = '구매 확정'
+						 	
+	</select>
 	
 </mapper>

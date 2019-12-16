@@ -27,23 +27,56 @@
 	<%@ include file="../includes/sidebar.jsp"%>
 	<script>
 		$(document).ready(function(){
-			var term;
-
 			$('.selectTerm').change(function(){
-				term = $('.selectTerm:checked').val();
-				console.log(term);
+				var selectTerm = $('.selectTerm:checked').val();
+				console.log(selectTerm);
+				 $.ajax({
+					 type : "post",
+				        url : "/admin/statsResult",
+				        data : selectTerm, 
+				        dataType: "json",
+				        contentType : "application/json; charset=utf-8",
+						success: function(result){
+							var amountSum = 0;
+							var rowCnt = 0;
+							if(selectTerm == "termYear"){
+								$('#resultPrint').empty();
+								for(var i = 0 in result){
+									rowCnt ++;
+									amountSum += result[i].amount;
+									console.log(amountSum);
+								} 
+								$('#resultPrint').append("<tr><th>년도</th><th>매출액</th><th>주문건수</th><th>비율</th></tr>")
+								$('#resultPrint').append("<tr><td> 올해 매출액 </td><td>" + amountSum + "</td><td>" + rowCnt + "</td><td></td>")
+							}
+							else if(selectTerm == "termDay"){
+								$('#resultPrint').empty();
+
+								for(var i = 0 in result){
+									rowCnt ++;
+									amountSum += result[i].amount;
+									console.log(amountSum);
+								} 
+								$('#resultPrint').append("<tr><th>오늘</th><th>매출액</th><th>주문건수</th></tr>")
+								$('#resultPrint').append("<tr><td> 오늘 매출액 </td><td>" + amountSum + "</td><td>" + rowCnt + "</td>")
+							}
+							else if(selectTerm == "termMonth"){
+								$('#resultPrint').empty();
+								$('#resultPrint').append("<tr><th>월</th><th>매출액</th><th>주문건수</th><th>비율</th></tr>");
+								for(var i = 0 in result){
+									
+								}
+								
+							}
+							
+						}
+							
+				 });
+				 
+				 
+				 
 			});
-			 $.ajax({
-				 type : "post",
-			        url : "/admin/stats",
-			        data : JSON.stringify(term), 
-			        dataType: "json",
-			        contentType : "application/json; charset=utf-8",
-					success: function(data){
-						alert("성공");
-					}
-						
-			 });
+			
 			
 		});
 	</script>
@@ -77,7 +110,6 @@
 				<div class="tab-content">
 					<div class="tab-pane fade show" id="qwe">
 						<div class="col-md-10 col-md-offset-1">
-				        	<form method="get" action="stats">
         		        		<div class="col-md-12">
 					        		<div class="col-md-6" style = "margin : 10px 10px">
 					        			<span class="span_name">기간</span> 
@@ -94,12 +126,15 @@
 					        			<input type = "radio" class = "selectTerm" name = "selectTerm" value = "termWeek">요일별
 					        			<input type = "radio" class = "selectTerm" name = "selectTerm" value = "termDay">일별
 					        		</div>
+       			            		<!-- 
        			            		<button type="submit" class="btn btn-default btn-sm" style="float:right;"name="searchBtn">검색</button>
+       			            		 
+       			            		 -->
 					        		
 				        		</div>
-				        	</form>
 						</div>
 					<table class="table table-bordered">
+					
 						<!-- 
 							기간별
 								//termYear - 년도, 매출액, 주문건수
@@ -108,12 +143,29 @@
 								//termDay - 오늘날짜, 매출액, 주문건수
 						 -->
 						 <!-- 
-						 	결제수단별
+						 결제수단별
 						 		//결제방법, 매출액, 주문건수, 비율
 						 -->
-						<thead>
+						<thead id = "resultPrint">
 							
 						</thead>
+						<!-- <thead>
+							<tr>
+								<th>월</th>
+								<th>매출액</th>
+								<th>주문건수</th>
+								<th>비율</th>
+							</tr>
+						</thead>
+						<thead>
+							<tr>
+								<th>요일</th>
+								<th>매출액</th>
+								<th>주문건수</th>
+								<th>비율</th>
+							</tr>
+						</thead> -->
+						
 					</table>
 					</div>
 					<div class="tab-pane fade show" id="asd">
@@ -126,6 +178,11 @@
 									<th width = "10%">비율</th>
 								</tr>
 							</thead>
+							<tbody>
+								<tr>
+									<td>
+								</tr>
+							</tbody>
 						</table>					
 					</div>
 				</div>

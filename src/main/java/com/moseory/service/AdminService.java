@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 @Service
@@ -74,4 +75,8 @@ public interface AdminService {
 	public int modifyOrderInfo(HashMap<String,Object> param);
 
 	Integer getOrderCount(int code);
+
+	void registTransChk(ProductVO productVO, Map<String, Object> fileParam, List<ProductDetailVO> detailInfo);
+
+	List<OrderStatsVO> getOrderStats(String selectTerm);
 }

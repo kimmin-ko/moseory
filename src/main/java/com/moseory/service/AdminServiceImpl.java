@@ -9,13 +9,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.moseory.dao.AdminDao;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
@@ -267,5 +267,29 @@ public class AdminServiceImpl implements AdminService{
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	@Override
+	@Transactional(rollbackFor = {Exception.class})
+	public void registTransChk(ProductVO productVO,Map<String, Object> fileParam,
+			List<ProductDetailVO> detailInfo) {
+		/* product DB */
+		product_regist(productVO);
+		int code = setCode(productVO.getName());
+		fileParam.put("product_code", code);
+		saveFile(fileParam);
+		/* product_detail DB */
+		for (int i = 0; i < detailInfo.size(); i++) {
+			ProductDetailVO productdetailVO = detailInfo.get(i);
+			productdetailVO.setProduct_code(code);
+			product_detail_regist(productdetailVO);
+		}
+		
+		
+	}
+
+	@Override
+	public List<OrderStatsVO> getOrderStats(String selectTerm) {
+		return adminDao.getOrderStats(selectTerm);
 	}
 }	

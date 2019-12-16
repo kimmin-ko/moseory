@@ -55,7 +55,7 @@ public class ReviewController {
 	// 제목 클릭하면 modal 창 뛰우기
 	@GetMapping("/reviewGet/{no}")
 	public @ResponseBody ResponseEntity<ReviewVO> replyGet(@PathVariable("no") int bno) {
-		
+		log.info(service.read(bno));
 		return new ResponseEntity<>(service.read(bno), HttpStatus.OK);
 		
 	}
