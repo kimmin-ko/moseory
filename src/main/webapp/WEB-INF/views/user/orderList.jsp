@@ -84,7 +84,12 @@
 	            </form>
 	            
 	        </div>
-	
+			<script type="text/javascript">
+	        	$(document).ready(function() {
+	        		var orderList = ${orderList};
+	        		console.log(orderList.length);
+	        	});
+            </script>
 	        <div class="col-md-10 col-md-offset-1 m-order_list">
 	            <table class="table order_list_tbl">
 	                <colgroup>
@@ -105,7 +110,13 @@
 	                        <td colspan="2">주문 상태</td>
 	                    </tr>
 	                </thead>
+	                
 	                <tbody>
+	                	<c:if test="${fn:length(orderList) eq 0 }">
+	                		<tr>
+	                			<td colspan="6" class="empty_orderList">주문 내역이 비어있습니다.</td>
+	                		</tr>
+	                	</c:if>
 	                	<c:forEach var="order" items="${orderList }" varStatus="idx">
 	                    <tr>
 	                        <td>

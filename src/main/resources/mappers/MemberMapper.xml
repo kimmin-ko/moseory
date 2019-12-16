@@ -55,6 +55,16 @@
 		tbl_member
 	</select>
 	
+	<!-- 입력한 패스워드를 비교해주기 위해 암호화된 패스워드를 조회 -->
+	<select id="getMemberPassword" resultType="String">
+	SELECT
+		password
+	FROM
+		tbl_member
+	WHERE
+		id = #{inputId}
+	</select>
+	
 	<select id="loginProc" parameterType="map" resultMap="memberResultMap">
 		SELECT 
 		  id, pwd_confirm_q, pwd_confirm_a, name, zipcode, address1, address2, tel, phone, email, birth, lev, point, total, auth
@@ -62,7 +72,6 @@
 		  tbl_member
 		WHERE 1 = 1 
 		  AND id = #{inputId}
-		  AND password = #{inputPassword} 
 	</select>
 	
 	<select id="findIdProc" parameterType="map" resultType="map">

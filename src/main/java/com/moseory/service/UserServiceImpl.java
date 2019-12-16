@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
 	@Setter(onMethod_ = @Autowired)
 	private UserDao userDao;
+	
+	@Setter(onMethod_ = @Autowired)
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	@Override
 	public MemberVO readMember(String id) {
@@ -39,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void modifyMember(MemberVO vo) {
+		// 수정된 패스워드를 암호화한다
+		String encodedPassword = bcryptPasswordEncoder.encode(vo.getPassword());
+		vo.setPassword(encodedPassword);
 		userDao.updateMember(vo);
 	}
 
