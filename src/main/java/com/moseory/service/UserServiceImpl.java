@@ -24,9 +24,7 @@ import com.moseory.domain.WishListVO;
 import com.moseory.util.ImageUtil;
 
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
-@Log4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -55,8 +53,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String checkPwd(String id) {
-		return userDao.checkPwd(id);
+	public boolean checkPwd(String id, String input_password) {
+		String password = userDao.checkPwd(id);
+		// 입력된 평문 input_password와 DB에 저장되어있는 회원의 암호문 password 비교
+		return bcryptPasswordEncoder.matches(input_password, password);
 	}
 
 	@Override

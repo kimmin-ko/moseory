@@ -55,7 +55,7 @@
 	            <table class="table table-bordered join-table">
 	                <tr>
 	                    <th>아이디 <img src="/images/ico_required.gif"></th>
-	                    <td><input type="text" name="id" id="id" maxlength="16" /><span id="id_check_text"></span> (영문소문자/숫자, 4~16자)</td>
+	                    <td><input type="text" name="id" id="id" maxlength="16" autocomplete="off" /><span id="id_check_text"></span> (영문소문자/숫자, 4~16자)</td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 <img src="/images/ico_required.gif"></th>

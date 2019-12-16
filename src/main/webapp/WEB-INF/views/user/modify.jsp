@@ -242,30 +242,34 @@
 			// 비밀번호 체크
 			$.ajax({
 				type : 'get',
-				url : '/user/checkPwd/' + id,
-				success : function(password) {
-					var c = confirm('모서리를 탈퇴 하시겠습니까?');
+				url : '/user/checkPwd/' + id + '/' + input_password,
+				success : function(result) {
 					
-					if(c) {
+					if(result == 'success') { // 비밀번호 일치
+						var c = confirm('모서리를 탈퇴 하시겠습니까?');
 						
-						// 입력한 비밀번호가 틀리다면
-						if(input_password != password) {
-							alert('비밀번호가 일치하지 않습니다.');
+						if(c) { // YES
+							var form = $('<form></form>');
+							form.attr('action', '/user/withdrawal');
+							form.attr('method', 'post');
+							form.appendTo('body');
+							
+							form.append($('<input type="hidden" name="id" value="' + id + '">'));
+							form.submit();
+							
+						} else { // NO
 							return false;
 						}
 						
-						var form = $('<form></form>');
-						form.attr('action', '/user/withdrawal');
-						form.attr('method', 'post');
-						form.appendTo('body');
-						
-						form.append($('<input type="hidden" name="id" value="' + id + '">'));
-						form.submit();
-						
-					} else {
+					} else if(result == 'failure') { // 비밀번호 불일치
+						alert('비밀번호가 일치하지 않습니다.');
+						return false;
+					} else { // 그 외 상황
+						alert('비밀번호 조회에 실패했습니다.\n다시 시도해주세요.');
 						return false;
 					}
-				}
+					
+				} // end success
 			});
 			
 		});

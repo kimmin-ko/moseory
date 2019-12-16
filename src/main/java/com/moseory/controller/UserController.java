@@ -135,13 +135,15 @@ public class UserController {
 	}
 
 	// 비밀번호 체크
-	@GetMapping("/checkPwd/{id}")
-	public @ResponseBody ResponseEntity<String> checkPwd(@PathVariable("id") String id) {
+	@GetMapping("/checkPwd/{id}/{input_password}")
+	public @ResponseBody ResponseEntity<String> checkPwd(
+			@PathVariable("id") String id, 
+			@PathVariable("input_password") String input_password) {
 
-		String password = userService.checkPwd(id);
+		boolean checkEqualPassword = userService.checkPwd(id, input_password);
 
-		return password != null ? new ResponseEntity<>(password, HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return checkEqualPassword ? new ResponseEntity<>("success", HttpStatus.OK)
+								  : new ResponseEntity<>("failure", HttpStatus.OK);
 	}
 
 	// 회원 탈퇴
