@@ -47,6 +47,10 @@
     text-align: center;
 }
 
+.empty_orderList {
+	text-align: center;
+}
+
 .prod_info {
     text-align: left;
 }

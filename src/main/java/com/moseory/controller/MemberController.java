@@ -66,7 +66,7 @@ public class MemberController {
     }
     
     @PostMapping("/loginProc")
-    public String loginProc(@RequestParam Map<String, Object> param, HttpServletRequest req, HttpServletResponse res, Model model) {
+    public String loginProc(@RequestParam Map<String, String> param, HttpServletRequest req, HttpServletResponse res, Model model) {
     	log.info("Contorller loginProc param ["+ param.toString() +"]");
     	
     	if(req.getParameter("inputPassword") == null || req.getParameter("inputPassword").toString().equals("")) {

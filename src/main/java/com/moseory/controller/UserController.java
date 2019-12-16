@@ -81,7 +81,7 @@ public class UserController {
 		return map;
 	}
 
-	// 회원의 정보고 수정된 후 세션 업데이트
+	// 회원의 정보가 수정된 후 세션 업데이트
 	private void updateMember(HttpSession session, String id) {
 		MemberVO member = userService.readMember(id);
 
@@ -114,13 +114,15 @@ public class UserController {
 
 		return "/user/modify";
 	}
-
+	
 	// 회원 정보 수정
 	@PostMapping("/modifyProc")
 	public String modify(@ModelAttribute MemberVO member, HttpSession session) {
 
 		userService.modifyMember(member);
 
+		log.info(member.getPassword());
+		
 		updateMember(session, member.getId());
 
 		return "redirect:/user/modifyOk";

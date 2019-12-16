@@ -31,8 +31,14 @@ public class MemberServiceTest {
     
     @Test
     public void registerMember() {
-	memberService.registerMember(member1);
+    	memberService.registerMember(member1);
     }
+    
+    @Test
+    public void testLoginMember() {
+    	
+    }
+    
 }
 
 

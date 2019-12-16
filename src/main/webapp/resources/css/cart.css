@@ -9,6 +9,10 @@
     margin-bottom: 50px;
 }
 
+.empty_cart {
+	text-align: center;
+}
+
 .cart-list {
     font-size: 12px;
 }

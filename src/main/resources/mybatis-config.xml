@@ -32,8 +32,8 @@
 		<typeAlias alias="AddedOrderInfoVO" type="com.moseory.domain.AddedOrderInfoVO"/>
 		<typeAlias alias="OrderListVO" type="com.moseory.domain.OrderListVO"/>
 		
-		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
-	</typeAliases>
+		<typeAlias alias="LevelEnumTypeHandler" type="com.moseory.typeHandler.LevelEnumTypeHandler" />
+	</typeAliases> 
 	
 	<typeHandlers>
 		<typeHandler javaType="com.moseory.domain.Level" jdbcType="NUMERIC" handler="com.moseory.typeHandler.LevelEnumTypeHandler"/>

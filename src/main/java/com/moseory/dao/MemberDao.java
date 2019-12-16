@@ -13,7 +13,9 @@ public interface MemberDao {
     
     public int getCount();
     
-    public MemberVO loginProc(Map<String, Object>param);
+    public String getMemberPassword(String inputId);
+    
+    public MemberVO loginProc(String inputId);
     
     public List<Map<String, Object>> findIdProc(Map<String, Object>param);
 

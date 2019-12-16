@@ -24,7 +24,11 @@
     </div>
     
     <div class="col-md-10 col-md-offset-1 wl-list">
-		
+		<c:if test="${wishList eq null }">
+			<div class="col-md-12 empty_wishList">
+				관심상품이 비어있습니다.
+			</div>
+		</c:if>
 		<c:if test="${wishList ne null }">
 			<c:forEach var="wish" items="${wishList.products }">
 	        <div class="col-md-3 wl-prod">

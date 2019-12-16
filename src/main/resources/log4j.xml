@@ -20,6 +20,9 @@
 	<logger name="com.moseory.dao">
 		<level value="info" />
 	</logger>
+	<logger name="com.moseory.interceptor">
+		<level value="info" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
