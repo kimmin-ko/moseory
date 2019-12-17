@@ -39,7 +39,7 @@
 	</insert>
 	
 	<!-- 상위카테고리 상품리스트 -->
-	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
+	<select id="highCateList" resultType = "productAndFileVO">
 	  SELECT * FROM(
 		SELECT rownum rn, A.* FROM (
 			SELECT
@@ -85,11 +85,11 @@
 	          F.file_path, 
 	          F.file_name,
 	          P.reg_date
-  			  ORDER BY P.code 
 	          <if test='orderByType != ""'>
-  			    ,#{orderByType} 
-			  </if>
+  			  ORDER BY
+  			  	#{orderByType}
   			  DESC
+			  </if>
 		) A
 	  )
 	WHERE rn between #{start} and #{finish}
