@@ -52,7 +52,7 @@ public class PagingUtil {
 	public PagingUtil(int totalCnt, int curPage, String pagingType) {
 		if(pagingType.equals("productList")) {
 			pageSize = 6;
-			blockSize = 6;			
+			blockSize = 3;			
 		}
 		setTotalCnt(totalCnt);
 		setCurPage(curPage);

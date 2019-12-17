@@ -3,6 +3,8 @@ package com.moseory.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
@@ -13,7 +15,7 @@ import com.moseory.domain.ProductVO;
 import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
-
+@Repository("productDao")
 public interface ProductDao {
 
 	List<ProductAndFileVO> highCateList(Map<String,Object> map);

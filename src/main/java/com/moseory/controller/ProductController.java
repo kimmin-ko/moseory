@@ -49,6 +49,7 @@ public class ProductController {
 	private ProductService productService;
 	@Autowired
 	private ImageUtil imageUtil;
+	
 	@GetMapping("/productList")
 	public String productList(
 			@RequestParam(defaultValue = "1") int curPage,

@@ -22,16 +22,16 @@ import com.moseory.domain.ReviewVO;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
-@Repository
+@Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<ProductAndFileVO> highCateList(Map<String,Object> map) {
-		System.out.println(map.toString());
-		return sqlSession.selectList("product.highCateList", map);
+	public List<ProductAndFileVO> highCateList(Map<String,Object> param) {
+		System.out.println(param.toString());
+		return sqlSession.selectList("product.highCateList", param);
 	}
 	
 	@Override
