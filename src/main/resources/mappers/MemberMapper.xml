@@ -27,7 +27,7 @@
 	
 	<insert id="insertMember">
 	INSERT INTO 
-		tbl_member (id, password, pwd_confirm_q, pwd_confirm_a , name, 
+		tbl_member (id, password, pwd_confirm_q, pwd_confirm_a , name,
 		zipcode, address1, address2, tel, phone, email, birth)
 	VALUES 
 		(#{id}, #{password}, #{pwd_confirm_q}, #{pwd_confirm_a}, #{name}, 
