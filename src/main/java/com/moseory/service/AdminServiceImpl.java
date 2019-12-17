@@ -28,22 +28,12 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	private AdminDao adminDao;
 
-	@Override
-	public void product_regist(ProductVO productVO) {
-	    log.info(productVO);
-		adminDao.product_regist(productVO);
-	}
 
 	@Override
 	public int setCode(String name) {
 		return adminDao.setCode(name);
 	}
 
-	@Override
-	public void product_detail_regist(ProductDetailVO productdetailVO) {
-	    	log.info(productdetailVO);
-		adminDao.product_detail_regist(productdetailVO);
-	}
 
 	@Override
 	public String getHighCate(int high_code) {
@@ -221,11 +211,6 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public void saveFile(Map<String, Object> fileParam) {
-		adminDao.saveFile(fileParam);
-	}
-
-	@Override
 	public Integer getOrderCount(int code) {
 		return adminDao.getOrderCount(code);
 	}
@@ -286,15 +271,15 @@ public class AdminServiceImpl implements AdminService{
 	public void registTransChk(ProductVO productVO,Map<String, Object> fileParam,
 			List<ProductDetailVO> detailInfo) {
 		/* product DB */
-		product_regist(productVO);
+		adminDao.product_regist(productVO);
 		int code = setCode(productVO.getName());
 		fileParam.put("product_code", code);
-		saveFile(fileParam);
+		adminDao.saveFile(fileParam);
 		/* product_detail DB */
 		for (int i = 0; i < detailInfo.size(); i++) {
 			ProductDetailVO productdetailVO = detailInfo.get(i);
 			productdetailVO.setProduct_code(code);
-			product_detail_regist(productdetailVO);
+			adminDao.product_detail_regist(productdetailVO);
 		}
 		
 		
