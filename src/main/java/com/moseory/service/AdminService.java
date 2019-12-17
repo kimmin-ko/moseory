@@ -18,11 +18,7 @@ import com.moseory.domain.ProductVO;
 @Service
 public interface AdminService {
 
-    void product_regist(ProductVO productVO);
-
     int setCode(String name);
-
-    void product_detail_regist(ProductDetailVO productdetailVO);
 
 	String getHighCate(int high_code);
 
@@ -64,8 +60,6 @@ public interface AdminService {
 	
 	public int modifyUserInfo(Map<String, Object> param);
 
-	void saveFile(Map<String, Object> fileParam);
-	
 	public List<HashMap<String, Object>> getOrder(HashMap<String,Object> map);
 	
 	public int getOrderCount(HashMap<String,Object> map);

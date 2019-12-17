@@ -39,7 +39,7 @@
 	</insert>
 	
 	<!-- 상위카테고리 상품리스트 -->
-	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
+	<select id="highCateList" parameterType="map" resultType = "productAndFileVO">
 	  SELECT * FROM(
 		SELECT rownum rn, A.* FROM (
 			SELECT
@@ -85,11 +85,11 @@
 	          F.file_path, 
 	          F.file_name,
 	          P.reg_date
-  			  ORDER BY P.code 
+  			  ORDER BY 
 	          <if test='orderByType != ""'>
-  			    ,#{orderByType} 
+  			    #{orderByType} desc,
 			  </if>
-  			  DESC
+  			  P.code 
 		) A
 	  )
 	WHERE rn between #{start} and #{finish}
@@ -338,8 +338,9 @@
 	<!-- 상품 전체/검색된 리스트 -->
 	<select id="getProductList" parameterType="map" resultType="productVO">
 		select * from (
-			select A.*, rownum as rn from tbl_product A order by code) 
+			select A.*, rownum as rn from tbl_product A order by code desc) 
 		where rn between #{start} and #{finish}
+		
 	</select>
 	
 	<!-- 상품 검색된 리스트 -->
@@ -353,9 +354,10 @@
 			select * from tbl_product where ${searchType} = (
 													select  code from tbl_high_cate
 														where name like '%'||#{keyword}||'%' or kname like '%'||#{keyword}||'%')
+														
 													)
 		)where rownum between 1 and 10
-		
+		order by code desc
 		<!-- 
 			select * from (
     select * from tbl_product 
