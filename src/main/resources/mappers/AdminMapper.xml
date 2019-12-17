@@ -445,5 +445,51 @@
 	    WHERE
 	      id = #{member_id}
 	</update>
+
+	<select id="getOrderStats" parameterType="map" resultType = "OrderStatsVO">
+		<choose>
+		    <when test='selectTerm == "termYear"'>
+				select 
+					to_char(sysdate,'YY'),
+					sum(decode(substr(O.order_date, 1,2), to_char(sysdate,'YY'), OD.amount,0)) as amount,
+		        	sum(decode(substr(O.order_date, 1,2), to_char(sysdate,'YY'), OD.quantity,0)) as quantity
+				from tbl_order O, tbl_order_detail OD
+		    		where O.code = OD.order_code
+		        			and OD.state = '구매 확정'
+		    </when>
+		    <when test='selectTerm == "termMonth"'>
+		    	select 
+    				to_char(O.order_date, 'MM') as "date",
+				    sum(decode(substr(O.order_date, 4,2), to_char(O.order_date, 'MM'), OD.amount,0)) as "amount",
+				    sum(decode(substr(O.order_date, 4,2), to_char(O.order_date, 'MM'), OD.quantity,0)) as "quantity"
+        		from tbl_order O, tbl_order_detail OD
+          			where O.code = OD.order_code
+                		and OD.state = '구매 확정'
+                	group by to_char(O.order_date, 'MM')
+                	order by to_char(O.order_date, 'MM')
+		    </when>
+		    <when test='selectTerm == "termDay"'>
+		    	select 
+					to_char(sysdate,'DD'),
+					sum(decode(substr(O.order_date, 7,2), to_char(sysdate,'DD'), OD.amount,0)) as amount,
+		        	sum(decode(substr(O.order_date, 7,2), to_char(sysdate,'DD'), OD.quantity,0)) as quantity
+				from tbl_order O, tbl_order_detail OD
+		    		where O.code = OD.order_code
+		        			and OD.state = '구매 확정'
+		    </when>
+			<when test="selectTerm == 'termWeek'">
+				select 
+				    to_char(O.order_date,'D'),
+				    to_char(O.order_date, 'day') as "date",
+				    sum(decode(to_char(O.order_date,'day'), to_char(O.order_date, 'day'), OD.amount,0)) as "amount",
+				    sum(decode(to_char(O.order_date,'day'), to_char(O.order_date, 'day'), OD.quantity,0)) as "quantity"
+				        from tbl_order O, tbl_order_detail OD
+				            where O.code = OD.order_code
+				                and OD.state = '구매 확정' 
+				                group by to_char(O.order_date,'D'), to_char(O.order_date, 'day')
+				                order by  to_char(O.order_date, 'D')            
+    		</when>
+		</choose>			 	
+	</select>
 	
 </mapper>

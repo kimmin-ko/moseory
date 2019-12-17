@@ -31,7 +31,6 @@
 		<property name="username" value="moseory" />
 		<property name="password" value="moseory" />
 	</bean>
-		
 	
 	<!--   HikariCP를 이용하는 DataSource -->
  	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -58,5 +57,8 @@
 	
 	<!-- @DateTimeFormat() -->
 	<mvc:annotation-driven />
+	
+	<!-- salt 암호화 -->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 	
 </beans>

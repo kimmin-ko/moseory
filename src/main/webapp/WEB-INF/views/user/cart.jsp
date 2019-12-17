@@ -124,6 +124,11 @@ $(document).ready(function() {
                     </tr>
                 </thead>
                 <tbody>
+                	<c:if test="${cartCount eq 0}">
+                		<tr>
+                			<td colspan="9" class="empty_cart">장바구니가 비어있습니다.</td>
+                		</tr>
+                	</c:if>
                 	<c:forEach var="cart" items="${cartList }">
                 		<c:set var="price" value="${cart.product_price }" />
                    		<c:set var="discount" value="${member.level.discount }" />

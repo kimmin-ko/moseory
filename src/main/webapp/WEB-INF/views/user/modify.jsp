@@ -50,7 +50,7 @@
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 <img src="/images/ico_required.gif"></th>
-	                    <td><input type="password" name="password" id="password" maxlength="16" /> (영문 대소문자/숫자 4자~16자)</td>
+	                    <td><input type="password" name="password" id="password" maxlength="16" autocomplete="off" /> (영문 대소문자/숫자 4자~16자)</td>
 	                </tr>
 	                <tr>
 	                    <th>비밀번호 확인 <img src="/images/ico_required.gif"></th>
@@ -242,30 +242,34 @@
 			// 비밀번호 체크
 			$.ajax({
 				type : 'get',
-				url : '/user/checkPwd/' + id,
-				success : function(password) {
-					var c = confirm('모서리를 탈퇴 하시겠습니까?');
+				url : '/user/checkPwd/' + id + '/' + input_password,
+				success : function(result) {
 					
-					if(c) {
+					if(result == 'success') { // 비밀번호 일치
+						var c = confirm('모서리를 탈퇴 하시겠습니까?');
 						
-						// 입력한 비밀번호가 틀리다면
-						if(input_password != password) {
-							alert('비밀번호가 일치하지 않습니다.');
+						if(c) { // YES
+							var form = $('<form></form>');
+							form.attr('action', '/user/withdrawal');
+							form.attr('method', 'post');
+							form.appendTo('body');
+							
+							form.append($('<input type="hidden" name="id" value="' + id + '">'));
+							form.submit();
+							
+						} else { // NO
 							return false;
 						}
 						
-						var form = $('<form></form>');
-						form.attr('action', '/user/withdrawal');
-						form.attr('method', 'post');
-						form.appendTo('body');
-						
-						form.append($('<input type="hidden" name="id" value="' + id + '">'));
-						form.submit();
-						
-					} else {
+					} else if(result == 'failure') { // 비밀번호 불일치
+						alert('비밀번호가 일치하지 않습니다.');
+						return false;
+					} else { // 그 외 상황
+						alert('비밀번호 조회에 실패했습니다.\n다시 시도해주세요.');
 						return false;
 					}
-				}
+					
+				} // end success
 			});
 			
 		});
@@ -370,7 +374,7 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
-            } else if(birth.length != 10) {
+            } else if(birth != null && birth.length != 10) {
             	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");

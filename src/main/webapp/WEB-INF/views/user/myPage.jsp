@@ -79,7 +79,7 @@
 						<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
 					</td>
 					<td class="con-td">
-						<h6><a href="#">게시물</a></h6>
+						<h6><a href="/qna/qnaMyList">게시물</a></h6>
 						<p>
 							고객님께서 작성하신 게시물을<br>
 							관리하는 공간입니다.

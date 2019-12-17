@@ -21,7 +21,7 @@ public interface UserService {
     
     public void withdrawal(String id);
     
-    public String checkPwd(String id);
+    public boolean checkPwd(String id, String input_password);
     
     public void removeMember(String id);
     

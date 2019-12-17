@@ -77,11 +77,11 @@ public class UserController {
 		map.put("member", member);
 		map.put("memberJson", memberJson);
 		map.put("levelJson", levelJson);
-
+		
 		return map;
 	}
 
-	// 회원의 정보고 수정된 후 세션 업데이트
+	// 회원의 정보가 수정된 후 세션 업데이트
 	private void updateMember(HttpSession session, String id) {
 		MemberVO member = userService.readMember(id);
 
@@ -114,13 +114,15 @@ public class UserController {
 
 		return "/user/modify";
 	}
-
+	
 	// 회원 정보 수정
 	@PostMapping("/modifyProc")
 	public String modify(@ModelAttribute MemberVO member, HttpSession session) {
 
 		userService.modifyMember(member);
 
+		log.info(member.getPassword());
+		
 		updateMember(session, member.getId());
 
 		return "redirect:/user/modifyOk";
@@ -133,13 +135,15 @@ public class UserController {
 	}
 
 	// 비밀번호 체크
-	@GetMapping("/checkPwd/{id}")
-	public @ResponseBody ResponseEntity<String> checkPwd(@PathVariable("id") String id) {
+	@GetMapping("/checkPwd/{id}/{input_password}")
+	public @ResponseBody ResponseEntity<String> checkPwd(
+			@PathVariable("id") String id, 
+			@PathVariable("input_password") String input_password) {
 
-		String password = userService.checkPwd(id);
+		boolean checkEqualPassword = userService.checkPwd(id, input_password);
 
-		return password != null ? new ResponseEntity<>(password, HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return checkEqualPassword ? new ResponseEntity<>("success", HttpStatus.OK)
+								  : new ResponseEntity<>("failure", HttpStatus.OK);
 	}
 
 	// 회원 탈퇴

@@ -8,6 +8,11 @@
     margin-bottom: 150px;
 }
 
+.empty_wishList {
+	text-align: center;
+	font-size: 12px;
+}
+
 /* 상품 div Start */
 .wl-prod {
     padding: 0;

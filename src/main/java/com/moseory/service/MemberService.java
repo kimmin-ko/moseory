@@ -14,7 +14,7 @@ public interface MemberService {
     public void deleteAll();
 
     //로그인
-    public MemberVO loginProc(Map<String, Object> param);
+    public MemberVO loginProc(Map<String, String> param);
     
     //ID찾기 
     public List<Map<String, Object>> findIdProc(Map<String, Object> param);

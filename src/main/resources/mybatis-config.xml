@@ -31,6 +31,7 @@
 		<typeAlias alias="OrderDetailVO" type="com.moseory.domain.OrderDetailVO"/>
 		<typeAlias alias="AddedOrderInfoVO" type="com.moseory.domain.AddedOrderInfoVO"/>
 		<typeAlias alias="OrderListVO" type="com.moseory.domain.OrderListVO"/>
+		<typeAlias alias= "OrderStatsVO" type = "com.moseory.domain.OrderStatsVO"/>
 		
 		<typeAlias type="com.moseory.typeHandler.LevelEnumTypeHandler" />
 	</typeAliases>

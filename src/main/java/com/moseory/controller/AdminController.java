@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
 import com.moseory.domain.MemberVO;
+import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.AdminService;
@@ -121,25 +122,13 @@ public class AdminController {
 			file = new File(save_path + fileName);
 			files.get(i).transferTo(file);
 		}
-		
-		/* product DB */
-		adminService.product_regist(productVO);
-		int code = adminService.setCode(productVO.getName());
-		
 		//product file DB
 		Map <String, Object> fileParam = new HashMap<>();
-		fileParam.put("product_code", code);
 		fileParam.put("thumbnail_name", thumbnailName);
 		fileParam.put("file_path", save_path);
 		fileParam.put("file_name", file_name);
-		adminService.saveFile(fileParam);
-
-		/* product_detail DB */
-		for (int i = 0; i < detailInfo.size(); i++) {
-			ProductDetailVO productdetailVO = detailInfo.get(i);
-			productdetailVO.setProduct_code(code);
-			adminService.product_detail_regist(productdetailVO);
-		}
+		
+		adminService.registTransChk(productVO,fileParam,detailInfo);
 		
 		detailInfo.clear();
 
@@ -318,16 +307,21 @@ public class AdminController {
 		return "admin/productlist"; 
 	}
 	
+	@PostMapping("/statsResult")
+	@ResponseBody
+	public List<OrderStatsVO> statsResult(@RequestBody String selectTerm,Model model) {
+		System.out.println(selectTerm);
+		List<OrderStatsVO> result = adminService.getOrderStats(selectTerm);
+		
+		return result;
+	}
+	
+	
 	@GetMapping("/stats")
 	public String stats() {
 		return "admin/stats";
 	}	
-	@PostMapping("/stats")
-	@ResponseBody
-	public String stats(@RequestBody String term) {
-		System.out.println(term);
-		return "admin/stats";
-	}	
+	
 	@GetMapping("userManagement")
 	public String userManagement(HttpServletRequest req, Model model
 			,@RequestParam(required = false, defaultValue = "all") String levelType

@@ -11,7 +11,7 @@ public class Criteria {
 	
 	private int pageNum; // 페이지 번호
 	private int amount; // 한 페이지당 보여지는 Data 수
-	
+	private String member_id; // member _id ;
 	private String type;
 	private String keyword;
 	

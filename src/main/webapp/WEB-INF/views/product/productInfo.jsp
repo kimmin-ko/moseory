@@ -544,7 +544,7 @@
     <div class="row info_row" style="margin-bottom: 150px;">
         <div class="col-md-10 col-md-offset-1">
         	<c:forTokens var="file_name" items="${product.file_name }" delims="@">
-        		<img width = "1000px" height = "1000px" src='<c:out value="${product.file_path.concat(file_name) }" />' /> 
+        		<img src='<c:out value="${product.file_path.concat(file_name) }" />' /> 
         		<br />
         	</c:forTokens>
        		<img src = "/images/detail-view_01.jpg">

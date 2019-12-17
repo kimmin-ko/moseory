@@ -24,6 +24,11 @@ public class QnaServiceImpl implements QnaService {
     public List<QnaVO> getList(Criteria cri) {
 	return qnaDao.getListWithPaging(cri);
     }
+    
+    @Override
+    public List<QnaVO> getMyList(Criteria cri){
+    	return qnaDao.getMyListWithPaging(cri);
+    }
 
     @Override
     public int getQnaCount(Criteria cri) {
