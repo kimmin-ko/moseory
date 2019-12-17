@@ -86,7 +86,10 @@ public interface AdminDao {
 	public void productSalesRateRemove(HashMap<String,Object> param);
 
 	Integer getOrderCount(int code);
+	
+	public void refundComplete(HashMap<String,Object> param);
 
 	List<OrderStatsVO> getOrderStats(String selectTerm);
+
 }
 

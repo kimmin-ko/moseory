@@ -1,5 +1,6 @@
 package com.moseory.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,24 +50,41 @@ public class ProductController {
 	@Autowired
 	private ImageUtil imageUtil;
 	@GetMapping("/productList")
-	public String productList(@RequestParam int high_code,  Model model, HttpServletRequest req) {
+	public String productList(
+			@RequestParam(defaultValue = "1") int curPage,
+			@RequestParam int high_code,
+			Model model, HttpServletRequest req) {
 		
 		Map<String, Object> map = new HashMap<String,Object>();
 		String orderByType = req.getParameter("orderByType") != null ? req.getParameter("orderByType").toString() : "";
-		String lowCode = req.getParameter("lowCode") != null ? req.getParameter("lowCode").toString() : "";
+		String low_code = req.getParameter("low_code") != null ? req.getParameter("low_code").toString() : "";
 		
 		map.put("high_code",high_code);
-		map.put("lowCode",lowCode);
+		map.put("lowCode",low_code);
 		map.put("orderByType",orderByType);
 		
-		List <ProductAndFileVO> productVO = productService.highCateList(map);
+		
+		model.addAttribute("high_code",high_code);
+		model.addAttribute("low_code",low_code);
+		int productCount = productService.getProductListCount(map);
+		
+		PagingUtil pagingUtil;
+		pagingUtil = new PagingUtil(productCount, curPage, "productList");
+		
+		map.put("start", pagingUtil.getStart());
+		map.put("finish", pagingUtil.getFinish());
+		
+		List <ProductAndFileVO> productVO = new ArrayList<ProductAndFileVO>();
+		productVO = productService.highCateList(map);
+		System.out.println(productVO.toString());
+		
 		for(int i = 0; i < productVO.size(); i++) {
 			productVO.get(i).setFile_path(imageUtil.convertImagePath(productVO.get(i).getFile_path()));
 		}
-		model.addAttribute("productVO",productVO);
-		//for(ProductVO pVO : productVO) System.out.println(pVO);
 		
-		 
+		model.addAttribute("paging",pagingUtil);
+		model.addAttribute("productVO",productVO);
+		
 		HighCateVO highCate = productService.getHighCate(high_code);
 		List <LowCateVO> lowCate = productService.getLowCate(high_code);
 		

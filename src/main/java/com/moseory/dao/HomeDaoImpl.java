@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductVO;
 
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class HomeDaoImpl implements HomeDao {
     }
 
     @Override
-    public List<ProductVO> getProductNew() {
+    public List<ProductAndFileVO> getProductNew() {
 	return sqlSession.selectList(namespace+".getProductNew");
     }
 

@@ -1,6 +1,5 @@
 package com.moseory.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +22,7 @@ import com.moseory.util.ImageUtil;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
-@Service
+@Service("productService")
 public class ProductServiceImpl implements ProductService{
 
 	@Autowired
@@ -155,6 +154,11 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ProductFileVO getProductFile(int code) {
 		return productDao.getProductFile(code);
+	}
+
+	@Override
+	public int getProductListCount(Map<String, Object> map) {
+		return productDao.getProductListCount(map);
 	}
 
 

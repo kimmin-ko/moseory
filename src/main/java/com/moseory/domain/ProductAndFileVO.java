@@ -21,5 +21,6 @@ public class ProductAndFileVO {
 	private String thumbnail_name;
 	private String file_path;
 	private String file_name;
-	
+	private String reg_date;
+	private int product_stock;
 }

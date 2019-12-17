@@ -40,33 +40,59 @@
 	
 	<!-- 상위카테고리 상품리스트 -->
 	<select id="highCateList" parameterType="int" resultType = "productAndFileVO">
-		SELECT 
-		  P.code, 
-		  P.name, 
-		  P.price, 
-		  P.high_code, 
-		  P.low_code, 
-		  P.sale_count,
-		  P.wish_count, 
-		  P.product_comment, 
-		  P.grade, 
-		  F.fileno, 
-		  F.product_code, 
-		  F.thumbnail_name,
-		  F.file_path, F.file_name 
-		FROM 
-		  tbl_product P, 
-		  tbl_product_file F
-        WHERE 1 = 1  
-        AND P.code = F.product_code
-        AND P.high_code = #{high_code}
-        <if test='lowCode != ""'>
-		  AND low_code = #{lowCode} 
-		</if>
-		<if test='orderByType != ""'>
-		  ORDER BY #{orderByType}
-		</if>
-        
+	  SELECT * FROM(
+		SELECT rownum rn, A.* FROM (
+			SELECT
+	          P.code, 
+	          P.name, 
+	          P.price, 
+	          P.high_code, 
+	          P.low_code, 
+	          P.sale_count,
+	          P.wish_count, 
+	          P.product_comment, 
+	          P.grade, 
+	          F.fileno, 
+	          F.product_code, 
+	          F.thumbnail_name,
+	          F.file_path, F.file_name,
+	          P.reg_date,
+	          SUM(D.product_stock) product_stock
+			FROM 
+			  tbl_product P, 
+			  tbl_product_detail D,
+			  tbl_product_file F
+	        WHERE 1 = 1  
+	        AND P.code = F.product_code
+	        AND D.product_code = P.code
+	        AND P.high_code = #{high_code}
+	        <if test='lowCode != ""'>
+			  AND low_code = #{lowCode} 
+			</if>
+			GROUP BY
+	          P.code, 
+	          P.name, 
+	          P.price, 
+	          P.high_code, 
+	          P.low_code, 
+	          P.sale_count,
+	          P.wish_count, 
+	          P.product_comment, 
+	          P.grade, 
+	          F.fileno, 
+	          F.product_code, 
+	          F.thumbnail_name,
+	          F.file_path, 
+	          F.file_name,
+	          P.reg_date
+  			  ORDER BY P.code 
+	          <if test='orderByType != ""'>
+  			    ,#{orderByType} 
+			  </if>
+  			  DESC
+		) A
+	  )
+	WHERE rn between #{start} and #{finish}
 	</select>
 	
 	<!--상품 코드로 정보 조회 -->
@@ -438,6 +464,20 @@
 	<select id = "getProductFile" parameterType = "int" resultType = "productFileVO">
 		select * from tbl_product_file
 			where product_code = #{code}
+	</select>
+	
+	<select id = "getProductListCount" parameterType="map" resultType = "int">
+		SELECT 
+		  count(*) 
+		FROM 
+		  tbl_product 
+        WHERE 1 = 1  
+        <if test='high_code != ""'>
+          AND high_code = #{high_code}
+        </if>
+        <if test='lowCode != ""'>
+		  AND low_code = #{lowCode} 
+		</if>
 	</select>
 </mapper>
 

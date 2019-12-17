@@ -79,15 +79,29 @@
 		<div class="row ma-bo-50" id="newArrivalList">
 			<div class="col-md-10 col-md-offset-1">
 				<c:forEach var="product" items="${productNew }">
-				<div class="col-md-4 prod-desc ma-bo-50">
-					<a href="/product/productInfo?code=<c:out value='${product.code }' />">
-						<img src='<c:out value="${product.file_path.concat(product.thumbnail_name) }" />' /></a>
-					<p> 
-						<a href="#"><c:out value="${product.name }" /></a>
-					</p>
-					<p><fmt:formatNumber value="${product.price }" pattern="#,###" />원</p>
-				</div>
-				</c:forEach>
+				
+						<div class="col-md-4 prod-desc ma-bo-50 description">
+							<a href="${pageContext.request.contextPath }/product/productInfo?code=${product.code}">
+								<img src = "${product.file_path }${product.thumbnail_name}" width = "300px" height = "300px">
+							</a>
+							<p>
+								<c:if test="${product.sale_count >= 5}"><img class="icon_img" src="/images/best.gif"></img></c:if>
+								<fmt:parseDate var="regDate" value="${product.reg_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+								<fmt:formatDate var="regDates" value="${regDate}" pattern="yyyyMMdd"/>
+								<c:if test="${(nowDays-regDates) le 30}">
+									<img class="icon_img" src="/images/new.gif"></img>
+								</c:if>
+								<c:if test="${product.product_stock == 0}"><img class="icon_img" src="/images/soldout.gif"></img></c:if>
+								<c:if test="${product.product_stock le 50 && product.product_stock != 0}"><img class="icon_img" src="/images/md.gif"></img></c:if>
+								<c:if test="${product.wish_count >= 2}"><img class="icon_img" src="/images/good.gif"></img></c:if>
+							</p>	
+							<p>
+								<a href = "${pageContext.request.contextPath }/product/productInfo?code=${product.code}">${product.name }</a>
+							</p>
+							<p><fmt:formatNumber type="number" maxFractionDigits="3" value="${product.price}"/>원</p> 
+						</div>
+					</c:forEach> 
+				
 			</div>
 		</div>
 		<!-- NEW ARRIVAL ROW -->

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.service.HomeService;
 
@@ -33,7 +34,7 @@ public class HomeController {
 	    model.addAttribute("productSaleCount", productSaleCount);
 	    
 	    // NEW ARRIVAL -> 최신 등록 순으로 데이터를 가져옴
-	    List<ProductVO> productNew = homeService.readProductNew();
+	    List<ProductAndFileVO> productNew = homeService.readProductNew();
 	    model.addAttribute("productNew", productNew);
 	    
 	    // HighCate를 가져옴

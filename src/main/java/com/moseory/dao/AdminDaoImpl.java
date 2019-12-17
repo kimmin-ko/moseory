@@ -197,8 +197,14 @@ public class AdminDaoImpl implements AdminDao {
 	public void productSalesRateRemove(HashMap<String,Object> param) {
 		sqlSession.update("AdminMapper.productSalesRateRemove", param);
 	}
+	
 	public Integer getOrderCount(int code) {
 		return sqlSession.selectOne("AdminMapper.getOrderCount2", code);
+	}
+	
+	@Override
+	public void refundComplete(HashMap<String,Object> param) {
+		sqlSession.update("AdminMapper.refundComplete", param);
 	}
 
 	@Override
