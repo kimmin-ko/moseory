@@ -16,11 +16,15 @@ import com.moseory.domain.QnaVO;
 import com.moseory.domain.ReviewCri;
 import com.moseory.domain.ReviewVO;
 
+@Service
 public interface ProductService {
 
 	List<ProductAndFileVO> highCateList(Map<String,Object> map);
 
 	ProductVO getProduct(int code);
+	
+	public int getProductListCount(Map<String,Object> map);
+	
 
 	List<ProductDetailVO> getDetailView(int code);
 	

@@ -331,7 +331,8 @@
            O.used_point,
            O.pay_method,
            O.message,
-           D.e_product_detail_no
+           D.e_product_detail_no,
+           O.delivery_charge
         FROM
            tbl_order O
         JOIN tbl_order_detail D ON O.code = D.order_code
@@ -423,6 +424,7 @@
 		  (
 		   P.code = PD.product_code AND PD.NO = #{p_no}
 		  )
+		  
 		WHEN MATCHED THEN
 		  UPDATE SET  P.sale_count = P.sale_count-1
 	</update>
@@ -432,5 +434,16 @@
 			where product_detail_no = #{code}
 	</select>
 	
+	<update id="refundComplete" parameterType="map">
+		UPDATE
+		  tbl_member
+	    SET
+	      total = total - #{refundAmount}
+	      <if test=' used_point != null and used_point != 0'>
+	      	,point = point + #{used_point}
+	      </if>
+	    WHERE
+	      id = #{member_id}
+	</update>
 	
 </mapper>

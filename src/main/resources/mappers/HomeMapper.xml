@@ -24,21 +24,52 @@
 	</select>
 	
 	
-	<select id="getProductNew" resultType="productVO">
-	<![CDATA[
-	SELECT
-   		*
-	FROM
-	    (SELECT
-	        p.*, pf.*
-	    FROM
-	        tbl_product p, tbl_product_file pf
-	    WHERE
-	        p.code = pf.product_code
-	    ORDER BY code desc)
-	WHERE
+	<select id="getProductNew" resultType="productAndFileVO">
+	SELECT * 
+	  FROM
+	    (
+          SELECT
+          P.code, 
+          P.name, 
+          P.price, 
+          P.high_code, 
+          P.low_code, 
+          P.sale_count,
+          P.wish_count, 
+          P.product_comment, 
+          P.grade,
+             F.*,
+             P.reg_date,
+             SUM(D.product_stock) product_stock
+		FROM 
+		  tbl_product P, 
+		  tbl_product_detail D,
+		  tbl_product_file F
+        WHERE 1 = 1  
+        AND P.code = F.product_code
+           AND D.product_code = P.code
+           GROUP BY
+          P.code, 
+          P.name, 
+          P.price, 
+          P.high_code, 
+          P.low_code, 
+          P.sale_count,
+          P.wish_count, 
+          P.product_comment, 
+          P.grade, 
+          F.fileno, 
+          F.product_code, 
+          F.thumbnail_name,
+          F.file_path, 
+          F.file_name,
+          P.reg_date
+ 		  ORDER BY P.code desc
+        )
+        WHERE 
+	    <![CDATA[
 	    rownum <= 60
-   	]]>
+   		]]>
 	</select>
 	
 	<select id="getHighCate" resultType="HighCateVO">

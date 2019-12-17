@@ -259,6 +259,10 @@
 		<input type="hidden" name="p_no" value="${orderInfo.PRODUCT_DETAIL_NO}">
 		<input type="hidden" name="e_no" value="${orderInfo.E_PRODUCT_DETAIL_NO}">
 		<input type="hidden" name="state" value="${orderInfo.STATE}">
+		<input type="hidden" name="member_id" value="${orderInfo.MEMBER_ID}">
+		<input type="hidden" name="amount" value="${orderInfo.AMOUNT}">
+		<input type="hidden" name="used_point" value="${orderInfo.USED_POINT}">
+		<input type="hidden" name="delivery_charge" value="${orderInfo.DELIVERY_CHARGE}">
 		
 	</form>
     <!-- Modify Form End -->

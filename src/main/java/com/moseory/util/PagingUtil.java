@@ -30,7 +30,9 @@ public class PagingUtil {
 	
 	//db에 사용
 	private int start;
+	
 	private int finish;
+	
 	public PagingUtil(int totalCnt, int curPage) {
 		pageSize = 10;
 		blockSize = 10;
@@ -46,6 +48,25 @@ public class PagingUtil {
 		this.finish = curPage*(pageSize);
 		this.start = this.finish - (this.pageSize -1);
 	}
+	
+	public PagingUtil(int totalCnt, int curPage, String pagingType) {
+		if(pagingType.equals("productList")) {
+			pageSize = 6;
+			blockSize = 6;			
+		}
+		setTotalCnt(totalCnt);
+		setCurPage(curPage);
+		//총 페이지 수 설정(totalCnt/size)
+		setPageCnt(totalCnt);
+		//총 블럭 수 설정
+		setBlockCnt(pageCnt);
+		
+		blockSetting(curPage);
+		
+		this.finish = curPage*(pageSize);
+		this.start = this.finish - (this.pageSize -1);
+	}
+	
 	
 	public void setPageCnt(int totalCnt) {
 		this.pageCnt = (int)Math.ceil(totalCnt*1.0/pageSize);

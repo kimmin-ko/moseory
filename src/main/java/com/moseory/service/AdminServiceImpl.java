@@ -235,9 +235,10 @@ public class AdminServiceImpl implements AdminService{
 	public int modifyOrderInfo(HashMap<String,Object> param) {
 		/*
 		 * STATE 
-		 * 1 교환 처리 중 : 반품 재고 증가, 교환 상품 재고 감소
-		 * 2 교환 완료 : e_no 삽입 후 삭제
-		 * 3 환불 처리 중 : 상품 판매량 감소, 상품 재고 증가
+		 * 교환 처리 중 : 반품 재고 증가, 교환 상품 재고 감소
+		 * 교환 완료 : e_no 삽입 후 삭제
+		 * 환불 처리 중 : 상품 판매량 감소, 상품 재고 증가
+		 * 환불 완료 : 사용했던 포인트 증가, 총 구매액 감소
 		 * */
 		try {
 			adminDao.modifyShippingInfo(param); //order 배송 정보 update
@@ -251,15 +252,26 @@ public class AdminServiceImpl implements AdminService{
 				if(newState.equals("교환 처리 중")) {
 					adminDao.addStock(param); //반품 재고 증가
 					adminDao.exchangeRemoveStock(param); //교환 상품 재고 감소
-				}
-				
+				}				
 				if(newState.equals("교환 완료")) {
 					adminDao.modifyProductCode(param); //e_no 삽입 후 삭제
 				}
-				
 				if(newState.equals("환불 처리 중")) {
 					adminDao.addStock(param); //재고 증가
 					adminDao.productSalesRateRemove(param); //상품 판매량 감소
+				}
+				if(newState.equals("환불 완료")) {
+					int delivery_charge = param.get("delivery_charge") != null ? Integer.parseInt(param.get("delivery_charge").toString()) : 0;
+					int used_point = param.get("used_point") != null ? Integer.parseInt(param.get("used_point").toString()) : 0;
+					int amount = param.get("amount") != null ? Integer.parseInt(param.get("amount").toString()) : 0;
+					if(delivery_charge > 0) {
+						//주문 총가격은 상품 가격에 배송비를 더해준다.
+						amount = amount + delivery_charge; 
+					}
+					//환불 가격은 주문 총 가격에 사용 포인트를 빼준다.
+					int refundAmount = amount - used_point;
+					param.put("refundAmount",refundAmount);
+					adminDao.refundComplete(param); //총 구매액 감소, 사용한 포인트 증가
 				}
 			}
 			return 1;

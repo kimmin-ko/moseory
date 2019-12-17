@@ -30,6 +30,7 @@ public class ProductDaoImpl implements ProductDao{
 	
 	@Override
 	public List<ProductAndFileVO> highCateList(Map<String,Object> map) {
+		System.out.println(map.toString());
 		return sqlSession.selectList("product.highCateList", map);
 	}
 	
@@ -155,6 +156,11 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public ProductFileVO getProductFile(int code) {
 		return sqlSession.selectOne("product.getProductFile", code);
+	}
+
+	@Override
+	public int getProductListCount(Map<String, Object> map) {
+		return sqlSession.selectOne("product.getProductListCount", map);
 	}
 
 	

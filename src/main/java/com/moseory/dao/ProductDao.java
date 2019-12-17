@@ -3,8 +3,6 @@ package com.moseory.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 import com.moseory.domain.Criteria;
 import com.moseory.domain.HighCateVO;
 import com.moseory.domain.LowCateVO;
@@ -66,4 +64,6 @@ public interface ProductDao {
 	int getLowCateCode(String keyword);
 
 	ProductFileVO getProductFile(int code);
+
+	public int getProductListCount(Map<String, Object> map);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.moseory.dao.HomeDao;
 import com.moseory.domain.HighCateVO;
+import com.moseory.domain.ProductAndFileVO;
 import com.moseory.domain.ProductVO;
 import com.moseory.util.ImageUtil;
 
@@ -30,9 +31,9 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public List<ProductVO> readProductNew() {
-	List<ProductVO> product_list = homeDao.getProductNew(); 
-	for(ProductVO vo : product_list) {
+    public List<ProductAndFileVO> readProductNew() {
+	List<ProductAndFileVO> product_list = homeDao.getProductNew(); 
+	for(ProductAndFileVO vo : product_list) {
 	    vo.setFile_path(ImageUtil.convertImagePath(vo.getFile_path()));
 	}
 	return product_list;
