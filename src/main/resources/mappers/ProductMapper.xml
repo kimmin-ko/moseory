@@ -16,7 +16,8 @@
 			0, <!-- sale_count -->
 			0, <!-- grade -->
 			0,<!-- wish_count -->
-			#{product_comment}
+			#{product_comment},
+			sysdate
 		)
 	</insert>
 	

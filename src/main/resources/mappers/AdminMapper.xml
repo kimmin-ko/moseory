@@ -209,43 +209,43 @@
 		UPDATE
 	    	tbl_member 
 		SET
-			<if test='password != null password != ""'>
+			<if test='password != ""'>
 		    password = #{password},
 			</if>
-			<if test='pwd_confirm_q != null pwd_confirm_q != ""'>
+			<if test='pwd_confirm_q != ""'>
 		    pwd_confirm_q = #{pwd_confirm_q},
 		    </if>
-		    <if test='pwd_confirm_q != null pwd_confirm_q != ""'>
+		    <if test='pwd_confirm_q != ""'>
 		    pwd_confirm_a = #{pwd_confirm_a},
 		    </if>
-		    <if test='name != null name != ""'>
+		    <if test='name != ""'>
 		    name = #{name}, 
 		    </if>
-		    <if test='zipcode != null zipcode != ""'>
+		    <if test='zipcode != ""'>
 		      zipcode = #{zipcode},
 		    </if>
-		    <if test='address1 != null address1 != ""'>
+		    <if test='address1 != ""'>
 		      address1 = #{address1},
 		    </if>
-		    <if test='address2 != null address2 != ""'>
+		    <if test='address2 != ""'>
 		      address2 = #{address2},
 		    </if>
-		    <if test='tel != null tel != ""'>
+		    <if test='tel != ""'>
 		      tel = #{tel},
 		    </if>
-		    <if test='phone != null phone != ""'>
+		    <if test='phone != ""'>
 		      phone = #{phone},
 		    </if>
-		    <if test='email != null email != ""'>
+		    <if test='email != ""'>
 		      email = #{email},
 		    </if>
-		    <if test='birth != null birth != ""'>
+		    <if test='birth != ""'>
 		      birth = #{birth},
 		    </if>
-		    <if test='point != null point != ""'>
+		    <if test='point != ""'>
 		      point = #{point},
 		    </if>
-		    <if test='level != null level != ""'>
+		    <if test='level != ""'>
 		      lev = #{level}
 		    </if>
 		WHERE

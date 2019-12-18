@@ -19,9 +19,6 @@ import com.moseory.domain.OrderStatsVO;
 import com.moseory.domain.ProductDetailVO;
 import com.moseory.domain.ProductVO;
 
-import lombok.extern.log4j.Log4j;
-
-@Log4j
 @Service("adminService")
 public class AdminServiceImpl implements AdminService{
 

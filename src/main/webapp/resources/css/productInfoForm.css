@@ -48,6 +48,10 @@
     text-align: center;
 }
 
+.product_image img {
+	margin-bottom: 20px;
+}
+
 .prod-info-list {
     text-align: center;
 }

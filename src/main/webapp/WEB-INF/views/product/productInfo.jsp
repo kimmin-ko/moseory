@@ -22,7 +22,7 @@
     <div class="row" style="margin-top: 60px; margin-bottom: 150px;">
 
         <div class="col-md-7 product_image">
-            <img width = "300px" height = "400px" style = "margin-bottom: 20px;" src="<c:out value='${product.file_path.concat(product.thumbnail_name) }' /> " >
+            <img src="<c:out value='${product.file_path.concat(product.thumbnail_name) }' /> " >
  
             <ul class="prod-info-list">
                 <li class="menu_info">INFO</li>

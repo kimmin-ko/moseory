@@ -152,7 +152,7 @@
 	                    </td>
 	                </tr>
 	                <tr>
-	                    <th>생년월일<img src="/images/ico_required.gif"></th>
+	                    <th>생년월일</th>
 	                    <td>
 	                    	<c:set var="birth" value="${fn:split(member.birth, '-') }" />
                             <input type="text" name="birth1" id="birth1" maxlength="4" value='<c:out value="${birth[0] }" />' style="width: 80px;" />년
@@ -289,7 +289,7 @@
                 $("#birth1").focus();
             } else if(checkBirth(birth1, birth2, birth3)) {
             	alert("생년월일에는 숫자만 입력할 수 있습니다.");
-            } else if(birth == null || birth.length != 10) {
+            } else if(birth != null && birth.length != 10) {
             	alert("생년월일을 다시 확인해주세요.");
             } else if((tel2 || tel3) && !(tel2 && tel3)) { // 일반전화 체크
                 alert("일반전화를 다시 확인해주세요.");
