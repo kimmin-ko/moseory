@@ -22,13 +22,14 @@
 		<result column="point" property="point" />
 		<result column="total" property="total" />
 		<result column="join_date" property="join_date" />
+		<result column="auth" property="auth" />
 	</resultMap>
 	
 	<!-- 세션 업데이트를 위한 회원 조회 -->
 	<select id="getMember" resultMap="memberResultMap">
 	SELECT
 		id, pwd_confirm_q, pwd_confirm_a , name, zipcode, address1, address2, 
-		tel, phone, email, birth, lev, point, total, join_date
+		tel, phone, email, birth, lev, point, total, join_date, auth
 	FROM
 		tbl_member
 	WHERE

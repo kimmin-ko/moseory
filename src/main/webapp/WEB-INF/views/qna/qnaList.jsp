@@ -13,10 +13,13 @@
 <body>
 	<%@ include file="../includes/sidebar.jsp"%>
 	
+	<script type="text/javascript" src="/js/qna/qnaList.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			// 접속중인 사용자 아이디
 			var member_id = '${user.id}';
+			// 사용자의 권한 등급
+			var member_auth = '${user.auth}';
 			// 작성자의 아이디 블라인드 처리
 			var name = new String();
 			
@@ -66,22 +69,29 @@
 				// cri가 담겨있는 form
 				var actionForm = $('#actionForm');
 				actionForm.attr('action', '/qna/qnaGet');
-				actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 				
 				// 비밀글 여부
 				var secret = $(this).attr('href');
 				
 				// 작성자
-				var writer = $(this).find('input[name=writer]').val();
+				var writer = null;
+				
+				// 비밀글의 답변을 열어볼 때 접속중인 회원이 원글의 작성자이면 열람 가능
+				qnaJs.getOriginalWriter(no, function(origin_writer) {
+					writer = origin_writer;
+				});
 				
 				if(secret == '1') { // 비밀글
-					if(member_id == writer) { // 작성자와 접속중인 사용자가 동일한 경우 
+					// 작성자와 접속중인 사용자가 동일한 경우  또는 관리자인 경우
+					if(member_id == writer || member_auth == '1') { 
+						actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 						actionForm.submit(); // 문의글 조회 이동
 					} else { // 작성자가 아닌 경우
 						alert("비밀글은 작성자만 조회할 수 있습니다.");
 						return false;
 					}
 				} else { // 공개글
+					actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 					actionForm.submit(); // 문의글 조회 이동
 				 }
 				
@@ -184,7 +194,6 @@
 					<select class="form-control search_type" name="type">
 						<option value="T" <c:out value="${pageMaker.cri.type eq 'T' ? 'selected' : '' }" />>제목</option>
 						<option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected' : '' }" />>내용</option>
-						<option value="TC" <c:out value="${pageMaker.cri.type eq 'TC' ? 'selected' : '' }" />>제목+내용</option>
 						<option value="W" <c:out value="${pageMaker.cri.type eq 'W' ? 'selected' : '' }" />>작성자</option>
 					</select> 
 					<input type="text" class="form-control search_keyword" name="keyword" 

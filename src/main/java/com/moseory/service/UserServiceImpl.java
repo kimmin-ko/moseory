@@ -284,8 +284,10 @@ public class UserServiceImpl implements UserService {
 		int point = Integer.parseInt(param.get("point") + "");
 		int amount = Integer.parseInt(param.get("amount") + "");
 
+		// 1. 해당 상품 주문 상태 변경
 		userDao.changeOrderState(order_code, product_detail_no, "구매 확정");
 
+		// 2. 회원의 적립금, 총 구매 금액 증가
 		userDao.increasePointAndAmount(member_id, point, amount);
 	}
 

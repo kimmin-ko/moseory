@@ -44,25 +44,6 @@
 	]]>
 	</select>
 	
-	<!-- 페이징처리하여 QnA MyList 조회 -->
-	<select id="getMyListWithPaging" resultType="QnaVO">
-	SELECT
-	    no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
-	FROM
-	    (SELECT
-	    	/*+ INDEX_ASC(tbl_qna idx_answer) */
-	        rownum rn, no, member_id, product_code, title, content, reg_date, hit, ref, depth, step, pno, secret
-	    FROM    
-	        tbl_qna
-	    WHERE member_id = #{member_id}  and 
-	    	<include refid="criteria"></include>
-	<![CDATA[
-	        rownum <= #{pageNum} * #{amount})
-	WHERE
-	    rn > (#{pageNum} - 1) * #{amount}
-	]]>
-	</select>
-	
 	<!-- QnA 개수 -->
 	<select id="getQnaCount" resultType="int">
 	SELECT
@@ -79,6 +60,18 @@
 	INSERT INTO tbl_qna(no, member_id, product_code, title, content, ref, secret)
 	VALUES(seq_qna_no.nextval, #{member_id}, #{product_code}, #{title}, #{content}, seq_qna_no.currval, #{secret})
 	</insert>
+	
+	<!-- QnA 원글 작성자 id -->
+	<select id="getOriginalWriter" resultType="String">
+	SELECT
+		member_id
+	FROM
+		tbl_qna
+	WHERE
+		no = (SELECT ref
+	          FROM tbl_qna
+	          WHERE no = #{no})
+	</select>
 	
 	<!-- QnA 답글 등록 전 그룹 step 증가 -->
 	<update id="increaseGroupStep">

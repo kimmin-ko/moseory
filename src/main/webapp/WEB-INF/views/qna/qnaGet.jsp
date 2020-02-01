@@ -195,10 +195,8 @@ if (request.getProtocol().equals("HTTP/1.1"))
 	        			url : '/qna/replyRegistAndGet',
 	        			data : JSON.stringify(reply),
 	        			contentType : 'application/json; charset=utf-8',
-	        			async : false,
 	        			success : function(reply) {
 	        				addReplyHtml(reply);
-							
 							$('#reply_content').val('');
 	        			}
 	        		});
@@ -216,7 +214,6 @@ if (request.getProtocol().equals("HTTP/1.1"))
 		        			url : '/qna/replyDelete',
 		        			data : JSON.stringify(no),
 		        			contentType : 'application/json; charset=utf-8',
-		        			async : false,
 		        			success : function(result) {
 		        				console.log(result);
 		        				if(result == 'success') {

@@ -40,12 +40,6 @@
 		<div class="row ma-to-30 ma-bo-10">
 			<div class="col-lg-10 col-lg-offset-1" style="font-weight: bold;">WEEKLY BEST ITEM</div>
 		</div>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				
-			});
-		</script>
 
 		<div class="row ma-bo-50">
 			<div class="col-lg-10 col-lg-offset-1">

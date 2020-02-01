@@ -1,12 +1,5 @@
 $(document).ready(function() {
 	
-	// qnaY cookie가 있을 경우 실행
-	if($.cookie('qnaY')) {
-		// 스크롤 위치 이동 후 쿠키 삭제
-		$(window).scrollTop($.cookie('qnaY'));
-		$.removeCookie('qnaY');
-	}
-	
 	function setQnaTopCookie() {
 		var qnaY = $('.qna-header').offset().top;
 		$.cookie('qnaY', qnaY);
@@ -40,22 +33,30 @@ $(document).ready(function() {
 		// cri가 담겨있는 form
 		var actionForm = $('#actionForm');
 		actionForm.attr('action', '/qna/qnaGet');
-		actionForm.append('<input type="hidden" name="no" value="' + no + '">');
+		
 		
 		// 비밀글 여부
 		var secret = $(this).attr('href');
 		
 		// 작성자
-		var writer = $(this).find('input[name=writer]').val();
+		var writer = null;
+		
+		// 비밀글의 답변을 열어볼 때 접속중인 회원이 원글의 작성자이면 열람 가능
+		qnaJs.getOriginalWriter(no, function(origin_writer) {
+			writer = origin_writer;
+		});
 
 		if(secret == '1') { // 비밀글
-			if(member_id == writer) { // 작성자와 접속중인 사용자가 동일한 경우 
+			// 작성자와 접속중인 사용자가 동일한 경우  또는 관리자인 경우
+			if(member_id == writer || member_auth == '1') { 
+				actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 				actionForm.submit(); // 문의글 조회 이동
 			} else { // 작성자가 아닌 경우
 				alert("비밀글은 작성자만 조회할 수 있습니다.");
 				return false;
 			}
 		} else { // 공개글
+			actionForm.append('<input type="hidden" name="no" value="' + no + '">');
 			actionForm.submit(); // 문의글 조회 이동
 		 }
 		
@@ -98,6 +99,7 @@ var productJs = (function() {
 		$.ajax({
 			type : 'get',
 			url : '/product/getReviewList/' + product_code + '/' + type + '/' + limit,
+			async: false,
 			success : function(reviewList) {
 				if(callback) {
 					callback(reviewList);
@@ -191,3 +193,4 @@ var productJs = (function() {
 	}
 	
 })();
+

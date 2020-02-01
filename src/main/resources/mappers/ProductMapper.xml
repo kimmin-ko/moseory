@@ -346,26 +346,14 @@
 	
 	<!-- 상품 검색된 리스트 -->
 	<select id="getListOnSearch" parameterType="map" resultType="productVO">
-		<!-- select * from (
-			select A.*, rownum as rn from tbl_product A
-				where ${searchType} like '%'||#{keyword}||'%'
-			order by code)
-		where rn between #{start} and #{finish} -->
 		 select * from (
-			select * from tbl_product where ${searchType} = (
-													select  code from tbl_high_cate
-														where name like '%'||#{keyword}||'%' or kname like '%'||#{keyword}||'%')
-														
-													)
+			select * 
+			from tbl_product 
+			where 
+			${searchType} = (select code from tbl_high_cate
+							 where name like '%'||#{keyword}||'%' or kname like '%'||#{keyword}||'%'))
 		)where rownum between 1 and 10
 		order by code desc
-		<!-- 
-			select * from (
-    select * from tbl_product 
-        where high_code = (select code from  tbl_high_cate
-    where name like '셔츠%' or kname like '셔츠%')
-) where rownum between 1 and 10;
-		 -->
 	</select>
 	
 	<select id="getHighCate" parameterType="int" resultType="HighCateVO">
@@ -466,7 +454,7 @@
 	
 	<select id = "getProductFile" parameterType = "int" resultType = "productFileVO">
 		select * from tbl_product_file
-			where product_code = #{code}
+		where product_code = #{code}
 	</select>
 	
 	<select id = "getProductListCount" parameterType="map" resultType = "int">

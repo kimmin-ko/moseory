@@ -94,6 +94,19 @@ public class QnaController {
 			return "redirect:/qna/qnaList";
 		}
 	}
+	
+	@GetMapping("/getOriginalWriter/{no}")
+	public @ResponseBody ResponseEntity<String> getOriginalWriter(@PathVariable("no") int no) {
+		
+		log.info("qna no : " + no);
+		
+		String writer = qnaService.getOriginalWriter(no);
+		
+		log.info("qna origin writer : " + writer);
+		
+		return writer != null ? new ResponseEntity<>(writer, HttpStatus.OK)
+							  : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	// Q&A 조회
 	@GetMapping("/qnaGet")
@@ -238,21 +251,6 @@ public class QnaController {
 		qnaService.deleteReply(no);
 
 		return new ResponseEntity<>("success", HttpStatus.OK);
-	}
-
-	// Qna MyList 조회
-	@GetMapping("/qnaMyList")
-	public void qnaMyList(Criteria cri, Model model, HttpSession session) {
-		MemberVO memberVO = (MemberVO) session.getAttribute("user");
-		log.info("memberVO");
-		String member_id = memberVO.getId();
-		cri.setMember_id(member_id);
-		log.info(member_id);
-		model.addAttribute("qnaMyList", qnaService.getMyList(cri));
-		int total = qnaService.getQnaCount(cri);
-		log.info("total" + total);
-		model.addAttribute("qnaPageMaker", new PageDTO(cri, qnaService.getQnaCount(cri)));
-
 	}
 
 }

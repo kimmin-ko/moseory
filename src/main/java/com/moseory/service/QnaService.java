@@ -11,9 +11,6 @@ public interface QnaService {
     // 페이징처리하여 QnA List 조회
     public List<QnaVO> getList(Criteria cri);
     
-    // 페이징처리하여 Qna MyList 조회
-    public List<QnaVO> getMyList(Criteria cri);
-    
     // QnA 개수
     public int getQnaCount(Criteria cri);
   
@@ -43,6 +40,9 @@ public interface QnaService {
     
     // QnA Answer 등록
     public void registQnaAnswer(QnaVO vo);
+    
+    // QnA 원글 작성자 조회
+    public String getOriginalWriter(int no);
     
 }
 

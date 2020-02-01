@@ -13,8 +13,6 @@
 <body>
 
 <%@ include file="../includes/sidebar.jsp" %>
-<!-- jQuery cookie -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
 <div class="container" style="margin-left:22%;">
 
@@ -54,9 +52,11 @@
             <hr style="border: 0.5px solid #DFDFDF">
             <script type="text/javascript">
             	var member_id = '${user.id}';
+            	var member_auth = '${user.auth}';
             </script>
             
-            <script src="/js/product/productInfo.js"></script>
+            <script type="text/javascript" src="/js/qna/qnaList.js"></script>
+            <script type="text/javascript" src="/js/product/productInfo.js"></script>
             
             <script type="text/javascript">
             	// session에 저장된 로그인한 사용자
@@ -157,7 +157,14 @@
         				var str = "";
         				
         				if(reviewList.length == 0 || reviewList == null) {
-        					reviewUL.html("");
+        					str += "<li>";
+        					str += "	<div class='col-md-10 col-md-offset-1 review-non'>";
+        					str += "		<p>";
+        					str += "			등록된 리뷰가 없습니다. 상품 구매 후 리뷰를 작성해주세요.";
+        					str += "		<p>";
+        					str += "	</div>";
+        					str += "</li>";
+        					reviewUL.html(str);
            					return;
         				}
 
@@ -222,16 +229,17 @@
             	} // getReviewList
             	
             	$(document).ready(function() {
-            		//alert($('.main-container').scrollTop());
-            		
-            		/* $(window).scroll(function() {
-            			alert($(this).scrollTop());
-            		}); */
-            		
             		$("#total-price").text(total_price.format() + '원');
             		$("#total-quantity").text(total_quantity + '개');
             		
             		getReviewList(product_code, type, limit);
+            		
+            		// qnaY cookie가 있을 경우 실행
+        			if($.cookie('qnaY')) {
+        				// 스크롤 위치 이동 후 쿠키 삭제
+        				$(window).scrollTop($.cookie('qnaY'));
+        				$.removeCookie('qnaY');
+        			}
             		
             		// 리뷰 순서 변경
             		$("#sortReview").on("click", "li", function() {
@@ -350,6 +358,7 @@
                         + 	'</td>'
                         + '</tr>');
             		
+            		// 해당 옵션의 수량 1로 초기화
             		quantity_map.set("quantity" + pdNo, 1);
             		
             		// 수량 합산
@@ -367,6 +376,7 @@
 	            			alert("재고가 부족합니다.");
 	            			$(countInput).val(stock);
 	            			count = stock;
+	            			total = (price * count).format();
             			}
             		});
             		
@@ -374,10 +384,12 @@
             			alert("최소 주문수량은 1개 입니다.");
             			$(countInput).val(1);
             			count = 1;
+            			total = (price * count).format();
             		}
             		
             		var trNum = $(countInput).closest('tr').prevAll().length;
             		
+            		// 해당 옵션의 총 가격
             		$('.add-pro-table > tbody > tr:eq(' + trNum + ') > td:last').html('<p class="add-pro-price">' + total + '원</p>');
             		
             		// count가 string type이기 때문에 number type으로 변환
@@ -465,7 +477,6 @@
             			alert('로그인 후 이용해주세요.');
             		}
             	} // addWishList
-            	
 	            </script>
             <!-- 컬러 -->
             <c:if test="${color != null }">
@@ -566,7 +577,7 @@
        	<!-- 리뷰 ul -->
        	<ul class="list-unstyled reviewUL">
         </ul>
-
+        
 		<!-- 더보기 버튼 -->
 		<div class="col-md-10 col-md-offset-1 more-review">
 			
@@ -588,6 +599,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                <c:if test="${qnaCount eq 0 }">
+                	<tr>
+                		<td colspan="5" style="text-align: center;">
+                			작성된 Q&A가 없습니다.
+                		</td>
+                	</tr>
+                </c:if>
                 <c:forEach var="qna" items="${qnaList }">
 					<tr>
 						<!-- NO -->

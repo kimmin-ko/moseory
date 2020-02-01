@@ -83,6 +83,12 @@
     margin-right: 25px;
 }
 
+.review-non {
+	margin-top: 20px;
+	font-size: 12px;
+	text-align: center;	
+}
+
 .review-body {
     border: 0.5px #7F858A solid;
 }

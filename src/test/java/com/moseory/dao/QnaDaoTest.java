@@ -22,73 +22,60 @@ import lombok.extern.log4j.Log4j;
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/**/root-context.xml" })
 public class QnaDaoTest {
 
-    @Setter(onMethod_ = @Autowired)
-    private QnaDao qnaDao;
-    
-    @Autowired
-    private ReviewDao reviewDao;
-    
-    @Test
-    public void testGetReview() {
-    	List<ReviewVO> vo_list = reviewDao.getListWithPaging(new ReviewCriteria(1, 10, "admin11", null, null));
-    	vo_list.forEach(x -> log.info(x));
-    }
-    
-    @Test
-    public void testPaging() {
-	Criteria cri = new Criteria(2, 10);
-	//cri.setKeyword("원글");
-	//cri.setType("TC");
-	
-	
-	List<QnaVO> list = qnaDao.getListWithPaging(cri);
-	
-	list.forEach(qna -> log.info(qna.getNo()));
-    }
-    
-     @Test
-     public void testGetQna() {
-	 log.info(qnaDao.getQna(10));
-     }
-     
-     @Test
-     public void testDeleteQna() {
-	 qnaDao.deleteQna(65527);
-     }
-     
-     @Test
-     public void testUpdateQna() {
-	 QnaVO vo = new QnaVO();
-	 vo.setNo(65522);
-	 vo.setTitle("test modify");
-	 vo.setContent("test modify");
-	 vo.setSecret(0);
-	 
-	 qnaDao.updateQna(vo);
-     }
-     
-     @Test
-     public void testQnaReply() {
-	 QnaReplyVO vo = new QnaReplyVO();
-	 vo.setQna_no(65583);
-	 vo.setMember_id("admin11");
-	 vo.setContent("테스트");
-	 
-	 qnaDao.insertReply(vo);
-	 
-	 log.info(qnaDao.getReplyList(65583));
-     }
-     
+	@Setter(onMethod_ = @Autowired)
+	private QnaDao qnaDao;
+
+	@Autowired
+	private ReviewDao reviewDao;
+
+	@Test
+	public void testGetReview() {
+		List<ReviewVO> vo_list = reviewDao.getListWithPaging(new ReviewCriteria(1, 10, "admin11", null, null));
+		vo_list.forEach(x -> log.info(x));
+	}
+
+	@Test
+	public void testPaging() {
+		Criteria cri = new Criteria(2, 10);
+		// cri.setKeyword("원글");
+		// cri.setType("TC");
+
+		List<QnaVO> list = qnaDao.getListWithPaging(cri);
+
+		list.forEach(qna -> log.info(qna.getNo()));
+	}
+
+	@Test
+	public void testGetQna() {
+		log.info(qnaDao.getQna(10));
+	}
+
+	@Test
+	public void testDeleteQna() {
+		qnaDao.deleteQna(65527);
+	}
+
+	@Test
+	public void testUpdateQna() {
+		QnaVO vo = new QnaVO();
+		vo.setNo(65522);
+		vo.setTitle("test modify");
+		vo.setContent("test modify");
+		vo.setSecret(0);
+
+		qnaDao.updateQna(vo);
+	}
+
+	@Test
+	public void testQnaReply() {
+		QnaReplyVO vo = new QnaReplyVO();
+		vo.setQna_no(65583);
+		vo.setMember_id("admin11");
+		vo.setContent("테스트");
+
+		qnaDao.insertReply(vo);
+
+		log.info(qnaDao.getReplyList(65583));
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

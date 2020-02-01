@@ -11,9 +11,6 @@ public interface QnaDao {
     // 페이징처리하여 QnA List 조회
     public List<QnaVO> getListWithPaging(Criteria cri);
     
-    // 페이징 처리하여 QNA MY List 조회
-    public List<QnaVO> getMyListWithPaging(Criteria cri);
-    
     // QnA 개수
     public int getQnaCount(Criteria cri);
     
@@ -49,6 +46,9 @@ public interface QnaDao {
     
     // QnA 답글 등록
     public void insertQnaAnswer(QnaVO vo);
+    
+    // QnA 원글 작성자 조회
+    public String getOriginalWriter(int no);
      
 }
 

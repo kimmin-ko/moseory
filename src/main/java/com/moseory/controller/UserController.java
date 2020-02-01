@@ -44,7 +44,7 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 @Controller
-@RequestMapping("/user/*") // 로그인 정보가 필요함
+@RequestMapping("/user/") // 로그인 정보가 필요함
 public class UserController {
 
 	@Setter(onMethod_ = @Autowired)
@@ -90,7 +90,7 @@ public class UserController {
 	}
 
 	// 마이페이지
-	@GetMapping("/myPage")
+	@GetMapping(value = "/myPage")
 	public String myPage(Model model, HttpServletRequest req) {
 		Map<String, Object> memberMap = getUserJson(req);
 
